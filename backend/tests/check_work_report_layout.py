@@ -105,7 +105,10 @@ def fixture():
  window.LayoutReport.monthly(day);
  const monthly=document.querySelector('.report-list');
  const monthlyWidth=monthly.getBoundingClientRect().width;
- assert(monthlyWidth<620,'Monthly table fits its compact content: '+monthlyWidth+'px');
+ const monthlyScroll=monthly.parentElement;
+ assert(monthlyWidth>=monthlyScroll.clientWidth-1,'Monthly table fills available width: '+monthlyWidth+'px');
+ if(innerWidth>=768)assert(Math.abs(monthlyWidth-monthlyScroll.clientWidth)<=1,'Monthly table follows container width');
+ assert(document.documentElement.scrollWidth<=innerWidth+1,'Narrow layout scrolls the table instead of the page');
  assert(monthly.querySelectorAll('thead .report-heading-icon').length===4,'Four icon headers');
  assert(monthly.rows[1].cells[12].textContent==='RBS','Duty abbreviation matches editor');
  const actions=[...monthly.querySelectorAll('.report-row-actions button')];

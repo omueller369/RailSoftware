@@ -176,7 +176,7 @@ html[data-theme="dark"] #reportSendCancel {
 }
 
 #workReport .report-list {
-    width: max-content;
+    width: 100%;
     min-width: 0;
     table-layout: auto;
     font-size: 12px;
