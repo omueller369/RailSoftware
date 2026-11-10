@@ -2,6 +2,7 @@ package de.lokzeitleiste.app
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -56,7 +57,10 @@ class TfPortalActivity : ComponentActivity() {
         if(job!=null) if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) startGps(job.first,job.second)
         else reply(job.second,job.first,false,"Präziser Standort wurde nicht erlaubt.")
     }
-    private val saveFile=registerForActivityResult(ActivityResultContracts.CreateDocument("*/*")) { uri ->
+    private var saveMimeType = "application/octet-stream"
+    private val saveFile=registerForActivityResult(object : ActivityResultContracts.CreateDocument("*/*") {
+        override fun createIntent(context: Context, input: String): Intent = super.createIntent(context, input).setType(saveMimeType)
+    }) { uri ->
         val export=pendingExport;pendingExport=null
         if(export!=null) {
             if(uri==null) reply(export.second,JSONObject().put("id",export.first),false,"Speichern abgebrochen.")
@@ -185,7 +189,7 @@ class TfPortalActivity : ComponentActivity() {
             }
         }
         web.setDownloadListener { url,_,disposition,mime,_->
-            if(policy.sameOrigin(url) && pendingDownload==null && pendingExport==null && exportStream==null) { pendingDownload=url;saveFile.launch(URLUtil.guessFileName(url,disposition,mime)) }
+            if(policy.sameOrigin(url) && pendingDownload==null && pendingExport==null && exportStream==null) { val name=DownloadMetadata.name(disposition.orEmpty(),URLUtil.guessFileName(url,disposition,mime));saveMimeType=DownloadMetadata.mime(name,mime);pendingDownload=url;saveFile.launch(name) }
             else toast("Download kann nicht geöffnet werden.")
         }
     }
@@ -226,6 +230,7 @@ class TfPortalActivity : ComponentActivity() {
                 "gps.erase" -> { val key=trackKey(request);require(GpsRecordingService.currentKey!=key);store.erase(key);reply(proxy,request,true,JSONObject()) }
                 "export.start" -> {
                     require(pendingDownload==null && pendingExport==null && exportStream==null)
+                    saveMimeType=DownloadMetadata.mime(request.optString("name"),null)
                     pendingExport=request.getString("id") to proxy
                     saveFile.launch(request.optString("name","Dokument").replace(Regex("[/\\\\\\x00-\\x1f]"),"_").take(180))
                 }

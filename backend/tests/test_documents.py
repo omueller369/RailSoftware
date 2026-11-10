@@ -43,6 +43,16 @@ class DocumentsTest(unittest.TestCase):
         self.assertEqual(self.driver.delete('/api/v1/documents/file',params={'path':path}).status_code,200)
         self.assertEqual(self.listing()['files'],[])
 
+    def test_pdf_download_preserves_filename_and_mime(self):
+        content=b'%PDF-1.4\nexample'
+        uploaded=self.driver.post('/api/v1/documents/upload',data={'folder':'Dokumente/Fahrpläne/FPLO'},files={'file':('Bericht Müller.pdf',content,'application/pdf')})
+        self.assertEqual(uploaded.status_code,201,uploaded.text)
+        response=self.driver.get('/api/v1/documents/download',params={'path':uploaded.json()['path']})
+        self.assertEqual(response.content,content)
+        self.assertEqual(response.headers['content-type'],'application/pdf')
+        self.assertIn('filename="Bericht M_ller.pdf"',response.headers['content-disposition'])
+        self.assertIn("filename*=UTF-8''Bericht%20M%C3%BCller.pdf",response.headers['content-disposition'])
+
     def test_size_traversal_symlinks_and_account_isolation(self):
         for size,status in [(MAX_FILE,201),(MAX_FILE+1,413),(0,413)]:
             response=self.driver.post('/api/v1/documents/upload',data={'folder':'Dokumente'},files={'file':('limit.txt',b'x'*size)})

@@ -78,8 +78,10 @@ def create_router(require_account):
         def chunks():
             with os.fdopen(fd,'rb') as stream:
                 while data:=stream.read(65536):yield data
-        return StreamingResponse(chunks(),media_type='application/octet-stream',headers={
-            'Content-Disposition':"attachment; filename*=UTF-8''"+quote(file.name,safe=''),
+        mime=mimetypes.guess_type(file.name)[0] or 'application/octet-stream'
+        fallback=re.sub(r'[^A-Za-z0-9._ -]', '_', file.name)
+        return StreamingResponse(chunks(),media_type=mime,headers={
+            'Content-Disposition':f"""attachment; filename="{fallback}"; filename*=UTF-8''{quote(file.name,safe='')}""",
             'X-Content-Type-Options':'nosniff','Cache-Control':'private, no-store'})
 
     @router.post('/api/v1/documents/upload',status_code=201)

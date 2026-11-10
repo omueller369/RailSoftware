@@ -221,7 +221,7 @@
   "text_a90437771efc": "Keep the entry open and check the connection. On error, your text remains in the field. If another device changed the note, it is not simply overwritten. Back up your text separately if needed, then reload the list.",
   "text_a9e4faf2380a": "Do not repeatedly interrupt the same save operation.",
   "text_aa6d4139138a": "Choose Save station.",
-  "text_abe5d5addc26": "Browse documents searches by filename or folder. Refresh reloads the list.",
+  "text_abe5d5addc26": "Browse documents searches by filename or folder. Refresh reloads the list. Downloads keep the filename and extension. PDF documents are saved as PDF files. On the tablet, choose the destination folder in the save dialog.",
   "text_ad921f1b2ce2": "Duty times, duty type and time values",
   "text_ad95efb296b5": "If the page was closed",
   "text_ae03ac5bdbdc": "Enter a word such as GPS, password or receipt in the search field. The topic list narrows accordingly.",
