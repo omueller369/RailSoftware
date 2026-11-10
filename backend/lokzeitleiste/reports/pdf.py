@@ -27,7 +27,7 @@ def render_receipt_pdf(*, first_name: str, last_name: str, personnel_number: str
     doc = SimpleDocTemplate(stream, pagesize=landscape(A4),
                             leftMargin=14 * mm, rightMargin=14 * mm,
                             topMargin=13 * mm, bottomMargin=13 * mm,
-                            title="LokZeitleiste - Tabellarische Eingangsbestätigung")
+                            title="Rail Software - Tabellarische Eingangsbestätigung")
     heading = ParagraphStyle("heading", fontName="Helvetica-Bold", fontSize=12, leading=15, textColor=INK)
     body = ParagraphStyle("body", fontName="Helvetica", fontSize=8.2, leading=11, textColor=INK)
     small = ParagraphStyle("small", parent=body, fontSize=7.4, leading=9.5)
@@ -36,7 +36,7 @@ def render_receipt_pdf(*, first_name: str, last_name: str, personnel_number: str
         return Paragraph(escape(str(value)), style)
     story = []
     metadata = Table([
-        [p("LokZeitleiste - Eingangsbestätigung", heading), p(f"Monat: {month:02d}/{year}")],
+        [p("Rail Software - Eingangsbestätigung", heading), p(f"Monat: {month:02d}/{year}")],
         [p(f"Tf: {first_name} {last_name}"), p(f"Personalnummer: {personnel_number}")],
         [p(f"Eingang: {received_at:%d.%m.%Y %H:%M} Uhr"), p(f"Feiertagskalender: DE-{federal_state}")],
     ], colWidths=[135 * mm, 134 * mm])

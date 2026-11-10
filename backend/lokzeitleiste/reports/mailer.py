@@ -19,7 +19,7 @@ def send_receipt(*, recipient: str, filename: str, pdf_data: bytes):
     message = EmailMessage()
     message["From"] = sender
     message["To"] = recipient
-    message["Subject"] = "LokZeitleiste: Eingang Ihrer Arbeitszeiten"
+    message["Subject"] = "Rail Software: Eingang Ihrer Arbeitszeiten"
     message.set_content(
         "Anbei erhalten Sie die tabellarische Bestätigung der übermittelten Tagesdaten. "
         "Dies ist keine Entgelt- oder Tarifabrechnung."

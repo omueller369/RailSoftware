@@ -1,4 +1,4 @@
-# LokZeitleiste – Anforderungen für Version 1
+# Rail Software – Anforderungen für Version 1
 
 Stand: 27. September 2026. Diese Beschreibung hält die bisher genannten Anforderungen fest; offene Fachregeln stehen unten.
 

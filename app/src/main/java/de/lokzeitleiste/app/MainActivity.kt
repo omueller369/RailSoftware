@@ -87,7 +87,7 @@ private fun MonthScreen(username: String, onTrain: () -> Unit, onLogout: () -> U
     Column(Modifier.fillMaxSize()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(24.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("LokZeitleiste", style = MaterialTheme.typography.headlineMedium)
+                Text("Rail Software", style = MaterialTheme.typography.headlineMedium)
                 OutlinedButton(onClick = onTrain) { Text("Zugfahrt · LokZeit") }
                 Button(enabled = !sending, onClick = {
                     val token = TokenVault.token(context)

@@ -1,4 +1,4 @@
-# LokZeitleiste Backend (Python / MySQL)
+# Rail Software Backend (Python / MySQL)
 
 FastAPI stellt die Admin-Oberfläche unter `/admin` und die API für die Android-App bereit. MySQL speichert Admins, Tf-Stammdaten, Sitzungen und Monatsdaten.
 

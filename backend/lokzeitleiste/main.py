@@ -21,7 +21,7 @@ from .reports.monthly import summarize_month
 from .reports.service import process_dispatch
 
 
-app = FastAPI(title="LokZeitleiste API", version="0.7")
+app = FastAPI(title="Rail Software API", version="0.7")
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "true").lower() == "true"
 PUBLIC_ORIGIN = os.getenv("PUBLIC_ORIGIN", "")
 
@@ -256,7 +256,7 @@ def upload_entries(year: int, month: int, batch: EntryBatch, background_tasks: B
                                       rows=day_rows(received, profile.federal_state))
         dispatch = ReportDispatch(tf_user_id=user.id, work_month_id=period.id,
                                   recipient_email=profile.email,
-                                  filename=f"LokZeitleiste-Eingang-{year}-{month:02d}.pdf",
+                                  filename=f"Rail Software-Eingang-{year}-{month:02d}.pdf",
                                   pdf_data=pdf_data, status="pending")
         db.add(dispatch)
         db.flush()

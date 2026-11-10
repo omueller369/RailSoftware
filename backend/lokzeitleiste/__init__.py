@@ -1,1 +1,1 @@
-"""Backend for LokZeitleiste."""
+"""Backend for Rail Software."""

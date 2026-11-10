@@ -1,6 +1,6 @@
-# LokZeitleiste v0.8
+# Rail Software v0.8
 
-LokZeitleiste ist jetzt in eine Android-App für Tf und ein Python-Backend für Admins und Monatsdaten geteilt.
+Rail Software ist jetzt in eine Android-App für Tf und ein Python-Backend für Admins und Monatsdaten geteilt.
 
 ## Projektteile
 

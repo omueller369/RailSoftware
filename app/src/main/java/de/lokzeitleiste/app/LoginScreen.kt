@@ -17,7 +17,7 @@ fun LoginScreen(onSuccess: (String, String) -> Unit) {
     var busy by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     Column(Modifier.fillMaxSize().padding(32.dp), verticalArrangement = Arrangement.Center) {
-        Text("LokZeitleiste", style = MaterialTheme.typography.headlineLarge)
+        Text("Rail Software", style = MaterialTheme.typography.headlineLarge)
         Text("Tf-Anmeldung mit dem vom Admin angelegten Konto")
         Spacer(Modifier.height(24.dp))
         OutlinedTextField(username, { username = it }, label = { Text("Benutzername") })
