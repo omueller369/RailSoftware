@@ -235,7 +235,7 @@ Die APK liegt anschließend hier:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.26.35` / Versionscode `61`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `61` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
+Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.26.36` / Versionscode `62`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `62` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
 
 ```bash
 ./gradlew :app:assembleDebug -PlokzeitleisteVersionCode=100123
@@ -435,3 +435,7 @@ python backend/tests/check_android_translations.py --apk app/build/outputs/apk/d
 ```
 
 Bei sichtbaren Platzhaltern die aktuelle APK mit demselben Signierschlüssel über die bestehende App installieren und neu starten. Die App nicht deinstallieren, damit lokale Daten erhalten bleiben. Ein reines Serverupdate ersetzt keine in älteren APKs eingebetteten Portaldateien.
+
+## Erster RailSoftware-Tablet-Build
+
+Version 0.26.36 startet den Tablet-Build nach Einrichtung des dauerhaften Signierschlüssels. Prüfe im erfolgreichen Workflow-Lauf den Schritt **Publish signed tablet test update** und lade die APK aus dem zugehörigen `android-test-…`-Release herunter. Die Erstinstallation und spätere Updates müssen denselben Signierschlüssel verwenden.
