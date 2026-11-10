@@ -2,7 +2,7 @@
 
 Diese Anleitung beschreibt das vorhandene Projekt **LokZeitleiste** auf einem Mac. Es wird **kein leeres neues Android-Projekt** erstellt: Das GitHub-Projekt wird geklont und in Android Studio geöffnet.
 
-Repository: https://github.com/omueller369/LokZeitleiste  
+Repository: https://github.com/omueller369/RailSoftware<br>
 Arbeitsbranch: `setup/debian-testumgebung`  
 Android-Paket: `de.lokzeitleiste.app`  
 Server: `https://ctl-software.io-goerlitz.eu`  
@@ -56,8 +56,8 @@ Terminal auf dem Mac öffnen:
 ```bash
 mkdir -p "$HOME/Developer"
 cd "$HOME/Developer"
-git clone --branch setup/debian-testumgebung https://github.com/omueller369/LokZeitleiste.git
-cd LokZeitleiste
+git clone --branch setup/debian-testumgebung https://github.com/omueller369/RailSoftware.git
+cd RailSoftware
 git branch --show-current
 ```
 
@@ -70,7 +70,7 @@ setup/debian-testumgebung
 Wenn das Projekt bereits geklont ist, keinen zweiten Ordner mit demselben Namen anlegen. Stattdessen im vorhandenen Checkout:
 
 ```bash
-cd "$HOME/Developer/LokZeitleiste"
+cd "$HOME/Developer/RailSoftware"
 git switch setup/debian-testumgebung
 git pull --ff-only origin setup/debian-testumgebung
 ```
@@ -109,7 +109,7 @@ curl -fL https://services.gradle.org/distributions/gradle-8.9-bin.zip \
   -o "$HOME/Downloads/gradle-8.9-bin.zip"
 unzip -q "$HOME/Downloads/gradle-8.9-bin.zip" -d "$HOME/Developer/tools"
 export PATH="$HOME/Developer/tools/gradle-8.9/bin:$PATH"
-cd "$HOME/Developer/LokZeitleiste"
+cd "$HOME/Developer/RailSoftware"
 gradle --version
 gradle wrapper --gradle-version 8.9
 chmod +x gradlew
@@ -178,7 +178,7 @@ Falls beide Passwörter gleich sind, denselben Wert in beide Passwortzeilen schr
 Keystore und Passwörter nicht committen. Die Konfiguration unter `~/.gradle` wird nicht mit dem Projekt hochgeladen. Vor dem ersten Tablet-Installieren den verwendeten Schlüssel prüfen:
 
 ```bash
-cd "$HOME/Developer/LokZeitleiste"
+cd "$HOME/Developer/RailSoftware"
 ./gradlew :app:signingReport
 ```
 
@@ -223,7 +223,7 @@ Keinen abschließenden Pfad wie `/tf` oder `/api/v1` anhängen. Bei einer abweic
 Im Android-Studio-Terminal oder im Mac-Terminal:
 
 ```bash
-cd "$HOME/Developer/LokZeitleiste"
+cd "$HOME/Developer/RailSoftware"
 ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug
 ```
 
@@ -235,7 +235,7 @@ Die APK liegt anschließend hier:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.11` / Versionscode `11`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `11` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
+Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.26.35` / Versionscode `61`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `61` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
 
 ```bash
 ./gradlew :app:assembleDebug -PlokzeitleisteVersionCode=100123
@@ -289,7 +289,7 @@ Für die dauerhafte Tabletinstallation wieder den HTTPS-Build verwenden.
 ### Weg B: Aus dem Terminal
 
 ```bash
-cd "$HOME/Developer/LokZeitleiste"
+cd "$HOME/Developer/RailSoftware"
 ./gradlew :app:assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 adb shell am start -n de.lokzeitleiste.app/.MainActivity
@@ -325,7 +325,7 @@ Die Action **Android TF Portal APK** baut und prüft Änderungen. Ohne eigenen h
 
 ### 12.1 Signierschlüssel als GitHub-Secrets hinterlegen
 
-1. Repository im Browser öffnen: https://github.com/omueller369/LokZeitleiste
+1. Repository im Browser öffnen: https://github.com/omueller369/RailSoftware
 2. **Settings → Secrets and variables → Actions → New repository secret**.
 3. Auf dem Mac den privaten Keystore Base64-kodiert in die Zwischenablage kopieren:
 
@@ -352,7 +352,7 @@ Der Workflow hat für das Veröffentlichen im eigenen Repository `contents: writ
 **Im aktuellen Arbeitsbranch zuverlässig per Push:** Nach dem Einrichten der vier Secrets auf dem Mac eine kleine Dokumentationsänderung im überwachten App-Verzeichnis pushen:
 
 ```bash
-cd "$HOME/Developer/LokZeitleiste"
+cd "$HOME/Developer/RailSoftware"
 git pull --ff-only origin setup/debian-testumgebung
 printf '\nTablet-Testbuild mit dauerhaftem Signierschluessel ausgeloest.\n' >> app/docs/TF-PORTAL.md
 git add app/docs/TF-PORTAL.md

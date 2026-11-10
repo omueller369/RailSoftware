@@ -1,6 +1,7 @@
 package de.lokzeitleiste.app.portal
 import java.net.URI
 object UpdatePolicy {
+    const val RELEASES_URL = "https://api.github.com/repos/omueller369/RailSoftware/releases?per_page=20"
     fun releaseVersion(tag:String):Int? {
         val match=Regex("android-test-([1-9][0-9]*)").matchEntire(tag)?:return null
         val number=match.groupValues[1].toLongOrNull()?:return null

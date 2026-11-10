@@ -79,7 +79,7 @@ class PortalUpdater(private val activity:ComponentActivity) {
         } } finally { connection.disconnect() }
     }
     private fun findAndDownload():File? {
-        val releases=JSONArray(json("https://api.github.com/repos/omueller369/LokZeitleiste/releases?per_page=20"))
+        val releases=JSONArray(json(UpdatePolicy.RELEASES_URL))
         var metadataUrl="";var apkUrl="";var latest=BuildConfig.VERSION_CODE
         for(i in 0 until releases.length()) {
             val release=releases.getJSONObject(i)
