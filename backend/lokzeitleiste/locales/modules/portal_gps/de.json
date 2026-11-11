@@ -111,5 +111,6 @@
   "text_c99fb71e54ab": "Zs",
   "text_9da13de7c459": "Standzeiten zusammenführen",
   "text_3c33cfa89c44": "Standzeit zum Zusammenführen auswählen",
-  "text_d8a2f19e4b61": "Ausgewählte Standzeiten zusammenführen? Ort und Grund bleiben aus der ersten Zeile erhalten. Die letzte Zeile bestimmt die Bis-Zeit. Nur die ausgewählten Zeilen werden zusammengefasst."
+  "text_d8a2f19e4b61": "Ausgewählte Standzeiten zusammenführen? Ort und Grund bleiben aus der ersten Zeile erhalten. Die letzte Zeile bestimmt die Bis-Zeit. Nur die ausgewählten Zeilen werden zusammengefasst.",
+  "text_863943169fc2": "Manueller Halt in GPS-Lücke (Position geschätzt)"
 }

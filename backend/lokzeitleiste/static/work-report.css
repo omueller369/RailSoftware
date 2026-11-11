@@ -214,3 +214,6 @@ html[data-theme="dark"] #reportSendCancel {
     list-style: none;
 }
 .report-table-legend li { display: inline-flex; gap: 5px; align-items: center; }
+
+.gps-gap-legend::before{content:"";display:inline-block;width:22px;height:6px;background:#f6b6d2;margin-right:6px;vertical-align:middle}
+.gps-manual-gap-legend::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:linear-gradient(90deg,#ffd600 50%,#d00000 50%);margin-right:6px;vertical-align:middle}

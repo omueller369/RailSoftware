@@ -14,6 +14,26 @@ const clock=ms=>berlinInput(ms).slice(11,16);
 const placeLabel=place=>place?[place.code,place.name].filter(Boolean).join(' · '):'';
 const durationLabel=ms=>[Math.floor(ms/3600000),Math.floor(ms/60000)%60].map(n=>String(n).padStart(2,'0')).join(':');
 const projectPoint=p=>{const lat=Math.max(-85,Math.min(85,p.lat))*Math.PI/180;return{x:(p.lon+180)/360,y:(1-Math.log(Math.tan(lat)+1/Math.cos(lat))/Math.PI)/2};};
+// Display-only bridges: never insert estimated fixes into the stored recording.
+function gapLocation(points,row,open=false){
+ let last=null,interrupted=false;
+ const overlap=(a,b)=>row.start<b.t&&(row.end??Date.now())>a.t;
+ for(const point of points){
+  if(point.accuracy>50){interrupted=true;continue;}
+  if(last&&(interrupted||point.t-last.t>30000)&&overlap(last,point)){
+   const a=projectPoint(last),b=projectPoint(point),fraction=Math.max(0,Math.min(1,(row.start-last.t)/(point.t-last.t)));
+   return {x:a.x+(b.x-a.x)*fraction,y:a.y+(b.y-a.y)*fraction};
+  }
+  last=point;interrupted=false;
+ }
+ if(open&&last&&(interrupted||Date.now()-last.t>30000)&&overlap(last,{t:Date.now()}))return projectPoint(last);
+ return null;
+}
+function intervalDuration(intervals){
+ let total=0,end=-Infinity;
+ for(const [start,finish] of intervals.sort((a,b)=>a[0]-b[0])){if(finish>start){total+=Math.max(0,finish-Math.max(start,end));end=Math.max(end,finish);}}
+ return total;
+}
 function stopEnd(row,value,previous){
  if(!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value))return null;
  const anchor=previous||row.end||row.observed_end||row.start;let day=berlinInput(anchor).slice(0,10),result=berlinTime(day+'T'+value);
@@ -61,7 +81,7 @@ function liveStops(points,ended=false,edits={},legacy=false,version2=false,versi
  const confirmed=legacy||previousRule||version4?null:new Set(confirmedMotion(points,false));
  const finish=closed=>{const duration=run.length>1?run.at(-1).t-run[0].t:0;if(legacy?duration>300000:previousRule?duration>=240000:duration>120000)rows.push({key:'live-'+run[0].t,kind:globalThis.CtlText.source("portal_gps.text_0fd998791d67"),start:run[0].t,end:closed?run.at(-1).t:null,observed_end:run.at(-1).t,lat:run[0].lat,lon:run[0].lon});run=[];};
  for(const p of points){
-  if(totals&&previousState&&p.accuracy<=50&&p.t>last.t&&p.t-last.t<=30000)totals[previousState]+=p.t-last.t;
+  if(totals&&previousState&&p.accuracy<=50&&p.t>last.t&&p.t-last.t<=30000){totals[previousState]+=p.t-last.t;if(previousState==='stopped')totals.intervals?.push([last.t,p.t]);}
   if(last&&p.t-last.t>30000)finish(ended);
   if(p.accuracy>50){finish(ended);last=p;previousState=null;display?.push(p);continue;}
   // Existing edited/imported stops retain their identity after an update.
@@ -148,7 +168,17 @@ class Recorder{
  forDay(record){const {start,end}=this.dutyDays(),inside=ms=>{const day=berlinDate(ms);return !!start&&day>=start&&day<=end;};return !!record&&(record.points?.some(p=>inside(p.t))||record.manual_stops?.some(row=>inside(row.start)));}
  serverForDay(){return this.forDay(this.serverRecord);}
  async read(){try{const saved=await local(this.key);if(saved){this.record=saved;this.analysis=saved.analysis||null;this.say(saved.manual_stops?.some(row=>!row.end)?globalThis.CtlText.source("portal_gps.text_9e4ff21163f0"):saved.ended?globalThis.CtlText.source("portal_gps.text_ed23cbcf3cb4"):globalThis.CtlText.source("portal_gps.text_3f4e4b5c92b7"));}if(navigator.onLine){const remote=await api(this.path);this.serverRecord=remote;if(this.past()){this.record=this.forDay(saved)?saved:this.serverForDay()?remote:null;this.analysis=this.record?.analysis||null;}else if(remote&&(!saved||(!saved.dirty&&remote.revision>=(saved.revision||0)))){this.record={...remote,dirty:false,reason_drafts:saved?.reason_drafts||{},station_drafts:saved?.station_drafts||{},selection:saved?.selection??remote.selection??[]};this.analysis=remote.analysis;await local(this.key,this.record);}}}catch(error){this.fail(error.message);}if(window.AndroidPortal&&!this.past()){try{await this.nativeRead();}catch(error){this.fail(error.message);}}this.draw();}
- freeze(){for(const row of this.liveInputs||[]){const disabled=this.loading||this.o.readonly();for(const field of [row.station,row.reason,row.end,row.take,row.remove,row.check])field.disabled=disabled;}this.updateMergeButton();this.importButton.hidden=true;this.resolveButton.hidden=this.choiceButton.hidden=true;this.importButton.disabled=this.loading||this.o.readonly()||this.past()||!this.record?.selection?.length;this.updateManual();const running=active===this,hasGps=!!this.record?.points?.length,has=hasGps||!!this.record?.manual_stops?.length,number=this.o.trainNumber().trim();this.box.hidden=!number&&!has;if(this.o.numberField)this.o.numberField.readOnly=running||!!this.manualRunning();this.startButton.hidden=running;this.manualButton.hidden=this.past()&&!this.manualRunning();this.manualButton.disabled=this.loading||this.o.readonly()||(!this.manualRunning()&&(!!active||!!manualActive||(hasGps&&!this.record.ended)))||!/^[A-Za-z0-9]{1,12}$/.test(number);this.startButton.disabled=this.loading||this.o.readonly()||!!active||!!manualActive||!/^[A-Za-z0-9]{1,12}$/.test(number);this.startButton.textContent=t(has&&!this.record.ended?globalThis.CtlText.source("portal_gps.text_f424ce8fdf10"):globalThis.CtlText.source("portal_gps.text_0a08578cb4ee"));this.stopButton.hidden=!(running||(hasGps&&!this.record.ended));this.stopButton.disabled=this.loading;for(const button of [this.syncButton,this.exportButton,this.deleteButton]){button.hidden=!has;button.disabled=this.loading||running||!!this.manualRunning();}this.exportButton.hidden=!hasGps;this.loadButton.disabled=this.loading||running||!!this.manualRunning();this.resolveButton.hidden=this.choiceButton.hidden=true;this.resolveButton.disabled=this.choiceButton.disabled=this.loading||running;if(this.past()){this.box.hidden=!this.recordForDay();for(const button of [this.startButton,this.stopButton,this.syncButton,this.exportButton,this.deleteButton,this.resolveButton,this.choiceButton,this.importButton])button.hidden=true;this.loadButton.hidden=false;this.hint.hidden=true;for(const {input,reason,detail,check} of this.stationInputs)input.disabled=reason.disabled=detail.disabled=check.disabled=true;}else{this.loadButton.hidden=false;this.hint.hidden=false;}}
+ freeze(){for(const row of this.liveInputs||[]){const disabled=this.loading||this.o.readonly();for(const field of [row.station,row.reason,row.end,row.take,row.remove,row.check])field.disabled=disabled;}this.updateMergeButton();this.importButton.hidden=true;this.resolveButton.hidden=this.choiceButton.hidden=true;this.importButton.disabled=this.loading||this.o.readonly()||this.past()||!this.record?.selection?.length;this.updateManual();const running=active===this,hasGps=!!this.record?.points?.length,has=hasGps||!!this.record?.manual_stops?.length,number=this.o.trainNumber().trim();this.box.hidden=!number&&!has;if(this.o.numberField)this.o.numberField.readOnly=running||!!this.manualRunning();this.startButton.hidden=running;this.manualButton.hidden=this.past()&&!this.manualRunning();this.manualButton.disabled=this.loading||this.o.readonly()||(!this.manualRunning()&&!this.canStartManual())||!/^[A-Za-z0-9]{1,12}$/.test(number);this.startButton.disabled=this.loading||this.o.readonly()||!!active||!!manualActive||!/^[A-Za-z0-9]{1,12}$/.test(number);this.startButton.textContent=t(has&&!this.record.ended?globalThis.CtlText.source("portal_gps.text_f424ce8fdf10"):globalThis.CtlText.source("portal_gps.text_0a08578cb4ee"));this.stopButton.hidden=!(running||(hasGps&&!this.record.ended));this.stopButton.disabled=this.loading;for(const button of [this.syncButton,this.exportButton,this.deleteButton]){button.hidden=!has;button.disabled=this.loading||running||!!this.manualRunning();}this.exportButton.hidden=!hasGps;this.loadButton.disabled=this.loading||running||!!this.manualRunning();this.resolveButton.hidden=this.choiceButton.hidden=true;this.resolveButton.disabled=this.choiceButton.disabled=this.loading||running;if(this.past()){this.box.hidden=!this.recordForDay();for(const button of [this.startButton,this.stopButton,this.syncButton,this.exportButton,this.deleteButton,this.resolveButton,this.choiceButton,this.importButton])button.hidden=true;this.loadButton.hidden=false;this.hint.hidden=true;for(const {input,reason,detail,check} of this.stationInputs)input.disabled=reason.disabled=detail.disabled=check.disabled=true;}else{this.loadButton.hidden=false;this.hint.hidden=false;}}
+ canStartManual(){
+ if((active&&active!==this)||(manualActive&&manualActive!==this))return false;
+ if(!this.record?.points?.length||this.record.ended)return true;
+ const last=this.record.points.at(-1);return last.accuracy>50||Date.now()-last.t>30000;
+ }
+ mapStops(display){
+ if(!display){display=[];liveStops(this.record?.points||[],!!this.record?.ended,{},false,false,false,false,display);}
+ const rows=this.rows(),running=this.manualRunning();if(running)rows.push({...running,manual:true,source_keys:[running.key]});
+ return rows.map(row=>row.manual?{...row,end:this.record.stop_edits?.[row.key]?.end??row.end}:row).filter(row=>!this.removed(row)).map(row=>({...row,mapPoint:row.manual?gapLocation(display,row,!this.record.ended):projectPoint(row)})).filter(row=>row.mapPoint);
+ }
  manualRunning(){return this.record?.manual_stops?.find(row=>!row.end);}
  rows(){if(!this.record)return [];const edits=this.record.stop_edits||{};return [...liveStops(this.record.points||[],!!this.record.ended),...(this.record.manual_stops||[]).filter(row=>row.end).map(row=>({...row,kind:globalThis.CtlText.source("portal_gps.text_0fd998791d67"),manual:true}))].map(row=>{const keys=row.manual?[row.key]:[row.key,...Object.keys(edits).filter(key=>key.startsWith('live-')&&Number(key.slice(5))>=row.start&&Number(key.slice(5))<=(row.end||row.observed_end)),...(this.o.importedKeys?.()||[]).filter(key=>key.startsWith('live-')&&Number(key.slice(5))>=row.start&&Number(key.slice(5))<=(row.end||row.observed_end))];return {...row,source_keys:[...new Set(keys)]};}).sort((a,b)=>a.start-b.start||String(a.key).localeCompare(String(b.key)));}
  removed(row){return row.source_keys.some(key=>this.record.stop_edits?.[key]?.deleted);}
@@ -198,11 +228,11 @@ class Recorder{
   this.o.changed?.();
  }
  imported(row){return row.source_keys.some(key=>this.record.stop_edits?.[key]?.imported||this.o.hasImported?.(key));}
- updateManual(){const row=this.manualRunning();this.manualButton.textContent=t(row?globalThis.CtlText.source("portal_gps.text_da1612a26c8c"):globalThis.CtlText.source("portal_gps.text_ea7a852a9397"));this.manualButton.setAttribute('aria-pressed',String(!!row));this.manualDuration.hidden=!row;if(row)this.manualDuration.textContent=new Intl.NumberFormat(window.I18n?.locale||'de-DE',{minimumFractionDigits:1,maximumFractionDigits:1}).format(Math.max(0,Date.now()-row.start)/60000)+globalThis.CtlText.source("portal_gps.text_2e75737a6b58");if(row&&!this.manualTimer){manualActive=this;this.manualTimer=setInterval(()=>this.updateManual(),1000);}if(!row)this.clearManual();}
+ updateManual(){const row=this.manualRunning();this.manualButton.textContent=t(row?globalThis.CtlText.source("portal_gps.text_da1612a26c8c"):globalThis.CtlText.source("portal_gps.text_ea7a852a9397"));this.manualButton.setAttribute('aria-pressed',String(!!row));this.manualDuration.hidden=!row;if(row)this.manualDuration.textContent=new Intl.NumberFormat(window.I18n?.locale||'de-DE',{minimumFractionDigits:1,maximumFractionDigits:1}).format(Math.max(0,Date.now()-row.start)/60000)+globalThis.CtlText.source("portal_gps.text_2e75737a6b58");if(row&&!this.manualTimer){manualActive=this;this.manualTimer=setInterval(()=>{this.updateManual();this.drawMap();},1000);}if(!row)this.clearManual();}
  clearManual(){clearInterval(this.manualTimer);this.manualTimer=null;if(manualActive===this)manualActive=null;}
  async toggleManual(){
  if(this.o.readonly())return;
- const running=this.manualRunning();if(this.past()&&!running)return;if(!running&&(active||manualActive||this.record?.points?.length&&!this.record.ended))throw Error(t(globalThis.CtlText.source("portal_gps.text_13b0c930ce1a")));
+ const running=this.manualRunning();if(this.past()&&!running)return;if(!running&&!this.canStartManual())throw Error(t(globalThis.CtlText.source("portal_gps.text_13b0c930ce1a")));
  const number=this.o.trainNumber().trim();if(!/^[A-Za-z0-9]{1,12}$/.test(number))throw Error(t(globalThis.CtlText.source("portal_gps.text_b9009a6c1629")));
  const prior=this.record?JSON.parse(JSON.stringify(this.record)):null,now=Date.now();
  if(running){if(now<=running.start)throw Error(t(globalThis.CtlText.source("portal_gps.text_5241a073e0be")));running.end=now;}
@@ -220,7 +250,7 @@ class Recorder{
  try{await this.persist();}catch(error){this.clear();this.fail(globalThis.CtlText.source("portal_gps.text_be16e184bac2"));this.freeze();return;}
  this.lastError=null;this.say(t(globalThis.CtlText.source("portal_gps.text_e11d7606e7e0"))+' '+this.record.points.length+' · '+Math.round(c.accuracy)+' m');this.draw();
  }
- async sample(){if(this.pending||active!==this)return;this.pending=true;try{await this.add(await this.fix());}catch(error){if(active===this){this.fail(globalThis.CtlText.source("portal_gps.text_754c85b57a48"));if(error.code===1){this.clear();this.freeze();}}}finally{this.pending=false;}}
+ async sample(){if(this.pending||active!==this)return;this.pending=true;try{await this.add(await this.fix());}catch(error){if(active===this){this.fail(globalThis.CtlText.source("portal_gps.text_754c85b57a48"));if(error.code===1){this.clear();this.freeze();}}}finally{this.pending=false;this.freeze();this.drawMap();}}
  async nativeRead(){let running=false;for(;;){const previous=this.record?.points?.at(-1)?.t||0,result=await window.AndroidPortal.gps('snapshot',{key:this.key,after:previous});running=result.running;if(result.points.length){if(!this.record)this.record={train_number:this.o.trainNumber().trim(),points:[],ended:false,revision:0,dirty:true};for(const point of result.points)if(point.t>(this.record.points.at(-1)?.t||0))this.record.points.push(point);this.record.dirty=true;await this.persist();}if(result.points.length<1000)break;}if(active!==this&&this.record?.points?.length&&!this.record.ended)window.openActiveGpsReport?.(this.o.journeyId);if(running&&!active){window.openActiveGpsReport?.(this.o.journeyId);active=this;this.record.ended=false;this.nativeTimer=setInterval(()=>this.nativeRead().catch(error=>this.fail(error.message)),5000);}if(this.applyDeparture())await this.persist();if(active===this&&!running){clearInterval(this.nativeTimer);active=null;this.say(globalThis.CtlText.source("portal_gps.text_989a5a596446"));}this.draw();this.freeze();}
  async nativeStart(){const prior=this.record,reset=!this.record||this.record.ended;if(reset)this.record={train_number:this.o.trainNumber().trim(),departure_applied:false,points:[],manual_stops:this.record?.manual_stops||[],stop_edits:Object.fromEntries(Object.entries(this.record?.stop_edits||{}).filter(([key])=>key.startsWith('manual-'))),detection_version:5,ended:false,revision:this.record?.revision||0,dirty:true};try{await window.AndroidPortal.gps('start',{key:this.key,reset});}catch(error){this.record=prior;throw error;}active=this;this.record.ended=false;this.setEndpoint('start',this.startChoice);this.setEndpoint('end',this.endChoice);this.analysis=null;this.record.analysis=null;this.record.reasons={};this.record.reason_drafts={};await this.persist();this.nativeTimer=setInterval(()=>this.nativeRead().catch(error=>this.fail(error.message)),5000);await this.nativeRead();this.freeze();this.o.changed?.();}
  async help(){try{const reader=window.TfHelp||await window.loadTfHelp?.();if(!reader)throw Error(globalThis.CtlText.source("portal_gps.text_423e45b97d3e"));reader.open('gps');}catch(error){this.fail(error.message);}}
@@ -327,8 +357,8 @@ class Recorder{
  this.mapState={mode:'free',zoom,center:{x:Math.max(0,Math.min(1,center.x)),y:Math.max(0,Math.min(1,center.y))}};this.drawMap();});
  for(const type of ['pointerup','pointercancel','lostpointercapture'])this.map.addEventListener(type,e=>{this.mapPointers.delete(e.pointerId);begin();});
  }
- setFocusedStop(key,center=false){const row=this.rows().find(row=>row.source_keys.includes(key));key=row?.key||key;const same=this.focusedStopKey===key;if(same&&!center&&!this.content.hidden)return;this.focusedStopKey=key;
- if(row&&!row.manual&&!this.removed(row)){const wasHidden=this.content.hidden;if(wasHidden){this.content.hidden=false;this.updateCollapse();}const target=projectPoint(row);if(!wasHidden&&same&&this.mapState?.mode==='free'&&this.mapView?.zoom===12&&this.mapView.center.x===target.x&&this.mapView.center.y===target.y)return;this.mapState={mode:'free',zoom:12,center:projectPoint(row)};this.drawMap();return;}
+ setFocusedStop(key,center=false){const row=this.mapStops().find(row=>row.source_keys.includes(key));key=row?.key||key;const same=this.focusedStopKey===key;if(same&&!center&&!this.content.hidden)return;this.focusedStopKey=key;
+ if(row&&!this.removed(row)){const wasHidden=this.content.hidden;if(wasHidden){this.content.hidden=false;this.updateCollapse();}const target=row.mapPoint;if(!wasHidden&&same&&this.mapState?.mode==='free'&&this.mapView?.zoom===12&&this.mapView.center.x===target.x&&this.mapView.center.y===target.y)return;this.mapState={mode:'free',zoom:12,center:target};this.drawMap();return;}
  for(const marker of this.mapSvg?.children||[]){const stopKey=marker.getAttribute('data-gps-stop');if(!stopKey)continue;const selected=stopKey===key,position=marker.getAttribute('transform').replace(/ scale\([^)]*\)$/,'');marker.setAttribute('transform',position+globalThis.CtlText.source("portal_gps.text_7d14c715b37c")+(selected?2:1)+')');marker.setAttribute('aria-pressed',String(selected));}
  }
  focusStop(key){this.setFocusedStop(key,true);const input=this.liveInputs?.find(item=>item.row.key===key)?.station;if(input){input.scrollIntoView?.({behavior:'smooth',block:'center'});input.focus({preventScroll:true});input.setSelectionRange?.(input.value.length,input.value.length);}else {const row=this.rows().find(row=>row.source_keys.includes(key));this.o.focusImported?.(row?.source_keys.find(source=>this.o.hasImported?.(source))||key);}}
@@ -378,8 +408,8 @@ class Recorder{
   line.setAttribute('stroke-linecap','round');svg.append(line);
  }
  for(const [a,b] of bridges){
-  const bridge=make('line');
-  for(const [key,value] of Object.entries({x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:unknownTrail,'stroke-width':4,'stroke-dasharray':'6 4'}))bridge.setAttribute(key,value);
+  const bridge=make('line');bridge.setAttribute('data-gps-gap','true');
+  for(const [key,value] of Object.entries({x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#f6b6d2','stroke-width':6}))bridge.setAttribute(key,value);
   const title=make('title');title.textContent=t(globalThis.CtlText.source("portal_gps.text_8067c798e3d6"));
   bridge.append(title);svg.append(bridge);
  }
@@ -394,11 +424,15 @@ class Recorder{
   tick.setAttribute('style','left:'+speed/trailMaxSpeed*100+'%');scale.append(tick);
  }
  legend.append(scale);
+ const gap=node('span',t(globalThis.CtlText.source("portal_gps.text_8067c798e3d6")));gap.className='gps-gap-legend';
+ const manual=node('span',t(globalThis.CtlText.source("portal_gps.text_863943169fc2")));manual.className='gps-manual-gap-legend';legend.append(gap,manual);
  return legend;
  }
  mapZoom(delta){if(!this.mapView)return;const zoom=Math.max(2,Math.min(19,this.mapView.zoom+delta)),mode=this.mapState?.mode==='follow'?'follow':'free';this.mapState={mode,zoom,center:this.mapView.center};this.drawMap();}
  drawMap(){
- this.map.replaceChildren();this.map.append(this.mapTools);const display=[],totals={moving:0,stopped:0};liveStops(this.record?.points||[],!!this.record?.ended,{},false,false,false,false,display,totals);const departure=firstDeparture(this.record?.points||[]),arrival=this.record?.ended?(this.record.arrival_at??lastMovement(this.record.points||[])):this.record?.points?.at(-1)?.t;
+ this.map.replaceChildren();this.map.append(this.mapTools);const display=[],totals={moving:0,stopped:0,intervals:[]};liveStops(this.record?.points||[],!!this.record?.ended,{},false,false,false,false,display,totals);const departure=firstDeparture(this.record?.points||[]),arrival=this.record?.ended?(this.record.arrival_at??lastMovement(this.record.points||[])):(active===this?Date.now():this.record?.points?.at(-1)?.t);
+ for(const row of this.record?.manual_stops||[]){if(!this.record.stop_edits?.[row.key]?.deleted)totals.intervals.push([row.start,this.record.stop_edits?.[row.key]?.end??row.end??Date.now()]);}
+ totals.stopped=intervalDuration(totals.intervals);
  totals.elapsed=departure!=null&&arrival!=null?Math.max(0,arrival-departure):0;
  const points=display.filter(p=>p.accuracy<=50);if(!points.length){this.mapSvg=null;this.mapView=null;this.mapZoomLevel.hidden=true;this.mapZoomIn.disabled=this.mapZoomOut.disabled=true;return;}
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),make=tag=>document.createElementNS(ns,tag);this.mapSvg=svg;svg.setAttribute('viewBox','0 0 600 300');svg.setAttribute('role','group');svg.setAttribute('aria-label',t(globalThis.CtlText.source("portal_gps.text_f5976363df27")));
@@ -416,9 +450,9 @@ class Recorder{
  layer(window.GpsTileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png');if(this.railEnabled&&!this.railFailed)layer(window.GpsRailTileUrl||'https://tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png',true);}
  this.drawTrail(svg,make,display,p=>{const c=project(p);return {x:c.x*size-left,y:c.y*size-top};});
  const endpoints=[[0,'#008000']];if(this.record.ended)endpoints.push([coords.length-1,'#c40000']);
- for(const [i,color]of endpoints){const c=make('circle');c.setAttribute('cx',coords[i].x*size-left);c.setAttribute('cy',coords[i].y*size-top);c.setAttribute('r',5);c.setAttribute('fill',color);svg.append(c);}for(const row of this.rows().filter(row=>!row.manual&&!this.removed(row))){
- const p=project(row),marker=make('g');marker.setAttribute('data-gps-stop',row.key);marker.setAttribute('transform','translate('+(p.x*size-left)+' '+(p.y*size-top)+globalThis.CtlText.source("portal_gps.text_c436a7be64bc")+(this.focusedStopKey===row.key?2:1)+')');marker.setAttribute('aria-pressed',String(this.focusedStopKey===row.key));marker.setAttribute('role','button');marker.setAttribute('tabindex','0');marker.setAttribute('aria-label',t(globalThis.CtlText.source("portal_gps.text_1a86455fdc47"))+' · '+stamp(row.start));marker.setAttribute('style','cursor:pointer');
- const dot=make('circle');dot.setAttribute('r',8);dot.setAttribute('fill','#1565c0');dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width',2);const half=make('path');half.setAttribute('d','M 0 -7 A 7 7 0 0 1 0 7 Z');half.setAttribute('fill','#d00000');half.setAttribute('pointer-events','none');const title=make('title');title.textContent=t(globalThis.CtlText.source("portal_gps.text_1a86455fdc47"))+' · '+stamp(row.start);marker.append(dot,half,title);
+ for(const [i,color]of endpoints){const c=make('circle');c.setAttribute('cx',coords[i].x*size-left);c.setAttribute('cy',coords[i].y*size-top);c.setAttribute('r',5);c.setAttribute('fill',color);svg.append(c);}for(const row of this.mapStops(display)){
+ const p=row.mapPoint,marker=make('g');if(row.manual)marker.setAttribute('data-gps-manual-gap','true');marker.setAttribute('data-gps-stop',row.key);marker.setAttribute('transform','translate('+(p.x*size-left)+' '+(p.y*size-top)+globalThis.CtlText.source("portal_gps.text_c436a7be64bc")+(this.focusedStopKey===row.key?2:1)+')');marker.setAttribute('aria-pressed',String(this.focusedStopKey===row.key));marker.setAttribute('role','button');marker.setAttribute('tabindex','0');marker.setAttribute('aria-label',t(globalThis.CtlText.source(row.manual?"portal_gps.text_863943169fc2":"portal_gps.text_1a86455fdc47"))+' · '+stamp(row.start));marker.setAttribute('style','cursor:pointer');
+ const dot=make('circle');dot.setAttribute('r',8);dot.setAttribute('fill',row.manual?'#ffd600':'#1565c0');dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width',2);const half=make('path');half.setAttribute('d','M 0 -7 A 7 7 0 0 1 0 7 Z');half.setAttribute('fill','#d00000');half.setAttribute('pointer-events','none');const title=make('title');title.textContent=t(globalThis.CtlText.source(row.manual?"portal_gps.text_863943169fc2":"portal_gps.text_1a86455fdc47"))+' · '+stamp(row.start);marker.append(dot,half,title);
  marker.addEventListener('click',()=>this.focusStop(row.key));marker.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();this.focusStop(row.key);}});svg.append(marker);
  }
  if(!this.record.ended){const position=coords.at(-1);this.drawPositionMarker(svg,make,position.x*size-left,position.y*size-top,points.at(-1),totals);}

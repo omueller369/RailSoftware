@@ -13,6 +13,7 @@ class Element{
  getAttribute(key){return this.attributes[key];}
  getBoundingClientRect(){return {left:0,top:0,width:600,height:300};}
  click(){}
+ focus(){}
 }
 const tracks=new Map();
 const database={transaction(){const tx={};tx.objectStore=()=>({get(key){const request={result:tracks.get(key)};queueMicrotask(()=>tx.oncomplete());return request;},put(row){tracks.set(row.key,structuredClone(row));queueMicrotask(()=>tx.oncomplete());return {};},delete(key){tracks.delete(key);queueMicrotask(()=>tx.oncomplete());return {};}});return tx;}};
@@ -84,11 +85,25 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  const trails=r.mapSvg.children.filter(n=>'data-gps-trail' in n.attributes);
  assert.deepEqual(trails.map(n=>n.attributes.stroke),['rgb(0,119,70)','rgb(207,107,0)','rgb(199,65,20)','rgb(190,22,40)']);
  assert(trails.every(n=>n.attributes['stroke-width']===6));
- const gap=r.mapSvg.children.find(n=>n.attributes['stroke-dasharray']);
- assert.equal(gap.attributes.stroke,'#626b78');assert.equal(gap.attributes['stroke-width'],4);
+ const gap=r.mapSvg.children.find(n=>n.attributes['data-gps-gap']);
+ assert.equal(gap.attributes.stroke,'#f6b6d2');assert.equal(gap.attributes['stroke-width'],6);assert.equal(gap.attributes['stroke-dasharray'],undefined);
  const scale=r.trailLegend().children[1];assert.equal(scale.children.at(-1).textContent,'100+');
  // Signal gaps do not invent stops, and short stationary runs have no marker.
  r.record={ended:true,points:[{...point(52,13,1),speed:0},{...point(52,13,400001),speed:0}]};r.draw();assert.equal(markers().length,0);
+ // Manual gap stops persist as times; their map position is derived on the pink bridge.
+ const gapStart=1794358800000;
+ r.record={train_number:'123',ended:false,points:[{...point(52,13,gapStart),speed:0},{...point(52,14,gapStart+600000),speed:0}],manual_stops:[{key:'manual-'+(gapStart+120000),start:gapStart+120000,end:gapStart+180000}]};
+ const gapRaw=JSON.stringify(r.record.points);r.draw();
+ const manualMarker=()=>markers().find(m=>m.attributes['data-gps-manual-gap']);
+ assert.equal(markers().length,1);assert.equal(manualMarker().children[0].attributes.fill,'#ffd600');assert.equal(manualMarker().children[1].attributes.fill,'#d00000');
+ assert(Math.abs(r.mapStops()[0].mapPoint.x-(193.2/360))<1e-12);
+ assert.equal(labels()[3].textContent,'00:01');assert.equal(context.window.GpsRecorder.liveStops(r.record.points).length,0);
+ manualMarker().events.click();assert.equal(r.mapView.zoom,12);assert.equal(manualMarker().attributes.transform,'translate(300 150) scale(2)');
+ await r.sync();assert.equal(body.manual_stops[0].end,gapStart+180000);r.draw();assert(manualMarker());assert.equal(JSON.stringify(r.record.points),gapRaw);
+ // A time covered by both the returning GPS signal and a manual stop counts once.
+ r.record={train_number:'123',ended:false,points:Array.from({length:37},(_,i)=>({...point(52,13,gapStart+i*5000),speed:0})),manual_stops:[{key:'manual-'+(gapStart+60000),start:gapStart+60000,end:gapStart+120000}]};r.draw();assert.equal(labels()[3].textContent,'00:03');
+ // Poor-accuracy fixes also create a bridge and a manual gap marker.
+ r.record={train_number:'123',ended:true,points:[point(52,13,gapStart),{...point(52,13.5,gapStart+10000),accuracy:100},point(52,14,gapStart+20000)],manual_stops:[{key:'manual-'+(gapStart+5000),start:gapStart+5000,end:gapStart+15000}]};r.draw();assert(manualMarker());assert(r.mapSvg.children.some(n=>n.attributes['data-gps-gap']));
  for(const fixture of JSON.parse(fs.readFileSync('backend/tests/fixtures/gps-rail-stops.json','utf8'))){const actual=context.window.GpsRecorder.liveStops(fixture.points,true,fixture.edits).map(({start,end})=>({start,end}));assert.equal(JSON.stringify(actual),JSON.stringify(fixture.expected),fixture.name);}
  // A newly visible shorter stop must not inherit the old s0 location of a later stop.
  const oldTrack=JSON.parse(fs.readFileSync('backend/tests/fixtures/gps-rail-stops.json','utf8')).find(f=>f.name==='two different stops').points;

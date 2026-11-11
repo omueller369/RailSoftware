@@ -111,5 +111,6 @@
   "text_c99fb71e54ab": "Scal",
   "text_9da13de7c459": "Scal postoje",
   "text_3c33cfa89c44": "Wybierz postój do scalenia",
-  "text_d8a2f19e4b61": "Scalić wybrane postoje? Miejsce i przyczyna zostaną zachowane z pierwszego wiersza. Ostatni wiersz określa godzinę końcową. Scalone zostaną tylko zaznaczone wiersze."
+  "text_d8a2f19e4b61": "Scalić wybrane postoje? Miejsce i przyczyna zostaną zachowane z pierwszego wiersza. Ostatni wiersz określa godzinę końcową. Scalone zostaną tylko zaznaczone wiersze.",
+  "text_863943169fc2": "Ręczny postój w luce GPS (pozycja szacunkowa)"
 }

@@ -26,8 +26,18 @@ context.window.AndroidPortal={gps:async(method,values)=>{if(method==='start'){na
  nativePoints.push({t:1792627200000,lat:52,lon:13,accuracy:5,speed:0});await recorder.nativeRead();assert.equal(recorder.record.points.length,1);
  recorder.clear();assert(nativeRunning);for(let i=0;i<4;i++)nativePoints.push({t:1792627205000+i*5000,lat:52,lon:13+i*.0003,accuracy:5,speed:10/3.6});recorder=context.window.GpsRecorder.mount(options);await recorder.readyPromise;assert(context.window.GpsRecorder.isActive());assert.equal(recorder.record.points.length,5);assert.deepEqual(times,[{kind:'start',time:1792627205000}]);assert(opened.includes(options.journeyId));const before=opened.length;await recorder.nativeRead();assert.equal(opened.length,before);
  nativePoints.push({t:1792627230000,lat:52,lon:13.0009,accuracy:5,speed:0});
+ // Start/End Stand during an active native GPS gap, including signal recovery.
+ const realNow=Date.now;
+ try {
+  Date.now=()=>1792627270000;recorder.freeze();assert.equal(recorder.manualButton.disabled,false);
+  await recorder.toggleManual();assert(nativeRunning);assert(context.window.GpsRecorder.isActive());assert.equal(recorder.manualRunning().start,1792627270000);
+  nativePoints.at(-1).t=1792627275000;await recorder.nativeRead();
+  Date.now=()=>1792627280000;recorder.freeze();assert.equal(recorder.manualButton.disabled,false);
+  await recorder.toggleManual();assert.equal(recorder.manualRunning(),undefined);assert(nativeRunning);
+  assert.equal(recorder.record.manual_stops[0].end,1792627280000);recorder.freeze();assert.equal(recorder.manualButton.disabled,true);
+ } finally {Date.now=realNow;}
  const questions=[];context.confirm=message=>{questions.push(message);return true;};
- await recorder.stop();assert(!nativeRunning);assert(recorder.record.ended);assert.equal(body.points.length,6);
+ await recorder.stop();assert(!nativeRunning);assert(recorder.record.ended);assert.equal(body.points.length,6);assert.equal(body.manual_stops[0].end,1792627280000);
  assert.equal(questions.length,1);assert(questions[0].includes('Ziel'));assert.equal(body.arrival_at,1792627220000);assert.equal(body.departure_applied,true);assert.equal(times.length,2);assert.equal(times[1].kind,'end');assert.equal(body.arrival_at,times[1].time);const prior=recorder.record,adapter=context.window.AndroidPortal.gps;context.window.AndroidPortal.gps=async(method,values)=>{if(method==='start')throw Error('Permission denied');return adapter(method,values);};await assert.rejects(recorder.start());assert.strictEqual(recorder.record,prior);context.window.AndroidPortal.gps=adapter;await recorder.erase();assert.equal(nativePoints.length,0);
  console.log('Android GPS: native start, journal merge, WebView recovery, stop/sync and erase passed.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

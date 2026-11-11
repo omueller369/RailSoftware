@@ -1,4 +1,7 @@
-# LokZeitleiste v0.26.40
+# LokZeitleiste v0.26.41
+
+**0.26.41:** GPS-Lücken erscheinen als direkte hellrosa Verbindung zwischen den genauen Punkten vor und nach dem Ausfall. Die Lückenzeit wird nicht automatisch als Standzeit gewertet. Während einer Lücke kannst Du mit Start Stand / Ende Stand einen manuellen Halt erfassen; er erscheint gelb-rot mit geschätzter Position auf der Verbindung. Vor der Signalrückkehr wird die letzte bekannte Position verwendet. GPS-Rohpunkte bleiben unverändert. Gemessene und manuelle Standzeiten werden in der roten Summe ohne doppelte Zeitanteile addiert. Server und Tablet-App aktualisieren.
+
 
 **0.26.40:** Die Zugfahrtdetails verwenden zwei gleich breite Bereiche: Art, Grund und Meldestelle/Ort links; Von, Bis und Eintragen rechts. Auf schmalen Bildschirmen stehen die Bereiche untereinander.
 

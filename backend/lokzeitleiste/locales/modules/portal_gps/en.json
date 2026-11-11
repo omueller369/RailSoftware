@@ -111,5 +111,6 @@
   "text_c99fb71e54ab": "Merge",
   "text_9da13de7c459": "Merge stops",
   "text_3c33cfa89c44": "Select stop to merge",
-  "text_d8a2f19e4b61": "Merge the selected stops? The first row supplies the location and reason. The last row supplies the end time. Only selected rows are merged."
+  "text_d8a2f19e4b61": "Merge the selected stops? The first row supplies the location and reason. The last row supplies the end time. Only selected rows are merged.",
+  "text_863943169fc2": "Manual stop in GPS gap (estimated position)"
 }
