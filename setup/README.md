@@ -2,15 +2,15 @@
 
 Die Routine installiert die vollständige **Backend-Testumgebung**: Apache und SSH-Zugang auf Ubuntu, Git, Docker Engine und Compose, Python-API samt Python-Abhängigkeiten, MySQL 8.4, PDF-Versandworker und Mailpit-Testpostfach. Ein aktueller Android-Build gehört nicht zur Serverinstallation; die bestehende App wird anschließend über den Emulator angeschlossen.
 
-Vorgesehen ist **Ubuntu Server 26.04.1 LTS (Resolute)** mit systemd auf amd64/arm64. Ubuntu meldet Point-Releases in `/etc/os-release` üblicherweise als `VERSION_ID=26.04`; beide Schreibweisen werden erkannt. Für bestehende Installationen bleiben Debian 12/13 unterstützt. Empfohlen: 2 CPU, 4 GB RAM und 20 GB freier Speicher. Internet ist für APT, Docker-Images und Python-Pakete erforderlich. Das private Repository muss bereits mit berechtigtem GitHub-Zugang auf die VM kopiert oder geklont sein. Auf einer frischen Ubuntu-VM kann `sudo apt install git` dafür erforderlich sein.
+Vorgesehen ist **Ubuntu Server 26.04.1 LTS (Resolute)** mit systemd auf amd64/arm64. Ubuntu meldet Point-Releases in `/etc/os-release` üblicherweise als `VERSION_ID=26.04`; beide Schreibweisen werden erkannt. Für bestehende Installationen bleiben Debian 12/13 unterstützt. Empfohlen: 2 CPU, 4 GB RAM und 20 GB freier Speicher. Internet ist für APT, Docker-Images und Python-Pakete erforderlich. Das Repository muss bereits auf die VM kopiert oder geklont sein. Auf einer frischen Ubuntu-VM kann `sudo apt install git` dafür erforderlich sein.
 
 ## Start
 
 Der Setup-Stand liegt im Branch `setup/debian-testumgebung`:
 
 ```bash
-git clone --branch setup/debian-testumgebung git@github.com:omueller369/LokZeitleiste.git
-cd LokZeitleiste
+git clone --branch setup/debian-testumgebung git@github.com:omueller369/RailSoftware.git
+cd RailSoftware
 bash setup.sh --check
 sudo bash setup.sh
 ```

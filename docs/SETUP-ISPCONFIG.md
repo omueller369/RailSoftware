@@ -27,8 +27,8 @@ Der Datenbankhost `127.0.0.1` verwendet TCP. Der in ISPConfig angelegte Benutzer
 
 ```bash
 git clone --branch setup/debian-testumgebung --single-branch \
-  https://github.com/omueller369/LokZeitleiste.git
-cd LokZeitleiste
+  https://github.com/omueller369/RailSoftware.git
+cd RailSoftware
 sudo bash setup-ispconfig.sh --check --webserver apache
 ```
 

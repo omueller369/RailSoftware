@@ -25,7 +25,7 @@ sudo apt install -y git openssh-server
 sudo systemctl enable --now ssh
 sudo timedatectl set-timezone Europe/Berlin
 sudo install -d -o "$USER" -g "$(id -gn)" /opt/LokZeitleiste
-git clone --branch setup/debian-testumgebung --single-branch https://github.com/omueller369/LokZeitleiste.git /opt/LokZeitleiste
+git clone --branch setup/debian-testumgebung --single-branch https://github.com/omueller369/RailSoftware.git /opt/LokZeitleiste
 cd /opt/LokZeitleiste
 bash setup-new.sh --check
 sudo bash setup-new.sh

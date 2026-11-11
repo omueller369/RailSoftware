@@ -52,13 +52,14 @@ Der gemeinsame Katalog liegt in `backend/lokzeitleiste/static/tf-help-content.js
 Für den eigenständigen, mit `install-ctlsoftware-test.sh` eingerichteten Testserver:
 
 ```bash
-curl -fL https://raw.githubusercontent.com/omueller369/LokZeitleiste/setup/debian-testumgebung/install-ctlsoftware-test.sh -o install-ctlsoftware-test.sh
-sudo bash install-ctlsoftware-test.sh --update
+cd /opt/ctlsoftware-test-source &&
+git pull --ff-only origin setup/debian-testumgebung &&
+sudo bash install-ctlsoftware-test.sh --update --source /opt/ctlsoftware-test-source
 ```
 
 Die Update-Routine aktualisiert den normalen Testbranch und sichert zuvor Datenbank, Konfiguration und bisherigen Backend-Code unter `/etc/ctlsoftware-test-setup/backups/`. Dies gilt auch, wenn die Anwendung zuletzt aus dem festen RC1-Quellpaket installiert wurde, sofern der ursprüngliche Testserver-Checkout noch vorhanden ist. Für diesen Wechsel nicht den alten RC1-Pfad mit `--source` angeben.
 
-Danach Portal neu laden; die Softwareinformation zeigt `0.26`. Docker/ISPConfig verwenden ihre jeweils eigene Update-Anleitung. Eine vorhandene APK enthält gegebenenfalls zusätzlich eine gebündelte Offline-Oberfläche; für deren Stand 0.26 die neu gebaute Tablet-Test-APK mit demselben Signierschlüssel verwenden.
+Danach Portal neu laden; die Softwareinformation zeigt den aktuellen Patchstand. Docker/ISPConfig verwenden ihre jeweils eigene Update-Anleitung. Eine vorhandene APK enthält gegebenenfalls zusätzlich eine gebündelte Offline-Oberfläche; für deren Stand 0.26 die neu gebaute Tablet-Test-APK mit demselben Signierschlüssel verwenden.
 
 
 ### Persönliche TF-Notizen und Du-Anrede

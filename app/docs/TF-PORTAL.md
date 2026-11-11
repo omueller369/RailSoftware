@@ -1,8 +1,8 @@
-# Android 0.11 – aktuelles TF-Portal
+# Android 0.26.38 – aktuelles TF-Portal
 
 Die App öffnet nach der nativen Anmeldung das vollständige TF-Portal. Die gemeinsamen HTML-/CSS-/JavaScript-Dateien werden beim Android-Build aus `backend/lokzeitleiste/static` in die APK übernommen. Geschäftsregeln, Tabellen, Eingaben und Berechtigungen entsprechen damit dem Portalstand dieses Builds. Neue Portalversionen erfordern einen neuen APK-Build. Der Server muss mindestens zum selben Projektstand aktualisiert sein.
 
-Enthalten sind Arbeitsberichte mit Dienstarten, Pausen, Ausbleibe, Gastfahrten und optionalen Selbstzahlerbelegen; Zugfahrten und Ereignisse mit dynamischen Grundwerten; Monatslisten und Synchronisation; GPS mit Standzeiten, ZMS-Vorschlägen und Gründen; Arbeitsplan; Dokumentenverwaltung mit Upload/Download; Bahnhofsverzeichnis einschließlich Kontaktdaten, Plänen, Teilen und Zwischenablage; Konto, Passwortwechsel und die fünf vorhandenen Sprachen. Das Lokübergabebuch zeigt die gemeinsame Fahrzeugliste und Fahrzeugdetails mit Status und Einschränkungen an. Übergabeprotokolle können fahrzeugbezogen mit Anhängen erfasst und von allen TF gelesen werden. PZB und Störungen sind noch Platzhalter; ebenso das Leuna-Übergabeprotokoll.
+Enthalten sind Arbeitsberichte mit Dienstarten, Pausen, Ausbleibe, Gastfahrten und optionalen Selbstzahlerbelegen; Zugfahrten und Ereignisse mit dynamischen Grundwerten; Monatslisten und Synchronisation; GPS mit Standzeiten, ZMS-Vorschlägen und Gründen; Arbeitsplan; Dokumentenverwaltung mit Upload/Download; Bahnhofsverzeichnis einschließlich Kontaktdaten, Plänen, Teilen und Zwischenablage; Konto, Passwortwechsel und Deutsch, Polnisch und Englisch. Das Lokübergabebuch zeigt die gemeinsame Fahrzeugliste und Fahrzeugdetails mit Status und Einschränkungen an. Übergabeprotokolle können fahrzeugbezogen mit Anhängen erfasst und von allen TF gelesen werden. PZB und Störungen sind noch Platzhalter; ebenso das Leuna-Übergabeprotokoll.
 
 ## Vorhandene Daten
 
@@ -24,7 +24,7 @@ Standortpunkte werden zusätzlich im privaten App-Verzeichnis protokolliert und 
 
 ## Dateien und Anmeldung
 
-Uploads verwenden die Android-Dokumentenauswahl; die vorhandenen 10-MB-Grenzen werden weiter geprüft. Downloads werden nur vom konfigurierten Server mit der eigenen Sitzung abgerufen und am gewählten Ort gespeichert. GPX-Dateien werden in kleinen Blöcken an die native Dateiauswahl übergeben. Fremde Webseiten öffnen außerhalb der Portal-WebView. TLS-Fehler werden nicht übergangen. Die native Bridge ist auf den exakten Serverursprung und das Hauptfenster beschränkt.
+Uploads verwenden die Android-Dokumentenauswahl; die vorhandenen 10-MB-Grenzen werden weiter geprüft. Downloads werden nur vom konfigurierten Server mit der eigenen Sitzung abgerufen und am gewählten Ort gespeichert. PDFs behalten Dateiname, UTF-8-Zeichen, `.pdf` und `application/pdf`. Im System-Speicherdialog Zielordner wählen und Speichern bestätigen; Abbrechen beendet den Vorgang ohne Download. Nach dem Speichern öffnet Ansehen eine passende Dokumenten-App. GPX-Dateien werden in kleinen Blöcken an die native Dateiauswahl übergeben. Fremde Webseiten öffnen außerhalb der Portal-WebView. TLS-Fehler werden nicht übergangen. Die native Bridge ist auf den exakten Serverursprung und das Hauptfenster beschränkt.
 
 ## APK bauen und installieren
 
@@ -38,9 +38,13 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Bei einer APK mit anderer bisheriger Signatur kann Android kein direktes Update installieren. Vor einer Deinstallation unübertragene lokale Daten sichern/synchronisieren. Keine Deinstallation ohne Datensicherung empfehlen.
 
-Die GitHub Action **Android TF Portal APK** führt Tests, Build und Lint aus und stellt bei Erfolg das Artefakt **LokZeitleiste-TF-Portal-debug** bereit. Die Debug-APK dient Tests/Demonstrationen. Für eine spätere Veröffentlichung separat mit eigenem dauerhaftem Signierschlüssel signieren.
+Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 64 liegt unter dem bestätigten Tabletstand 100004.
 
-Der externe Server benötigt für App/GPS eine gültige HTTPS-Konfiguration. Falls er weiterhin nur HTTP anbietet, zuerst die vorhandene Routine `sudo bash setup-https.sh` gemäß Serveranleitung ausführen; keine Anmeldedaten über öffentliches HTTP verwenden. Die Domain muss vom Android-Gerät erreichbar sein. Zum lokalen Emulator-Test:
+Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Update** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
+
+Der bestehende HTTPS-Server wird gemäß [Standalone-Anleitung](../../docs/INSTALL-CTLSOFTWARE-TEST.md#bestehenden-server-aktualisieren) aktualisiert.
+
+Zum lokalen Emulator-Test:
 
 ```bash
 gradle :app:assembleDebug -PlokzeitleisteApiBaseUrl=http://10.0.2.2:8080

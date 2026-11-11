@@ -14,7 +14,7 @@ Nur die eine Datei herunterladen:
 
 ```bash
 curl --fail --location \
-  https://raw.githubusercontent.com/omueller369/LokZeitleiste/setup/debian-testumgebung/install-ctl-software.sh \
+  https://raw.githubusercontent.com/omueller369/RailSoftware/setup/debian-testumgebung/install-ctl-software.sh \
   --output install-ctl-software.sh
 sudo bash install-ctl-software.sh
 ```

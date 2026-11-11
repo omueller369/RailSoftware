@@ -2,14 +2,29 @@
 
 Die vollständige Neuinstallation für Ubuntu 26.04 bleibt `install-ctlsoftware-test.sh`. Für den bereits eingerichteten eigenständigen CTL-Testserver unterstützt die Datei jetzt zusätzlich `--update`.
 
-## Bestehenden Testserver aktualisieren
+## Bestehenden Server aktualisieren
+
+Der bestehende Server unter https://ctl-software.io-goerlitz.eu verwendet Apache und MariaDB ohne Docker. Quellcode: `/opt/ctlsoftware-test-source`; laufendes Backend: `/opt/ctlsoftware-test/backend`; Konfiguration: `/etc/ctlsoftware-test/app.env`. Lokale Änderungen vor dem Update mit `git status --short` prüfen und erhalten. Bei einem Fast-Forward-Konflikt anhalten und die Änderungen klären; keinen erzwungenen Reset verwenden.
 
 ```bash
-curl -fL https://raw.githubusercontent.com/omueller369/LokZeitleiste/setup/debian-testumgebung/install-ctlsoftware-test.sh -o install-ctlsoftware-test.sh
-sudo bash install-ctlsoftware-test.sh --update
+cd /opt/ctlsoftware-test-source &&
+git pull --ff-only origin setup/debian-testumgebung &&
+sudo bash install-ctlsoftware-test.sh --update --source /opt/ctlsoftware-test-source
 ```
 
-Das Update ist ausschließlich für den mit diesem Script eingerichteten Server bestimmt. Es aktualisiert den Checkout per Fast-Forward, sichert die Datenbank, Konfiguration und den bisherigen Backend-Code unter `/etc/ctlsoftware-test-setup/backups/`, aktualisiert Anwendung und Tabellen und richtet die automatische Postfachanlage ein. Bestehende Arbeitsberichte, Bilder und Postfachnachrichten werden erhalten. Bei Fehlern die ausgegebene Fehlermeldung prüfen; Sicherung vor einem erneuten Versuch aufbewahren. Ein fehlgeschlagenes Update führt nicht automatisch einen Restore durch.
+`--update --source` aktualisiert die vorhandene Anwendung aus diesem Checkout. Keine Neuinstallation, kein `--resume` und kein `setup-update.sh` für diese Installation ausführen. Die vorhandene Konfiguration weiterverwenden; keine neue Datenbank oder Docker-Umgebung einrichten. Das Update sichert Datenbank, Konfiguration und Backend unter `/etc/ctlsoftware-test-setup/backups/`. Bei einem Fehler die Sicherung aufbewahren und die Meldung prüfen; es erfolgt kein automatisches Restore.
+
+Danach prüfen:
+
+```bash
+sudo systemctl status ctlsoftware-test.service ctlsoftware-test-worker.service --no-pager
+sudo journalctl -u ctlsoftware-test.service -u ctlsoftware-test-worker.service -n 80 --no-pager
+curl --fail --show-error https://ctl-software.io-goerlitz.eu/health
+```
+
+Portal neu laden und die Softwareinformation auf **0.26.38** prüfen. Anmeldung, Arbeitsbericht und einen PDF-Download testen. Eine neue gebündelte Android-Hilfe erfordert zusätzlich die aktuelle signierte APK über der bestehenden App.
+
+
 
 ## Persönliche E-Mail-Adressen
 

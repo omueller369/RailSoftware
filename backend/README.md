@@ -1,5 +1,8 @@
 # LokZeitleiste Backend (Python / MySQL)
 
+Für den bestehenden Server (Apache/MariaDB, ohne Docker) gilt die [Standalone-Updateanleitung](../docs/INSTALL-CTLSOFTWARE-TEST.md#bestehenden-server-aktualisieren). Die nachfolgenden Containerbefehle gehören zur separaten Entwicklungsumgebung.
+
+
 FastAPI stellt die Admin-Oberfläche unter `/admin` und die API für die Android-App bereit. MySQL speichert Admins, Tf-Stammdaten, Sitzungen und Monatsdaten.
 
 ## Vollständige Testumgebung auf Ubuntu Server 26.04.1 LTS

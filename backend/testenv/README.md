@@ -38,11 +38,11 @@ sudo docker compose version
 
 ## 2. Projekt bereitstellen und starten
 
-Das Repository ist privat. Auf der VM mit einem berechtigten GitHub-Konto klonen (SSH-Schlüssel oder Git Credential Manager; keine Tokens in Befehle oder Konfigurationsdateien schreiben). Alternativ das komplette Repository vom Entwicklungsrechner auf die VM kopieren. Bei bestehendem Checkout vor `git pull --ff-only` lokale Änderungen prüfen.
+Das Repository RailSoftware ist öffentlich. Auf der VM mit einem berechtigten GitHub-Konto klonen (SSH-Schlüssel oder Git Credential Manager; keine Tokens in Befehle oder Konfigurationsdateien schreiben). Alternativ das komplette Repository vom Entwicklungsrechner auf die VM kopieren. Bei bestehendem Checkout vor `git pull --ff-only` lokale Änderungen prüfen.
 
 ```bash
-git clone git@github.com:omueller369/LokZeitleiste.git
-cd LokZeitleiste/backend
+git clone git@github.com:omueller369/RailSoftware.git
+cd RailSoftware/backend
 bash testenv/prepare.sh
 sudo bash testenv/control.sh start
 sudo bash testenv/control.sh admin

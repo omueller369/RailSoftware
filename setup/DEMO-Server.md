@@ -20,7 +20,7 @@ Auf dem Server:
 sudo apt update
 sudo apt install -y git python3 openssh-server
 sudo install -d -o "$USER" -g "$(id -gn)" /opt/LokZeitleiste
-git clone --branch setup/debian-testumgebung --single-branch https://github.com/omueller369/LokZeitleiste.git /opt/LokZeitleiste
+git clone --branch setup/debian-testumgebung --single-branch https://github.com/omueller369/RailSoftware.git /opt/LokZeitleiste
 cd /opt/LokZeitleiste
 sudo bash setup-demo.sh --check
 sudo bash setup-demo.sh

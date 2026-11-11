@@ -1,4 +1,4 @@
-# LokZeitleiste: Android Studio, Tablet-Test und Updates aus GitHub
+# Rail Software: Android Studio, Tablet-Test und Updates aus GitHub
 
 Diese Anleitung beschreibt das vorhandene Projekt **LokZeitleiste** auf einem Mac. Es wird **kein leeres neues Android-Projekt** erstellt: Das GitHub-Projekt wird geklont und in Android Studio geöffnet.
 
@@ -8,13 +8,19 @@ Android-Paket: `de.lokzeitleiste.app`
 Server: `https://ctl-software.io-goerlitz.eu`  
 Android-Mindestversion: Android 8.0 / API 26.
 
+## Vorhandenes Tablet von 0.26.37 aktualisieren
+
+Server und Tablet sind bereits eingerichtet. Zuerst den Server nach Abschnitt 6 aktualisieren und den erfolgreichen Android-Workflow für 0.26.38 abwarten. Auf dem Tablet offene Eingaben speichern, GPS-Aufzeichnung beenden und **Update** wählen. Nach dem automatischen Download **Update installieren** wählen und die Android-Installation bestätigen. Bei Bedarf **Aus dieser Quelle zulassen** für die App aktivieren und zur Installation zurückkehren. Die vorhandene App und ihre Daten bleiben bei einem regulären Update erhalten. Weder Android Studio noch eine neue Signierung sind dafür nötig.
+
+Die folgenden Mac- und Erstinstallationsschritte dienen weiteren Geräten oder der lokalen Entwicklung.
+
 ## 1. Was „automatisches Update“ hier bedeutet
 
 Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden auf neue freigegebene Testversionen aus diesem GitHub-Repository. **Update** in der App startet die Prüfung sofort. Eine neuere APK wird heruntergeladen und auf Prüfsumme, Paketname, Versionsnummer und denselben Signierschlüssel geprüft. Danach erscheint **Update installieren**.
 
 Auf einem gewöhnlichen Tablet verlangt Android eine Installationsbestätigung. Die App kann diese nicht einfach umgehen. **Automatische Erkennung und Download: ja. Stille Installation ohne jede Bestätigung: nicht Bestandteil dieser normalen Testinstallation.** Dafür wäre eine gesonderte Einrichtung als verwaltetes Unternehmensgerät erforderlich. Updates werden nicht während einer laufenden GPS-Aufzeichnung installiert. Ist die App geschlossen, prüft sie beim nächsten Öffnen; es gibt keinen permanenten Update-Hintergrunddienst.
 
-Damit Updates funktionieren, müssen Erstinstallation und spätere APKs mit **demselben privaten Signierschlüssel** gebaut werden. Ein anderer Schlüssel verhindert ein normales Update. Deshalb zuerst Abschnitt 5 erledigen, dann die dauerhafte Testinstallation vornehmen.
+Damit Updates funktionieren, müssen Erstinstallation und spätere APKs mit **demselben privaten Signierschlüssel** gebaut werden. Ein anderer Schlüssel verhindert ein normales Update. Der vorhandene Schlüssel ist bereits eingerichtet; Abschnitt 5 beschreibt seine Weiterverwendung.
 
 ## 2. Voraussetzungen auf dem Mac
 
@@ -120,40 +126,19 @@ Bei bereits vorhandenem `tools/gradle-8.9` das ZIP nicht erneut darüber entpack
 ### 4.3 In Android Studio öffnen
 
 1. **Open** auf dem Begrüßungsbildschirm oder **File → Open** wählen.
-2. Den **gesamten Ordner `LokZeitleiste`** wählen, in dem `settings.gradle.kts`, `build.gradle.kts` und `app/` liegen. Nicht nur `app/` öffnen.
+2. Den **gesamten Ordner `RailSoftware`** wählen, in dem `settings.gradle.kts`, `build.gradle.kts` und `app/` liegen. Nicht nur `app/` öffnen.
 3. Das eigene Projekt als vertrauenswürdig bestätigen.
 4. Warten, bis Gradle Sync und das Herunterladen der Abhängigkeiten abgeschlossen sind.
 5. Unter den Gradle-Einstellungen **Gradle Wrapper** und **JDK 17** verwenden.
 6. Die Run-Konfiguration oben auf **app** einstellen. Falls sie fehlt: **Run → Edit Configurations → + → Android App**, Modul **LokZeitleiste.app** wählen.
 
-## 5. Einmalig einen dauerhaften Test-Signierschlüssel einrichten
+## 5. Vorhandenen dauerhaften Signierschlüssel weiterverwenden
 
-### 5.1 Bereits vorhandene Installation beachten
+Der Schlüssel ist bereits auf Deinem Mac unter `~/.railsoftware-signing/tablet.jks` eingerichtet; Alias: `railsoftware`. Die vier GitHub-Secrets sind bereits hinterlegt. **Keinen Ersatzschlüssel erzeugen und die Secrets nicht erneut einrichten.** Keystore und Passwörter sicher außerhalb des Repositorys sichern und niemals ausgeben oder committen. Ein fremder Debug-Schlüssel kann die vorhandene Tablet-App nicht datenbewahrend aktualisieren.
 
-Wenn schon eine LokZeitleiste-App mit lokalen, noch nicht übertragenen Daten auf dem Tablet installiert ist: **Zuerst synchronisieren bzw. Daten sichern. Nicht einfach deinstallieren.** Möglichst den ursprünglichen Signierschlüssel weiterverwenden.
+Für die Erstinstallation ist kein lokaler Build nötig: Bevorzugt die veröffentlichte signierte APK nach Abschnitt 10 verwenden. Abschnitt 5.1 betrifft nur lokale Builds mit demselben vorhandenen Schlüssel.
 
-Wenn bisher von diesem Mac mit dem normalen Android-Debug-Schlüssel installiert wurde, liegt dieser häufig unter `~/.android/debug.keystore` (Alias `androiddebugkey`). Er kann für denselben Testkanal weiterverwendet werden. Verwende dann dessen tatsächlichen Pfad, Alias und Passwörter in den folgenden Einstellungen. Wenn der bisherige Schlüssel unbekannt ist, ist ein datenbewahrendes Update nicht durch einen neuen Schlüssel ersetzbar.
-
-Für eine neue dauerhafte Testinstallation:
-
-### 5.2 Neuen Testschlüssel erzeugen
-
-```bash
-mkdir -p "$HOME/.lokzeitleiste-signing"
-chmod 700 "$HOME/.lokzeitleiste-signing"
-keytool -genkeypair -v \
-  -keystore "$HOME/.lokzeitleiste-signing/tf-test.jks" \
-  -storetype JKS \
-  -alias ctl-test \
-  -keyalg RSA \
-  -keysize 3072 \
-  -validity 10000
-chmod 600 "$HOME/.lokzeitleiste-signing/tf-test.jks"
-```
-
-`keytool` fragt das Keystore-Passwort und Zertifikatsangaben ab. Das Passwort sicher aufbewahren. Bei der abschließenden Frage zum Schlüsselpasswort kann mit Eingabetaste dasselbe Passwort verwendet werden. Den Schlüssel und das Passwort außerhalb des Rechners sicher sichern: Ohne diesen Schlüssel sind spätere Updates für diese Installation nicht mehr möglich.
-
-### 5.3 Lokalen Build auf diesen Schlüssel einstellen
+### 5.1 Lokalen Build auf diesen Schlüssel einstellen
 
 Die private Gradle-Konfiguration im Benutzerverzeichnis öffnen, **nicht im Repository**:
 
@@ -167,9 +152,9 @@ open -e "$HOME/.gradle/gradle.properties"
 Diese vier Zeilen ergänzen; Pfad, Benutzername und Passwort durch die tatsächlichen Werte ersetzen:
 
 ```properties
-lokzeitleisteSigningStoreFile=/Users/DEIN-MAC-BENUTZER/.lokzeitleiste-signing/tf-test.jks
+lokzeitleisteSigningStoreFile=/Users/DEIN-MAC-BENUTZER/.railsoftware-signing/tablet.jks
 lokzeitleisteSigningStorePassword=DEIN_EIGENES_KEYSTORE_PASSWORT
-lokzeitleisteSigningKeyAlias=ctl-test
+lokzeitleisteSigningKeyAlias=railsoftware
 lokzeitleisteSigningKeyPassword=DEIN_EIGENES_SCHLUESSEL_PASSWORT
 ```
 
@@ -188,27 +173,15 @@ Für die Variante **debug** müssen der konfigurierte Keystore und der Alias ers
 
 Das Tablet verbindet sich direkt mit dem Ubuntu-Server; der Mac muss später nicht eingeschaltet bleiben.
 
-Auf dem Ubuntu-Server den passenden Projektstand einspielen:
+Der vorhandene Apache-/MariaDB-Server ist bereits unter `https://ctl-software.io-goerlitz.eu` eingerichtet. Keine Neuinstallation oder HTTPS-Neukonfiguration ausführen. Nur bei einem Anwendungsupdate auf dem Server:
 
 ```bash
-cd /opt/LokZeitleiste
-git pull --ff-only origin setup/debian-testumgebung
-sudo bash setup-demo.sh
+cd /opt/ctlsoftware-test-source &&
+git pull --ff-only origin setup/debian-testumgebung &&
+sudo bash install-ctlsoftware-test.sh --update --source /opt/ctlsoftware-test-source
 ```
 
-Falls der Server noch ausschließlich HTTP anbietet, die vorhandene kostenlose HTTPS-Routine ausführen:
-
-```bash
-sudo bash setup-https.sh --email DEINE_ZERTIFIKATS_EMAILADRESSE
-```
-
-Den Platzhalter durch eine erreichbare E-Mail-Adresse ersetzen. Ein gültiges Zertifikat, korrekte DNS-Auflösung und erreichbare Ports 80/443 sind erforderlich. Am Tablet im Browser prüfen:
-
-```text
-https://ctl-software.io-goerlitz.eu/tf
-```
-
-Die Seite muss ohne Zertifikatswarnung erreichbar sein. Nicht „trotzdem fortfahren“ als Lösung verwenden. Ist die Domain weiterhin nur über HTTP erreichbar, zuerst die Serverkonfiguration korrigieren. Öffentliche HTTP-Anmeldung ist im Android-Build nicht freigeschaltet.
+[Serveranleitung mit Kontrollen](../../docs/INSTALL-CTLSOFTWARE-TEST.md#bestehenden-server-aktualisieren). Auf dem Tablet `https://ctl-software.io-goerlitz.eu/tf` im Browser öffnen und die Erreichbarkeit ohne Zertifikatswarnung prüfen.
 
 Standardmäßig verwendet die App bereits diese HTTPS-Adresse. Für eine andere HTTPS-Testdomain kann lokal in `~/.gradle/gradle.properties` ergänzt werden:
 
@@ -235,7 +208,7 @@ Die APK liegt anschließend hier:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.26.36` / Versionscode `62`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `62` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
+Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.26.38` / Versionscode `64`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `64` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
 
 ```bash
 ./gradlew :app:assembleDebug -PlokzeitleisteVersionCode=100123
@@ -278,7 +251,7 @@ Für die dauerhafte Tabletinstallation wieder den HTTPS-Build verwenden.
 
 ## 10. Testversion auf dem Tablet installieren
 
-### Weg A: Direkt aus Android Studio
+### Weg A: Direkt aus Android Studio (nur für lokale Entwicklung)
 
 1. Das Tablet oben als Zielgerät auswählen.
 2. Konfiguration **app** wählen.
@@ -286,7 +259,7 @@ Für die dauerhafte Tabletinstallation wieder den HTTPS-Build verwenden.
 4. Android Studio baut und installiert die debug-Variante mit dem in Abschnitt 5 konfigurierten Schlüssel.
 5. Auf dem Tablet öffnet sich LokZeitleiste.
 
-### Weg B: Aus dem Terminal
+### Weg B: Aus dem Terminal (nur für lokale Entwicklung)
 
 ```bash
 cd "$HOME/Developer/RailSoftware"
@@ -297,9 +270,9 @@ adb shell am start -n de.lokzeitleiste.app/.MainActivity
 
 `-r` bedeutet Update unter Beibehaltung der App-Daten, sofern Paketname, Signatur und Version passen. Bei mehreren angeschlossenen Geräten `adb -s SERIENNUMMER install -r ...` verwenden.
 
-### Weg C: APK ohne USB installieren
+### Weg C: Signierte Release-APK installieren (empfohlen)
 
-Die später in Abschnitt 12 veröffentlichte **signierte GitHub-Test-APK** im Tablet-Browser herunterladen, im Downloadordner antippen und die Android-Installationsabfrage bestätigen. Für den Browser bzw. Dateimanager ggf. einmal **Unbekannte Apps installieren → Aus dieser Quelle zulassen** aktivieren. Nur die APK aus dem eigenen Repository verwenden.
+Die bereits veröffentlichte **signierte GitHub-Test-APK** aus https://github.com/omueller369/RailSoftware/releases im Tablet-Browser herunterladen, im Downloadordner antippen und die Android-Installationsabfrage bestätigen. Für den Browser bzw. Dateimanager ggf. einmal **Unbekannte Apps installieren → Aus dieser Quelle zulassen** aktivieren. Nur die APK aus dem eigenen Repository verwenden.
 
 ## 11. Funktionsprüfung auf dem Tablet
 
@@ -319,50 +292,17 @@ Am besten einen eigens vorgesehenen Test-TF verwenden, damit keine echten Dienst
 
 Bei GPS-Sperrbildschirmtests prüfen, dass die Standortbenachrichtigung sichtbar ist. Nach „Stopp erzwingen“, entzogenem Standortrecht oder beendetem Systemdienst muss die Aufzeichnung ausdrücklich fortgesetzt werden. Hersteller-Stromsparregeln können praktische Gerätetests erforderlich machen.
 
-## 12. Einmalig GitHub für updatefähige APKs einrichten
+## 12. Vorhandenen öffentlichen GitHub-Updatekanal verwenden
 
-Die Action **Android TF Portal APK** baut und prüft Änderungen. Ohne eigenen hinterlegten Schlüssel erzeugt sie nur ein Test-Artefakt. **Für den dauerhaften Updatekanal müssen die folgenden Secrets eingerichtet werden.**
+Die Action **Android TF Portal APK** baut und prüft Änderungen. Ohne eigenen hinterlegten Schlüssel erzeugt sie nur ein Test-Artefakt. **Der dauerhafte Updatekanal ist mit den vorhandenen Secrets bereits eingerichtet.**
 
-### 12.1 Signierschlüssel als GitHub-Secrets hinterlegen
+### 12.1 Signierung ist bereits eingerichtet
 
-1. Repository im Browser öffnen: https://github.com/omueller369/RailSoftware
-2. **Settings → Secrets and variables → Actions → New repository secret**.
-3. Auf dem Mac den privaten Keystore Base64-kodiert in die Zwischenablage kopieren:
+Vorhandene Repository-Secrets: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`. Der Workflow verwendet den bestehenden Mac-Schlüssel (`~/.railsoftware-signing/tablet.jks`, Alias `railsoftware`). Keine Geheimnisse in Repository-Dateien, Chat, Terminalausgaben oder Issues kopieren. Es ist keine erneute Einrichtung erforderlich.
 
-   ```bash
-   base64 -i "$HOME/.lokzeitleiste-signing/tf-test.jks" | pbcopy
-   ```
+### 12.2 Neue signierte Update-Builds prüfen
 
-   Bei Weiterverwendung eines vorhandenen Schlüssels dessen tatsächlichen Pfad einsetzen.
-4. Secret mit dem Namen **ANDROID_KEYSTORE_BASE64** anlegen; den Inhalt der Zwischenablage als Wert einfügen und speichern.
-5. Drei weitere Secrets anlegen:
-
-   | Secret-Name | Inhalt |
-   |---|---|
-   | `ANDROID_KEYSTORE_PASSWORD` | tatsächliches Keystore-Passwort |
-   | `ANDROID_KEY_ALIAS` | `ctl-test`, bzw. der tatsächlich verwendete Alias |
-   | `ANDROID_KEY_PASSWORD` | tatsächliches Schlüsselpasswort |
-
-6. Keine dieser Daten in Issues, README-Dateien, Chats oder Commits einfügen. Der Base64-Inhalt ist kein zusätzlicher Schutz; er gehört ausschließlich in das Secret-Feld.
-
-Der Workflow hat für das Veröffentlichen im eigenen Repository `contents: write`. Wenn eine Organisationsrichtlinie GitHub Actions das Erstellen von Releases verbietet, muss der Repository-/Organisationsadministrator diese konkrete Berechtigung freigeben.
-
-### 12.2 Ersten signierten Update-Build starten
-
-**Im aktuellen Arbeitsbranch zuverlässig per Push:** Nach dem Einrichten der vier Secrets auf dem Mac eine kleine Dokumentationsänderung im überwachten App-Verzeichnis pushen:
-
-```bash
-cd "$HOME/Developer/RailSoftware"
-git pull --ff-only origin setup/debian-testumgebung
-printf '\nTablet-Testbuild mit dauerhaftem Signierschluessel ausgeloest.\n' >> app/docs/TF-PORTAL.md
-git add app/docs/TF-PORTAL.md
-git commit -m "Signierten Android-Tablet-Testbuild starten"
-git push origin setup/debian-testumgebung
-```
-
-Die Action startet durch diesen Push. Unter **Actions → Android TF Portal APK** den neuen Lauf öffnen und auf erfolgreichen Abschluss warten.
-
-**Alternativ per Schaltfläche, sofern verfügbar:** GitHub zeigt **Run workflow** normalerweise erst zuverlässig an, wenn die Workflow-Datei auch im Standardbranch vorhanden ist. Das Repository verwendet zunächst `main`, während diese Änderungen im Arbeitsbranch liegen. Fehlt die Schaltfläche, den oben beschriebenen Push verwenden; für die Erstinstallation muss deshalb nichts ungeprüft nach `main` zusammengeführt werden.
+Pushes mit Änderungen an App, Portaldateien, gemeinsamer Softwareversion oder Buildkonfiguration starten die Action automatisch. Für diese Aufgabe löst die Änderung auf 0.26.38 den Build aus. Keine zusätzliche künstliche Dateiänderung oder erneute Schlüsseleinrichtung ist nötig. Bei Bedarf kann **Run workflow** verwendet werden, sofern die Schaltfläche verfügbar ist; sie setzt normalerweise die Workflow-Datei im Standardbranch voraus.
 
 1. Auf GitHub **Actions** öffnen.
 2. Links **Android TF Portal APK** wählen.
@@ -379,12 +319,12 @@ Wenn nur ein Artefakt unter dem Action-Lauf, aber kein Release entsteht, zuerst 
 
 ### 12.3 Diese signierte Version auf dem Tablet installieren
 
-Die APK aus **Releases**, nicht irgendeine alte unsignierte/anders signierte Test-APK, herunterladen und wie in Abschnitt 10 installieren. Eine zuvor lokal mit demselben Schlüssel signierte Version kann regulär aktualisiert werden. Danach ist das Tablet im Updatekanal.
+Die APK aus **Releases** herunterladen und wie in Abschnitt 10 installieren. Alternativ auf dem Mac die Release-APK herunterladen, das Tablet nach Abschnitt 9 verbinden und mit `adb install -r "$HOME/Downloads/LokZeitleiste-TF-Portal.apk"` über die bestehende App installieren. Eine zuvor lokal mit demselben Schlüssel signierte Version kann regulär aktualisiert werden. Danach ist das Tablet im Updatekanal.
 
 ## 13. So kommen spätere Updates automatisch aufs Tablet
 
 1. App- oder Portaländerungen in den Branch **setup/debian-testumgebung** übertragen.
-2. GitHub startet die Action für Änderungen an App, Portaldateien oder relevanter Buildkonfiguration automatisch. Reine Änderungen außerhalb der überwachten Pfade lösen keinen neuen App-Build aus; bei Bedarf einen entsprechenden App-Dokumentations-Push wie in Abschnitt 12.2 auslösen oder, sofern verfügbar, **Run workflow** benutzen.
+2. GitHub startet die Action für Änderungen an App, Portaldateien oder relevanter Buildkonfiguration automatisch. Reine Änderungen außerhalb der überwachten Pfade lösen keinen neuen App-Build aus; bei Bedarf, sofern verfügbar, **Run workflow** benutzen.
 3. Bei erfolgreichen Prüfungen und eingerichteten Secrets veröffentlicht die Action eine neue signierte Testversion mit einem höheren Versionscode.
 4. Beim nächsten Öffnen/Fortsetzen prüft die Tablet-App den Testkanal; spätestens eine erneute Prüfung nach dem Sechs-Stunden-Intervall erkennt die neue Version. Sofortprüfung über **Update**.
 5. Die APK wird automatisch heruntergeladen und geprüft.
@@ -436,6 +376,17 @@ python backend/tests/check_android_translations.py --apk app/build/outputs/apk/d
 
 Bei sichtbaren Platzhaltern die aktuelle APK mit demselben Signierschlüssel über die bestehende App installieren und neu starten. Die App nicht deinstallieren, damit lokale Daten erhalten bleiben. Ein reines Serverupdate ersetzt keine in älteren APKs eingebetteten Portaldateien.
 
-## Erster RailSoftware-Tablet-Build
+## Bestätigter Ausgangsstand und neue Releases
 
-Version 0.26.36 startet den Tablet-Build nach Einrichtung des dauerhaften Signierschlüssels. Prüfe im erfolgreichen Workflow-Lauf den Schritt **Publish signed tablet test update** und lade die APK aus dem zugehörigen `android-test-…`-Release herunter. Die Erstinstallation und spätere Updates müssen denselben Signierschlüssel verwenden.
+Server und Tablet haben bereits Version 0.26.37 installiert. Die Erstinstallationsschritte sind nur für weitere Geräte gedacht; das vorhandene Tablet regulär aktualisieren.
+
+Bestätigter Ausgangsstand: `android-test-4`, Android-Version `0.26.37-test.4`, versionCode `100004`, Paket `de.lokzeitleiste.app`, Commit `e3e6d79`. Dieser Stand ist bereits veröffentlicht. Für 0.26.38 erst den erfolgreichen Workflow-Lauf und dessen zugehöriges Release abwarten. Die Buildnummer bestimmt den Tag und versionCode; keinen neuen Tag oder Code vorab annehmen. Öffentliche Test-Releases einschließlich Vorabversionen sind der Updatekanal; das Actions-Artefakt allein ist keine Veröffentlichung.
+
+## PDF auf dem Tablet speichern
+
+1. Im Portal den Download des gewünschten Dokuments wählen.
+2. Im Android-System-Speicherdialog einen Zielordner wählen. Der vorgeschlagene Dateiname enthält die ursprünglichen UTF-8-Zeichen und bei PDFs die Endung `.pdf`; der Dateityp ist `application/pdf`.
+3. **Speichern** bestätigen. **Abbrechen** beendet den Vorgang ohne Download.
+4. Nach **Dokument gespeichert.** mit **Ansehen** die PDF öffnen. Dafür muss eine passende PDF-App installiert sein. Der Download wird nicht automatisch im Ordner Downloads abgelegt; entscheidend ist Dein gewählter Zielort.
+
+APK-Updates verwenden den App-Cache und den Android-Installationsdialog; dieser PDF-Speicherablauf gilt für Dokumente.

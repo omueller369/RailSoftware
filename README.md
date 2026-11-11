@@ -1,4 +1,21 @@
-# LokZeitleiste v0.26.37
+# LokZeitleiste v0.26.38
+
+Aktueller Stand: **0.26.38** – Anleitungen und TF-Hilfe für den bestehenden Server, Android-Updates und PDF-Downloads abgeglichen. Server und Tablet haben bereits 0.26.37 installiert. Der bestätigte Android-Ausgangsstand ist `android-test-4` (`0.26.37-test.4`, versionCode `100004`). Neue APKs werden nach erfolgreicher GitHub-Prüfung als eigenes `android-test-…`-Release veröffentlicht.
+
+Für den bestehenden Apache-/MariaDB-Server unter https://ctl-software.io-goerlitz.eu gilt:
+
+```bash
+cd /opt/ctlsoftware-test-source &&
+git pull --ff-only origin setup/debian-testumgebung &&
+sudo bash install-ctlsoftware-test.sh --update --source /opt/ctlsoftware-test-source
+```
+
+[Serverupdate und Kontrollen](docs/INSTALL-CTLSOFTWARE-TEST.md#bestehenden-server-aktualisieren). `setup-update.sh`, `setup.sh` und `setup-demo.sh` gehören zu anderen Installationsarten. Die folgenden älteren Funktionsabschnitte beschreiben teilweise diese Varianten; deren Installationsbefehle gelten nicht für diesen Server.
+
+Auf dem Tablet die signierte APK aus den [öffentlichen Test-Releases](https://github.com/omueller369/RailSoftware/releases) verwenden. Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Update** prüft sofort. Der Download erfolgt automatisch, die Installation nach **Update installieren** und Android-Bestätigung. Vorher offene Eingaben speichern und GPS-Aufzeichnung beenden. Über die bestehende App installieren, damit lokale Daten erhalten bleiben. [Mac, Erstinstallation und bestehender Signierschlüssel](app/docs/ANDROID-STUDIO-TABLET.md).
+
+PDF-Downloads behalten ihren Dateinamen einschließlich UTF-8-Zeichen und `.pdf` sowie den Typ `application/pdf`. In Android im System-Speicherdialog Zielordner wählen und speichern; danach öffnet **Ansehen** eine passende PDF-App. Abbrechen speichert keinen Download.
+
 
 LokZeitleiste ist jetzt in eine Android-App für Tf und ein Python-Backend für Admins und Monatsdaten geteilt.
 
@@ -80,7 +97,7 @@ Das Menü erscheint auf allen Backend-Modulseiten und berücksichtigt die Freiga
 
 Portal, Backend und Android-App unterstützen Deutsch (Standard), Polnisch und Englisch. Die Sprachauswahl im Seitenkopf bleibt lokal und nach Anmeldung im jeweiligen Konto gespeichert. Texte werden über stabile Schlüssel und eigene Sprachdateien je Modul gepflegt: `backend/lokzeitleiste/locales/modules/<modul>/{de,pl,en}.json`. Nach Änderungen `python tools/build-translations.py` ausführen; `--check` prüft die erzeugten Browser-, Backend- und Android-Kataloge. Hilfesuche und Hilfedruck verwenden die gewählte Sprache. Persönliche Texte und gespeicherte Fachwerte bleiben unverändert. Die Android-App anschließend neu bauen und installieren.
 
-Update im Branch `setup/debian-testumgebung`: `git pull --ff-only`, anschließend `sudo bash setup.sh`. Die neuen Tabellen für Modelle, Zuweisungen, Postfächer, Entwürfe und Kontosprachen werden automatisch angelegt; bestehende Spalten bleiben erhalten. Für E-Mail-Postfächer die privaten `MAILBOX_*`-Werte ergänzen. Die reale IMAP-/SMTP-Verbindung, MySQL-Integration und der Android-Build müssen auf der Zielumgebung geprüft werden.
+Update der bestehenden Standalone-Installation: den oben genannten Updatebefehl mit `install-ctlsoftware-test.sh --update --source` verwenden. Die neuen Tabellen für Modelle, Zuweisungen, Postfächer, Entwürfe und Kontosprachen werden automatisch angelegt; bestehende Spalten bleiben erhalten. Für E-Mail-Postfächer die privaten `MAILBOX_*`-Werte ergänzen. Die reale IMAP-/SMTP-Verbindung, MySQL-Integration und der Android-Build müssen auf der Zielumgebung geprüft werden.
 
 ## Erweiterungen v0.19
 
@@ -174,7 +191,7 @@ Jede Störungskategorie kann einen Hotline-Namen und eine Hotline-Emailadresse e
 
 Die bestehenden Modulrechte **App Grundwerte** gelten auch hier: Lesen für die Anzeige, Lesen und Schreiben zum Anlegen und Bearbeiten. Die Daten bleiben getrennt von den bisherigen Gründen/Arten der Zugfahrten. Beim regulären Setup/Update legt `init_db` die neue Tabelle `loco_handover_defaults` automatisch an; vorhandene Grundwerte bleiben erhalten. Diese Erweiterung versendet keine Emails; sie bereitet die späteren Lokübergabeformulare vor.
 
-Im **TF-Portal → Lokübergabebuch** öffnet die Kachel direkt `/tf/loco-handover` mit derselben Fahrzeugliste und Detailansicht. Der bisherige Link `/tf/lokuebergabebuch` bleibt gültig. Das Modul ist aus der Platzhalter-Zuordnung des Portals entfernt; die Portal-Einstiegsseiten und das Portal-Script verwenden `Cache-Control: no-store`. Nach dem Update den API-Container neu bauen/starten (auf dem Demo-Server `sudo bash setup-demo.sh`) und das TF-Portal einmal vollständig neu laden. Ein reines `git pull` aktualisiert einen bereits laufenden Container nicht. In der Android-App erfordert die geänderte gebündelte Oberfläche zusätzlich eine neue APK.
+Im **TF-Portal → Lokübergabebuch** öffnet die Kachel direkt `/tf/loco-handover` mit derselben Fahrzeugliste und Detailansicht. Der bisherige Link `/tf/lokuebergabebuch` bleibt gültig. Das Modul ist aus der Platzhalter-Zuordnung des Portals entfernt; die Portal-Einstiegsseiten und das Portal-Script verwenden `Cache-Control: no-store`. Nach dem Update der bestehenden Standalone-Installation mit dem oben genannten Updatebefehl das TF-Portal vollständig neu laden. Ein reines `git pull` ersetzt das laufende Backend nicht. In der Android-App erfordert die geänderte gebündelte Oberfläche zusätzlich eine neue APK.
 
 
 ## Fahrzeugbezogene Übergabeprotokolle

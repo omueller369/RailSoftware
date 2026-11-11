@@ -1,5 +1,5 @@
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
-window.TfHelpRevision="2026-11-10";
+window.TfHelpRevision="2026-11-11";
 window.TfHelpPages=globalThis.CtlText.restore([
   {
     "id": "start",
