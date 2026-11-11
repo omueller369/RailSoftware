@@ -56,6 +56,18 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  await r.erase();delete chosen.end;await r.start();await new Promise(resolve=>setTimeout(resolve,5));assert.equal(startQuestions,0);assert.equal(endQuestions,1);assert.equal(r.record.end_station,'CCC');
  delete chosen.end;r.o.selectEnd=async()=>{endQuestions++;return {code:'DDD',name:'Neues Ziel'};};const previousQuestions=questions.length;await r.stop();assert.equal(endQuestions,2);assert.equal(body.end_station,'DDD');assert.equal(body.arrival_at,null);assert.equal(questions.length,previousQuestions);await r.erase();
  delete chosen.start;r.o.selectStart=async()=>{startQuestions++;return null;};await r.start();assert.equal(startQuestions,1);assert.equal(endQuestions,2);assert.equal(r.record,null);assert(!context.window.GpsRecorder.isActive());
+ // The duty begins on the previous Berlin day but continues today.
+ const realNow=Date.now;
+ try {
+  Date.now=()=>Date.parse('2026-11-11T01:00:00Z');
+  const night=context.window.GpsRecorder.mount({userId:5,journeyId:'night',container:new Element('div'),trainNumber:()=> '123',readonly:()=>false,dutyDay:()=> '2026-11-10',dutyBounds:()=>({start:'2026-11-10T23:45',end:'2026-11-11T08:00'}),selectStart:async()=>({code:'BBB',name:'Start'}),selectEnd:async()=>({code:'CCC',name:'Ziel'}),stations(){}});
+  await night.readyPromise;night.freeze();assert.equal(night.past(),false);assert.equal(night.box.hidden,false);assert.equal(night.startButton.disabled,false);
+  await night.start();assert(context.window.GpsRecorder.isActive());await new Promise(resolve=>setTimeout(resolve,5));
+  await night.stop(false);await night.erase();
+  assert(night.forDay({points:[{t:Date.parse('2026-11-11T01:00:00Z')}]}));
+  Date.now=()=>Date.parse('2026-11-12T01:00:00Z');assert(night.past());
+  assert(!night.forDay({points:[{t:Date.parse('2026-11-12T01:00:00Z')}]}));
+ } finally {Date.now=realNow;}
  const historical=context.window.GpsRecorder.mount({userId:5,journeyId:'history',container:new Element('div'),trainNumber:()=> '123',dutyDay:()=> '2000-01-01',readonly:()=>false,selectEnd:async()=>({code:'CCC',name:'Ziel'}),selectStart:async()=>({code:'BBB',name:'Berlin Beispiel'}),stations(){}});
  await historical.readyPromise;assert.equal(historical.box.hidden,true);await historical.start();assert.equal(context.window.GpsRecorder.isActive(),false);
  remote={points:[{t:Date.parse('2000-01-01T12:00:00Z'),lat:52,lon:13,accuracy:5}],ended:true,revision:1};await historical.read();assert.equal(historical.box.hidden,false);assert.equal(historical.startButton.hidden,true);assert.equal(historical.syncButton.hidden,true);assert.equal(historical.deleteButton.hidden,true);assert.equal(historical.loadButton.hidden,false);await historical.reload();historical.o.dutyDay=()=> '2000-01-02';historical.freeze();assert.equal(historical.box.hidden,true);

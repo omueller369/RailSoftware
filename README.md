@@ -1,6 +1,9 @@
-# LokZeitleiste v0.26.38
+# LokZeitleiste v0.26.39
 
-Aktueller Stand: **0.26.38** – Anleitungen und TF-Hilfe für den bestehenden Server, Android-Updates und PDF-Downloads abgeglichen. Server und Tablet haben bereits 0.26.37 installiert. Der bestätigte Android-Ausgangsstand ist `android-test-4` (`0.26.37-test.4`, versionCode `100004`). Neue APKs werden nach erfolgreicher GitHub-Prüfung als eigenes `android-test-…`-Release veröffentlicht.
+GPS-Korrekturen in **0.26.39**: Android lädt die öffentlichen OpenStreetMap-/OpenRailwayMap-Kartenkacheln. Bei Diensten über Mitternacht richtet sich die GPS-Verfügbarkeit nach dem gesamten eingetragenen Dienstzeitraum. Die grüne Anzeige über der Lok zeigt die Gesamtzeit seit Abfahrt einschließlich Zwischenhalten; die rote Anzeige summiert weiterhin die mit GPS erfassten Standzeiten. Internet ist für Kartenbilder erforderlich. Server und signierte Tablet-App aktualisieren.
+
+
+Anleitungsstand **0.26.38** – Anleitungen und TF-Hilfe für den bestehenden Server, Android-Updates und PDF-Downloads abgeglichen. Server und Tablet haben bereits 0.26.37 installiert. Der bestätigte Android-Ausgangsstand ist `android-test-4` (`0.26.37-test.4`, versionCode `100004`). Neue APKs werden nach erfolgreicher GitHub-Prüfung als eigenes `android-test-…`-Release veröffentlicht.
 
 Für den bestehenden Apache-/MariaDB-Server unter https://ctl-software.io-goerlitz.eu gilt:
 

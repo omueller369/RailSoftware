@@ -22,7 +22,7 @@ sudo journalctl -u ctlsoftware-test.service -u ctlsoftware-test-worker.service -
 curl --fail --show-error https://ctl-software.io-goerlitz.eu/health
 ```
 
-Portal neu laden und die Softwareinformation auf **0.26.38** prüfen. Anmeldung, Arbeitsbericht und einen PDF-Download testen. Eine neue gebündelte Android-Hilfe erfordert zusätzlich die aktuelle signierte APK über der bestehenden App.
+Portal neu laden und die Softwareinformation auf **0.26.39** prüfen. Anmeldung, Arbeitsbericht und einen PDF-Download testen. Eine neue gebündelte Android-Hilfe erfordert zusätzlich die aktuelle signierte APK über der bestehenden App.
 
 ## Festgelegte Werte
 

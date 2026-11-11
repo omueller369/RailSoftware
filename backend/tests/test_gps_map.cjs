@@ -41,7 +41,13 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
   speed:i<13?10:0
  }));
  r.drawMap();
- assert.deepEqual(labels().slice(1,4).map(n=>n.textContent),['00:01','/','00:01']);
+ assert.deepEqual(labels().slice(1,4).map(n=>n.textContent),['00:05','/','00:01']);
+ // Waiting before departure is excluded; intermediate stops and signal gaps remain in total time.
+ const moving=Array.from({length:4},(_,i)=>({...point(52,13+i*.0007,600001+i*5000),speed:10}));
+ r.record.points=[{...point(52,13,1),speed:0},...moving,{...moving.at(-1),t:4200001,speed:0}];
+ r.drawMap();assert.equal(labels()[1].textContent,'01:00');
+ r.record.points=[{...point(52,13,1),speed:0},{...point(52,13,600001),speed:0}];
+ r.drawMap();assert.equal(labels()[1].textContent,'00:00');
  r.record.points=shortTrack;
  r.record.points.at(-1).speed=0;r.drawMap();assert.equal(labels()[0].textContent,'0 km/h');
  r.record.points.at(-1).speed=null;r.drawMap();assert.equal(labels()[0].textContent,'–');

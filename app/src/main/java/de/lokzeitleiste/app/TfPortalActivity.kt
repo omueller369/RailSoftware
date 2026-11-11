@@ -164,6 +164,7 @@ class TfPortalActivity : ComponentActivity() {
                 return true
             }
             override fun shouldInterceptRequest(view:WebView,request:WebResourceRequest):WebResourceResponse? {
+                if(!request.isForMainFrame && request.method=="GET" && policy.mapTile(request.url.toString())) return null
                 if(!policy.sameOrigin(request.url.toString())) return WebResourceResponse("text/plain","UTF-8",403,"Forbidden",emptyMap(),ByteArrayInputStream(byteArrayOf()))
                 if(request.method!="GET")return null
                 if(request.url.path=="/locales/catalog.json")return WebResourceResponse("application/json","UTF-8",assets.open("catalog.json"))

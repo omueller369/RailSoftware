@@ -208,7 +208,7 @@ Die APK liegt anschließend hier:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.26.38` / Versionscode `64`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `64` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
+Die aktuelle Version ohne eigene Versionsparameter trägt lokal `0.26.39` / Versionscode `65`. Der GitHub-Testkanal verwendet steigende Codes ab `100001`. Nach Installation einer GitHub-Version kann eine lokale Version `65` deshalb kein normales Update mehr sein. Für spätere lokale Tests einen entsprechend höheren Code mitgeben, zum Beispiel:
 
 ```bash
 ./gradlew :app:assembleDebug -PlokzeitleisteVersionCode=100123
@@ -302,7 +302,7 @@ Vorhandene Repository-Secrets: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASS
 
 ### 12.2 Neue signierte Update-Builds prüfen
 
-Pushes mit Änderungen an App, Portaldateien, gemeinsamer Softwareversion oder Buildkonfiguration starten die Action automatisch. Für diese Aufgabe löst die Änderung auf 0.26.38 den Build aus. Keine zusätzliche künstliche Dateiänderung oder erneute Schlüsseleinrichtung ist nötig. Bei Bedarf kann **Run workflow** verwendet werden, sofern die Schaltfläche verfügbar ist; sie setzt normalerweise die Workflow-Datei im Standardbranch voraus.
+Pushes mit Änderungen an App, Portaldateien, gemeinsamer Softwareversion oder Buildkonfiguration starten die Action automatisch. Eine Änderung der gemeinsamen Softwareversion löst ebenfalls den Build aus. Keine zusätzliche künstliche Dateiänderung oder erneute Schlüsseleinrichtung ist nötig. Bei Bedarf kann **Run workflow** verwendet werden, sofern die Schaltfläche verfügbar ist; sie setzt normalerweise die Workflow-Datei im Standardbranch voraus.
 
 1. Auf GitHub **Actions** öffnen.
 2. Links **Android TF Portal APK** wählen.
@@ -390,3 +390,7 @@ Bestätigter Ausgangsstand: `android-test-4`, Android-Version `0.26.37-test.4`, 
 4. Nach **Dokument gespeichert.** mit **Ansehen** die PDF öffnen. Dafür muss eine passende PDF-App installiert sein. Der Download wird nicht automatisch im Ordner Downloads abgelegt; entscheidend ist Dein gewählter Zielort.
 
 APK-Updates verwenden den App-Cache und den Android-Installationsdialog; dieser PDF-Speicherablauf gilt für Dokumente.
+
+## GPS-Korrekturen ab 0.26.39
+
+Kartenbilder laden in Android bei Internetverbindung von OpenStreetMap und OpenRailwayMap. Es gibt kein vorinstalliertes Offline-Kartenpaket. Trage bei einem Nachtdienst auch das Enddatum ein: Bei Beginn am 10.11. um 23:45 und Ende am 11.11. bleibt der GPS-Start am 11.11. um 02:00 verfügbar. Historische Dienste bleiben in der GPS-Ansicht geschützt. Grün über der Lok zeigt die gesamte Zeit seit Abfahrt einschließlich Zwischenhalten und Zeitlücken; Rot summiert die mit GPS erfassten Standzeiten. Teste nach dem Update auf dem Tablet Karten, Nachtbeginn und beide Zeitangaben.

@@ -12,6 +12,20 @@ class PortalPolicy(base: String) {
         fun port(u: URI) = if (u.port >= 0) u.port else if (u.scheme == "https") 443 else 80
         uri.rawUserInfo == null && uri.scheme == root.scheme && uri.host.equals(root.host, true) && port(uri) == port(root)
     }.getOrDefault(false)
+    // Public image tiles only. Portal cookies and native API requests remain same-origin.
+    fun mapTile(value: String): Boolean = runCatching {
+        val uri = URI(value)
+        if (uri.scheme != "https" || uri.rawUserInfo != null || uri.port !in listOf(-1, 443) || uri.rawQuery != null || uri.rawFragment != null) return@runCatching false
+        val pattern = when (uri.host?.lowercase()) {
+            "tile.openstreetmap.org" -> Regex("^/([0-9]{1,2})/([0-9]{1,6})/([0-9]{1,6})\\.png$")
+            "tiles.openrailwaymap.org" -> Regex("^/standard/([0-9]{1,2})/([0-9]{1,6})/([0-9]{1,6})\\.png$")
+            else -> return@runCatching false
+        }
+        val match = pattern.matchEntire(uri.rawPath.orEmpty()) ?: return@runCatching false
+        val (z, x, y) = match.destructured
+        val zoom = z.toInt()
+        zoom in 0..19 && x.toInt() < (1 shl zoom) && y.toInt() < (1 shl zoom)
+    }.getOrDefault(false)
     fun asset(path: String): String? = when(path) {
         "/tf", "/tf/hilfe", "/tf/notizen", "/tf/arbeitsbericht", "/tf/arbeitsplan", "/tf/bahnhoefe", "/tf/leuna-uebergabeprotokoll" -> "tf-portal.html"
         "/tf/bremszettel" -> "brake-sheet.html"
