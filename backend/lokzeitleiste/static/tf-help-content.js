@@ -1,3 +1,4 @@
+/* Footer: Rail Software, jeweilige Web-/Android-Version, Copyright 2026 IO-Software-Görlitz. */
 /* GPS-Lücken: hellrosa Verbindung und gelb-rote manuelle Halte. */
 /* Zugfahrtdetails: Angaben links, Zeiten und Eintragen rechts. */
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */

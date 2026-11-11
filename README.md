@@ -1,4 +1,7 @@
-# LokZeitleiste v0.26.41
+# LokZeitleiste v0.26.42
+
+**0.26.42:** Footer: Rail Software · Version … · Copyright 2026 IO-Software-Görlitz. Das Web zeigt die Serverversion, Android die tatsächlich installierte APK-Version einschließlich Test-Buildnummer.
+
 
 **0.26.41:** GPS-Lücken erscheinen als direkte hellrosa Verbindung zwischen den genauen Punkten vor und nach dem Ausfall. Die Lückenzeit wird nicht automatisch als Standzeit gewertet. Während einer Lücke kannst Du mit Start Stand / Ende Stand einen manuellen Halt erfassen; er erscheint gelb-rot mit geschätzter Position auf der Verbindung. Vor der Signalrückkehr wird die letzte bekannte Position verwendet. GPS-Rohpunkte bleiben unverändert. Gemessene und manuelle Standzeiten werden in der roten Summe ohne doppelte Zeitanteile addiert. Server und Tablet-App aktualisieren.
 

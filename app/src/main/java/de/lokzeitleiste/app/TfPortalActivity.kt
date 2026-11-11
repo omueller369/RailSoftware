@@ -204,7 +204,7 @@ class TfPortalActivity : ComponentActivity() {
         try {
             when(request.getString("method")) {
                 "help.print" -> startHelpPrint(request,proxy)
-                "session" -> reply(proxy,request,true,session)
+                "session" -> reply(proxy,request,true,JSONObject(session.toString()).put("app_version",BuildConfig.VERSION_NAME))
                 "language" -> {
                     val language=request.getString("language");require(language in LanguageRuntime.codes);LanguageRuntime.code=language
                     getSharedPreferences("lokzeitleiste_language",MODE_PRIVATE).edit().putString("language",language).apply()

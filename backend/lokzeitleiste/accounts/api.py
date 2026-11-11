@@ -65,11 +65,9 @@ def create_router(admin_dependency, origin, cookie_secure, dependency=None):
     def shell(user:User=Depends(account),db:Session=Depends(database_session)):
         backend_user(user,db)
         from ..models import AccountLoginStamp
-        from ..version import SOFTWARE_TITLE,SOFTWARE_VERSION,COPYRIGHT_HOLDER
-        from datetime import datetime
-        from zoneinfo import ZoneInfo
+        from ..version import FOOTER_TITLE,SOFTWARE_VERSION,COPYRIGHT_HOLDER,COPYRIGHT_YEAR
         profile=db.get(StaffProfile,user.id);number=db.get(StaffPersonnelNumber,user.id);stamp=db.get(AccountLoginStamp,user.id)
-        return dict(first_name=profile.first_name if profile else user.username,last_name=profile.last_name if profile else '',personnel_number=number.number if number else '',last_login_at=stamp.last_login_at.isoformat()+'Z' if stamp else None,software=SOFTWARE_TITLE,version=SOFTWARE_VERSION,copyright_holder=COPYRIGHT_HOLDER,copyright_year=datetime.now(ZoneInfo('Europe/Berlin')).year)
+        return dict(first_name=profile.first_name if profile else user.username,last_name=profile.last_name if profile else '',personnel_number=number.number if number else '',last_login_at=stamp.last_login_at.isoformat()+'Z' if stamp else None,software=FOOTER_TITLE,version=SOFTWARE_VERSION,copyright_holder=COPYRIGHT_HOLDER,copyright_year=COPYRIGHT_YEAR)
 
     @router.get('/api/v1/account/profile')
     def own_profile(user:User=Depends(account),db:Session=Depends(database_session)):
