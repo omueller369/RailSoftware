@@ -64,6 +64,8 @@ def revoke_token(session: Session, raw: str):
 
 def account_active(session, user):
     if not user.active: return False
+    # WGM accounts are administratively managed; their own portal follows later.
+    if user.role=='wgm':return False
     if user.role != 'tf': return True
     from .accounts.tf_profiles import berlin_today
     from .models import TfEmployment

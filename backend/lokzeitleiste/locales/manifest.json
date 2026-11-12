@@ -618,5 +618,10 @@
     "de": "/locales/shared_legacy/de.json",
     "en": "/locales/shared_legacy/en.json",
     "pl": "/locales/shared_legacy/pl.json"
+  },
+  "wgm": {
+    "de": "/locales/wgm/de.json",
+    "en": "/locales/wgm/en.json",
+    "pl": "/locales/wgm/pl.json"
   }
 }

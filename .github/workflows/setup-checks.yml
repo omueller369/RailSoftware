@@ -57,6 +57,13 @@ jobs:
         with:
           name: admin-work-reports-ui
           path: ${{ runner.temp }}/admin-work-reports-ui/
+      - name: WGM administration browser checks
+        run: python backend/tests/check_wgm_ui.py --output-dir "$RUNNER_TEMP/wgm-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wgm-ui
+          path: ${{ runner.temp }}/wgm-ui/
       - name: Backend dependencies
         run: python -m pip install -r backend/requirements-dev.txt
       - name: Help overlay and print checks

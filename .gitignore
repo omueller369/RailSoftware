@@ -27,3 +27,5 @@ backend/testenv/demo-tf-import.lock
 *.jks
 *.keystore
 keystore.properties
+
+/WGM/

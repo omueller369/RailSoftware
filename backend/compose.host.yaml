@@ -15,6 +15,7 @@ services:
     volumes:
     - ../TF:/user-files/TF
     - ../VW:/user-files/VW
+    - ../WGM:/user-files/WGM
   mailpit:
     image: axllent/mailpit:v1.27.4
     restart: unless-stopped
@@ -57,6 +58,7 @@ services:
     volumes:
     - ../TF:/user-files/TF
     - ../VW:/user-files/VW
+    - ../WGM:/user-files/WGM
     - ./testenv/certs/host-mailpit.crt:/test-certs/host-mailpit.crt:ro
     depends_on:
       user-directories:
@@ -108,6 +110,7 @@ services:
     volumes:
     - ../TF:/user-files/TF
     - ../VW:/user-files/VW
+    - ../WGM:/user-files/WGM
     - ./testenv/certs/host-mailpit.crt:/test-certs/host-mailpit.crt:ro
     command:
     - python

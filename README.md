@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.48
+# LokZeitleiste v0.26.49
+
+**0.26.49:** Wagenmeister haben ein eigenes Verwaltungsmodul mit eigenen Stammdatentabellen und Modulrechten. Personen-, Beschäftigungs- und Adressdaten sowie E-Mail des WGM und Profilbild; keine TF-Nummer, BahnCard, TF-Einsatzart oder Heimatbahnhof. Die bisherige WGM-Kategorie im TF-Modul entfällt. Bestehende WGM-Konten werden unter Erhalt ihrer IDs, Benutzernamen, Passworthashes, Dokumente und Berichte übernommen. Das eigene WGM-Portal folgt später.
 
 **0.26.48:** Neues Verwaltungsmodul Arbeitsberichte für synchronisierte Berichte mit eigenen Zugriffsrechten, Monats-/Mitarbeiter-/Kategoriefilter, Detailansicht und PDF. Die spätere Bearbeitung bleibt offen. Mitarbeiterkategorie WGM (Wagenmeister) auf gemeinsamer Stammdatenbasis ergänzt, unabhängig von der TF-Einsatzart; ein eigenes WGM-Portal folgt später.
 

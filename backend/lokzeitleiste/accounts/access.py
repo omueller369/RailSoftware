@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from ..models import AccountPolicy, ModulePermission, User
 
-MODULES = {"work_reports":_text_source('admin_work_reports.text_1bc38267fc84'), "leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
+MODULES = {"wgm":_text_source('wgm.text_159c423d8698'), "work_reports":_text_source('admin_work_reports.text_1bc38267fc84'), "leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
            "worktime":_text_source('server_accounts_access.text_dd4fd942cb88'), "reports":_text_source('server_accounts_access.text_1948beff57ad'),
            "staff":_text_source('server_accounts_access.text_ce72f4c833ff'), "directory":_text_source('server_accounts_access.text_ef61cbee3c30'),
            "shifts":_text_source('server_accounts_access.text_3d64eed6e362'), "email":"Mitarbeiter-E-Mail"}
@@ -44,6 +44,8 @@ def redact_plan(db,user,summary):
 
 def authorize_route(db, user, request):
     path, method = request.url.path.rstrip('/'), request.method
+    if path=='/api/v1/admin/wgm' or path.startswith('/api/v1/admin/wgm/'):
+        return demand(db,user,'wgm',1 if method=='GET' else 3 if method=='POST' and path=='/api/v1/admin/wgm' else 2)
     if path=='/api/v1/admin/work-reports' or path.startswith('/api/v1/admin/work-reports/'):
         # This first stage deliberately exposes no write operation.
         return demand(db,user,'work_reports',1 if method=='GET' else 3)
@@ -102,7 +104,7 @@ def authorize_route(db, user, request):
         target = db.get(User,int(path.split('/')[-2]))
         if not target:
             raise HTTPException(404, _text_source('server_accounts_access.text_b59ef1fdfb31'))
-        return demand(db,user,'employees' if target.role == 'tf' else 'staff',3)
+        return demand(db,user,'employees' if target.role == 'tf' else 'wgm' if target.role=='wgm' else 'staff',3)
     if re.fullmatch(r'/api/v1/admin/tf/\d+',path) and method=='PUT':
         return demand(db,user,'employees',2)
     if re.fullmatch(r'/api/v1/admin/tf/\d+/delivery',path):

@@ -217,7 +217,7 @@ def create_router(admin_dependency, origin, cookie_secure, dependency=None):
             raise HTTPException(404,_text_source('server_accounts_api.text_b59ef1fdfb31'))
         if user.id == actor.id:
             raise HTTPException(422,_text_source('server_accounts_api.text_edf0b29d64e6'))
-        if user.role != 'tf':
+        if user.role not in ('tf','wgm'):
             check_delegation(db,actor,{},user)
         if verify_password(data.initial_password,user.password_hash):
             raise HTTPException(422,_text_source('server_accounts_api.text_796d569dbe68'))

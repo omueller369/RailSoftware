@@ -28,6 +28,7 @@ x-app: &app
   volumes:
     - ../TF:/user-files/TF
     - ../VW:/user-files/VW
+    - ../WGM:/user-files/WGM
     - ./testenv/certs/mailpit.crt:/test-certs/mailpit.crt:ro
 services:
   user-directories:
@@ -40,6 +41,7 @@ services:
     volumes:
       - ../TF:/user-files/TF
       - ../VW:/user-files/VW
+      - ../WGM:/user-files/WGM
   db:
     image: mysql:8.4
     restart: unless-stopped

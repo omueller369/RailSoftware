@@ -8,7 +8,7 @@ from pathlib import Path
 
 from fastapi import HTTPException
 
-ROLE_DIRECTORIES = {'tf': 'TF', 'staff': 'VW', 'admin': 'VW'}
+ROLE_DIRECTORIES = {'tf': 'TF', 'wgm': 'WGM', 'staff': 'VW', 'admin': 'VW'}
 STORAGE_ERROR = 'Benutzerverzeichnis konnte nicht vorbereitet werden. Bitte die Serverkonfiguration prüfen.'
 
 
@@ -50,7 +50,7 @@ def user_path(username, role):
 
 
 @contextmanager
-def directory_transaction(user, previous_username=None, *, creating=False):
+def directory_transaction(user, previous_username=None, *, creating=False, previous_role=None):
     """Provision before DB commit; undo an empty creation/rename if commit fails."""
     path = old = None
     created = moved = False
@@ -58,8 +58,8 @@ def directory_transaction(user, previous_username=None, *, creating=False):
         path = user_path(user.username, user.role)
         if creating and path.exists():
             raise HTTPException(409, 'Benutzerverzeichnis ist bereits vergeben.')
-        if previous_username and previous_username != user.username:
-            old = user_path(previous_username, user.role)
+        if previous_username and (previous_username != user.username or previous_role and previous_role!=user.role):
+            old = user_path(previous_username, previous_role or user.role)
             if old.exists():
                 if path.exists():
                     raise ValueError('Zielverzeichnis existiert bereits; keine Dateien überschrieben.')
@@ -101,14 +101,14 @@ def sync_user_directories(db):
 
 
 def prepare_container_root():
-    """One-shot Compose service; only the two mounted category roots are chowned."""
+    """One-shot Compose service; only the mounted category roots are chowned."""
     if os.geteuid() != 0 or not os.environ.get('LOKZEITLEISTE_FILES_ROOT'):
         raise RuntimeError('Container-Vorbereitung benötigt root und LOKZEITLEISTE_FILES_ROOT.')
     root = storage_root()
     if root != Path('/user-files'):
         raise RuntimeError('Container-Vorbereitung ist ausschließlich für /user-files vorgesehen.')
     root.mkdir(mode=0o700, parents=True, exist_ok=True)
-    for path in (root, root / 'TF', root / 'VW'):
+    for path in (root, root / 'TF', root / 'VW', root / 'WGM'):
         private_directory(path)
         if path.stat().st_uid != 10001:path.chmod(0o700)
         os.chown(path, 10001, 10001)

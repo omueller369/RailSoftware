@@ -348,7 +348,8 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{admin_work_reports.text_526c8f83a5a4}}",
         "paragraphs": [
-          "{{admin_work_reports.text_a52d9b8c3caf}}"
+          "{{admin_work_reports.text_a52d9b8c3caf}}",
+          "{{wgm.text_bf2e7d58ad19}}"
         ],
         "steps": []
       }

@@ -43,7 +43,7 @@ def manifest(backend):
 
 def validate(root,record):
     user_id=record['id'];login=record['username'];category=record['category']
-    if type(user_id) is not int or not 0<user_id<1000000000 or category not in ('TF','VW') or not re.fullmatch(r'[a-z0-9._-]{1,64}',login) or login in ('.','..'):
+    if type(user_id) is not int or not 0<user_id<1000000000 or category not in ('TF','VW','WGM') or not re.fullmatch(r'[a-z0-9._-]{1,64}',login) or login in ('.','..'):
         raise ValueError('Invalid account manifest')
     path=root/category/login
     if (root/category).is_symlink() or path.is_symlink() or not path.is_dir() or not path.resolve().is_relative_to(root):

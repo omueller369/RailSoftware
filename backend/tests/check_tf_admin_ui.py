@@ -12,7 +12,7 @@ MOCK=r'''
 window.photoSelection=()=>({close(){},value:async()=>null,reset(){}});
 window.profilePhoto=()=>{};window.tfDefaultValidity=()=>'';window.tfExtraForm=()=>({close(){},payload(){}});
 window.employeeEmailField=async()=>{};window.tfMetadata=null;
-const users=[{id:10,first_name:'Alex',last_name:'Route',username:'123456',driver_type:'route',personnel_number:'1',bahncard:0},{id:11,first_name:'Sam',last_name:'Border',username:'234567',employee_category:'wgm',driver_type:'border',personnel_number:'2',bahncard:0}];
+const users=[{id:10,first_name:'Alex',last_name:'Route',username:'123456',driver_type:'route',personnel_number:'1',bahncard:0},{id:11,first_name:'Sam',last_name:'Border',username:'234567',employee_category:'tf',driver_type:'border',personnel_number:'2',bahncard:0}];
 window.fetch=async url=>{if(url==='/api/v1/account/me'){document.querySelector('header').innerHTML='<h1>TF-Verwaltung</h1>';return {ok:true,json:async()=>({role:'admin'})};}return {ok:true,json:async()=>url==='/api/v1/admin/me'?{permissions:{employees:3,reports:1,planning:1,worktime:1}}:url.endsWith('tf-metadata')?{}:users};};
 window.alert=message=>{throw Error(message);};
 '''
@@ -31,7 +31,6 @@ CHECKS=r'''
  type.value='border';type.dispatchEvent(new Event('change'));assert(!document.getElementById('tfNoResults').hidden,'Search combines with type filter');
  search.value='';find();assert(document.querySelectorAll('#users tr').length===1,'Clearing search retains type filter');type.value='';type.dispatchEvent(new Event('change'));
  const filterRect=type.getBoundingClientRect(),searchRect=search.getBoundingClientRect();if(innerWidth>600)assert(searchRect.left>filterRect.right,'Search beside type selector');else assert(searchRect.top>filterRect.bottom,'Filters stack on mobile');assert(searchRect.right<=innerWidth,'Search fits viewport');
- const category=document.getElementById('employeeCategoryFilter');category.value='wgm';category.dispatchEvent(new Event('change'));assert(document.querySelectorAll('#users tr').length===1&&document.querySelector('#users').textContent.includes('WGM'),'WGM category filter');category.value='';category.dispatchEvent(new Event('change'));
  const unrelated=document.createElement('dialog');document.body.append(unrelated);
  const edit=document.querySelector('#users .tf-row-actions').children[1];
  assert(edit.title==='Bearbeiten'&&edit.getAttribute('aria-label'),'Accessible edit icon');edit.click();

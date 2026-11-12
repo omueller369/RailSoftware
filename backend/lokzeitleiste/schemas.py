@@ -60,7 +60,7 @@ class TfDetails(BaseModel):
 
 
 class TfCreate(Credentials, TfDetails):
-    employee_category: Literal["tf","wgm"] = "tf"
+    employee_category: Literal["tf"] = "tf"
     username: str = Field(pattern=r"^[1-9][0-9]{5}$", coerce_numbers_to_str=True)
     driver_type: Literal["route","border","both"] = "route"
     password: str = Field(min_length=6)
@@ -145,7 +145,7 @@ class EntryBatch(BaseModel):
 
 
 class TfProfileUpdate(TfDetails):
-    employee_category: Literal["tf","wgm"] | None = None
+    employee_category: Literal["tf"] | None = None
     username: str | None = Field(default=None, pattern=r"^[1-9][0-9]{5}$", coerce_numbers_to_str=True)
     driver_type: Literal["route","border","both"] | None = None
     last_name: str = Field(min_length=1,max_length=120)

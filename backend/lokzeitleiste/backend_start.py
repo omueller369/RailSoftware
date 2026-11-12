@@ -12,6 +12,7 @@ from .models import StaffProfile
 def start_modules(user,p):
     employees=any(p.get(key,0) for key in ('employees','planning','worktime','reports','directory','shifts','email'))
     definitions=[
+        ('wgm',_text_source('wgm.text_159c423d8698'),'/admin/wgm',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('wgm',0)),
         ('work_reports',_text_source('admin_work_reports.text_1bc38267fc84'),'/admin/work-reports',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('work_reports',0)),
         ('tf',_text_source('admin_work_reports.text_205f153c67b5'),'/admin/tf',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('employees',0) or int(employees)),
         ('staff',_text_source('server_backend_start.text_20e987b4a823'),'/admin/staff',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('staff',0)),

@@ -770,3 +770,6 @@ def portal_theme_styles():return FileResponse(Path(__file__).parent/'static'/'po
 
 from .work_reports.admin import create_router as admin_work_reports_router
 app.include_router(admin_work_reports_router(require_admin))
+
+from .wgm import create_router as wgm_router
+app.include_router(wgm_router(require_admin))

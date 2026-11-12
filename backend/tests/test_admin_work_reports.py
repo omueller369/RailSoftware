@@ -39,32 +39,12 @@ class AdminWorkReportsTest(unittest.TestCase):
         self.assertEqual(self.client.get('/api/v1/admin/work-reports?year=2026&month=13').status_code,422)
         self.assertEqual(self.client.get(path+'&employee_category=admin').status_code,422)
 
-    def test_category_persists_and_legacy_updates_do_not_reset_it(self):
-        people=self.client.get('/api/v1/admin/tf').json();profile=next(p for p in people if p['id']==self.tf)
-        self.assertEqual(profile['employee_category'],'tf')
-        data={key:profile[key] for key in ['first_name','last_name','personnel_number','vacation_days','birth_date','bahncard','email','federal_state']}
-        self.assertEqual(self.client.put(f'/api/v1/admin/tf/{self.tf}',json=dict(data,employee_category='wgm')).status_code,200)
-        self.assertEqual(self.client.put(f'/api/v1/admin/tf/{self.tf}',json=data).status_code,200)
-        with Session(self.engine) as db:self.assertEqual(category(db,self.tf),'wgm')
-        self.assertEqual(self.client.put(f'/api/v1/admin/tf/{self.tf}',json=dict(data,employee_category='admin')).status_code,422)
-        report=self.create()
-        row=self.client.get('/api/v1/admin/work-reports?year=2026&month=10&employee_category=wgm').json()['items'][0]
-        self.assertEqual(row['employee']['employee_category'],'wgm')
-        self.assertEqual(row['id'],report['id'])
-        self.assertEqual(self.client.get('/api/v1/admin/work-reports/employees').json()[0]['employee_category'],'wgm')
-
-    def test_create_wgm_uses_shared_staff_foundation_without_admin_rights(self):
+    def test_tf_endpoints_do_not_accept_wgm_category(self):
         profile=self.client.get('/api/v1/admin/tf').json()[0]
         data=dict(profile,username='787101',personnel_number='P-WGM',email='wgm@example.com',password='wagon-secret-12345',employee_category='wgm')
-        response=self.client.post('/api/v1/admin/tf',json=data)
-        self.assertEqual(response.status_code,201,response.text)
-        with Session(self.engine) as db:
-            from lokzeitleiste.models import User
-            user_id=response.json()['id']
-            self.assertEqual(category(db,user_id),'wgm')
-            self.assertEqual(db.get(User,user_id).role,'tf')
-        people=self.client.get('/api/v1/admin/tf').json()
-        self.assertEqual(next(p for p in people if p['id']==user_id)['employee_category'],'wgm')
+        self.assertEqual(self.client.post('/api/v1/admin/tf',json=data).status_code,422)
+        data.pop('password')
+        self.assertEqual(self.client.put(f'/api/v1/admin/tf/{self.tf}',json=data).status_code,422)
 
     def test_independent_permissions_protect_list_details_pdf_and_picker(self):
         report=self.create();base='/api/v1/admin/work-reports'

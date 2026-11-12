@@ -14,7 +14,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from .db import database_session
 from .default_order import ordered
-from .models import EmailDomain, EmployeeEmail, MailboxProvision, MailboxAccount, MailboxSettings, User, TfProfile, StaffProfile
+from .models import EmailDomain, EmployeeEmail, MailboxProvision, MailboxAccount, MailboxSettings, User, TfProfile, StaffProfile, WgmProfile
 from .accounts.access import demand
 from .mailbox import service
 from .mailbox.api import MessageInput
@@ -93,13 +93,13 @@ def save_email(db,user,address,password=None):
 
 def employee_rows(db):
     result=[]
-    for user in db.scalars(select(User).where(User.role.in_(('tf','staff')))):
-        profile=db.get(TfProfile if user.role=='tf' else StaffProfile,user.id)
+    for user in db.scalars(select(User).where(User.role.in_(('tf','staff','wgm')))):
+        profile=db.get(TfProfile if user.role=='tf' else WgmProfile if user.role=='wgm' else StaffProfile,user.id)
         row=db.get(EmployeeEmail,user.id);job=db.get(MailboxProvision,user.id)
         account=db.get(MailboxAccount,user.id)
         address=row.address if row else (profile.email or '' if user.role=='tf' and profile else '')
         status=job.status if job else 'ready' if account and account.address==address else 'external'
-        result.append(dict(id=user.id,first_name=profile.first_name if profile else user.username,last_name=profile.last_name if profile else '',role='TF' if user.role=='tf' else _text_source('server_employee_mail.text_2456bb8ed72f'),email=address,mailbox_status=status,own=user.id))
+        result.append(dict(id=user.id,first_name=profile.first_name if profile else user.username,last_name=profile.last_name if profile else '',role='TF' if user.role=='tf' else 'WGM' if user.role=='wgm' else _text_source('server_employee_mail.text_2456bb8ed72f'),email=address,mailbox_status=status,own=user.id))
     return sorted(result,key=lambda r:(r['last_name'].casefold(),r['first_name'].casefold()))
 
 

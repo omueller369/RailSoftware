@@ -11,7 +11,7 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from ..db import database_session
-from ..models import DutyReport, TfProfile, User, WorkEntry, EmployeeCategory
+from ..models import DutyReport, TfProfile, User, WorkEntry, EmployeeCategory, WgmProfile
 from ..localization import source
 from ..accounts.employee_categories import category
 from .service import report_view
@@ -48,21 +48,24 @@ def create_router(require_admin):
         rows=db.execute(select(TfProfile, EmployeeCategory.category).join(User, User.id==TfProfile.user_id)
                         .outerjoin(EmployeeCategory,EmployeeCategory.user_id==TfProfile.user_id)
                         .where(User.role=='tf').order_by(TfProfile.last_name,TfProfile.first_name,TfProfile.user_id))
-        return [employee(profile,kind or 'tf') for profile,kind in rows]
+        result=[employee(profile,kind or 'tf') for profile,kind in rows]
+        result.extend(employee(profile,'wgm') for profile in db.scalars(select(WgmProfile).join(User,User.id==WgmProfile.user_id).where(User.role=='wgm')))
+        return sorted(result,key=lambda row:(row['name'].casefold(),row['id']))
 
     @router.get('/api/v1/admin/work-reports')
     def listing(year:int=Query(ge=2000,le=2100),month:int=Query(ge=1,le=12),
                 employee_id:int|None=Query(default=None,ge=1),employee_category:Literal['tf','wgm']|None=None,
                 offset:int=Query(default=0,ge=0),limit:int=Query(default=50,ge=1,le=100),
                 user=Depends(require_admin),db:Session=Depends(database_session)):
-        query=select(DutyReport,TfProfile,EmployeeCategory.category).join(TfProfile,TfProfile.user_id==DutyReport.tf_user_id).join(WorkEntry,WorkEntry.id==DutyReport.entry_id).outerjoin(EmployeeCategory,EmployeeCategory.user_id==TfProfile.user_id)
+        query=select(DutyReport,TfProfile,EmployeeCategory.category,WgmProfile).join(TfProfile,TfProfile.user_id==DutyReport.tf_user_id).join(WorkEntry,WorkEntry.id==DutyReport.entry_id).outerjoin(EmployeeCategory,EmployeeCategory.user_id==TfProfile.user_id).outerjoin(WgmProfile,WgmProfile.user_id==DutyReport.tf_user_id)
         query=query.where(WorkEntry.entry_date>=date(year,month,1),WorkEntry.entry_date<=date(year,month,calendar.monthrange(year,month)[1]))
         if employee_id is not None:query=query.where(DutyReport.tf_user_id==employee_id)
         if employee_category:query=query.where(func.coalesce(EmployeeCategory.category,'tf')==employee_category)
         total=db.scalar(select(func.count()).select_from(query.subquery()))
         rows=db.execute(query.order_by(WorkEntry.entry_date.desc(),DutyReport.id.desc()).offset(offset).limit(limit))
         items=[]
-        for report,profile,kind in rows:
+        for report,profile,kind,wgm in rows:
+            if wgm:profile=wgm;kind='wgm'
             payload=json.loads(report.payload_json)
             start=datetime.fromisoformat(payload['start_at']);end=datetime.fromisoformat(payload['end_at'])
             items.append(dict(id=report.id,employee=employee(profile,kind or 'tf'),start_at=payload['start_at'],end_at=payload['end_at'],
@@ -72,7 +75,7 @@ def create_router(require_admin):
     @router.get('/api/v1/admin/work-reports/{report_id}')
     def details(report_id:int,user=Depends(require_admin),db:Session=Depends(database_session)):
         report=owned_report(db,report_id)
-        return dict(report=report_view(db,report),employee=employee(db.get(TfProfile,report.tf_user_id),category(db,report.tf_user_id)))
+        return dict(report=report_view(db,report),employee=employee(db.get(WgmProfile,report.tf_user_id) or db.get(TfProfile,report.tf_user_id),category(db,report.tf_user_id)))
 
     @router.get('/api/v1/admin/work-reports/{report_id}/pdf')
     def pdf(report_id:int,user=Depends(require_admin),db:Session=Depends(database_session)):

@@ -25,6 +25,8 @@ def main():
         from .planning.clear_legacy_notes import migrate as clear_old_notes
         clear_old_notes(db)
         db.commit()
+        from .wgm import migrate_existing_wgm
+        migrate_existing_wgm(db)
         sync_user_directories(db)
         from .documents.archive import backfill_documents
         backfill_documents(db)

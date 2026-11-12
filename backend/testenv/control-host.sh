@@ -32,7 +32,7 @@ case ${1:-status} in
   "${compose[@]}" stop api mailer
   python3 "$root/setup/host-mysql.py" backup "$backend/.env.host" "$target/database.sql.gz"
   files=(backend/.env.host)
-  for name in TF VW backend/testenv/certs;do [[ ! -e "$root/$name" ]] || files+=("$name");done
+  for name in TF VW WGM backend/testenv/certs;do [[ ! -e "$root/$name" ]] || files+=("$name");done
   tar --acls --xattrs --numeric-owner -czf "$target/files.tar.gz" -C "$root" "${files[@]}"
   gzip -t "$target/database.sql.gz";tar -tzf "$target/files.tar.gz" >/dev/null
   trap - ERR
