@@ -1,4 +1,7 @@
-# LokZeitleiste v0.26.42
+# LokZeitleiste v0.26.43
+
+**0.26.43 – GPS-DEMO:** Die neue TF-Kachel `/tf/gps-demo` spielt eigene abgeschlossene, synchronisierte GPS-Aufzeichnungen auf der vorhandenen Karte ab. Aufzeichnung nach Zugnummer/Datum auswählen, Laden und Abspielen wählen. Geschwindigkeit: 1×, 5×, 10×, 30×, 60×, 120× oder 300×; fünf Stunden dauern bei 300× eine Minute. Pause, Zeitregler und Zum Anfang steuern die Wiederholung. Die Demo startet keinen Standortdienst und verändert keine GPS-Daten, Standzeiten oder Arbeitsberichte. Zum Laden und für Kartenbilder ist Internet nötig. Server und Android-App aktualisieren.
+
 
 **0.26.42:** Footer: Rail Software · Version … · Copyright 2026 IO-Software-Görlitz. Das Web zeigt die Serverversion, Android die tatsächlich installierte APK-Version einschließlich Test-Buildnummer.
 

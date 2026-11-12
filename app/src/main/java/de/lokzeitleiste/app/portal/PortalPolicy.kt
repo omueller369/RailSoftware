@@ -27,7 +27,7 @@ class PortalPolicy(base: String) {
         zoom in 0..19 && x.toInt() < (1 shl zoom) && y.toInt() < (1 shl zoom)
     }.getOrDefault(false)
     fun asset(path: String): String? = when(path) {
-        "/tf", "/tf/hilfe", "/tf/notizen", "/tf/arbeitsbericht", "/tf/arbeitsplan", "/tf/bahnhoefe", "/tf/leuna-uebergabeprotokoll" -> "tf-portal.html"
+        "/tf", "/tf/gps-demo", "/tf/hilfe", "/tf/notizen", "/tf/arbeitsbericht", "/tf/arbeitsplan", "/tf/bahnhoefe", "/tf/leuna-uebergabeprotokoll" -> "tf-portal.html"
         "/tf/bremszettel" -> "brake-sheet.html"
         "/tf/bremszettel-de" -> "national-brake-sheet.html"
         "/tf/national-brake-sheet.js" -> "national-brake-sheet.js"
@@ -37,6 +37,7 @@ class PortalPolicy(base: String) {
         "/tf/nachrichten" -> "tf-messages.html"
         "/tf/me" -> "tf-profile.html"
         "/tf/notes.js" -> "tf-notes.js"
+        "/tf/gps-demo.js" -> "gps-demo.js"
         "/tf/help.js" -> "tf-help.js"
         "/tf/help-content.js" -> "tf-help-content.js"
         "/tf/help.css" -> "tf-help.css"

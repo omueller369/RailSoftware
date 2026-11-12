@@ -29,6 +29,13 @@ jobs:
         run: python tools/build-translations.py --check
       - name: JavaScript regression tests
         run: for test in backend/tests/*.cjs; do node "$test" || exit 1; done
+      - name: GPS demo browser playback
+        run: python backend/tests/check_gps_demo_ui.py --output-dir "$RUNNER_TEMP/gps-demo-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gps-demo-ui
+          path: ${{ runner.temp }}/gps-demo-ui/
       - name: Responsive work report layout
         run: python backend/tests/check_work_report_layout.py --output-dir "$RUNNER_TEMP/work-report-layout"
       - uses: actions/upload-artifact@v4

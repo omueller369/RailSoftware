@@ -159,6 +159,11 @@
     "en": "/locales/portal_gps/en.json",
     "pl": "/locales/portal_gps/pl.json"
   },
+  "portal_gps_demo": {
+    "de": "/locales/portal_gps_demo/de.json",
+    "en": "/locales/portal_gps_demo/en.json",
+    "pl": "/locales/portal_gps_demo/pl.json"
+  },
   "portal_handover_protocols": {
     "de": "/locales/portal_handover_protocols/de.json",
     "en": "/locales/portal_handover_protocols/en.json",

@@ -192,6 +192,17 @@ def create_router(require_account):
             item['station']=payload.get('stations',{}).get(item['key'])
             item['reason']=payload['reasons'].get(item['key'],{})
         return dict(payload,revision=row.revision,analysis=result)
+    @router.get('/tf/gps-demo.js')
+    def demo_script():return FileResponse(Path(__file__).parent/'static'/'gps-demo.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/api/v1/tf/gps-recordings')
+    def recordings(offset:int=Query(default=0,ge=0),user:User=Depends(driver),db:Session=Depends(database_session)):
+        rows=list(db.scalars(select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id).order_by(TrainGpsRecording.id.desc()).offset(offset).limit(101)))
+        items=[]
+        for row in rows[:100]:
+            payload=json.loads(row.payload_json);points=payload.get('points',[])
+            if len(points)<2 or not payload.get('ended',True):continue
+            items.append(dict(journey_id=row.journey_id,train_number=payload['train_number'],start=points[0]['t'],end=points[-1]['t'],point_count=len(points)))
+        return dict(items=items,next_offset=offset+100 if len(rows)>100 else None)
     @router.get('/tf/gps.js')
     def script():return FileResponse(Path(__file__).parent/'static'/'gps.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/api/v1/tf/gps/nearby')

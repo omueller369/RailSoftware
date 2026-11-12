@@ -1,4 +1,4 @@
-# Android 0.26.41 – aktuelles TF-Portal
+# Android 0.26.43 – aktuelles TF-Portal
 
 Die App öffnet nach der nativen Anmeldung das vollständige TF-Portal. Die gemeinsamen HTML-/CSS-/JavaScript-Dateien werden beim Android-Build aus `backend/lokzeitleiste/static` in die APK übernommen. Geschäftsregeln, Tabellen, Eingaben und Berechtigungen entsprechen damit dem Portalstand dieses Builds. Neue Portalversionen erfordern einen neuen APK-Build. Der Server muss mindestens zum selben Projektstand aktualisiert sein.
 
@@ -38,7 +38,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Bei einer APK mit anderer bisheriger Signatur kann Android kein direktes Update installieren. Vor einer Deinstallation unübertragene lokale Daten sichern/synchronisieren. Keine Deinstallation ohne Datensicherung empfehlen.
 
-Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 67 liegt unter dem bestätigten Tabletstand 100004.
+Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 69 liegt unter dem bestätigten Tabletstand 100004.
 
 Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Update** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
 
@@ -63,3 +63,7 @@ Android erlaubt gezielt öffentliche PNG-Kartenkacheln von OpenStreetMap und Ope
 ## GPS-Lücken und manuelle Halte ab 0.26.41
 
 Die Karte schließt Signalunterbrechungen mit einer hellrosa Geraden. Diese geschätzte Verbindung ändert keine GPS-Rohpunkte und zählt nicht automatisch als Standzeit. Start Stand wird während einer laufenden GPS-Aufzeichnung bei einer Lücke freigegeben (mehr als 30 Sekunden ohne genauen neuen Punkt oder ein ungenauer Punkt). Ende Stand bleibt auch nach Signalrückkehr bedienbar. Manuelle Halte in einer Lücke erscheinen gelb-rot. Ihre Position auf der Verbindung ist aus der Startzeit geschätzt; bis zur Signalrückkehr wird die letzte bekannte Position verwendet. Zeiten und Gründe bleiben manuelle Angaben. Die rote Zeitsumme zählt Überschneidungen mit gemessenen Halten nur einmal. GPS-Start/-Stopp und manueller Halt bleiben getrennte Vorgänge.
+
+## GPS-DEMO ab 0.26.43
+
+Die eigene Kachel GPS-DEMO öffnet `/tf/gps-demo`. Synchronisiere vorher eine beendete GPS-Aufzeichnung. Wähle sie nach Zugnummer und Datum aus und lade sie. Abspielen/Pause, Zum Anfang, ein Zeitregler und 1× bis 300× steuern die Wiedergabe. Fünf Stunden dauern bei 300× eine Minute. Die Demo verwendet die vorhandene Karte mit Zugposition, Spur, Standzeiten und markierten GPS-Lücken. Sie startet weder Android-GPS noch Hintergrundaufzeichnung und schreibt keine Arbeitsberichte oder GPS-Aufzeichnungen. Beim Ausblenden oder Verlassen pausiert sie. Laden und Kartenbilder benötigen Internet.
