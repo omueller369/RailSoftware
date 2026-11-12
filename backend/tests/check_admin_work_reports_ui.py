@@ -29,6 +29,9 @@ window.fetch=async url=>{calls.push(url);let data;if(url.endsWith('/employees'))
  assert(!document.querySelector('#reportDetailBody script'),'Duty note remains plain text');
  assert(!document.querySelector('#reportDetailBody input'),'Detail view read-only');
  assert(!document.getElementById('reportPdf').disabled,'PDF available after loading');
+ window.I18n={t:value=>'EN:'+value};window.dispatchEvent(new Event('languagechange'));await new Promise(resolve=>setTimeout(resolve,0));
+ assert(dialog.open&&document.querySelector('#reportRows button').textContent.startsWith('EN:'),'Language change updates dynamic labels and retains open report');
+ assert(document.getElementById('reportDetailBody').textContent.includes('EN:'),'Detail labels follow language change');
  document.getElementById('reportClose').click();assert(!dialog.open,'Detail closes');
  assert(document.documentElement.scrollWidth<=innerWidth+1,'Page fits viewport');
  for(const control of document.querySelectorAll('#reportFilters input,#reportFilters select')){const rect=control.getBoundingClientRect();assert(rect.left>=0&&rect.right<=innerWidth+1,'Filters fit viewport');}
