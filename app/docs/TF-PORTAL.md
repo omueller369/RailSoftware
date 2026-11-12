@@ -1,4 +1,4 @@
-# Android 0.26.43 – aktuelles TF-Portal
+# Android 0.26.45 – aktuelles TF-Portal
 
 Die App öffnet nach der nativen Anmeldung das vollständige TF-Portal. Die gemeinsamen HTML-/CSS-/JavaScript-Dateien werden beim Android-Build aus `backend/lokzeitleiste/static` in die APK übernommen. Geschäftsregeln, Tabellen, Eingaben und Berechtigungen entsprechen damit dem Portalstand dieses Builds. Neue Portalversionen erfordern einen neuen APK-Build. Der Server muss mindestens zum selben Projektstand aktualisiert sein.
 
@@ -38,7 +38,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Bei einer APK mit anderer bisheriger Signatur kann Android kein direktes Update installieren. Vor einer Deinstallation unübertragene lokale Daten sichern/synchronisieren. Keine Deinstallation ohne Datensicherung empfehlen.
 
-Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 69 liegt unter dem bestätigten Tabletstand 100004.
+Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 71 liegt unter dem bestätigten Tabletstand 100004.
 
 Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Update** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
 
@@ -67,3 +67,7 @@ Die Karte schließt Signalunterbrechungen mit einer hellrosa Geraden. Diese gesc
 ## GPS-DEMO ab 0.26.43
 
 Die eigene Kachel GPS-DEMO öffnet `/tf/gps-demo`. Synchronisiere vorher eine beendete GPS-Aufzeichnung. Wähle sie nach Zugnummer und Datum aus und lade sie. Abspielen/Pause, Zum Anfang, ein Zeitregler und 1× bis 300× steuern die Wiedergabe. Fünf Stunden dauern bei 300× eine Minute. Die Demo verwendet die vorhandene Karte mit Zugposition, Spur, Standzeiten und markierten GPS-Lücken. Sie startet weder Android-GPS noch Hintergrundaufzeichnung und schreibt keine Arbeitsberichte oder GPS-Aufzeichnungen. Beim Ausblenden oder Verlassen pausiert sie. Laden und Kartenbilder benötigen Internet.
+
+## Android-Anmeldung ab 0.26.45
+
+Der Login zeigt das Rail-Software-Logo und einen abgerundeten Rahmen aus Schienen und Schwellen in den Logofarben Weinrot/Dunkelblau. Die Karte ist horizontal und vertikal zentriert. Bei wenig Höhe oder geöffneter Tastatur lässt sie sich scrollen. TF-Nummer und Passwort stehen untereinander, gefolgt von Anmelden und dem Hinweis zur gespeicherten Anmeldung. Zur Erstanmeldung nutzt Du das Admin-Passwort und änderst es anschließend wie bisher. Nach drei abgewiesenen Anmeldungen derselben TF-Nummer erscheint Passwort vergessen. Der Dialog verweist an Deinen Administrator; ein automatischer Selbstbedienungs-Reset ist nicht eingerichtet. Netzwerkfehler zählen nicht als Passwort-Fehlversuche. Eine bestehende Anmeldung bleibt nach dem App-Update erhalten; der neue Bildschirm erscheint bei der nächsten Anmeldung.

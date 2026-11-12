@@ -1,4 +1,9 @@
 {
+  "android_login": {
+    "de": "/locales/android_login/de.json",
+    "en": "/locales/android_login/en.json",
+    "pl": "/locales/android_login/pl.json"
+  },
   "backend_account": {
     "de": "/locales/backend_account/de.json",
     "en": "/locales/backend_account/en.json",

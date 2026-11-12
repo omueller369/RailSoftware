@@ -1,4 +1,7 @@
-# LokZeitleiste v0.26.44
+# LokZeitleiste v0.26.45
+
+**0.26.45:** Der Android-Login zeigt Rail Software mit dem vorhandenen Logo, zentrierten Eingaben und einem abgerundeten Gleisrahmen in Weinrot/Dunkelblau. Hinweis auf das eigene Passwort und das Admin-Passwort zur Erstanmeldung, TF-Nummer, Passwort, Anmelden und der Hinweis zur gespeicherten Anmeldung stehen untereinander. Nach drei abgewiesenen Anmeldungen für dieselbe TF-Nummer erscheint Passwort vergessen mit dem bestehenden Admin-Resetweg; Netzwerkfehler zählen nicht mit. Die App heißt auch im Android-Launcher Rail Software. Bestehende Anmeldungen, Paketname, Signierung und lokale Daten bleiben erhalten.
+
 
 **0.26.44:** Die GPS-Verfolgungsspur und ihre Legende verwenden wieder 0–140 km/h: 0 blau, 50 grün, 100 gelb, 140 rot, mit fließenden Farbübergängen. Höhere Geschwindigkeiten bleiben rot. Die gemeinsame Skala gilt im Web, in Android und in GPS-DEMO.
 
