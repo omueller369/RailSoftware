@@ -1,10 +1,11 @@
 package de.lokzeitleiste.app
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import androidx.activity.ComponentActivity
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import de.lokzeitleiste.app.network.AuthenticationRequired
 import java.io.File
 import java.io.IOException
@@ -20,7 +21,7 @@ import org.robolectric.annotation.GraphicsMode
 @Config(sdk = [35], qualifiers = "w800dp-h1280dp-mdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class LoginScreenTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
 
     private fun show(reject: suspend () -> Nothing = { throw AuthenticationRequired() }) {
         compose.setContent {
@@ -40,9 +41,16 @@ class LoginScreenTest {
         compose.waitForIdle()
     }
     private fun screenshot(name: String) {
-        val directory = File("build/login-screenshots").apply { mkdirs() }
-        File(directory, "$name.png").outputStream().use { output ->
-            compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, output)
+        compose.runOnIdle {
+            val view = compose.activity.window.decorView
+            check(view.width > 0 && view.height > 0)
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+            view.draw(Canvas(bitmap))
+            val directory = File("build/login-screenshots").apply { mkdirs() }
+            File(directory, "$name.png").outputStream().use { output ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
+            }
+            bitmap.recycle()
         }
     }
     @Test fun brandedCenteredLoginAndRecoveryAfterThreeRejectedAttempts() {
