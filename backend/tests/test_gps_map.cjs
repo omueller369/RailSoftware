@@ -74,20 +74,25 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  assert.equal(r.mapState.mode,'free');assert.equal(r.mapView.zoom,12);assert(markers()[0].attributes.transform.includes('translate(300 150)'));assert(markers()[0].attributes.transform.endsWith('scale(2)'));r.liveInputs[0].tr.events.focusout({relatedTarget:null});
  assert(markers()[0].attributes.transform.endsWith('scale(1)'));r.liveInputs[0].tr.events.focusin();assert(markers()[0].attributes.transform.endsWith('scale(2)'));
  const key=r.liveInputs[0].row.key;r.record.stop_edits={[key]:{imported:true}};let imported=null;r.o.focusImported=value=>imported=value;r.draw();assert.equal(r.liveInputs.length,0);markers()[0].events.click();assert.equal(imported,key);
- // Route colors follow speed, and the signal gap stays dashed and neutral.
+ // Route colors follow the shared 0–140 km/h scale; signal gaps stay light pink.
  r.record={ended:true,points:[
-  point(52,13,1),{...point(52,13.001,5001),speed:40/3.6},
-  {...point(52,13.002,10001),speed:90/3.6},
-  {...point(52,13.003,15001),speed:99/3.6},
-  {...point(52,13.0035,20001),speed:100/3.6},
+  point(52,13,1),{...point(52,13.001,5001),speed:50/3.6},
+  {...point(52,13.002,10001),speed:100/3.6},
+  {...point(52,13.003,15001),speed:120/3.6},
+  {...point(52,13.0035,20001),speed:140/3.6},
   {...point(52,13.004,55001),speed:180/3.6}
  ]};r.drawMap();
  const trails=r.mapSvg.children.filter(n=>'data-gps-trail' in n.attributes);
- assert.deepEqual(trails.map(n=>n.attributes.stroke),['rgb(0,119,70)','rgb(207,107,0)','rgb(199,65,20)','rgb(190,22,40)']);
+ assert.deepEqual(trails.map(n=>n.attributes.stroke),['rgb(0,128,0)','rgb(255,255,0)','rgb(255,127,0)','rgb(255,0,0)']);
  assert(trails.every(n=>n.attributes['stroke-width']===6));
  const gap=r.mapSvg.children.find(n=>n.attributes['data-gps-gap']);
  assert.equal(gap.attributes.stroke,'#f6b6d2');assert.equal(gap.attributes['stroke-width'],6);assert.equal(gap.attributes['stroke-dasharray'],undefined);
- const scale=r.trailLegend().children[1];assert.equal(scale.children.at(-1).textContent,'100+');
+ const scale=r.trailLegend().children[1];assert.deepEqual(scale.children.map(n=>n.textContent),['0','50','100','140']);
+ assert(scale.attributes.style.includes('rgb(0,0,255) 0%'));assert(scale.attributes.style.includes('rgb(255,0,0) 100%'));
+ // Exact knots and intermediate speeds use a continuous interpolation, without 5 km/h buckets.
+ const palette=new Element('svg'),speeds=[0,0,25,50,75,76,100,120,140,180];
+ r.drawTrail(palette,tag=>new Element(tag),speeds.map((speed,i)=>({t:i*5000,accuracy:5,lon:i,mapSpeed:speed/3.6})),p=>({x:p.lon,y:0}));
+ assert.deepEqual(palette.children.map(n=>n.attributes.stroke),['rgb(0,0,255)','rgb(0,64,128)','rgb(0,128,0)','rgb(128,192,0)','rgb(133,194,0)','rgb(255,255,0)','rgb(255,127,0)','rgb(255,0,0)']);
  // Signal gaps do not invent stops, and short stationary runs have no marker.
  r.record={ended:true,points:[{...point(52,13,1),speed:0},{...point(52,13,400001),speed:0}]};r.draw();assert.equal(markers().length,0);
  // Manual gap stops persist as times; their map position is derived on the pink bridge.

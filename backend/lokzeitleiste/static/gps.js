@@ -45,14 +45,14 @@ function stopEnd(row,value,previous){
 const distance=(a,b)=>{const r=Math.PI/180,h=Math.sin((b.lat-a.lat)*r/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin((b.lon-a.lon)*r/2)**2;return 6371000*2*Math.asin(Math.min(1,Math.sqrt(h)));};
 const speedAt=(p,last)=>p.speed??(last&&last.accuracy<=50&&p.t>last.t&&p.t-last.t<=30000?distance(last,p)/((p.t-last.t)/1000):null);
 // A fixed scale keeps colors comparable between recordings and while zooming.
-const trailScale=[[0,[25,85,195]],[40,[0,119,70]],[90,[207,107,0]],[100,[190,22,40]]];
+const trailScale=[[0,[0,0,255]],[50,[0,128,0]],[100,[255,255,0]],[140,[255,0,0]]];
 const defaultMapZoom=10;
 const trailMaxSpeed=trailScale.at(-1)[0];
 const trailColor=rgb=>'rgb('+rgb.join(',')+')';
 const unknownTrail='#626b78';
 function speedColor(speed){
  if(!Number.isFinite(speed))return unknownTrail;
- const kmh=Math.min(trailMaxSpeed,Math.max(0,Math.floor(speed*3.6/5)*5));
+ const kmh=Math.min(trailMaxSpeed,Math.max(0,speed*3.6));
  const end=trailScale.findIndex(([limit])=>limit>=kmh);
  if(end===0)return trailColor(trailScale[0][1]);
  const [startSpeed,startColor]=trailScale[end-1],[endSpeed,endColor]=trailScale[end];
@@ -420,7 +420,7 @@ class Recorder{
  const scale=node('div');scale.className='gps-trail-scale';scale.setAttribute('style','--gps-trail-gradient:linear-gradient(90deg,'+
   trailScale.map(([speed,color])=>trailColor(color)+' '+speed/trailMaxSpeed*100+'%').join(',')+')');
  for(const [speed] of trailScale){
-  const tick=node('span',speed===trailMaxSpeed?speed+'+':String(speed));
+  const tick=node('span',String(speed));
   tick.setAttribute('style','left:'+speed/trailMaxSpeed*100+'%');scale.append(tick);
  }
  legend.append(scale);

@@ -1,4 +1,7 @@
-# LokZeitleiste v0.26.43
+# LokZeitleiste v0.26.44
+
+**0.26.44:** Die GPS-Verfolgungsspur und ihre Legende verwenden wieder 0–140 km/h: 0 blau, 50 grün, 100 gelb, 140 rot, mit fließenden Farbübergängen. Höhere Geschwindigkeiten bleiben rot. Die gemeinsame Skala gilt im Web, in Android und in GPS-DEMO.
+
 
 **0.26.43 – GPS-DEMO:** Die neue TF-Kachel `/tf/gps-demo` spielt eigene abgeschlossene, synchronisierte GPS-Aufzeichnungen auf der vorhandenen Karte ab. Aufzeichnung nach Zugnummer/Datum auswählen, Laden und Abspielen wählen. Geschwindigkeit: 1×, 5×, 10×, 30×, 60×, 120× oder 300×; fünf Stunden dauern bei 300× eine Minute. Pause, Zeitregler und Zum Anfang steuern die Wiederholung. Die Demo startet keinen Standortdienst und verändert keine GPS-Daten, Standzeiten oder Arbeitsberichte. Zum Laden und für Kartenbilder ist Internet nötig. Server und Android-App aktualisieren.
 
