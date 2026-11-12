@@ -17,6 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import de.lokzeitleiste.app.BuildConfig
 import de.lokzeitleiste.app.LanguageRuntime
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -26,6 +28,7 @@ import java.security.MessageDigest
 
 /** Public GitHub test releases only. Android always handles the final installation consent. */
 class PortalUpdater(private val activity:ComponentActivity, private val autoOffer:Boolean=true) {
+    companion object { private val downloadLock=Mutex() }
     private val prefs=activity.getSharedPreferences("portal_updates",0)
     private val directory=File(activity.cacheDir,"updates").apply { mkdirs() }
     var checking by mutableStateOf(false)
@@ -62,7 +65,7 @@ class PortalUpdater(private val activity:ComponentActivity, private val autoOffe
         prefs.edit().putLong("checked",System.currentTimeMillis()).apply();checking=true;failed=false
         activity.lifecycleScope.launch {
             try {
-                val apk=withContext(Dispatchers.IO) { findAndDownload() }
+                val apk=withContext(Dispatchers.IO) { downloadLock.withLock { findAndDownload() } }
                 if(apk==null) { updateAvailable=false;if(manual)message("Keine neuere Testversion verfügbar.") }
                 else { updateAvailable=true;prefs.edit().putString("pending",apk.name).apply();if((manual||autoOffer)&&GpsRecordingService.currentKey==null)offer(apk) }
             } catch(error:Exception) { failed=true;if(manual)message("Update-Prüfung fehlgeschlagen: "+(error.message?:"Keine Verbindung")) }

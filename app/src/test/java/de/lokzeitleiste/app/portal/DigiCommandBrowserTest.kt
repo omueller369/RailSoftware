@@ -1,7 +1,6 @@
 package de.lokzeitleiste.app.portal
 
 import android.Manifest
-import android.app.Application
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
@@ -19,7 +18,7 @@ import org.robolectric.annotation.Config
 @Config(sdk = [35])
 class DigiCommandBrowserTest {
     @Test fun browserLaunchDoesNotInterruptGpsJournal() {
-        val app=RuntimeEnvironment.getApplication<Application>()
+        val app=RuntimeEnvironment.getApplication()
         shadowOf(app).grantPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
         shadowOf(app.getSystemService(LocationManager::class.java)).setProviderEnabled(LocationManager.GPS_PROVIDER,true)
         val activity=Robolectric.buildActivity(ComponentActivity::class.java).setup()
