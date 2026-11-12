@@ -14,6 +14,10 @@ const database={transaction(){const tx={};tx.objectStore=()=>({get(key){const re
 let count=0,remote=null,body=null;
 const response=(data,status=200)=>({status,ok:status<400,json:async()=>structuredClone(data)});
 const context={console,Intl,Date,Number,Math,Promise,setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){},URL,Blob,confirm:()=>true,indexedDB:{open(){const request={result:database};queueMicrotask(()=>request.onsuccess());return request;}},document:{visibilityState:'visible',createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),addEventListener(){}},navigator:{onLine:true,geolocation:{getCurrentPosition(resolve){resolve({timestamp:1792627200000+(count++)*5000,coords:{latitude:52,longitude:13,accuracy:5,speed:0}});}}},window:{isSecureContext:true,addEventListener(){}},fetch:async(path,options={})=>{if(options.method==='PUT'){body=JSON.parse(options.body);if(path.endsWith('/stations')){remote.revision++;remote.reasons=body.reasons;return response(remote);}remote={...body,revision:(remote?.revision||0)+1,analysis:{rows:[{key:'start',kind:'Start',start:body.points[0].t,end:body.points[0].t,lat:52,lon:13,direction:null}],gaps:[]}};return response(remote);}if(options.method==='POST')return response(remote);if(options.method==='DELETE'){remote=null;return response({ok:true});}return remote?response(remote):response({},404);}};
+const tabNodes={workReport:new Element('section'),reportDetails:new Element('div')};
+for(const name of ['duty','train','month']){tabNodes['reportTab-'+name]=new Element('button');tabNodes['reportPanel-'+name]=new Element('section');}
+context.document.getElementById=id=>tabNodes[id];
+vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/report-tabs.js','utf8'),context);
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/train-journeys.js','utf8'),context);
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8'),context);
 
@@ -24,6 +28,8 @@ context.window.AndroidPortal={gps:async(method,values)=>{if(method==='start'){na
  const times=[];const options={journeyTime:(kind,time)=>times.push({kind,time}),userId:5,journeyId:'00000000-0000-4000-8000-000000000001',container,numberField:field,trainNumber:()=>field.value,readonly:()=>false,selectEnd:async()=>({code:'CCC',name:'Ziel'}),selectStart:async()=>({code:'BBB',name:'Berlin Beispiel'}),stations(){},resolve:async()=>({code:'BBB'})};
  context.window.isSecureContext=false;let recorder=context.window.GpsRecorder.mount(options);await recorder.readyPromise;await recorder.start();assert(nativeRunning);assert(context.window.GpsRecorder.isActive());
  nativePoints.push({t:1792627200000,lat:52,lon:13,accuracy:5,speed:0});await recorder.nativeRead();assert.equal(recorder.record.points.length,1);
+ const sameRecord=recorder.record;for(const tab of ['month','duty','train']){context.window.ReportTabs.activate(tab);assert(nativeRunning);assert(context.window.GpsRecorder.isActive());assert.strictEqual(recorder.record,sameRecord);}
+
  recorder.clear();assert(nativeRunning);for(let i=0;i<4;i++)nativePoints.push({t:1792627205000+i*5000,lat:52,lon:13+i*.0003,accuracy:5,speed:10/3.6});recorder=context.window.GpsRecorder.mount(options);await recorder.readyPromise;assert(context.window.GpsRecorder.isActive());assert.equal(recorder.record.points.length,5);assert.deepEqual(times,[{kind:'start',time:1792627205000}]);assert(opened.includes(options.journeyId));const before=opened.length;await recorder.nativeRead();assert.equal(opened.length,before);
  nativePoints.push({t:1792627230000,lat:52,lon:13.0009,accuracy:5,speed:0});
  // Start/End Stand during an active native GPS gap, including signal recovery.

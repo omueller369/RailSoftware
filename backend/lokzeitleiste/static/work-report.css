@@ -219,3 +219,4 @@ html[data-theme="dark"] #reportSendCancel {
 .gps-manual-gap-legend::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:linear-gradient(90deg,#ffd600 50%,#d00000 50%);margin-right:6px;vertical-align:middle}
 
 .gps-demo-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}.gps-demo-controls label{display:flex;flex-direction:column;gap:6px;min-width:0;max-width:100%}.gps-demo-controls select{max-width:100%;min-width:0}.gps-demo-controls button,.gps-demo-controls select{min-height:44px}#gpsDemoWorkspace>label{display:block}#gpsDemoWorkspace input[type="range"]{width:100%;min-height:44px}#gpsDemoWorkspace output{display:block;font-variant-numeric:tabular-nums}
+.report-tab-bar{margin:16px 0}.report-tabs button{flex:1 1 12rem}.report-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:16px 0}#workReport [role="tabpanel"][hidden]{display:none!important}

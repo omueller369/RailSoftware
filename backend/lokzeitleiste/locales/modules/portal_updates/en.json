@@ -30,5 +30,6 @@
   "text_76cabfef5962": "On Android, choose Check for updates.",
   "text_3c77f82c4954": "Save open entries and stop GPS.",
   "text_d05050d48a60": "When an update is ready, choose Install update and confirm installation in Android.",
-  "text_8b5c98698b06": "Automatic checks continue at most every six hours; the login shows Update only for a verified newer APK."
+  "text_8b5c98698b06": "Automatic checks continue at most every six hours; the login shows Update only for a verified newer APK.",
+  "text_e670141d95c0": "Work report with three tabs: duty time and passenger travel, train journey and details (GPS), monthly work reports. Switching preserves inputs and GPS recording."
 }

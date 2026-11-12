@@ -1,3 +1,4 @@
+/* Arbeitsbericht: drei gleich gestaltete Reiter, ohne Verlust von Eingaben oder GPS. */
 /* Updates-Modul, kurze Kacheln und DB Digi-Bef. mit eigener Standzeit-Art. */
 /* Android-Login: Rail Software, Gleisrahmen und Admin-Hilfe nach drei Fehlversuchen. */
 /* GPS-Spur: fließende Skala 0 blau / 50 grün / 100 gelb / 140 rot. */
@@ -311,6 +312,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/arbeitsbericht",
     "aliases": [],
     "sections": [
+      {
+        "title": "{{portal_report_tabs.text_8f92cd7b253a}}",
+        "paragraphs": [
+          "{{portal_report_tabs.text_7aba019c05af}}"
+        ],
+        "steps": []
+      },
       {
         "title": "{{portal_tf_help_content.text_25ffb453f6c1}}",
         "paragraphs": [

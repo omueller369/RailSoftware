@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.46
+# LokZeitleiste v0.26.47
+
+**0.26.47:** Der Arbeitsbericht hat drei Reiter im Design der Zugfahrten: Dienstzeit und Gastfahrt, Zugfahrt und Details (GPS), Arbeitsberichte des Monats. Eingaben und laufende GPS-Aufzeichnungen bleiben beim Wechsel erhalten. Neu angelegte oder geöffnete Berichte zeigen Dienstzeit; die Wiederherstellung einer GPS-Aufzeichnung öffnet den GPS-Reiter.
 
 **0.26.46:** Kürzere TF-Kacheln: Doks.-Verwaltung, Meine Bhf's, Mein Konto, Bremszettel Int. und Bremszettel DE. Die neue Kachel Updates zeigt Web-/Android-Version, Updateprüfung, Installation und eine kurze Versionshistorie. Die zusätzliche native Kopfleiste entfällt; Abmelden bleibt im Portal-Header. Im Login erscheint Update nur bei einer heruntergeladenen und geprüften neueren APK. DB Digi-Bef. in der GPS-Ansicht öffnet https://db.de/dibe im externen Browser; der native Android-GPS-Dienst läuft weiter. Optional erhält der aktuelle Halt Art DB InfraGo / Grund DB-Digi-Befehl oder eine manuelle Standzeit beginnt. Der Grund wird einmalig in bestehenden Grundwerten ergänzt und beim Übernehmen in die Zugfahrt erhalten.
 

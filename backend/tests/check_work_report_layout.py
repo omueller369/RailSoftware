@@ -35,7 +35,7 @@ def fixture():
         }]};
         renderMonth();
     }};})();''', source)
-    controllers = (STATIC/'messages.js').read_text()+'\n'+'\n'.join((STATIC / name).read_text() for name in ['plan-colors.js', 'train-journeys.js', 'gps.js'])
+    controllers = (STATIC/'messages.js').read_text()+'\n'+'\n'.join((STATIC / name).read_text() for name in ['plan-colors.js', 'report-tabs.js', 'train-journeys.js', 'gps.js'])
     checks = r'''
 (async()=>{
  const assert=(condition,message)=>{if(!condition)throw Error(message);};
@@ -45,7 +45,11 @@ def fixture():
  let id=0;
  const editor=new window.TrainJourneyEditor({userId:1,button:document.getElementById('newTrainJourney'),container:document.getElementById('trainJourneyEditor'),readonly:()=>false,viewOnly:()=>false,bounds:()=>({start:day+'T08:00',end:day+'T16:00'}),minute:value=>Date.parse(value)/60000,clock:n=>Math.floor(n/60)+':'+String(n%60).padStart(2,'0'),uuid:()=>String(++id),stations(){},resolve:async()=>({code:'BBB',name:'Beispiel'}),changed(){},editingChanged(){},message(){},block(){}});
  editor.restore([{id:'layout-journey',train_number:'123',start_station:'BBB',start_station_name:'Beispiel',end_station:'CCC',end_station_name:'Ziel',start_at:day+'T08:00',end_at:day+'T16:00',events:[{id:'event',station:'BBB',station_name:'Beispiel',reason:'V1',cause:'CTL',start_at:day+'T10:00',end_at:day+'T10:15'}]}]);
- window.LayoutReport.fill(editor,day);
+ window.LayoutReport.fill(editor,day);window.ReportTabs.activate('duty');
+ const outerTabs=[...document.querySelectorAll('.report-tabs [role=tab]')];
+ assert(outerTabs.length===3,'Three report tabs');
+ assert(outerTabs[0].getAttribute('aria-selected')==='true','Duty tab selected');
+ const dutyValue=document.getElementById('dutyStart').value;
  // Bounding-rectangle reads below force synchronous layout; no animation-frame race in headless mode.
  const kinds=[...document.querySelectorAll('#dutyKinds label span')].map(el=>el.textContent);
  assert(kinds.join(',')==='DS,BS,RBS,AS,U,K','Dienstart abbreviations');
@@ -79,6 +83,9 @@ def fixture():
   assert(value.top>=label.bottom,'Metric value below its label');assert(el.scrollWidth<=el.clientWidth+1,'Metric text fits its column');
   assert(Math.abs((label.left+label.right)/2-(value.left+value.right)/2)<2,'Metric value aligned with label');
  }
+ window.ReportTabs.activate('train');
+ assert(document.getElementById('reportPanel-duty').hidden&&!document.getElementById('reportPanel-train').hidden,'Train pane isolated');
+ assert(document.getElementById('dutyStart').value===dutyValue,'Duty input retained across tabs');
  const item=editor.items[0],gps=item.gps;
  assert(item.eventTable.compareDocumentPosition(gps.box)&Node.DOCUMENT_POSITION_FOLLOWING,'Details precede GPS');
  assert(gps.content.hidden&&gps.collapseButton.textContent==='+','GPS collapsed by default');
@@ -102,6 +109,8 @@ def fixture():
  scroll.scrollTop=scroll.scrollHeight;
  assert(listRows[5].getBoundingClientRect().bottom<=viewportBottom+2,'Last row reachable');
  scroll.remove();
+ window.ReportTabs.activate('month');
+ assert(document.getElementById('reportDetails').hidden&&!document.getElementById('reportPanel-month').hidden,'Month pane isolated');
  window.LayoutReport.monthly(day);
  const monthly=document.querySelector('.report-list');
  const monthlyWidth=monthly.getBoundingClientRect().width;
@@ -116,6 +125,12 @@ def fixture():
  assert(actions[0].getBoundingClientRect().top===actions[2].getBoundingClientRect().top,'Actions stay on one row');
  assert(document.querySelectorAll('#reportTableLegend li').length===8,'Status and action legend beneath table');
 
+ // Invalid duty input brings the correct pane back before browser focus handling.
+ document.getElementById('dutyStart').dispatchEvent(new Event('invalid',{cancelable:true}));
+ assert(window.ReportTabs.active==='duty'&&!document.getElementById('reportPanel-duty').hidden,'Validation selects duty tab');
+ outerTabs[0].dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true}));
+ assert(window.ReportTabs.active==='train'&&document.activeElement===outerTabs[1],'Keyboard selects and focuses next tab');
+ window.ReportTabs.activate('month');
  window.parent.postMessage({layoutStatus:'pass',width:innerWidth},'*');
 })().catch(error=>window.parent.postMessage({layoutStatus:'fail',message:error.stack},'*'));
 '''

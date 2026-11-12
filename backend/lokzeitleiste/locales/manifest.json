@@ -194,6 +194,11 @@
     "en": "/locales/portal_national_brake_sheet/en.json",
     "pl": "/locales/portal_national_brake_sheet/pl.json"
   },
+  "portal_report_tabs": {
+    "de": "/locales/portal_report_tabs/de.json",
+    "en": "/locales/portal_report_tabs/en.json",
+    "pl": "/locales/portal_report_tabs/pl.json"
+  },
   "portal_station_sharing": {
     "de": "/locales/portal_station_sharing/de.json",
     "en": "/locales/portal_station_sharing/en.json",

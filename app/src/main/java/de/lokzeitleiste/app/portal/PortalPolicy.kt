@@ -37,6 +37,7 @@ class PortalPolicy(base: String) {
         "/tf/nachrichten" -> "tf-messages.html"
         "/tf/me" -> "tf-profile.html"
         "/tf/notes.js" -> "tf-notes.js"
+        "/tf/report-tabs.js" -> "report-tabs.js"
         "/tf/updates.js" -> "updates.js"
         "/tf/gps-demo.js" -> "gps-demo.js"
         "/tf/help.js" -> "tf-help.js"
