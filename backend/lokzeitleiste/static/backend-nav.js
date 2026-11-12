@@ -15,9 +15,10 @@ function link(box,label,href,allowed=true){const li=document.createElement('li')
 function placeholder(box,label){const item=document.createElement('li'),text=document.createElement('span');text.className='menu-placeholder';text.textContent=label;text.setAttribute('aria-disabled','true');item.append(text);box.append(item);}
 const hasEmployees=['employees','planning','worktime','reports','directory','shifts','email'].some(module=>p[module]);
 const modules=[
+ ['work_reports',globalThis.CtlText.source('admin_work_reports.text_1bc38267fc84'),'/admin/work-reports',!!p.work_reports],
  ['directory',globalThis.CtlText.source("backend_backend_nav.text_143327b1cce7"),'/admin/directory',!!p.directory],
- ['tf',globalThis.CtlText.source("backend_backend_nav.text_e9820ba217c3"),'/admin/tf',hasEmployees],
- ['tfNew',globalThis.CtlText.source("backend_backend_nav.text_e309cc217ad9"),'/admin/tf/new',p.employees===3],
+ ['tf',globalThis.CtlText.source("admin_work_reports.text_205f153c67b5"),'/admin/tf',hasEmployees],
+ ['tfNew',globalThis.CtlText.source("admin_work_reports.text_01257fa9a38b"),'/admin/tf/new',p.employees===3],
  ['staff',globalThis.CtlText.source("backend_backend_nav.text_20e987b4a823"),'/admin/staff',!!p.staff],
  ['staffNew',globalThis.CtlText.source("backend_backend_nav.text_0f51c3a734c4"),'/admin/staff/new',p.staff===3],
  ['planning',globalThis.CtlText.source("backend_backend_nav.text_67f08af53537"),'/admin/planning',!!p.planning],
@@ -41,7 +42,8 @@ const home=document.createElement('li'),homeLink=document.createElement('a');hom
 link(list,globalThis.CtlText.source("backend_backend_nav.text_e3e8b2523e66"),'/admin/menu-designs');
 if(me.role==='admin'){const administration=group(globalThis.CtlText.source("backend_backend_nav.text_4b42c6690ebe"));for(const module of modules)link(administration,module[1],module[2],module[3]);}
 const management=group(globalThis.CtlText.source("backend_backend_nav.text_2456bb8ed72f")),employees=group(globalThis.CtlText.source("backend_backend_nav.text_f4cb6891b9e5"),management);
-const drivers=group(globalThis.CtlText.source("backend_backend_nav.text_0378d440ff8d"),employees,'/admin/tf',hasEmployees);moduleLink(drivers,'tfNew',globalThis.CtlText.source("backend_backend_nav.text_5c1058aea6bf"));
+moduleLink(management,'work_reports');
+const drivers=group(globalThis.CtlText.source("admin_work_reports.text_205f153c67b5"),employees,'/admin/tf',hasEmployees);moduleLink(drivers,'tfNew',globalThis.CtlText.source("backend_backend_nav.text_5c1058aea6bf"));
 const office=group(globalThis.CtlText.source("backend_backend_nav.text_2456bb8ed72f"),employees,'/admin/staff',!!p.staff);moduleLink(office,'staffNew',globalThis.CtlText.source("backend_backend_nav.text_5c1058aea6bf"));
 const planning=group(globalThis.CtlText.source("backend_backend_nav.text_b702020127a6"));for(const id of ['planning','shifts','overview'])moduleLink(planning,id);
 const other=group(globalThis.CtlText.source("backend_backend_nav.text_9f3d5f8d94cf")),master=group(globalThis.CtlText.source("backend_backend_nav.text_c78f95997238"),other);moduleLink(other,'messages');moduleLink(master,'leasing');moduleLink(master,'vehicles');moduleLink(master,'app_defaults');

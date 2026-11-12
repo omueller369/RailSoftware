@@ -107,6 +107,8 @@ def create_tf(data: TfCreate, _: User = Depends(require_admin), db: Session = De
         db.add(user)
         db.flush()
         db.add(AccountPolicy(user_id=user.id,must_change_password=True))
+        from .accounts.employee_categories import save_category
+        save_category(db,user.id,data.employee_category)
         db.add(TfProfile(user_id=user.id, last_name=data.last_name.strip(), first_name=data.first_name.strip(),
                          personnel_number=data.personnel_number.strip(),
                          target_hours_minutes=data.target_hours_minutes,
@@ -131,13 +133,14 @@ def create_tf(data: TfCreate, _: User = Depends(require_admin), db: Session = De
 @app.get("/api/v1/admin/tf")
 def list_tf(viewer: User = Depends(require_admin), db: Session = Depends(database_session)):
     from .planning.duties import driver_type
+    from .accounts.employee_categories import category
     from .accounts.tf_profiles import details_dict
     rows = db.execute(select(User, TfProfile).join(TfProfile).where(User.role == "tf").order_by(TfProfile.last_name)).all()
     if permissions(db,viewer)["employees"] == 0:
-        return [{"id":u.id,"first_name":p.first_name,"last_name":p.last_name,"personnel_number":p.personnel_number,"driver_type":driver_type(db,u.id)} for u,p in rows]
+        return [{"id":u.id,"first_name":p.first_name,"last_name":p.last_name,"personnel_number":p.personnel_number,"driver_type":driver_type(db,u.id),"employee_category":category(db,u.id)} for u,p in rows]
     validity = {row.user_id: row.valid_until.isoformat() for row in db.scalars(select(TfBahnCardValidity))}
     return [{"id": user.id, "username": user.username, "active": account_active(db,user),
-             "last_name": p.last_name, "first_name": p.first_name, "personnel_number": p.personnel_number,"driver_type":driver_type(db,user.id),
+             "last_name": p.last_name, "first_name": p.first_name, "personnel_number": p.personnel_number,"driver_type":driver_type(db,user.id),"employee_category":category(db,user.id),
              "target_hours_minutes": details_dict(db,user)["monthly_minutes"], "vacation_days": p.vacation_days,
              "birth_date": p.birth_date.isoformat(), "bahncard": p.bahncard,
              "bahncard_valid_until": validity.get(user.id) if p.bahncard else None,
@@ -155,6 +158,8 @@ def update_tf(tf_id:int,data:TfProfileUpdate,actor:User=Depends(require_admin),d
     validate_details(db,data,user)
     image=decode_photo(data.photo_base64)
     try:
+        from .accounts.employee_categories import save_category
+        save_category(db,tf_id,data.employee_category)
         previous_bahncard = profile.bahncard
         for field in ('last_name','first_name','personnel_number','target_hours_minutes','vacation_days','birth_date','bahncard','email','federal_state'):
             value=getattr(data,field)
@@ -762,3 +767,6 @@ def portal_theme_script():return FileResponse(Path(__file__).parent/'static'/'po
 
 @app.get('/theme.css')
 def portal_theme_styles():return FileResponse(Path(__file__).parent/'static'/'portal-theme.css',media_type='text/css',headers={'Cache-Control':'no-cache'})
+
+from .work_reports.admin import create_router as admin_work_reports_router
+app.include_router(admin_work_reports_router(require_admin))

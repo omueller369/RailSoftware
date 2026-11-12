@@ -12,7 +12,8 @@ from .models import StaffProfile
 def start_modules(user,p):
     employees=any(p.get(key,0) for key in ('employees','planning','worktime','reports','directory','shifts','email'))
     definitions=[
-        ('tf',_text_source('server_backend_start.text_e9820ba217c3'),'/admin/tf',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('employees',0) or int(employees)),
+        ('work_reports',_text_source('admin_work_reports.text_1bc38267fc84'),'/admin/work-reports',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('work_reports',0)),
+        ('tf',_text_source('admin_work_reports.text_205f153c67b5'),'/admin/tf',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('employees',0) or int(employees)),
         ('staff',_text_source('server_backend_start.text_20e987b4a823'),'/admin/staff',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('staff',0)),
         ('directory',_text_source('server_backend_start.text_143327b1cce7'),'/admin/directory',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('directory',0)),
         ('planning',_text_source('server_backend_start.text_67f08af53537'),'/admin/planning',_text_source('server_backend_start.text_b702020127a6'),p.get('planning',0)),

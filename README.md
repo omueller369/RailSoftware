@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.47
+# LokZeitleiste v0.26.48
+
+**0.26.48:** Neues Verwaltungsmodul Arbeitsberichte für synchronisierte Berichte mit eigenen Zugriffsrechten, Monats-/Mitarbeiter-/Kategoriefilter, Detailansicht und PDF. Die spätere Bearbeitung bleibt offen. Mitarbeiterkategorie WGM (Wagenmeister) auf gemeinsamer Stammdatenbasis ergänzt, unabhängig von der TF-Einsatzart; ein eigenes WGM-Portal folgt später.
 
 **0.26.47:** Der Arbeitsbericht hat drei Reiter im Design der Zugfahrten: Dienstzeit und Gastfahrt, Zugfahrt und Details (GPS), Arbeitsberichte des Monats. Eingaben und laufende GPS-Aufzeichnungen bleiben beim Wechsel erhalten. Neu angelegte oder geöffnete Berichte zeigen Dienstzeit; die Wiederherstellung einer GPS-Aufzeichnung öffnet den GPS-Reiter.
 

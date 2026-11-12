@@ -1,4 +1,9 @@
 {
+  "admin_work_reports": {
+    "de": "/locales/admin_work_reports/de.json",
+    "en": "/locales/admin_work_reports/en.json",
+    "pl": "/locales/admin_work_reports/pl.json"
+  },
   "android_login": {
     "de": "/locales/android_login/de.json",
     "en": "/locales/android_login/en.json",

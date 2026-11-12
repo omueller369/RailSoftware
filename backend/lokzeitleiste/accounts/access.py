@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from ..models import AccountPolicy, ModulePermission, User
 
-MODULES = {"leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
+MODULES = {"work_reports":_text_source('admin_work_reports.text_1bc38267fc84'), "leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
            "worktime":_text_source('server_accounts_access.text_dd4fd942cb88'), "reports":_text_source('server_accounts_access.text_1948beff57ad'),
            "staff":_text_source('server_accounts_access.text_ce72f4c833ff'), "directory":_text_source('server_accounts_access.text_ef61cbee3c30'),
            "shifts":_text_source('server_accounts_access.text_3d64eed6e362'), "email":"Mitarbeiter-E-Mail"}
@@ -44,6 +44,9 @@ def redact_plan(db,user,summary):
 
 def authorize_route(db, user, request):
     path, method = request.url.path.rstrip('/'), request.method
+    if path=='/api/v1/admin/work-reports' or path.startswith('/api/v1/admin/work-reports/'):
+        # This first stage deliberately exposes no write operation.
+        return demand(db,user,'work_reports',1 if method=='GET' else 3)
     if path=='/api/v1/admin/leasing' or path.startswith('/api/v1/admin/leasing/'):
         if method=='GET' and permissions(db,user).get('vehicles',0):return demand(db,user,'vehicles',1)
         return demand(db,user,'leasing',1 if method=='GET' else 2)

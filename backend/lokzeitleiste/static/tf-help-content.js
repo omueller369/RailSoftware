@@ -344,6 +344,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{portal_tf_help_content.text_74dffa38113f}}"
         ],
         "steps": []
+      },
+      {
+        "title": "{{admin_work_reports.text_526c8f83a5a4}}",
+        "paragraphs": [
+          "{{admin_work_reports.text_a52d9b8c3caf}}"
+        ],
+        "steps": []
       }
     ]
   },

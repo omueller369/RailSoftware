@@ -50,6 +50,13 @@ jobs:
         with:
           name: work-report-layout
           path: ${{ runner.temp }}/work-report-layout/
+      - name: Administrative work report inbox browser checks
+        run: python backend/tests/check_admin_work_reports_ui.py --output-dir "$RUNNER_TEMP/admin-work-reports-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: admin-work-reports-ui
+          path: ${{ runner.temp }}/admin-work-reports-ui/
       - name: Backend dependencies
         run: python -m pip install -r backend/requirements-dev.txt
       - name: Help overlay and print checks

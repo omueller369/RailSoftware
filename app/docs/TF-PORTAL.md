@@ -1,4 +1,4 @@
-# Android 0.26.47 – aktuelles TF-Portal
+# Android 0.26.48 – aktuelles TF-Portal
 
 Die App öffnet nach der nativen Anmeldung das vollständige TF-Portal. Die gemeinsamen HTML-/CSS-/JavaScript-Dateien werden beim Android-Build aus `backend/lokzeitleiste/static` in die APK übernommen. Geschäftsregeln, Tabellen, Eingaben und Berechtigungen entsprechen damit dem Portalstand dieses Builds. Neue Portalversionen erfordern einen neuen APK-Build. Der Server muss mindestens zum selben Projektstand aktualisiert sein.
 
@@ -38,7 +38,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Bei einer APK mit anderer bisheriger Signatur kann Android kein direktes Update installieren. Vor einer Deinstallation unübertragene lokale Daten sichern/synchronisieren. Keine Deinstallation ohne Datensicherung empfehlen.
 
-Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 73 liegt unter dem bestätigten Tabletstand 100004.
+Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 74 liegt unter dem bestätigten Tabletstand 100004.
 
 Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Updates → Auf Updates prüfen** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
 
