@@ -10,13 +10,13 @@ Android-Mindestversion: Android 8.0 / API 26.
 
 ## Vorhandenes Tablet von 0.26.37 aktualisieren
 
-Server und Tablet sind bereits eingerichtet. Zuerst den Server nach Abschnitt 6 aktualisieren und den erfolgreichen Android-Workflow für 0.26.38 abwarten. Auf dem Tablet offene Eingaben speichern, GPS-Aufzeichnung beenden und **Update** wählen. Nach dem automatischen Download **Update installieren** wählen und die Android-Installation bestätigen. Bei Bedarf **Aus dieser Quelle zulassen** für die App aktivieren und zur Installation zurückkehren. Die vorhandene App und ihre Daten bleiben bei einem regulären Update erhalten. Weder Android Studio noch eine neue Signierung sind dafür nötig.
+Server und Tablet sind bereits eingerichtet. Zuerst den Server nach Abschnitt 6 aktualisieren und den erfolgreichen Android-Workflow für 0.26.38 abwarten. Auf dem Tablet offene Eingaben speichern, GPS-Aufzeichnung beenden und **Updates → Auf Updates prüfen** wählen. Nach dem automatischen Download **Update installieren** wählen und die Android-Installation bestätigen. Bei Bedarf **Aus dieser Quelle zulassen** für die App aktivieren und zur Installation zurückkehren. Die vorhandene App und ihre Daten bleiben bei einem regulären Update erhalten. Weder Android Studio noch eine neue Signierung sind dafür nötig.
 
 Die folgenden Mac- und Erstinstallationsschritte dienen weiteren Geräten oder der lokalen Entwicklung.
 
 ## 1. Was „automatisches Update“ hier bedeutet
 
-Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden auf neue freigegebene Testversionen aus diesem GitHub-Repository. **Update** in der App startet die Prüfung sofort. Eine neuere APK wird heruntergeladen und auf Prüfsumme, Paketname, Versionsnummer und denselben Signierschlüssel geprüft. Danach erscheint **Update installieren**.
+Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden auf neue freigegebene Testversionen aus diesem GitHub-Repository. **Updates → Auf Updates prüfen** in der App startet die Prüfung sofort. Eine neuere APK wird heruntergeladen und auf Prüfsumme, Paketname, Versionsnummer und denselben Signierschlüssel geprüft. Danach erscheint **Update installieren**.
 
 Auf einem gewöhnlichen Tablet verlangt Android eine Installationsbestätigung. Die App kann diese nicht einfach umgehen. **Automatische Erkennung und Download: ja. Stille Installation ohne jede Bestätigung: nicht Bestandteil dieser normalen Testinstallation.** Dafür wäre eine gesonderte Einrichtung als verwaltetes Unternehmensgerät erforderlich. Updates werden nicht während einer laufenden GPS-Aufzeichnung installiert. Ist die App geschlossen, prüft sie beim nächsten Öffnen; es gibt keinen permanenten Update-Hintergrunddienst.
 
@@ -326,14 +326,14 @@ Die APK aus **Releases** herunterladen und wie in Abschnitt 10 installieren. Alt
 1. App- oder Portaländerungen in den Branch **setup/debian-testumgebung** übertragen.
 2. GitHub startet die Action für Änderungen an App, Portaldateien oder relevanter Buildkonfiguration automatisch. Reine Änderungen außerhalb der überwachten Pfade lösen keinen neuen App-Build aus; bei Bedarf, sofern verfügbar, **Run workflow** benutzen.
 3. Bei erfolgreichen Prüfungen und eingerichteten Secrets veröffentlicht die Action eine neue signierte Testversion mit einem höheren Versionscode.
-4. Beim nächsten Öffnen/Fortsetzen prüft die Tablet-App den Testkanal; spätestens eine erneute Prüfung nach dem Sechs-Stunden-Intervall erkennt die neue Version. Sofortprüfung über **Update**.
+4. Beim nächsten Öffnen/Fortsetzen prüft die Tablet-App den Testkanal; spätestens eine erneute Prüfung nach dem Sechs-Stunden-Intervall erkennt die neue Version. Sofortprüfung über **Updates → Auf Updates prüfen**.
 5. Die APK wird automatisch heruntergeladen und geprüft.
 6. Offene Eingaben zunächst mit den jeweiligen Speichern-Schaltflächen sichern. Danach **Update installieren** antippen.
 7. Falls Android fragt: für **LokZeitleiste** einmal **Aus dieser Quelle zulassen** aktivieren und zur App zurückkehren.
 8. Im Android-Paketinstaller **Aktualisieren/Installieren** bestätigen.
 9. App erneut öffnen und den aktuellen Stand prüfen. Bei regulärem Update bleiben lokale Berichte und die Anmeldung grundsätzlich erhalten; ein serverseitig ungültig gewordenes Konto muss sich neu anmelden.
 
-Zum kontrollierten ersten Update-Test eine kleine nachvollziehbare Änderung an `app/docs/TF-PORTAL.md` committen/pushen oder die Action erneut manuell starten, sofern die Schaltfläche verfügbar ist. Nach dem neuen erfolgreichen Release in der App **Update** drücken. Während dieses Tests keine laufende GPS-Aufzeichnung offen lassen.
+Zum kontrollierten ersten Update-Test eine kleine nachvollziehbare Änderung an `app/docs/TF-PORTAL.md` committen/pushen oder die Action erneut manuell starten, sofern die Schaltfläche verfügbar ist. Nach dem neuen erfolgreichen Release in der App **Updates → Auf Updates prüfen** drücken. Während dieses Tests keine laufende GPS-Aufzeichnung offen lassen.
 
 Wichtig: Eine neue Quellcode-Datei allein ist noch keine installierbare Version. Erst der erfolgreiche signierte Build mit den zwei Release-Dateien erzeugt ein Update. Die App installiert keine Rohdateien aus dem Repository.
 
@@ -350,7 +350,7 @@ Wichtig: Eine neue Quellcode-Datei allein ist noch keine installierbare Version.
 | `INSTALL_FAILED_VERSION_DOWNGRADE` | APK-Version ist niedriger. Aktuelle signierte GitHub-Version verwenden; keine Daten löschende Umgehung wählen. |
 | Anmeldung/Server nicht erreichbar | Tablet-Browser mit HTTPS-Domain testen; DNS, Zertifikat und Server prüfen. |
 | GitHub veröffentlicht kein Update | Build/Lint erfolgreich? Vier Secrets vorhanden? Richtiger Branch? Release-Schritt ausgeführt? |
-| App findet keine neuere Version | Signiertes `android-test-*`-Release samt APK und `update.json` vorhanden? Versionscode höher? Internet erreichbar? Sofortprüfung über **Update**. |
+| App findet keine neuere Version | Signiertes `android-test-*`-Release samt APK und `update.json` vorhanden? Versionscode höher? Internet erreichbar? Sofortprüfung über **Updates → Auf Updates prüfen**. |
 | App lehnt Update ab | Prüfsumme, Paketname oder Zertifikat passt nicht. Nicht durch Abschalten der Prüfung umgehen. |
 | GitHub HTTP 403 bei der Update-Prüfung | Öffentliche GitHub-API kann vorübergehend begrenzt sein. Später erneut prüfen; kein persönliches GitHub-Passwort in die App eingeben. |
 | Android blockiert die Installation | Eigene Quelle einmal zulassen; verwaltete Tablets können zusätzlich einer Geräteverwaltung unterliegen. |
@@ -394,3 +394,9 @@ APK-Updates verwenden den App-Cache und den Android-Installationsdialog; dieser 
 ## GPS-Korrekturen ab 0.26.39
 
 Kartenbilder laden in Android bei Internetverbindung von OpenStreetMap und OpenRailwayMap. Es gibt kein vorinstalliertes Offline-Kartenpaket. Trage bei einem Nachtdienst auch das Enddatum ein: Bei Beginn am 10.11. um 23:45 und Ende am 11.11. bleibt der GPS-Start am 11.11. um 02:00 verfügbar. Historische Dienste bleiben in der GPS-Ansicht geschützt. Grün über der Lok zeigt die gesamte Zeit seit Abfahrt einschließlich Zwischenhalten und Zeitlücken; Rot summiert die mit GPS erfassten Standzeiten. Teste nach dem Update auf dem Tablet Karten, Nachtbeginn und beide Zeitangaben.
+
+## Updates und DB Digi-Bef. ab 0.26.46
+
+Die native obere Leiste mit TF Portal, Bisherige Erfassungen, Abmelden und Update entfällt. Abmelden verwendest Du im Portal-Header. Die eigene Kachel Updates enthält installierte Android-Version, Web-Version, sofortige Prüfung, Installation und die letzten Versionsänderungen. Die automatische Sechs-Stunden-Prüfung samt Download bleibt bestehen; eine Installation öffnest Du ausdrücklich. Im Login erscheint zusätzlich Update, sobald eine neuere passende APK heruntergeladen und geprüft ist. Beim Öffnen des Logins wird einmal sofort geprüft. Android bestätigt weiterhin die Installation. Vorher offene Eingaben speichern und GPS beenden.
+
+DB Digi-Bef. im GPS-Bereich öffnet dieselbe externe DB-Seite wie die Kachel Digi-Befehle. Die bereits gestartete native GPS-Aufzeichnung bleibt im Hintergrund aktiv; zurück in der App werden die protokollierten Punkte übernommen. Optional kannst Du Art DB InfraGo und Grund DB-Digi-Befehl für den aktuellen Halt bestätigen. Gibt es keinen aktuellen Halt, beginnt eine manuelle Standzeit. Beende sie nachher mit Ende Stand und ergänze Ort und Grund vor dem Übernehmen. Beim Abbrechen der Nachfrage wird nur die DB-Seite geöffnet. Eine Bestätigung darf nur bei tatsächlichem Halt erfolgen.

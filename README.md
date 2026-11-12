@@ -1,4 +1,7 @@
-# LokZeitleiste v0.26.45
+# LokZeitleiste v0.26.46
+
+**0.26.46:** Kürzere TF-Kacheln: Doks.-Verwaltung, Meine Bhf's, Mein Konto, Bremszettel Int. und Bremszettel DE. Die neue Kachel Updates zeigt Web-/Android-Version, Updateprüfung, Installation und eine kurze Versionshistorie. Die zusätzliche native Kopfleiste entfällt; Abmelden bleibt im Portal-Header. Im Login erscheint Update nur bei einer heruntergeladenen und geprüften neueren APK. DB Digi-Bef. in der GPS-Ansicht öffnet https://db.de/dibe im externen Browser; der native Android-GPS-Dienst läuft weiter. Optional erhält der aktuelle Halt Art DB InfraGo / Grund DB-Digi-Befehl oder eine manuelle Standzeit beginnt. Der Grund wird einmalig in bestehenden Grundwerten ergänzt und beim Übernehmen in die Zugfahrt erhalten.
+
 
 **0.26.45:** Der Android-Login zeigt Rail Software mit dem vorhandenen Logo, zentrierten Eingaben und einem abgerundeten Gleisrahmen in Weinrot/Dunkelblau. Hinweis auf das eigene Passwort und das Admin-Passwort zur Erstanmeldung, TF-Nummer, Passwort, Anmelden und der Hinweis zur gespeicherten Anmeldung stehen untereinander. Nach drei abgewiesenen Anmeldungen für dieselbe TF-Nummer erscheint Passwort vergessen mit dem bestehenden Admin-Resetweg; Netzwerkfehler zählen nicht mit. Die App heißt auch im Android-Launcher Rail Software. Bestehende Anmeldungen, Paketname, Signierung und lokale Daten bleiben erhalten.
 

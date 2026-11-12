@@ -16,6 +16,8 @@ class PortalPolicyTest {
         for (url in listOf("http://tile.openstreetmap.org/10/548/335.png", "https://tile.openstreetmap.org.evil.test/10/548/335.png", "https://user@tile.openstreetmap.org/10/548/335.png", "https://tile.openstreetmap.org:444/10/548/335.png", "https://tile.openstreetmap.org/10/548/335.png?token=secret", "https://tile.openstreetmap.org/10/548/335.png#fragment", "https://tile.openstreetmap.org/account", "https://tile.openstreetmap.org/10/1024/335.png", "https://tile.openstreetmap.org/20/1/1.png", "https://tiles.openrailwaymap.org/other/10/548/335.png", "https://tile.openstreetmap.org/10/548/335%2epng")) assertFalse(url, policy.mapTile(url))
     }
     @Test fun onlyPackagedPublicViews() {
+        assertEquals("tf-portal.html",policy.asset("/tf/updates"))
+        assertEquals("updates.js",policy.asset("/tf/updates.js"))
         assertEquals("tf-portal.html",policy.asset("/tf/gps-demo"))
         assertEquals("gps-demo.js",policy.asset("/tf/gps-demo.js"))
         assertEquals("loco-handover.html",policy.asset("/tf/lokuebergabebuch"))

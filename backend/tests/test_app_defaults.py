@@ -32,13 +32,24 @@ class AppDefaultsTest(unittest.TestCase):
     def remove(self,row):return self.client.delete(BASE+'/value/'+str(row['id']),params={'expected_revision':row['revision']})
 
     def test_initial_defaults_and_delete_not_recreated_by_update(self):
-        rows=self.catalogue();self.assertEqual(len(rows),20)
+        rows=self.catalogue();self.assertEqual(len(rows),21)
         self.assertEqual([r['value'] for r in rows if r['category']=='cause'],['CTL','DB InfraGo','Dritte Stelle','sonstiges'])
         self.assertTrue(all(r['active'] and not r['used'] for r in rows))
         row=next(r for r in rows if r['value']=='V3');self.assertEqual(self.remove(row).status_code,200)
         with Session(self.engine) as db:ensure_defaults(db)
-        self.assertEqual(len(self.catalogue()),19)
-        self.assertEqual(len(self.driver.get('/api/v1/tf/app-defaults').json()),19)
+        self.assertEqual(len(self.catalogue()),20)
+        self.assertEqual(len(self.driver.get('/api/v1/tf/app-defaults').json()),20)
+
+    def test_digi_reason_is_added_once_for_existing_installation(self):
+        self.catalogue()
+        with Session(self.engine) as db:
+            row=db.scalar(select(AppDefaultValue).where(AppDefaultValue.value=='DB-Digi-Befehl'))
+            db.delete(row);db.delete(db.get(AppDefaultSeed,2));db.commit()
+            ensure_defaults(db);ensure_defaults(db)
+        rows=self.catalogue();digi=[row for row in rows if row['value']=='DB-Digi-Befehl']
+        self.assertEqual(len(digi),1);self.assertTrue(digi[0]['active'])
+        self.assertEqual(self.remove(digi[0]).status_code,200)
+        self.assertFalse(any(row['value']=='DB-Digi-Befehl' for row in self.catalogue()))
 
     def test_crud_duplicates_revision_and_stable_keys(self):
         row=self.add('reason','Neuer Grund');original=row['value']

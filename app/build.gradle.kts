@@ -22,7 +22,7 @@ android {
         applicationId = "de.lokzeitleiste.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("71").get().toInt()
+        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("72").get().toInt()
         versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse(softwareVersion).get()
         buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl}\"")
     }
@@ -64,13 +64,17 @@ val prepareTfPortal by tasks.registering(Sync::class) {
     inputs.file(portalMessageFile)
     filteringCharset = "UTF-8"
     from(rootProject.file("backend/lokzeitleiste/static")) {
-        include("messages.js", "national-brake-sheet.*", "brake-sheet.*", "tf-shell.*", "portal-theme.*", "plan-colors.js", "auth-session.js", "tf-help*", "tf-notes.*", "tf-messages.*", "tf-profile.*", "tf-signature.*", "ctl-logistics-logo.jpg", "rail-software-*.png", "handover-protocols.js", "loco-handover.*", "tf-portal.*", "work-report.*", "work-report-feedback.js", "train-journeys.js", "gps.js", "gps-demo.js", "stations.js",
+        include("messages.js", "national-brake-sheet.*", "brake-sheet.*", "tf-shell.*", "portal-theme.*", "plan-colors.js", "auth-session.js", "tf-help*", "tf-notes.*", "tf-messages.*", "tf-profile.*", "tf-signature.*", "ctl-logistics-logo.jpg", "rail-software-*.png", "handover-protocols.js", "loco-handover.*", "tf-portal.*", "work-report.*", "work-report-feedback.js", "train-journeys.js", "gps.js", "gps-demo.js", "updates.js", "stations.js",
             "station-sharing.js", "tf-return.js", "documents.*", "account.*", "my-worktime.*",
             "entry-form.js", "portal.css", "responsive.css", "i18n.js", "android-portal.js")
     }
     from(rootProject.file("backend/lokzeitleiste/locales/modules/android_login")) {
         include("*.json")
         into("native-login")
+    }
+    from(rootProject.file("backend/lokzeitleiste/locales/modules/android_updates")) {
+        include("*.json")
+        into("native-updates")
     }
     // Match the server's template rendering before WebView sees the page. Static
     // labels inside data-i18n-ignore must be resolved too; user values are untouched.

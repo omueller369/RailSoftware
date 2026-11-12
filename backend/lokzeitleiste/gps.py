@@ -27,6 +27,7 @@ class StopEdit(BaseModel):
     station_input:str=Field(default='',max_length=270)
     station:dict[str,str]|None=None
     reason:str=Field(default='',max_length=64)
+    cause:str=Field(default='CTL',max_length=64)
     detail:str=Field(default='',max_length=256)
     end:int|None=Field(default=None,ge=946684800000,le=4133980800000)
     manual_end:bool=False
@@ -192,6 +193,8 @@ def create_router(require_account):
             item['station']=payload.get('stations',{}).get(item['key'])
             item['reason']=payload['reasons'].get(item['key'],{})
         return dict(payload,revision=row.revision,analysis=result)
+    @router.get('/tf/updates.js')
+    def updates_script():return FileResponse(Path(__file__).parent/'static'/'updates.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/gps-demo.js')
     def demo_script():return FileResponse(Path(__file__).parent/'static'/'gps-demo.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/api/v1/tf/gps-recordings')

@@ -1,8 +1,9 @@
 (()=>{
 const MINIMUM_ADDITIONAL_PAUSE_MINUTES = 15;
-const REASONS=['V1','V3','A1','A1A','A3',globalThis.CtlText.source("portal_train_journeys.text_858e4ba7a29f"),globalThis.CtlText.source("portal_train_journeys.text_f833868f87d4"),globalThis.CtlText.source("portal_train_journeys.text_1ec195f5b2d6"),'BrP','vBrP',globalThis.CtlText.source("portal_train_journeys.text_64f45b98b2db"),globalThis.CtlText.source("portal_train_journeys.text_cde67dfbede8"),globalThis.CtlText.source("portal_train_journeys.text_979811cf207a"),globalThis.CtlText.source("portal_train_journeys.text_ec85a036c547"),globalThis.CtlText.source("portal_train_journeys.text_66775ecb98fd"),globalThis.CtlText.source("portal_train_journeys.text_69384a6be550")];
+const REASONS=[globalThis.CtlText.source("portal_train_journeys.text_17ff0035d004"),'V1','V3','A1','A1A','A3',globalThis.CtlText.source("portal_train_journeys.text_858e4ba7a29f"),globalThis.CtlText.source("portal_train_journeys.text_f833868f87d4"),globalThis.CtlText.source("portal_train_journeys.text_1ec195f5b2d6"),'BrP','vBrP',globalThis.CtlText.source("portal_train_journeys.text_64f45b98b2db"),globalThis.CtlText.source("portal_train_journeys.text_cde67dfbede8"),globalThis.CtlText.source("portal_train_journeys.text_979811cf207a"),globalThis.CtlText.source("portal_train_journeys.text_ec85a036c547"),globalThis.CtlText.source("portal_train_journeys.text_66775ecb98fd"),globalThis.CtlText.source("portal_train_journeys.text_69384a6be550")];
 window.TrainJourneyReasons=REASONS;
 const CAUSES=['CTL',globalThis.CtlText.source("portal_train_journeys.text_1abed57a73e2"),globalThis.CtlText.source("portal_train_journeys.text_7fe3366aac3e"),globalThis.CtlText.source("portal_train_journeys.text_69384a6be550")];
+window.TrainJourneyCauses=CAUSES;
 const node=(tag,value)=>{const n=document.createElement(tag);if(value!==undefined)n.textContent=value;return n;};
 const t=value=>window.I18n?.t(value)||value;
 const labelStation=(code,name)=>code&&name?code+' · '+name:name||code||'';
@@ -140,11 +141,11 @@ window.TrainJourneyEditor=class{
   const localTime=ms=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(ms)),p=Object.fromEntries(parts.map(p=>[p.type,p.value]));return p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;};
   const additions=[];
   for(const row of rows.filter(r=>r.kind===globalThis.CtlText.source("portal_train_journeys.text_0fd998791d67")&&r.end>r.start)){
-   if(!CAUSES.includes('CTL'))throw Error(globalThis.CtlText.source("portal_train_journeys.text_af013449459d"));
+   const cause=row.reason?.cause||'CTL';if(!CAUSES.includes(cause))throw Error(globalThis.CtlText.source("portal_train_journeys.text_af013449459d"));
    const reason=row.reason||{};if(!(row.station?.code||row.station?.name)||!reason.reason)throw Error(globalThis.CtlText.source("portal_train_journeys.text_712eb04a8318"));
    if(!REASONS.includes(reason.reason))throw Error(globalThis.CtlText.source("portal_train_journeys.text_4da2b1d2dc6f"));
    const start_at=localTime(row.start),end_at=localTime(row.end);this.checkRange(start_at,end_at);
-   const event={id:this.o.uuid(),gps_stop_key:row.key||'',station:row.station.code,station_name:row.station.name,reason:reason.reason,reason_label:reason.label||choiceLabel('reason',reason.reason),reason_detail:reason.detail||'',cause:'CTL',cause_label:choiceLabel('cause','CTL'),cause_detail:'',start_at,end_at};
+   const event={id:this.o.uuid(),gps_stop_key:row.key||'',station:row.station.code,station_name:row.station.name,reason:reason.reason,reason_label:reason.label||choiceLabel('reason',reason.reason),reason_detail:reason.detail||'',cause,cause_label:choiceLabel('cause',cause),cause_detail:'',start_at,end_at};
    if([...item.events,...additions].some(e=>((row.source_keys||[row.key]).includes(e.gps_stop_key)&&e.gps_stop_key)||e.start_at===start_at&&e.end_at===end_at&&e.station===event.station&&(e.station||e.station_name===event.station_name)&&e.reason===event.reason))continue;
    if(event.reason===globalThis.CtlText.source("portal_train_journeys.text_858e4ba7a29f")&&this.items.flatMap(t=>t.events).concat(additions).some(e=>e.reason===globalThis.CtlText.source("portal_train_journeys.text_858e4ba7a29f")&&this.o.minute(start_at)<this.o.minute(e.end_at)&&this.o.minute(end_at)>this.o.minute(e.start_at)))throw Error(globalThis.CtlText.source("portal_train_journeys.text_5f35fa8f3600"));
    additions.push(event);

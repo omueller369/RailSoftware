@@ -37,6 +37,7 @@ import kotlinx.coroutines.CancellationException
 import org.json.JSONObject
 
 private object LoginText {
+    const val update = "text_c4aa67d38135"
     const val title = "text_39ed724e98ad"
     const val logo = "text_57488d0fc1fa"
     const val intro = "text_42d99ab79c2f"
@@ -88,6 +89,8 @@ private fun Modifier.railFrame() = drawWithCache {
 @Composable
 fun LoginScreen(
     authenticate: suspend (String, String) -> ApiClient.LoginResult = ApiClient::login,
+    updateAvailable: Boolean = false,
+    onUpdate: () -> Unit = {},
     onSuccess: (String, String) -> Unit
 ) {
     var username by rememberSaveable { mutableStateOf("") }
@@ -171,6 +174,8 @@ fun LoginScreen(
                 if (failures >= 3) OutlinedButton(onClick = { showRecovery = true }, enabled = !busy,
                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFA40027))) { Text(text(LoginText.forgot), textAlign = TextAlign.Center) }
+                if (updateAvailable) OutlinedButton(onClick = onUpdate, enabled = !busy,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text(text(LoginText.update)) }
                 Text(text(LoginText.stored), style = MaterialTheme.typography.bodySmall, color = Color(0xFF495E6E), textAlign = TextAlign.Center)
             }
         }

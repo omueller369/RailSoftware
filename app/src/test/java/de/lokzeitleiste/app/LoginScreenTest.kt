@@ -59,6 +59,7 @@ class LoginScreenTest {
         compose.onNodeWithContentDescription("Rail Software Logo").assertIsDisplayed()
         compose.onNodeWithText("Die Anmeldung bleibt auf diesem Gerät gespeichert.").assertExists()
         compose.onNodeWithText("Passwort vergessen").assertDoesNotExist()
+        compose.onNodeWithText("Update").assertDoesNotExist()
         screenshot("tablet-login")
         enter();attempt();attempt()
         compose.onNodeWithText("Passwort vergessen").assertDoesNotExist()
@@ -68,6 +69,15 @@ class LoginScreenTest {
         compose.onNodeWithText("Verstanden").performClick()
         compose.onNodeWithText("TF-Nummer").performTextReplacement("787101")
         compose.onNodeWithText("Passwort vergessen").assertDoesNotExist()
+    }
+    @Test fun availableUpdateCanBeOpenedBeforeLogin() {
+        var opened=0
+        compose.setContent { MaterialTheme { LanguageShell {
+            LoginScreen(updateAvailable=true,onUpdate={opened++},onSuccess={_,_->error("Not expected")})
+        } } }
+        compose.onNodeWithText("Update").performScrollTo().performClick()
+        org.junit.Assert.assertEquals(1,opened)
+        screenshot("login-with-update")
     }
     @Test fun connectionFailuresDoNotEnablePasswordRecovery() {
         show { throw IOException("Offline") };enter();repeat(3) { attempt() }

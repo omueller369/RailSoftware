@@ -9,6 +9,9 @@ import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import de.lokzeitleiste.app.BuildConfig
@@ -22,10 +25,20 @@ import java.net.URL
 import java.security.MessageDigest
 
 /** Public GitHub test releases only. Android always handles the final installation consent. */
-class PortalUpdater(private val activity:ComponentActivity) {
+class PortalUpdater(private val activity:ComponentActivity, private val autoOffer:Boolean=true) {
     private val prefs=activity.getSharedPreferences("portal_updates",0)
     private val directory=File(activity.cacheDir,"updates").apply { mkdirs() }
-    private var checking=false
+    var checking by mutableStateOf(false)
+        private set
+    var updateAvailable by mutableStateOf(false)
+        private set
+    private var failed=false
+    private val nativeMessages=mutableMapOf<String,JSONObject>()
+    private fun text(key:String):String {
+        val code=LanguageRuntime.code.takeIf { it in LanguageRuntime.codes }?:"de"
+        return nativeMessages.getOrPut(code) { JSONObject(activity.assets.open("tf-portal/native-updates/$code.json").bufferedReader().use { it.readText() }) }.getString(key)
+    }
+    fun status():JSONObject=JSONObject().put("version",BuildConfig.VERSION_NAME).put("available",updateAvailable).put("checking",checking).put("failed",failed).put("gps_running",GpsRecordingService.currentKey!=null)
     private var offered=false
     private var awaitingSettings=false
     private var pending:File?=null
@@ -36,23 +49,23 @@ class PortalUpdater(private val activity:ComponentActivity) {
         if(awaitingSettings) { awaitingSettings=false;if(activity.packageManager.canRequestPackageInstalls())pending?.let { install(it) };return }
         check(false)
     }
-    fun check(manual:Boolean) {
+    fun check(manual:Boolean,force:Boolean=false) {
         if(GpsRecordingService.currentKey!=null) { if(manual)message("Bitte zuerst die GPS-Aufzeichnung beenden.");return }
         if(checking)return
         val filename=prefs.getString("pending",null)
         if(filename!=null && filename.matches(Regex("update-[0-9]+\\.apk"))) {
             val file=File(directory,filename)
-            if(file.exists() && runCatching { verified(file) }.getOrDefault(false)) { if(manual||!offered)offer(file);return }
-            file.delete();prefs.edit().remove("pending").apply()
+            if(file.exists() && runCatching { verified(file) }.getOrDefault(false)) { updateAvailable=true;if(manual||(autoOffer&&!offered))offer(file);return }
+            updateAvailable=false;file.delete();prefs.edit().remove("pending").apply()
         }
-        if(!manual && System.currentTimeMillis()-prefs.getLong("checked",0)<6*3600000L)return
-        prefs.edit().putLong("checked",System.currentTimeMillis()).apply();checking=true
+        if(!manual && !force && System.currentTimeMillis()-prefs.getLong("checked",0)<6*3600000L)return
+        prefs.edit().putLong("checked",System.currentTimeMillis()).apply();checking=true;failed=false
         activity.lifecycleScope.launch {
             try {
                 val apk=withContext(Dispatchers.IO) { findAndDownload() }
-                if(apk==null) { if(manual)message("Keine neuere Testversion verfügbar.") }
-                else { prefs.edit().putString("pending",apk.name).apply();if(GpsRecordingService.currentKey==null)offer(apk) }
-            } catch(error:Exception) { if(manual)message("Update-Prüfung fehlgeschlagen: "+(error.message?:"Keine Verbindung")) }
+                if(apk==null) { updateAvailable=false;if(manual)message("Keine neuere Testversion verfügbar.") }
+                else { updateAvailable=true;prefs.edit().putString("pending",apk.name).apply();if((manual||autoOffer)&&GpsRecordingService.currentKey==null)offer(apk) }
+            } catch(error:Exception) { failed=true;if(manual)message("Update-Prüfung fehlgeschlagen: "+(error.message?:"Keine Verbindung")) }
             finally { checking=false }
         }
     }
@@ -121,7 +134,7 @@ class PortalUpdater(private val activity:ComponentActivity) {
     private fun offer(file:File) {
         if(activity.isFinishing||activity.isDestroyed)return
         pending=file;offered=true
-        AlertDialog.Builder(activity).setTitle(t("Neue TF-Portal-Testversion")).setMessage(t("Die neue Version ist heruntergeladen und geprüft. Vorher offene Eingaben speichern. Jetzt das Android-Update öffnen? Ihre App-Daten bleiben bei einem regulären Update erhalten."))
+        AlertDialog.Builder(activity).setTitle(text("text_d9cba63e46f5")).setMessage(text("text_9c1af06ddfad"))
             .setPositiveButton(t("Update installieren")) { _,_->install(file) }.setNegativeButton(t("Später"),null).show()
     }
     private fun install(file:File) {
@@ -129,7 +142,7 @@ class PortalUpdater(private val activity:ComponentActivity) {
         if(!verified(file)){message("Update ist nicht für diese Installation geeignet.");return}
         if(!activity.packageManager.canRequestPackageInstalls()) {
             awaitingSettings=true;pending=file
-            AlertDialog.Builder(activity).setTitle(t("App-Updates erlauben")).setMessage(t("Aktivieren Sie für LokZeitleiste „Aus dieser Quelle zulassen“. Danach zurückkehren und die Installation bestätigen."))
+            AlertDialog.Builder(activity).setTitle(t("App-Updates erlauben")).setMessage(text("text_3849edffade3"))
                 .setPositiveButton(t("Einstellungen")) { _,_->activity.startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,Uri.parse("package:"+activity.packageName))) }.setNegativeButton(t("Abbrechen")) { _,_->awaitingSettings=false }.show();return
         }
         val uri=FileProvider.getUriForFile(activity,activity.packageName+".updates",file)

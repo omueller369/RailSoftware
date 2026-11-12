@@ -48,7 +48,6 @@ class TfPortalActivity : ComponentActivity() {
     private var exportId: String?=null
     private var exportBytes=0L
     private var leaving=false
-    private val toolButtons=mutableListOf<Pair<Button,String>>()
     private val filePicker=registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         fileCallback?.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(result.resultCode,result.data));fileCallback=null
     }
@@ -78,15 +77,8 @@ class TfPortalActivity : ComponentActivity() {
         store=GpsTrackStore(this)
         LanguageRuntime.initialize(this)
         LanguageRuntime.code=getSharedPreferences("lokzeitleiste_language",MODE_PRIVATE).getString("language","de")?:"de"
-        val layout=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL;fitsSystemWindows=true }
-        val tools=LinearLayout(this)
-        fun tool(label:String,action:()->Unit) { tools.addView(Button(this).apply { text=LanguageRuntime.translate(label,LanguageRuntime.code);toolButtons.add(this to label);setOnClickListener { action() } },LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,1f)) }
-        tool("TF Portal") { navigateHome() }
-        tool("Bisherige Erfassungen") { if(GpsRecordingService.currentKey!=null) toast("Bitte zuerst die GPS-Aufzeichnung beenden.") else { startActivity(Intent(this,LegacyActivity::class.java));finish() } }
-        tool("Abmelden") { logout() }
-        web=WebView(this);layout.addView(tools);layout.addView(web,LinearLayout.LayoutParams(-1,0,1f));setContentView(layout)
-        updater=PortalUpdater(this)
-        tool("Update") { updater.check(true) }
+        web=WebView(this).apply { fitsSystemWindows=true };setContentView(web)
+        updater=PortalUpdater(this,autoOffer=false)
         configureWebView()
         onBackPressedDispatcher.addCallback(this,object:OnBackPressedCallback(true) { override fun handleOnBackPressed() {
             if(GpsRecordingService.currentKey!=null) { toast("Bitte zuerst die GPS-Aufzeichnung beenden.");return }
@@ -101,7 +93,6 @@ class TfPortalActivity : ComponentActivity() {
             Handler(Looper.getMainLooper()).postDelayed({ notice.cancel() },3000L)
         }
     }
-    private fun navigateHome() { if(GpsRecordingService.currentKey!=null)toast("Bitte zuerst die GPS-Aufzeichnung beenden.") else web.loadUrl(policy.origin+"/tf") }
     private fun login() { startActivity(Intent(this,MainActivity::class.java));finish() }
     private fun logout(force:Boolean=false) {
         if(GpsRecordingService.currentKey!=null) { if(!force){toast("Bitte zuerst die GPS-Aufzeichnung beenden.");return};stopService(Intent(this,GpsRecordingService::class.java));GpsRecordingService.currentKey=null }
@@ -208,9 +199,19 @@ class TfPortalActivity : ComponentActivity() {
                 "language" -> {
                     val language=request.getString("language");require(language in LanguageRuntime.codes);LanguageRuntime.code=language
                     getSharedPreferences("lokzeitleiste_language",MODE_PRIVATE).edit().putString("language",language).apply()
-                    for((button,label)in toolButtons)button.text=LanguageRuntime.translate(label,language)
                     reply(proxy,request,true,JSONObject())
                 }
+                "external.db" -> {
+                    require(Uri.parse(web.url).path=="/tf/arbeitsbericht")
+                    DigiCommandBrowser.open(this)
+                    reply(proxy,request,true,JSONObject())
+                }
+                "updates.status" -> reply(proxy,request,true,updater.status())
+                "updates.check" -> {
+                    require(Uri.parse(web.url).path=="/tf/updates")
+                    updater.check(true);reply(proxy,request,true,updater.status())
+                }
+                "logout" -> { reply(proxy,request,true,JSONObject());logout() }
                 "expired" -> { reply(proxy,request,true,JSONObject());logout(true) }
                 "gps.start" -> {
                     require(Uri.parse(web.url).path=="/tf/arbeitsbericht")

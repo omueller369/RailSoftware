@@ -10,4 +10,7 @@ assert.equal(freeItem.fields.start_station.value,'km 42,7');
 assert.equal(freeItem.events[0].station,'');
 assert.equal(freeItem.events[0].station_name,'km 42,7');
 assert.equal(editor.draftPlace(freeItem.fields.start_station).name,'km 42,7');
+const digiItem={events:[],fields:{start_station:{value:''},end_station:{value:''}}};editor.items=[digiItem];
+await editor.importGps(digiItem,[{...rows[1],key:'manual-digi',reason:{reason:'DB-Digi-Befehl',cause:'DB InfraGo'}}]);
+assert.equal(digiItem.events[0].cause,'DB InfraGo');assert.equal(digiItem.events[0].reason,'DB-Digi-Befehl');
 console.log('GPS import: confirmed detail copy, Berlin times, endpoints, duplicate protection and validation: PASS');})().catch(e=>{console.error(e);process.exitCode=1;});

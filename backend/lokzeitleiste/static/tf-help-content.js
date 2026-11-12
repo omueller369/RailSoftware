@@ -1,3 +1,4 @@
+/* Updates-Modul, kurze Kacheln und DB Digi-Bef. mit eigener Standzeit-Art. */
 /* Android-Login: Rail Software, Gleisrahmen und Admin-Hilfe nach drei Fehlversuchen. */
 /* GPS-Spur: fließende Skala 0 blau / 50 grün / 100 gelb / 140 rot. */
 /* Footer: Rail Software, jeweilige Web-/Android-Version, Copyright 2026 IO-Software-Görlitz. */
@@ -6,7 +7,55 @@
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
 window.TfHelpRevision="2026-11-12";
-window.TfHelpPages=globalThis.CtlText.restore([{"id": "gps-demo", "group": "{{portal_gps_demo.text_d2a6f5151788}}", "title": "{{portal_gps_demo.text_03151dda472f}}", "short": "{{portal_gps_demo.text_d409cda4d38e}}", "path": "/tf/gps-demo", "aliases": [], "sections": [{"title": "{{portal_gps_demo.text_d2a6f5151788}}", "paragraphs": ["{{portal_gps_demo.text_8e157c16c15f}}"], "steps": ["{{portal_gps_demo.text_1eb67856daaf}}", "{{portal_gps_demo.text_f0411d663061}}", "{{portal_gps_demo.text_74cb71ac9650}}", "{{portal_gps_demo.text_0580dc9f6d2b}}", "{{portal_gps_demo.text_7308284691e2}}", "{{portal_gps_demo.text_7b5fcfeda44b}}"]}]},
+window.TfHelpPages=globalThis.CtlText.restore([
+  {
+    "id": "updates",
+    "path": "/tf/updates",
+    "aliases": [],
+    "group": "{{portal_updates.text_5e791fe0d244}}",
+    "title": "{{portal_updates.text_e3139a6410e6}}",
+    "short": "{{portal_updates.text_65f3a60cb1c7}}",
+    "sections": [
+      {
+        "title": "{{portal_updates.text_5e791fe0d244}}",
+        "paragraphs": [
+          "{{portal_updates.text_47c500af7794}}"
+        ],
+        "steps": [
+          "{{portal_updates.text_7c48f6aa04d3}}",
+          "{{portal_updates.text_b0a7ab6efc45}}",
+          "{{portal_updates.text_76cabfef5962}}",
+          "{{portal_updates.text_3c77f82c4954}}",
+          "{{portal_updates.text_d05050d48a60}}",
+          "{{portal_updates.text_8b5c98698b06}}"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gps-demo",
+    "group": "{{portal_gps_demo.text_d2a6f5151788}}",
+    "title": "{{portal_gps_demo.text_03151dda472f}}",
+    "short": "{{portal_gps_demo.text_d409cda4d38e}}",
+    "path": "/tf/gps-demo",
+    "aliases": [],
+    "sections": [
+      {
+        "title": "{{portal_gps_demo.text_d2a6f5151788}}",
+        "paragraphs": [
+          "{{portal_gps_demo.text_8e157c16c15f}}"
+        ],
+        "steps": [
+          "{{portal_gps_demo.text_1eb67856daaf}}",
+          "{{portal_gps_demo.text_f0411d663061}}",
+          "{{portal_gps_demo.text_74cb71ac9650}}",
+          "{{portal_gps_demo.text_0580dc9f6d2b}}",
+          "{{portal_gps_demo.text_7308284691e2}}",
+          "{{portal_gps_demo.text_7b5fcfeda44b}}"
+        ]
+      }
+    ]
+  },
   {
     "id": "start",
     "group": "{{portal_tf_help_content.text_232c9caabcc3}}",
@@ -457,6 +506,13 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "gps-demo", "group": "{{po
         "title": "{{portal_tf_help_content.text_f1cf22f32bac}}",
         "paragraphs": [
           "{{portal_tf_help_content.text_5ef0df41ce32}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{portal_updates.text_a73270dfd660}}",
+        "paragraphs": [
+          "{{portal_updates.text_0ffc6ca8e70a}}"
         ],
         "steps": []
       }

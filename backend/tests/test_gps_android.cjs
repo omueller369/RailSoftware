@@ -36,6 +36,12 @@ context.window.AndroidPortal={gps:async(method,values)=>{if(method==='start'){na
   await recorder.toggleManual();assert.equal(recorder.manualRunning(),undefined);assert(nativeRunning);
   assert.equal(recorder.record.manual_stops[0].end,1792627280000);recorder.freeze();assert.equal(recorder.manualButton.disabled,true);
  } finally {Date.now=realNow;}
+ const priorConfirm=context.confirm;let external;
+ context.confirm=()=>true;context.window.AndroidPortal.request=async method=>{external=method;};
+ await recorder.openDigi();assert.equal(external,'external.db');assert(nativeRunning);
+ const digi=recorder.manualRunning();assert(digi);assert.equal(recorder.record.stop_edits[digi.key].cause,'DB InfraGo');assert.equal(recorder.record.stop_edits[digi.key].reason,'DB-Digi-Befehl');
+ const currentNow=Date.now;Date.now=()=>digi.start+1000;await recorder.toggleManual();Date.now=currentNow;
+ context.confirm=()=>false;const stands=recorder.record.manual_stops.length;await recorder.openDigi();assert.equal(recorder.record.manual_stops.length,stands);context.confirm=priorConfirm;
  const questions=[];context.confirm=message=>{questions.push(message);return true;};
  await recorder.stop();assert(!nativeRunning);assert(recorder.record.ended);assert.equal(body.points.length,6);assert.equal(body.manual_stops[0].end,1792627280000);
  assert.equal(questions.length,1);assert(questions[0].includes('Ziel'));assert.equal(body.arrival_at,1792627220000);assert.equal(body.departure_applied,true);assert.equal(times.length,2);assert.equal(times[1].kind,'end');assert.equal(body.arrival_at,times[1].time);const prior=recorder.record,adapter=context.window.AndroidPortal.gps;context.window.AndroidPortal.gps=async(method,values)=>{if(method==='start')throw Error('Permission denied');return adapter(method,values);};await assert.rejects(recorder.start());assert.strictEqual(recorder.record,prior);context.window.AndroidPortal.gps=adapter;await recorder.erase();assert.equal(nativePoints.length,0);

@@ -174,6 +174,13 @@ class RecordingTest(unittest.TestCase):
         self.assertEqual(saved.status_code,200,saved.text)
         self.assertEqual(saved.json()['stations']['s1']['code'],'CCC')
 
+    def test_digi_reason_and_cause_survive_gps_sync(self):
+        key='manual-'+str(BASE)
+        path,response=self.save(manual_stops=[dict(key=key,start=BASE,end=BASE+60000)],stop_edits={key:dict(reason='DB-Digi-Befehl',cause='DB InfraGo')})
+        self.assertEqual(response.status_code,200,response.text)
+        saved=self.driver.get(path).json()['stop_edits'][key]
+        self.assertEqual(saved['reason'],'DB-Digi-Befehl');self.assertEqual(saved['cause'],'DB InfraGo')
+
     def test_manual_stand_without_gps_points_roundtrip_and_validation(self):
         key='manual-'+str(BASE)
         path,response=self.save(points=[],manual_stops=[dict(key=key,start=BASE,end=None)])

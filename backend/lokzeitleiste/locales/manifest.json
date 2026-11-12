@@ -4,6 +4,11 @@
     "en": "/locales/android_login/en.json",
     "pl": "/locales/android_login/pl.json"
   },
+  "android_updates": {
+    "de": "/locales/android_updates/de.json",
+    "en": "/locales/android_updates/en.json",
+    "pl": "/locales/android_updates/pl.json"
+  },
   "backend_account": {
     "de": "/locales/backend_account/de.json",
     "en": "/locales/backend_account/en.json",
@@ -258,6 +263,11 @@
     "de": "/locales/portal_train_journeys/de.json",
     "en": "/locales/portal_train_journeys/en.json",
     "pl": "/locales/portal_train_journeys/pl.json"
+  },
+  "portal_updates": {
+    "de": "/locales/portal_updates/de.json",
+    "en": "/locales/portal_updates/en.json",
+    "pl": "/locales/portal_updates/pl.json"
   },
   "portal_work_report": {
     "de": "/locales/portal_work_report/de.json",

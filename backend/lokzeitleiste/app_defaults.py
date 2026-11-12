@@ -31,13 +31,23 @@ def historical_values(db):
 
 
 def ensure_defaults(db):
-    if db.get(AppDefaultSeed,1):return
+    if db.get(AppDefaultSeed,1):
+        if not db.get(AppDefaultSeed,2):
+            value='DB-Digi-Befehl'
+            if not db.scalar(select(Value).where(Value.category=='reason',Value.value==value)):
+                db.add(Value(category='reason',value=value,label=value,label_key=value.casefold(),active=True,ever_used=False,revision=1))
+            db.add(AppDefaultSeed(id=2))
+            try:db.commit()
+            except IntegrityError:
+                db.rollback()
+                if not db.get(AppDefaultSeed,2):raise
+        return
     from .work_reports.schemas import REASONS
     used=historical_values(db)
     defaults=[('reason',value,True) for value in REASONS]+[('cause',value,True) for value in ('CTL',_text_source('server_app_defaults.text_1abed57a73e2'),_text_source('server_app_defaults.text_7fe3366aac3e'),_text_source('server_app_defaults.text_69384a6be550'))]
     known={(kind,value) for kind,value,_ in defaults}
     defaults += [(kind,value,False) for kind,value in sorted(used-known)]
-    db.add(AppDefaultSeed(id=1))
+    db.add_all([AppDefaultSeed(id=1),AppDefaultSeed(id=2)])
     for kind,value,active in defaults:
         db.add(Value(category=kind,value=value,label=value,label_key=value.casefold(),active=active,ever_used=(kind,value) in used,revision=1))
     try:db.commit()

@@ -36,6 +36,13 @@ jobs:
         with:
           name: gps-demo-ui
           path: ${{ runner.temp }}/gps-demo-ui/
+      - name: Updates browser module
+        run: python backend/tests/check_updates_ui.py --output-dir "$RUNNER_TEMP/updates-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: updates-ui
+          path: ${{ runner.temp }}/updates-ui/
       - name: Responsive work report layout
         run: python backend/tests/check_work_report_layout.py --output-dir "$RUNNER_TEMP/work-report-layout"
       - uses: actions/upload-artifact@v4

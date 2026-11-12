@@ -1,4 +1,4 @@
-# Android 0.26.45 – aktuelles TF-Portal
+# Android 0.26.46 – aktuelles TF-Portal
 
 Die App öffnet nach der nativen Anmeldung das vollständige TF-Portal. Die gemeinsamen HTML-/CSS-/JavaScript-Dateien werden beim Android-Build aus `backend/lokzeitleiste/static` in die APK übernommen. Geschäftsregeln, Tabellen, Eingaben und Berechtigungen entsprechen damit dem Portalstand dieses Builds. Neue Portalversionen erfordern einen neuen APK-Build. Der Server muss mindestens zum selben Projektstand aktualisiert sein.
 
@@ -38,9 +38,9 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Bei einer APK mit anderer bisheriger Signatur kann Android kein direktes Update installieren. Vor einer Deinstallation unübertragene lokale Daten sichern/synchronisieren. Keine Deinstallation ohne Datensicherung empfehlen.
 
-Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 71 liegt unter dem bestätigten Tabletstand 100004.
+Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 72 liegt unter dem bestätigten Tabletstand 100004.
 
-Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Update** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
+Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Updates → Auf Updates prüfen** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
 
 Der bestehende HTTPS-Server wird gemäß [Standalone-Anleitung](../../docs/INSTALL-CTLSOFTWARE-TEST.md#bestehenden-server-aktualisieren) aktualisiert.
 
@@ -71,3 +71,9 @@ Die eigene Kachel GPS-DEMO öffnet `/tf/gps-demo`. Synchronisiere vorher eine be
 ## Android-Anmeldung ab 0.26.45
 
 Der Login zeigt das Rail-Software-Logo und einen abgerundeten Rahmen aus Schienen und Schwellen in den Logofarben Weinrot/Dunkelblau. Die Karte ist horizontal und vertikal zentriert. Bei wenig Höhe oder geöffneter Tastatur lässt sie sich scrollen. TF-Nummer und Passwort stehen untereinander, gefolgt von Anmelden und dem Hinweis zur gespeicherten Anmeldung. Zur Erstanmeldung nutzt Du das Admin-Passwort und änderst es anschließend wie bisher. Nach drei abgewiesenen Anmeldungen derselben TF-Nummer erscheint Passwort vergessen. Der Dialog verweist an Deinen Administrator; ein automatischer Selbstbedienungs-Reset ist nicht eingerichtet. Netzwerkfehler zählen nicht als Passwort-Fehlversuche. Eine bestehende Anmeldung bleibt nach dem App-Update erhalten; der neue Bildschirm erscheint bei der nächsten Anmeldung.
+
+## Updates und DB Digi-Bef. ab 0.26.46
+
+Die native obere Leiste mit TF Portal, Bisherige Erfassungen, Abmelden und Update entfällt. Abmelden verwendest Du im Portal-Header. Die eigene Kachel Updates enthält installierte Android-Version, Web-Version, sofortige Prüfung, Installation und die letzten Versionsänderungen. Die automatische Sechs-Stunden-Prüfung samt Download bleibt bestehen; eine Installation öffnest Du ausdrücklich. Im Login erscheint zusätzlich Update, sobald eine neuere passende APK heruntergeladen und geprüft ist. Beim Öffnen des Logins wird einmal sofort geprüft. Android bestätigt weiterhin die Installation. Vorher offene Eingaben speichern und GPS beenden.
+
+DB Digi-Bef. im GPS-Bereich öffnet dieselbe externe DB-Seite wie die Kachel Digi-Befehle. Die bereits gestartete native GPS-Aufzeichnung bleibt im Hintergrund aktiv; zurück in der App werden die protokollierten Punkte übernommen. Optional kannst Du Art DB InfraGo und Grund DB-Digi-Befehl für den aktuellen Halt bestätigen. Gibt es keinen aktuellen Halt, beginnt eine manuelle Standzeit. Beende sie nachher mit Ende Stand und ergänze Ort und Grund vor dem Übernehmen. Beim Abbrechen der Nachfrage wird nur die DB-Seite geöffnet. Eine Bestätigung darf nur bei tatsächlichem Halt erfolgen.
