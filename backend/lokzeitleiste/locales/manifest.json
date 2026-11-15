@@ -629,6 +629,11 @@
     "en": "/locales/station_coordinates/en.json",
     "pl": "/locales/station_coordinates/pl.json"
   },
+  "train_workspace": {
+    "de": "/locales/train_workspace/de.json",
+    "en": "/locales/train_workspace/en.json",
+    "pl": "/locales/train_workspace/pl.json"
+  },
   "wgm": {
     "de": "/locales/wgm/de.json",
     "en": "/locales/wgm/en.json",

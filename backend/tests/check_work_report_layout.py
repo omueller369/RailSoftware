@@ -35,7 +35,7 @@ def fixture():
         }]};
         renderMonth();
     }};})();''', source)
-    controllers = (STATIC/'messages.js').read_text()+'\n'+'\n'.join((STATIC / name).read_text() for name in ['plan-colors.js', 'report-tabs.js', 'train-journeys.js', 'gps.js'])
+    controllers = (STATIC/'messages.js').read_text()+'\n'+'\n'.join((STATIC / name).read_text() for name in ['plan-colors.js', 'report-tabs.js', 'station-picker.js', 'train-workspace.js', 'train-journeys.js', 'gps.js'])
     checks = r'''
 (async()=>{
  const assert=(condition,message)=>{if(!condition)throw Error(message);};
@@ -98,16 +98,32 @@ def fixture():
  assert((await gps.o.selectedEndpoint('start')).code==='BBB'&&(await gps.o.selectedEndpoint('end')).code==='CCC','Existing journey stations reused');
  gps.o.journeyTime('start',window.GpsRecorder.berlinTime(day+'T08:12'));gps.o.journeyTime('end',window.GpsRecorder.berlinTime(day+'T15:42'));
  assert(item.fields.start_at.value===day+'T08:12'&&item.fields.end_at.value===day+'T15:42','GPS times populate the journey without seconds');
+
+ const columns=['cause','reason','station'].map(name=>item.eventFields[name].parentElement.getBoundingClientRect());
+ assert(columns.every(box=>Math.abs(box.width-columns[0].width)<2),'Equal detail thirds');
+ assert(columns[0].left<columns[1].left&&columns[1].left<columns[2].left&&Math.abs(columns[0].top-columns[2].top)<2,'Art, Grund and station share first row');
+ assert(item.eventFields.start_at.parentElement.getBoundingClientRect().top>=columns[0].bottom,'Times below details');
+ gps.collapseButton.click();const originalMap=gps.map,originalPoints=gps.record.points,originalParent=gps.map.parentNode;
+ window.AndroidPortal={request:async()=>({})};window.TrainWorkspace.fullscreen(gps);
+ assert(document.querySelector('.train-map-fullscreen').open&&gps.map===originalMap&&gps.record.points===originalPoints,'Fullscreen preserves map and recording');
+ assert(document.querySelector('.train-map-fullscreen').contains(gps.manualButton)&&document.querySelector('.train-map-fullscreen').contains(gps.digiButton),'Fullscreen retains stand and Digi controls');
+ assert(window.TrainWorkspace.back()&&gps.map.parentNode===originalParent,'Back restores same map');delete window.AndroidPortal;
+ assert(item.brakeButton&&!item.headerSet.contains(item.brakeButton),'Brake overlay accessible outside locked fields');
+ const station=document.createElement('input');document.body.append(station);window.StationPicker.mount(station,{frequent:async()=>Array.from({length:7},(_,i)=>({code:'A'+i,name:'Ort '+i})),search:async q=>[{code:q,name:'Treffer'}]});
+ station.focus();await new Promise(resolve=>setTimeout(resolve,30));
+ assert(document.querySelectorAll('.station-picker button').length===5,'Five frequent places');
+ assert(getComputedStyle(document.querySelector('.station-picker')).backgroundColor==='rgb(255, 255, 255)','Opaque suggestions');
+ document.querySelector('.station-picker button').click();assert(station.value==='A0 · Ort 0','Touch selection');station.remove();
  const scroll=document.createElement('div');scroll.className='excel-scroll';
- scroll.innerHTML='<table class="excel"><thead><tr><th>Test</th></tr></thead><tbody>'+Array.from({length:6},(_,i)=>'<tr><td style="height:'+String(24+i*4)+'px">'+(i+1)+'</td></tr>').join('')+'</tbody></table>';
+ scroll.innerHTML='<table class="excel"><thead><tr><th>Test</th></tr></thead><tbody>'+Array.from({length:12},(_,i)=>'<tr><td style="height:'+String(24+i*4)+'px">'+(i+1)+'</td></tr>').join('')+'</tbody></table>';
  document.getElementById('workReport').append(scroll);
  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
  const listRows=scroll.querySelector('tbody').rows;
  const viewportBottom=scroll.getBoundingClientRect().top+scroll.clientTop+scroll.clientHeight;
- assert(Math.abs(viewportBottom-listRows[3].getBoundingClientRect().bottom)<=2,'Exactly four list rows fit with the header');
+ assert(Math.abs(viewportBottom-listRows[9].getBoundingClientRect().bottom)<=2,'Exactly ten list rows fit with the header');
  assert(scroll.scrollHeight>scroll.clientHeight,'Additional rows can scroll');
  scroll.scrollTop=scroll.scrollHeight;
- assert(listRows[5].getBoundingClientRect().bottom<=viewportBottom+2,'Last row reachable');
+ assert(listRows[11].getBoundingClientRect().bottom<=viewportBottom+2,'Last row reachable');
  scroll.remove();
  window.ReportTabs.activate('month');
  assert(document.getElementById('reportDetails').hidden&&!document.getElementById('reportPanel-month').hidden,'Month pane isolated');

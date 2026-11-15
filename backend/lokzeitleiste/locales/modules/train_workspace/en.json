@@ -1,0 +1,12 @@
+{
+  "text_f74d8120b2d8": "Full screen",
+  "text_e73783b190e8": "Exit full screen",
+  "text_1d64ba65b706": "Close",
+  "text_ec1d45170dba": "International brake sheet",
+  "text_975481af3b6a": "Frequent locations",
+  "text_14053b87a5da": "Searching locations …",
+  "text_424d6ebaa785": "No matching locations found.",
+  "text_2b60d05f8538": "Location search unavailable. Check your connection.",
+  "text_1aef2add4f33": "The full-screen icon enlarges the GPS map. DB Digi-Bef., Start/End stand and map controls remain available. Android keeps the screen on in full screen and restores normal screen behavior on exit. Browsers request a screen wake lock where supported. Back, Escape or Exit full screen returns to the normal view. Each journey has an International brake sheet button opening the existing module as an overlay with a separate local draft per journey. Closing it does not stop GPS recording. Location suggestions use an opaque list: empty fields offer up to five frequent places, typed text finds codes and names. Tap a suggestion. Work report tables display up to ten data rows before scrolling. Journey details use three equal columns for Type, Reason and Location, with From, To and Add beneath.",
+  "text_c68d9d3ca82a": "Full-screen GPS map with screen kept on, per-journey brake-sheet overlay, reliable station suggestions, three-column details and ten table rows."
+}

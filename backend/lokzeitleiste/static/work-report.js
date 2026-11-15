@@ -283,6 +283,7 @@ async function frequentStations(){
  return frequentRequest;
 }
 function stations(input,list){
+ if(window.StationPicker){window.StationPicker.mount(input,{search:q=>api('/api/v1/tf/work-reports/stations?q='+encodeURIComponent(q)),frequent:frequentStations});return;}
  let timer,version=0,popularRows=[];
  function suggestions(rows){list.replaceChildren();const seen=new Set();for(const item of rows){if(seen.has(item.code))continue;seen.add(item.code);const option=document.createElement('option');option.value=stationLabel(item.code,item.name);option.label=option.value;list.append(option);}}
  async function popular(){const ticket=version;try{popularRows=(await frequentStations()).slice(0,5);if(ticket===version&&!input.value.trim())suggestions(popularRows);}catch(error){/* Optional suggestions do not block catalogue search. */}}
@@ -309,14 +310,14 @@ function limitReportLists(root) {
     const rows = table ? [...table.tBodies].flatMap(body => [...body.rows]) : [...list.children];
     const visibleRows = rows.filter(row => row.getClientRects().length);
     if (table) next.add(table);
-    else visibleRows.slice(0, 4).forEach(row => next.add(row));
-    if (visibleRows.length <= 4) {
+    else visibleRows.slice(0, 10).forEach(row => next.add(row));
+    if (visibleRows.length <= 10) {
      if (list.style.maxHeight) list.style.maxHeight = '';
      continue;
     }
-    const fourth = visibleRows[3].getBoundingClientRect();
+    const tenth = visibleRows[9].getBoundingClientRect();
     const horizontalBarAndBorders = list.offsetHeight - list.clientHeight;
-    const height = Math.ceil(fourth.bottom - list.getBoundingClientRect().top - list.clientTop
+    const height = Math.ceil(tenth.bottom - list.getBoundingClientRect().top - list.clientTop
         + list.scrollTop + horizontalBarAndBorders) + 'px';
     if (list.style.maxHeight !== height) list.style.maxHeight = height;
    }

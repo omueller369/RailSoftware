@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.52
+# LokZeitleiste v0.26.53
+
+**0.26.53:** GPS-Karte im Vollbild mit Bedienelementen und aktivem Android-Bildschirm. Internationaler Bremszettel als Overlay mit eigenem lokalen Entwurf je Zugfahrt. Deckende Standortauswahl mit bis zu fünf häufigen Orten, Zugfahrtdetails in zwei Zeilen zu je drei Spalten und zehn Tabellenzeilen vor dem Scrollen.
 
 **0.26.52:** GPS-Einstellungen zeigen dieselben kleinen SVG-Symbole wie die GPS-Karte, jeweils mit Radiobutton darunter. Die GPS-Demo lädt die gespeicherten Einstellungen für Symbol, sichtbare Angaben und Standzeitgrenze. Der Demo-Wiedergabestand übernimmt die gewählte Grenze, ohne die Originalaufzeichnung zu verändern. Historische Wiedergabepositionen werden nicht live geteilt; echte Livepositionen werden in der Demo nicht eingeblendet.
 

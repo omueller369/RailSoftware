@@ -31,6 +31,12 @@ def create_router(require_account):
     @router.get('/tf/work-report-feedback.js')
     def feedback_script():return FileResponse(Path(__file__).parent.parent/'static'/'work-report-feedback.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 
+    @router.get('/tf/station-picker.js')
+    def station_picker():return FileResponse(Path(__file__).parent.parent/'static'/'station-picker.js',media_type='text/javascript')
+
+    @router.get('/tf/train-workspace.js')
+    def train_workspace():return FileResponse(Path(__file__).parent.parent/'static'/'train-workspace.js',media_type='text/javascript')
+
     @router.get('/tf/work-report.js')
     def script():return FileResponse(Path(__file__).parent.parent/'static'/'work-report.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 

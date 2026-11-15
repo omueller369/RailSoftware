@@ -28,7 +28,9 @@ jobs:
       - name: Translation catalogue reproducibility
         run: python tools/build-translations.py --check
       - name: JavaScript regression tests
-        run: for test in backend/tests/*.cjs; do node "$test" || exit 1; done
+        run: |
+          for test in backend/tests/*.cjs; do node "$test" || exit 1; done
+          node backend/tests/test_brake_sheet_ui.cjs --overlay
       - name: GPS demo browser playback
         run: python backend/tests/check_gps_demo_ui.py --output-dir "$RUNNER_TEMP/gps-demo-ui"
       - uses: actions/upload-artifact@v4

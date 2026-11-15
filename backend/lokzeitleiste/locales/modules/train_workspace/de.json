@@ -1,0 +1,12 @@
+{
+  "text_f74d8120b2d8": "Vollbild",
+  "text_e73783b190e8": "Vollbild beenden",
+  "text_1d64ba65b706": "Schließen",
+  "text_ec1d45170dba": "Bremszettel Int.",
+  "text_975481af3b6a": "Häufige Orte",
+  "text_14053b87a5da": "Orte werden gesucht …",
+  "text_424d6ebaa785": "Keine passenden Orte gefunden.",
+  "text_2b60d05f8538": "Ortsuche nicht erreichbar. Prüfe Deine Verbindung.",
+  "text_1aef2add4f33": "Mit dem Vollbild-Symbol vergrößerst Du die GPS-Karte. DB Digi-Bef., Start Stand/Ende Stand und die Kartenwerkzeuge bleiben sichtbar. In Android bleibt der Bildschirm im Vollbild eingeschaltet; beim Verlassen gilt wieder die normale Bildschirmsteuerung. Im Browser wird, soweit unterstützt, ein Schutz vor dem Ruhezustand angefordert. Mit Zurück, Escape oder Vollbild beenden kehrst Du zurück. Der Button Bremszettel Int. bei jeder Zugfahrt öffnet das bestehende Bremszettelmodul als Overlay. Für jede Zugfahrt bleibt ein eigener lokaler Entwurf erhalten. Schließen beendet die GPS-Aufzeichnung nicht. Die Standortauswahl zeigt eine deckende Liste; in einem leeren Feld erscheinen bis zu fünf häufige Orte, beim Tippen passende Kürzel und Namen. Tippe einen Eintrag an. Die Tabellen im Arbeitsbericht zeigen bis zu zehn Datenzeilen vor dem Scrollen. In den Zugfahrtdetails stehen Art, Grund und Meldestelle/Ort in der ersten Zeile, Von, Bis und Eintragen darunter, jeweils in drei gleichen Spalten.",
+  "text_c68d9d3ca82a": "GPS-Karte mit Vollbild und aktivem Bildschirm, Bremszettel-Overlay je Zugfahrt, zuverlässige Standortauswahl, dreispaltige Details und zehn Tabellenzeilen."
+}

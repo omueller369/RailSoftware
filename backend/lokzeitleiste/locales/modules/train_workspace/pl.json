@@ -1,0 +1,12 @@
+{
+  "text_f74d8120b2d8": "Pełny ekran",
+  "text_e73783b190e8": "Zakończ pełny ekran",
+  "text_1d64ba65b706": "Zamknij",
+  "text_ec1d45170dba": "Międzynarodowa karta hamowania",
+  "text_975481af3b6a": "Częste lokalizacje",
+  "text_14053b87a5da": "Wyszukiwanie lokalizacji …",
+  "text_424d6ebaa785": "Nie znaleziono pasujących lokalizacji.",
+  "text_2b60d05f8538": "Wyszukiwanie lokalizacji jest niedostępne. Sprawdź połączenie.",
+  "text_1aef2add4f33": "Ikona pełnego ekranu powiększa mapę GPS. DB Digi-Bef., Początek/Koniec postoju i narzędzia mapy pozostają dostępne. Android utrzymuje włączony ekran w trybie pełnoekranowym i przywraca normalne działanie po wyjściu. Przeglądarka żąda blokady wygaszania, jeśli jest obsługiwana. Wstecz, Escape lub Zakończ pełny ekran przywraca zwykły widok. Każda jazda ma przycisk międzynarodowej karty hamowania otwierający istniejący moduł jako nakładkę z oddzielnym lokalnym szkicem. Zamknięcie nie zatrzymuje GPS. Sugestie lokalizacji mają nieprzezroczystą listę: puste pole oferuje do pięciu częstych miejsc, wpisany tekst wyszukuje skróty i nazwy. Dotknij wpisu. Tabele raportu pokazują do dziesięciu wierszy danych przed przewijaniem. Szczegóły jazdy mają trzy równe kolumny: rodzaj, powód i miejsce; poniżej od, do i dodaj.",
+  "text_c68d9d3ca82a": "Pełnoekranowa mapa GPS z aktywnym ekranem, nakładka karty hamowania dla każdej jazdy, niezawodne podpowiedzi lokalizacji, szczegóły w trzech kolumnach i dziesięć wierszy tabeli."
+}

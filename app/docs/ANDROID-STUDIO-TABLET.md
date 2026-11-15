@@ -400,3 +400,10 @@ Kartenbilder laden in Android bei Internetverbindung von OpenStreetMap und OpenR
 Die native obere Leiste mit TF Portal, Bisherige Erfassungen, Abmelden und Update entfällt. Abmelden verwendest Du im Portal-Header. Die eigene Kachel Updates enthält installierte Android-Version, Web-Version, sofortige Prüfung, Installation und die letzten Versionsänderungen. Die automatische Sechs-Stunden-Prüfung samt Download bleibt bestehen; eine Installation öffnest Du ausdrücklich. Im Login erscheint zusätzlich Update, sobald eine neuere passende APK heruntergeladen und geprüft ist. Beim Öffnen des Logins wird einmal sofort geprüft. Android bestätigt weiterhin die Installation. Vorher offene Eingaben speichern und GPS beenden.
 
 DB Digi-Bef. im GPS-Bereich öffnet dieselbe externe DB-Seite wie die Kachel Digi-Befehle. Die bereits gestartete native GPS-Aufzeichnung bleibt im Hintergrund aktiv; zurück in der App werden die protokollierten Punkte übernommen. Optional kannst Du Art DB InfraGo und Grund DB-Digi-Befehl für den aktuellen Halt bestätigen. Gibt es keinen aktuellen Halt, beginnt eine manuelle Standzeit. Beende sie nachher mit Ende Stand und ergänze Ort und Grund vor dem Übernehmen. Beim Abbrechen der Nachfrage wird nur die DB-Seite geöffnet. Eine Bestätigung darf nur bei tatsächlichem Halt erfolgen.
+
+
+### GPS-Karte und Zugfahrten ab 0.26.53
+
+Mit dem Vollbild-Symbol vergrößerst Du die Karte. Die Kartenwerkzeuge, DB Digi-Bef. und Start Stand/Ende Stand bleiben erreichbar. Android hält den Bildschirm in diesem Modus eingeschaltet. Mit Vollbild beenden oder Android-Zurück stellst Du die normale Ansicht und Bildschirmsteuerung wieder her. Die GPS-Aufzeichnung läuft weiter.
+
+Bremszettel Int. öffnet bei jeder Zugfahrt ein bearbeitbares Overlay mit eigenem lokalen Entwurf. Schließen beendet GPS nicht. Endgültiges Speichern im Bremszettel bleibt ein eigener Schritt. Standortfelder verwenden eine deckende Vorschlagsliste; ein leeres Feld zeigt bis zu fünf häufige Orte, sofern bereits vorhanden und erreichbar.

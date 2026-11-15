@@ -81,8 +81,12 @@ class TfPortalActivity : ComponentActivity() {
         updater=PortalUpdater(this,autoOffer=false)
         configureWebView()
         onBackPressedDispatcher.addCallback(this,object:OnBackPressedCallback(true) { override fun handleOnBackPressed() {
-            if(GpsRecordingService.currentKey!=null) { toast("Bitte zuerst die GPS-Aufzeichnung beenden.");return }
-            if(web.canGoBack())web.goBack() else finish()
+            web.evaluateJavascript("Boolean(window.TrainWorkspace?.back?.())") { handled ->
+                if(handled!="true") {
+                    if(GpsRecordingService.currentKey!=null) toast("Bitte zuerst die GPS-Aufzeichnung beenden.")
+                    else if(web.canGoBack())web.goBack() else finish()
+                }
+            }
         } })
         lifecycleScope.launch { initialize() }
     }
@@ -164,7 +168,7 @@ class TfPortalActivity : ComponentActivity() {
                     var bytes=assets.open("tf-portal/$name").use { it.readBytes() }
                     if(name.endsWith(".html")) bytes=String(bytes,Charsets.UTF_8).replace("<head>","<head><script src=\"/android-portal.js\"></script>").toByteArray(Charsets.UTF_8)
                     val mime=when { name.endsWith(".html")->"text/html";name.endsWith(".css")->"text/css";else->"text/javascript" }
-                    WebResourceResponse(mime,"UTF-8",200,"OK",mapOf("Cache-Control" to "no-store","Content-Security-Policy" to "frame-src 'none'; object-src 'none'"),ByteArrayInputStream(bytes))
+                    WebResourceResponse(mime,"UTF-8",200,"OK",mapOf("Cache-Control" to "no-store","Content-Security-Policy" to (if(name=="tf-portal.html") "frame-src ${policy.origin}/tf/bremszettel; object-src 'none'" else "frame-src 'none'; object-src 'none'")),ByteArrayInputStream(bytes))
                 } catch(_:Exception) { WebResourceResponse("text/plain","UTF-8",500,"Missing portal asset",emptyMap(),ByteArrayInputStream(byteArrayOf())) }
             }
             override fun onReceivedSslError(view:WebView,handler:SslErrorHandler,error:android.net.http.SslError) { handler.cancel();toast("Das HTTPS-Zertifikat des Servers ist ungültig.") }
@@ -199,6 +203,11 @@ class TfPortalActivity : ComponentActivity() {
                 "language" -> {
                     val language=request.getString("language");require(language in LanguageRuntime.codes);LanguageRuntime.code=language
                     getSharedPreferences("lokzeitleiste_language",MODE_PRIVATE).edit().putString("language",language).apply()
+                    reply(proxy,request,true,JSONObject())
+                }
+                "screen.fullscreen" -> {
+                    require(Uri.parse(web.url).path in listOf("/tf/arbeitsbericht","/tf/gps-demo"))
+                    PortalScreenMode.apply(this,request.optBoolean("enabled"))
                     reply(proxy,request,true,JSONObject())
                 }
                 "external.db" -> {
