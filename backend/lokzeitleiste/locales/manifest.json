@@ -169,6 +169,11 @@
     "en": "/locales/gpkg_station_catalog/en.json",
     "pl": "/locales/gpkg_station_catalog/pl.json"
   },
+  "gps_marker_images": {
+    "de": "/locales/gps_marker_images/de.json",
+    "en": "/locales/gps_marker_images/en.json",
+    "pl": "/locales/gps_marker_images/pl.json"
+  },
   "gps_preferences": {
     "de": "/locales/gps_preferences/de.json",
     "en": "/locales/gps_preferences/en.json",

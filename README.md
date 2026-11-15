@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.57
+# LokZeitleiste v0.26.58
+
+**0.26.58:** Die GPS-Bildsymbole zeigen ihren transparenten Hintergrund auch in Karte, Auswahl und Demo. Die helle Hinterlegung in der App-Darstellung wurde entfernt.
 
 **0.26.57:** Original-PNG-Symbole für die GPS-Karte, Auswahl und Demo. GeoPackage-Abgleich ergänzt 1.166 aktive Betriebsstellen, davon 1.042 mit eindeutigen Koordinaten. Der Online-/Offline-Katalog umfasst 14.886 Einträge und 6.450 geprüfte Positionen. Die einmalige Serverergänzung erhält eigene Namen und gelöschte Alteinträge. [Prüfbericht](docs/data/GPKG-DS100-2026-11-15.md).
 

@@ -40,6 +40,7 @@ window.fetch=async(url,options={})=>{let data;if(url.endsWith('gps-settings')){i
  for(const field of form.querySelectorAll('input,select')){const r=field.getBoundingClientRect();assert(r.left>=0&&r.right<=innerWidth+1,'Settings controls fit viewport');}
  for(const type of ['electric','steam','diesel','tank']){
   const preview=form.querySelector('[data-gps-icon-preview="'+type+'"]'),image=preview.querySelector('image');
+  assert(preview.querySelector('rect')?.getAttribute('fill')==='none','Marker backing remains transparent');
   assert(image?.getAttribute('href')==='/tf/gps-marker-'+type+'.png','Original PNG mapped to '+type);
   const decoded=new Image();decoded.src=image.getAttribute('href');await decoded.decode();assert(decoded.naturalWidth===128&&decoded.naturalHeight===128,'Original 128px PNG loaded: '+type);
   assert(image.getBoundingClientRect().width>=40&&image.getBoundingClientRect().width<=56,'Marker uses readable proportional size');

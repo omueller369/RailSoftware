@@ -1,3 +1,4 @@
+/* Originale GPS-PNG-Symbole: transparenter Hintergrund ohne helle Hinterlegung. */
 /* GPS-Kartenzeiten in Aufzeichnung und Demo: HH:MM / HH:MM ohne Labels. */
 /* Arbeitsbericht: drei gleich gestaltete Reiter, ohne Verlust von Eingaben oder GPS. */
 /* Updates-Modul, kurze Kacheln und DB Digi-Bef. mit eigener Standzeit-Art. */
