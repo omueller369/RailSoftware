@@ -117,6 +117,8 @@ def create_router(require_account):
         response.headers['Cache-Control']='private, no-store'
         from .models import RailwayStationCoordinates
         from .accounts.station_coordinates import normalized_name
+        from .station_coordinate_contributions import coordinate_revision
+        snapshot_revision=coordinate_revision(db)
         positions={row.code:row for row in db.scalars(select(RailwayStationCoordinates))}
         rows=[]
         for station in db.scalars(select(RailwayStation).order_by(RailwayStation.code)):
@@ -124,8 +126,7 @@ def create_router(require_account):
             if point and normalized_name(point.catalog_name)==normalized_name(station.name):item.extend([point.latitude,point.longitude])
             rows.append(item)
         manifest=json.loads((Path(__file__).parent/'accounts'/'station_catalog_manifest.json').read_text())
-        from .station_coordinate_contributions import coordinate_revision
-        return dict(stations=rows,coordinate_count=sum(len(row)==4 for row in rows),reference_revision=manifest['revision'],coordinate_revision=coordinate_revision(db))
+        return dict(stations=rows,coordinate_count=sum(len(row)==4 for row in rows),reference_revision=manifest['revision'],coordinate_revision=snapshot_revision)
 
     @router.get('/api/v1/tf/stations/catalog')
     def search_catalog(q:str=Query(min_length=1,max_length=255),user:User=Depends(driver),db:Session=Depends(database_session)):
