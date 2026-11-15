@@ -110,6 +110,19 @@ def create_router(require_account):
     def script():
         return FileResponse(Path(__file__).parent/'static'/'stations.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 
+    @router.get('/api/v1/tf/stations/offline-catalog')
+    def offline_catalog(response:Response,user:User=Depends(driver),db:Session=Depends(database_session)):
+        response.headers['Cache-Control']='private, no-store'
+        from .models import RailwayStationCoordinates
+        from .accounts.station_coordinates import normalized_name
+        positions={row.code:row for row in db.scalars(select(RailwayStationCoordinates))}
+        rows=[]
+        for station in db.scalars(select(RailwayStation).order_by(RailwayStation.code)):
+            item=[station.code,station.name];point=positions.get(station.code)
+            if point and normalized_name(point.catalog_name)==normalized_name(station.name):item.extend([point.latitude,point.longitude])
+            rows.append(item)
+        return dict(stations=rows,coordinate_count=sum(len(row)==4 for row in rows))
+
     @router.get('/api/v1/tf/stations/catalog')
     def search_catalog(q:str=Query(min_length=1,max_length=255),user:User=Depends(driver),db:Session=Depends(database_session)):
         query=q.strip().upper()

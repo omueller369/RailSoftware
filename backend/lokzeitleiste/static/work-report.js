@@ -36,9 +36,9 @@ function stationLabel(code,name){return name?code+' · '+name:code;}
 async function resolveStation(input,allowText=false){
  const value=input.value.trim(),parts=value.split(' · '),query=parts[0];
  const canLookup=query&&navigator.onLine!==false&&[...query].length<=255;
- const rows=!allowText||canLookup?await api('/api/v1/tf/work-reports/stations?q='+encodeURIComponent(query)):[];
+ const rows=window.StationCatalog?await window.StationCatalog.search(query,q=>api('/api/v1/tf/work-reports/stations?q='+encodeURIComponent(q))):!allowText||canLookup?await api('/api/v1/tf/work-reports/stations?q='+encodeURIComponent(query)):[];
  const lower=value.toLocaleLowerCase();
- const exact=rows.find(row=>row.code===query.toUpperCase()&&
+ const exact=rows.find(row=>(window.StationCatalog?.sameCode(row.code,query)||row.code===query.toUpperCase())&&
   (!allowText||parts.length===1||stationLabel(row.code,row.name).toLocaleLowerCase()===lower))
   ||rows.find(row=>row.name.toLocaleLowerCase()===lower);
  const place=exact||(allowText&&value&&[...value].length<=255?{code:'',name:value}:null);
@@ -283,7 +283,7 @@ async function frequentStations(){
  return frequentRequest;
 }
 function stations(input,list){
- if(window.StationPicker){window.StationPicker.mount(input,{search:q=>api('/api/v1/tf/work-reports/stations?q='+encodeURIComponent(q)),frequent:frequentStations});return;}
+ if(window.StationPicker){window.StationPicker.mount(input,{owner:()=>user?.id,search:q=>api('/api/v1/tf/work-reports/stations?q='+encodeURIComponent(q)),frequent:frequentStations});return;}
  let timer,version=0,popularRows=[];
  function suggestions(rows){list.replaceChildren();const seen=new Set();for(const item of rows){if(seen.has(item.code))continue;seen.add(item.code);const option=document.createElement('option');option.value=stationLabel(item.code,item.name);option.label=option.value;list.append(option);}}
  async function popular(){const ticket=version;try{popularRows=(await frequentStations()).slice(0,5);if(ticket===version&&!input.value.trim())suggestions(popularRows);}catch(error){/* Optional suggestions do not block catalogue search. */}}

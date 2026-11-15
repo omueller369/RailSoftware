@@ -71,3 +71,20 @@ class StationCoordinateApiTest(unittest.TestCase):
         self.assertEqual(row['code'],'BBB');self.assertEqual(row['name'],'Berlin Beispiel');self.assertEqual(row['coordinates']['latitude'],52.5)
         row=self.driver.get('/api/v1/tf/stations/catalog',params={'q':'CCC'}).json()[0];self.assertIsNone(row['coordinates'])
         self.assertEqual(self.client.get('/api/v1/tf/stations/catalog',params={'q':'BBB'},headers={'X-CTL-Area':'backend'}).status_code,403)
+
+    def test_offline_snapshot_is_complete_private_and_hides_stale_coordinates(self):
+        with Session(self.engine) as db:
+            db.add_all([RailwayStation(code='X'+str(i),name='Zusatz '+str(i)) for i in range(50)])
+            db.add(RailwayStationCoordinates(code='BBB',catalog_name='Berlin Beispiel',latitude=52.5,longitude=13.4,source_name='Berlin Beispiel',source_url='https://example.com/source',source_date='2026-05',max_spread_m=0));db.commit()
+        response=self.driver.get('/api/v1/tf/stations/offline-catalog')
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertEqual(len(response.json()['stations']),53)
+        self.assertEqual(response.json()['coordinate_count'],1)
+        self.assertEqual(next(row for row in response.json()['stations'] if row[0]=='BBB'),['BBB','Berlin Beispiel',52.5,13.4])
+        self.assertEqual(response.headers['cache-control'],'private, no-store')
+        with Session(self.engine) as db:db.get(RailwayStation,'BBB').name='Neuer Name';db.commit()
+        response=self.driver.get('/api/v1/tf/stations/offline-catalog')
+        self.assertEqual(response.json()['coordinate_count'],0)
+        self.assertEqual(next(row for row in response.json()['stations'] if row[0]=='BBB'),['BBB','Neuer Name'])
+        self.assertEqual(self.client.get('/api/v1/tf/stations/offline-catalog').status_code,403)
+        self.driver.cookies.clear();self.assertEqual(self.driver.get('/api/v1/tf/stations/offline-catalog').status_code,401)

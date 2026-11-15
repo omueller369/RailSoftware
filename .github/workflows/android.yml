@@ -32,6 +32,8 @@ jobs:
           node backend/tests/test_android_portal.cjs
           node backend/tests/test_gps_browser.cjs
           node backend/tests/test_gps_android.cjs
+          node backend/tests/test_station_catalog.cjs
+          python tools/build-station-catalog.py --check
       - name: Prepare stable test signing key
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}

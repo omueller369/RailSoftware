@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.55
+# LokZeitleiste v0.26.56
+
+**0.26.56:** Android enthält den vollständigen DS100-Referenzkatalog mit 13.720 Einträgen und 5.408 geprüften Koordinaten. Standortsuche und Standzeit-Vorbelegung funktionieren offline. Aktuelle Serverkataloge und die häufigen Orte je TF werden lokal gespeichert. Im Browser bleibt die zuvor online geöffnete Seite offline nutzbar.
 
 **0.26.55:** Erkannte GPS-Standzeiten erhalten aus den gespeicherten DS100-Koordinaten einen bearbeitbaren Ortsvorschlag innerhalb von 1.000 Metern. Eigene Ortsangaben bleiben erhalten; unklare Treffer und fehlende Koordinaten werden nicht automatisch zugeordnet.
 
@@ -288,3 +290,5 @@ Sämtliche zentralen Hilfetexte und die Bedienhinweise im Hilfeleser verwenden d
 ### Tagmodus und Nachtmodus
 
 Ein Sonne-/Mond-Symbol im Kopf schaltet die Darstellung für Startseite, TF-Module, gemeinsame Seiten, Verwaltung und Dialoge um. Die Browser-/Geräteauswahl bleibt über Seitenwechsel und Neuladen erhalten; andere Tabs übernehmen Änderungen. Ohne Speicherzugriff funktioniert die aktuelle Seite weiterhin. Der Standard bleibt der Tagmodus. Warnungen, Plan- und Berichtsstatus erhalten eigene dunkle Farben. Originalbilder, Dokumentvorschauen, Unterschriften und Druckausgaben werden nicht invertiert. Die Android-App bündelt dieselben Darstellungsdateien. Die zentrale Du-Hilfe erklärt den Umschalter.
+
+Offline-DS100-Daten werden aus `accounts/stations.json` und `accounts/station_coordinates.json` mit `python tools/build-station-catalog.py` erzeugt; `--check` prüft die Reproduzierbarkeit. Die APK enthält die erzeugte Datei `station-catalog-data.js`.

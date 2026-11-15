@@ -411,3 +411,8 @@ Bremszettel Int. öffnet bei jeder Zugfahrt ein bearbeitbares Overlay mit eigene
 Ab 0.26.54 zeigt die GPS-Karte in Aufzeichnung und Demo die ausgewählten Zeiten ohne Labels: `02:15 / 00:30` bedeutet Gesamtzeit seit Abfahrt / addierte Standzeit. Ein einzeln gewählter Wert erscheint allein.
 
 Ab 0.26.55 werden erkannte Standzeiten über die DS100-Koordinaten des Servers vorbelegt: Ein eindeutiger nächster Treffer innerhalb von 1.000 Metern erscheint als Kürzel und Name im Ortsfeld. Prüfe oder ändere den Vorschlag und ergänze den Grund. Erst Übernehmen trägt den Halt in die Zugfahrtdetails ein. Eigene Ortsangaben bleiben erhalten. Ohne Netz, ohne Treffer oder bei zwei nahezu gleich weit entfernten Referenzpunkten bleibt die manuelle Eingabe möglich. Eine GPS-Lücke erhält keinen erfundenen DS100-Standort.
+
+
+### DS100 ohne Netz ab 0.26.56
+
+Die APK enthält 13.720 DS100-Einträge und 5.408 geprüfte Koordinaten. Auch bei einem Offline-Neustart steht der Referenzkatalog bereit; ein erster Katalogdownload ist nicht nötig. Kürzel-/Namenssuche und Standzeit-Vorbelegung arbeiten lokal. Bei Onlineverbindung wird der vollständige aktuelle Serverkatalog nachgeladen und in IndexedDB gespeichert (automatisch beim Öffnen nach mindestens einem Tag). Häufige Orte werden pro TF gespeichert. Im Browser öffnest Du das Portal zunächst online und lässt die Seite für Offlinearbeit geöffnet. Die Kartenbilder benötigen weiterhin Netz.

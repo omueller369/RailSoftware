@@ -26,7 +26,9 @@ jobs:
           bash setup/tests/test-auto-admin.sh
           for script in backend/lokzeitleiste/static/*.js; do node --check "$script"; done
       - name: Translation catalogue reproducibility
-        run: python tools/build-translations.py --check
+        run: |
+          python tools/build-translations.py --check
+          python tools/build-station-catalog.py --check
       - name: JavaScript regression tests
         run: |
           for test in backend/tests/*.cjs; do node "$test" || exit 1; done
@@ -38,6 +40,13 @@ jobs:
         with:
           name: gps-demo-ui
           path: ${{ runner.temp }}/gps-demo-ui/
+      - name: Offline DS100 browser checks
+        run: python backend/tests/check_station_catalog_ui.py --output-dir "$RUNNER_TEMP/station-catalog-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: station-catalog-ui
+          path: ${{ runner.temp }}/station-catalog-ui/
       - name: Updates browser module
         run: python backend/tests/check_updates_ui.py --output-dir "$RUNNER_TEMP/updates-ui"
       - uses: actions/upload-artifact@v4

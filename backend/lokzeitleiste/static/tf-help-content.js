@@ -437,6 +437,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{portal_tf_help_content.text_8bd470989d7f}}"
         ],
         "steps": []
+      },
+      {
+        "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
+        "paragraphs": [
+          "{{offline_station_catalog.text_930f72ca057f}}"
+        ],
+        "steps": []
       }
     ]
   },
@@ -481,6 +488,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{portal_tf_help_content.text_dc87aa1fe065}}",
         "paragraphs": [
           "{{portal_tf_help_content.text_f87c793957b9}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
+        "paragraphs": [
+          "{{offline_station_catalog.text_930f72ca057f}}"
         ],
         "steps": []
       }
@@ -568,6 +582,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{gps_stop_suggestions.text_5052ed3d9c64}}"
         ],
         "steps": []
+      },
+      {
+        "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
+        "paragraphs": [
+          "{{offline_station_catalog.text_930f72ca057f}}"
+        ],
+        "steps": []
       }
     ]
   },
@@ -610,6 +631,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{portal_gps.text_792751a9dcdb}}",
         "paragraphs": [
           "{{gps_stop_suggestions.text_5052ed3d9c64}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
+        "paragraphs": [
+          "{{offline_station_catalog.text_930f72ca057f}}"
         ],
         "steps": []
       }
@@ -910,6 +938,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{station_coordinates.text_18da0457db31}}"
         ],
         "steps": []
+      },
+      {
+        "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
+        "paragraphs": [
+          "{{offline_station_catalog.text_930f72ca057f}}"
+        ],
+        "steps": []
       }
     ]
   },
@@ -1038,6 +1073,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{train_workspace.text_f74d8120b2d8}}",
         "paragraphs": [
           "{{train_workspace.text_1aef2add4f33}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
+        "paragraphs": [
+          "{{offline_station_catalog.text_930f72ca057f}}"
         ],
         "steps": []
       }
