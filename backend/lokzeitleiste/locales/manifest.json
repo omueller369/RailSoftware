@@ -164,6 +164,11 @@
     "en": "/locales/backend_worktime/en.json",
     "pl": "/locales/backend_worktime/pl.json"
   },
+  "gpkg_station_catalog": {
+    "de": "/locales/gpkg_station_catalog/de.json",
+    "en": "/locales/gpkg_station_catalog/en.json",
+    "pl": "/locales/gpkg_station_catalog/pl.json"
+  },
   "gps_preferences": {
     "de": "/locales/gps_preferences/de.json",
     "en": "/locales/gps_preferences/en.json",

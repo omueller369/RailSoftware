@@ -30,7 +30,7 @@ window.fetch=async(url,options={})=>{let data;if(url.endsWith('gps-settings')){i
  await share.onclick();assert(writes.filter(url=>url.endsWith('/start')).length===1,'Explicit share start only');assert(share.getAttribute('aria-pressed')==='true','Active share shown');
  assert(form.querySelectorAll('input[name=marker]:checked').length===1,'Exactly one icon selected');
  const selected=form.querySelector('input[name=marker]:checked');const label=selected.closest('label'),preview=label.querySelector('svg');assert(selected.getBoundingClientRect().top>=preview.getBoundingClientRect().bottom,'Radio button below icon');
- const sample=document.createElementNS('http://www.w3.org/2000/svg','svg');window.GpsPreferences.marker(sample,tag=>document.createElementNS(sample.namespaceURI,tag),0,0,{marker:'steam'},true);assert(sample.firstElementChild.innerHTML===preview.firstElementChild.innerHTML,'Preview uses exact map icon paths');
+ const sample=document.createElementNS('http://www.w3.org/2000/svg','svg');window.GpsPreferences.marker(sample,tag=>document.createElementNS(sample.namespaceURI,tag),0,0,{marker:'steam'},true);assert(sample.firstElementChild.innerHTML===preview.firstElementChild.innerHTML,'Preview uses exact original map icon');
  window.dispatchEvent(new Event('languagechange'));assert(form.elements.marker.value==='steam','Language change preserves radio selection');assert(new Set([...form.querySelectorAll('[name=marker]')].map(r=>r.value)).size===5,'Language change retains all distinct icon values');
  const count=writes.length;await control.changed();assert(writes.length===count,'No second position inside five minutes');
  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'),make=tag=>document.createElementNS(svg.namespaceURI,tag);window.GpsPreferences.marker(svg,make,20,20,{marker:'steam',first_name:'<img src=x>'},true);assert(svg.querySelector('[data-gps-position]'),'Selected marker drawn');assert(!svg.querySelector('img'),'First name rendered safely');
@@ -38,6 +38,13 @@ window.fetch=async(url,options={})=>{let data;if(url.endsWith('gps-settings')){i
  const single=document.createElementNS(svg.namespaceURI,'svg');window.GpsPreferences.marker(single,make,0,0,{marker:'circle',stopped_ms:1800000},true);assert(single.querySelector('text').textContent==='00:30','Single selected time without separator');
  await share.onclick();assert(share.getAttribute('aria-pressed')==='false','Explicit share stop');assert(writes.some(url=>url.includes('gps-sharing/')&&!url.endsWith('/start')),'Position endpoint used');
  for(const field of form.querySelectorAll('input,select')){const r=field.getBoundingClientRect();assert(r.left>=0&&r.right<=innerWidth+1,'Settings controls fit viewport');}
+ for(const type of ['electric','steam','diesel','tank']){
+  const preview=form.querySelector('[data-gps-icon-preview="'+type+'"]'),image=preview.querySelector('image');
+  assert(image?.getAttribute('href')==='/tf/gps-marker-'+type+'.png','Original PNG mapped to '+type);
+  const decoded=new Image();decoded.src=image.getAttribute('href');await decoded.decode();assert(decoded.naturalWidth===128&&decoded.naturalHeight===128,'Original 128px PNG loaded: '+type);
+  assert(image.getBoundingClientRect().width>=40&&image.getBoundingClientRect().width<=56,'Marker uses readable proportional size');
+ }
+ assert(!form.querySelector('[data-gps-icon-preview="circle"] image'),'Circle remains a vector option');
  window.parent.postMessage({layoutStatus:'pass'},'*');
 })().catch(error=>window.parent.postMessage({layoutStatus:'fail',message:error.stack},'*'));
 '''
@@ -45,5 +52,8 @@ window.fetch=async(url,options={})=>{let data;if(url.endsWith('gps-settings')){i
 
 
 if __name__=='__main__':
-    runner.fixture=fixture
-    runner.main()
+    import argparse
+    from browser_realtime import check_pages
+    parser=argparse.ArgumentParser();parser.add_argument('--output-dir',required=True);args=parser.parse_args()
+    assets={'/tf/gps-marker-'+name+'.png':runner.STATIC/('gps-marker-'+name+'.png') for name in ['electric','steam','diesel','tank']}
+    check_pages(fixture,args.output_dir,assets=assets,label="GPS icons")

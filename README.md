@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.56
+# LokZeitleiste v0.26.57
+
+**0.26.57:** Original-PNG-Symbole für die GPS-Karte, Auswahl und Demo. GeoPackage-Abgleich ergänzt 1.166 aktive Betriebsstellen, davon 1.042 mit eindeutigen Koordinaten. Der Online-/Offline-Katalog umfasst 14.886 Einträge und 6.450 geprüfte Positionen. Die einmalige Serverergänzung erhält eigene Namen und gelöschte Alteinträge. [Prüfbericht](docs/data/GPKG-DS100-2026-11-15.md).
 
 **0.26.56:** Android enthält den vollständigen DS100-Referenzkatalog mit 13.720 Einträgen und 5.408 geprüften Koordinaten. Standortsuche und Standzeit-Vorbelegung funktionieren offline. Aktuelle Serverkataloge und die häufigen Orte je TF werden lokal gespeichert. Im Browser bleibt die zuvor online geöffnete Seite offline nutzbar.
 

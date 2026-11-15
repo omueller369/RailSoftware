@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 from decimal import Decimal, ROUND_HALF_UP
 from fastapi import HTTPException
 from sqlalchemy import select, delete, inspect, text
-from ..models import User, TfProfile, TfEmployment, TfAddress, TfNumberMigration, SessionToken, RailwayStation, TfIdentity
+from ..models import User, TfProfile, TfEmployment, TfAddress, TfNumberMigration, SessionToken, RailwayStation, TfIdentity, StationCatalogMigration
 from ..planning.holidays import berlin_holidays
 
 
@@ -147,6 +147,14 @@ def migrate_existing(db):
 
 
 def seed_stations(db):
-    if db.scalar(select(RailwayStation.code).limit(1)) is not None:return
+    migration='gpkg-2026-11-15'
+    if db.get(StationCatalogMigration,migration):return 0
     records=json.loads((Path(__file__).parent/'stations.json').read_text())
-    db.bulk_insert_mappings(RailwayStation,records)
+    existing={' '.join(value.upper().split()) for value in db.scalars(select(RailwayStation.code))}
+    if existing:
+        # Only append reviewed additions on upgrades. Keep site names and legacy deletions.
+        additions=set((Path(__file__).parent/'station_catalog_additions.txt').read_text().splitlines())
+        records=[row for row in records if row['code'] in additions and ' '.join(row['code'].upper().split()) not in existing]
+    if records:db.bulk_insert_mappings(RailwayStation,records)
+    db.add(StationCatalogMigration(key=migration))
+    return len(records)

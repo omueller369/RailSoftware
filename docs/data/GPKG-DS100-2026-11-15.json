@@ -1,0 +1,20 @@
+{
+  "source_rows": 10632,
+  "source_active_codes": 7431,
+  "counts": {
+    "existing_coordinate_review": 798,
+    "existing_reliable": 5408,
+    "new_reliable": 1042,
+    "new_coordinate_review": 124,
+    "inactive_new": 216,
+    "existing_name_review": 59,
+    "inactive_existing": 20
+  },
+  "catalog_additions": 1166,
+  "coordinate_additions": 1042,
+  "existing_coordinate_additions": 0,
+  "new_catalog_count": 14886,
+  "new_coordinate_count": 6450,
+  "gpkg_sha256": "79f8227e889769d87dcc77301f58adbc93a31839febb0cd1bdb16679e25453fe",
+  "same_records_as_previous_csv": true
+}

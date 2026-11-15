@@ -1,0 +1,5 @@
+{
+  "text_50d0f57018f4": "Erweiterter DS100-Katalog",
+  "text_bf07cce291d0": "Der Katalog enthält jetzt 14.886 Einträge und 6.450 geprüfte Koordinaten. Aus den DB-InfraGO-Infrastrukturdaten wurden 1.166 bislang fehlende aktive Betriebsstellen ergänzt, davon 1.042 mit eindeutig zuordenbaren Koordinaten. Weitere 124 neue Stellen sind über Kürzel und Namen suchbar, haben wegen mehrerer auseinanderliegender Referenzpunkte aber keine automatische GPS-Zuordnung. Bestehende Bezeichnungen und Koordinaten werden beim Serverupdate erhalten. Die Ergänzungen stehen auch im Offline-Katalog der aktuellen Android-App bereit. Aktualisiere Server und App, damit neue Codes auch beim endgültigen Speichern bekannt sind. Ein älterer Serverkatalog ersetzt den erweiterten Referenzstand der App nicht.",
+  "text_fe7774cdec6c": "DS100 um 1.166 aktive Betriebsstellen erweitert, davon 1.042 mit geprüften Koordinaten; insgesamt 14.886 Einträge und 6.450 Koordinaten, auch offline. Originale PNG-Bildsymbole für E-Lok, Dampflok, Diesellok und Kesselwagen in Karte, Auswahl und Demo."
+}

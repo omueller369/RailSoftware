@@ -121,7 +121,8 @@ def create_router(require_account):
             item=[station.code,station.name];point=positions.get(station.code)
             if point and normalized_name(point.catalog_name)==normalized_name(station.name):item.extend([point.latitude,point.longitude])
             rows.append(item)
-        return dict(stations=rows,coordinate_count=sum(len(row)==4 for row in rows))
+        manifest=json.loads((Path(__file__).parent/'accounts'/'station_catalog_manifest.json').read_text())
+        return dict(stations=rows,coordinate_count=sum(len(row)==4 for row in rows),reference_revision=manifest['revision'])
 
     @router.get('/api/v1/tf/stations/catalog')
     def search_catalog(q:str=Query(min_length=1,max_length=255),user:User=Depends(driver),db:Session=Depends(database_session)):

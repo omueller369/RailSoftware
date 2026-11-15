@@ -72,6 +72,10 @@ def create_router(require_account):
         pref=preferences(db,user.id);row=db.get(GpsPreference,user.id);profile=db.get(TfProfile,user.id)
         return dict(**pref.model_dump(),owner_id=user.id,first_name=profile.first_name if profile else '',revision=row.revision if row else 0)
 
+    @router.get('/tf/gps-marker-{kind}.png')
+    def marker_image(kind:Literal['electric','steam','diesel','tank']):
+        return FileResponse(Path(__file__).parent/'static'/f'gps-marker-{kind}.png',media_type='image/png')
+
     @router.get('/tf/gps-settings.js')
     def script():return FileResponse(Path(__file__).parent/'static'/'gps-settings.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 

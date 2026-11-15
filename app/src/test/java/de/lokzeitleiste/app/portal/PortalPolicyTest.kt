@@ -16,6 +16,8 @@ class PortalPolicyTest {
         for (url in listOf("http://tile.openstreetmap.org/10/548/335.png", "https://tile.openstreetmap.org.evil.test/10/548/335.png", "https://user@tile.openstreetmap.org/10/548/335.png", "https://tile.openstreetmap.org:444/10/548/335.png", "https://tile.openstreetmap.org/10/548/335.png?token=secret", "https://tile.openstreetmap.org/10/548/335.png#fragment", "https://tile.openstreetmap.org/account", "https://tile.openstreetmap.org/10/1024/335.png", "https://tile.openstreetmap.org/20/1/1.png", "https://tiles.openrailwaymap.org/other/10/548/335.png", "https://tile.openstreetmap.org/10/548/335%2epng")) assertFalse(url, policy.mapTile(url))
     }
     @Test fun onlyPackagedPublicViews() {
+        for(kind in listOf("electric","steam","diesel","tank")) assertEquals("gps-marker-$kind.png",policy.asset("/tf/gps-marker-$kind.png"))
+        assertNull(policy.asset("/tf/gps-marker-unknown.png"))
         assertEquals("station-catalog-data.js",policy.asset("/tf/station-catalog-data.js"))
         assertEquals("station-catalog.js",policy.asset("/tf/station-catalog.js"))
         assertEquals("report-tabs.js",policy.asset("/tf/report-tabs.js"))

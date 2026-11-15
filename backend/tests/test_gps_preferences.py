@@ -23,6 +23,19 @@ class GpsPreferencesTest(unittest.TestCase):
         self.second=self.create_tf('787101','P-GPS-SECOND').json()['id']
         self.viewer=TestClient(app,base_url='https://testserver');self.staff_clients.append(self.viewer)
         self.viewer.post('/api/v1/account/login',json={'username':'787101','password':'tf-secret-12345'})
+    def test_original_marker_png_assets_have_correct_type_and_safe_paths(self):
+        from pathlib import Path
+        from PIL import Image
+        import io
+        for kind in ['electric','steam','diesel','tank']:
+            response=self.client.get('/tf/gps-marker-'+kind+'.png')
+            self.assertEqual(response.status_code,200)
+            self.assertEqual(response.headers['content-type'],'image/png')
+            self.assertEqual(response.content,(Path(__file__).parents[1]/'lokzeitleiste/static'/('gps-marker-'+kind+'.png')).read_bytes())
+            image=Image.open(io.BytesIO(response.content));self.assertEqual(image.size,(128,128));self.assertEqual(image.mode,'RGBA')
+            self.assertEqual(image.getextrema()[-1],(0,255))
+        self.assertEqual(self.client.get('/tf/gps-marker-unknown.png').status_code,422)
+
     def prefs(self,client=None,**values):
         client=client or self.driver;old=client.get('/api/v1/tf/gps-settings').json();data={key:old[key] for key in Preferences.model_fields};data.update(values,expected_revision=old['revision'])
         reply=client.put('/api/v1/tf/gps-settings',json=data);self.assertEqual(reply.status_code,200,reply.text);return reply.json()

@@ -1,0 +1,5 @@
+{
+  "text_50d0f57018f4": "Expanded DS100 catalogue",
+  "text_bf07cce291d0": "The catalogue now contains 14,886 entries and 6,450 verified coordinates. DB InfraGO infrastructure data added 1,166 previously missing active operating points, including 1,042 with unambiguous coordinates. Another 124 new points remain searchable by code and name but have no automatic GPS assignment because their reference positions are too far apart. Server updates preserve existing names and coordinates. These additions are also included in the current Android offline catalogue. Update both server and app so the new codes are also recognized when saving to the server. An older server catalogue cannot replace the expanded app reference dataset.",
+  "text_fe7774cdec6c": "Added 1,166 active operating points, including 1,042 with verified coordinates: 14,886 DS100 entries and 6,450 coordinates in total, also offline. Original PNG icons for electric, steam and diesel locomotives and tank wagon on the map, in settings and in the demo."
+}

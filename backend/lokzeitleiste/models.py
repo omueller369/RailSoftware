@@ -930,3 +930,9 @@ class GpsLivePosition(Base):
     journey_id:Mapped[str]=mapped_column(String(36),nullable=False)
     point_json:Mapped[str|None]=mapped_column(Text,nullable=True)
     updated_at:Mapped[datetime|None]=mapped_column(DateTime,nullable=True)
+
+
+class StationCatalogMigration(Base):
+    __tablename__='station_catalog_migrations'
+    key:Mapped[str]=mapped_column(String(64),primary_key=True)
+    applied_at:Mapped[datetime]=mapped_column(DateTime,nullable=False,default=now_utc)

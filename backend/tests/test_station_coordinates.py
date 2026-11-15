@@ -16,19 +16,39 @@ class StationCoordinatesTest(unittest.TestCase):
         self.addCleanup(self.engine.dispose)
 
     def test_complete_catalog_is_filled_once_and_review_codes_are_not_included(self):
-        bundle=load_bundle();records=bundle['records'];self.assertEqual(len(records),5408)
+        bundle=load_bundle();records=bundle['records'];self.assertEqual(len(records),6450)
         review=BUNDLE.with_name('station_coordinates_review.txt').read_text().splitlines()
-        self.assertEqual(len(review),857);self.assertEqual(len(set(review)),857)
+        self.assertEqual(len(review),981);self.assertEqual(len(set(review)),981)
         self.assertFalse({row['code'] for row in records}&set(review))
         self.assertEqual(bundle['source_date'],'2026-05');self.assertEqual(bundle['license'],'CC-BY-4.0')
         with Session(self.engine) as db:
-            seed_stations(db);self.assertEqual(seed_coordinates(db),5408);db.commit()
-            self.assertEqual(db.scalar(select(func.count()).select_from(RailwayStation)),13720)
+            seed_stations(db);self.assertEqual(seed_coordinates(db),6450);db.commit()
+            self.assertEqual(db.scalar(select(func.count()).select_from(RailwayStation)),14886)
             self.assertEqual(seed_coordinates(db),0)
             row=db.get(RailwayStationCoordinates,'AABG');self.assertIsNotNone(row)
             self.assertTrue(47<=row.latitude<=56 and 5<=row.longitude<=16)
             self.assertEqual(row.source_date,'2026-05')
             self.assertIsNone(db.get(RailwayStationCoordinates,'AA'))
+
+    def test_existing_catalog_upgrade_preserves_custom_names_and_deletions_once(self):
+        records=json.loads(BUNDLE.with_name('stations.json').read_text())
+        additions=set(BUNDLE.with_name('station_catalog_additions.txt').read_text().splitlines())
+        self.assertEqual(len(additions),1166)
+        with Session(self.engine) as db:
+            legacy=[row for row in records if row['code'] not in additions and row['code']!='AABG']
+            db.bulk_insert_mappings(RailwayStation,legacy)
+            db.add(RailwayStation(code='AFS',name='Eigene Bezeichnung'));db.commit()
+            self.assertEqual(seed_stations(db),1165);db.commit()
+            self.assertEqual(db.get(RailwayStation,'AFS').name,'Eigene Bezeichnung')
+            self.assertIsNone(db.get(RailwayStation,'AABG'),'Deleted legacy entries stay deleted')
+            self.assertEqual(db.get(RailwayStation,'ALIN').name,'Lindaunis')
+            self.assertEqual(seed_coordinates(db),6448);db.commit()
+            self.assertIsNone(db.get(RailwayStationCoordinates,'AFS'))
+            removed=db.get(RailwayStation,'ALIN');point=db.get(RailwayStationCoordinates,'ALIN')
+            if point:db.delete(point);db.flush()
+            db.delete(removed);db.commit()
+            self.assertEqual(seed_stations(db),0,'Migration does not reinsert later user deletions')
+            self.assertIsNone(db.get(RailwayStation,'ALIN'))
 
     def test_fill_only_preserves_existing_positions_and_live_names_and_transaction(self):
         records=load_bundle()['records'];one=next(r for r in records if r['code']=='AABG');two=next(r for r in records if r['code']=='AACW')
@@ -80,6 +100,7 @@ class StationCoordinateApiTest(unittest.TestCase):
         self.assertEqual(response.status_code,200,response.text)
         self.assertEqual(len(response.json()['stations']),53)
         self.assertEqual(response.json()['coordinate_count'],1)
+        self.assertEqual(response.json()['reference_revision'],json.loads(BUNDLE.with_name('station_catalog_manifest.json').read_text())['revision'])
         self.assertEqual(next(row for row in response.json()['stations'] if row[0]=='BBB'),['BBB','Berlin Beispiel',52.5,13.4])
         self.assertEqual(response.headers['cache-control'],'private, no-store')
         with Session(self.engine) as db:db.get(RailwayStation,'BBB').name='Neuer Name';db.commit()

@@ -65,13 +65,15 @@ class DevTools:
     def close(self):self.socket.close()
 
 
-def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320)):
+def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None,label="Browser"):
     output_dir=Path(output_dir);output_dir.mkdir(parents=True,exist_ok=True)
     chrome=next((shutil.which(name) for name in ['google-chrome','google-chrome-stable','chromium','chromium-browser'] if shutil.which(name)),None)
     if not chrome:raise SystemExit('Chrome is required')
     results=[]
     with tempfile.TemporaryDirectory() as directory:
         root=Path(directory);profile=root/'profile';(root/'fixture.html').write_text(fixture())
+        for route,path in (assets or {}).items():
+            target=root/route.lstrip('/');target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(path,target)
         class QuietHandler(http.server.SimpleHTTPRequestHandler):
             def log_message(self,*args):pass
         server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(QuietHandler,directory=str(root)))
@@ -101,7 +103,7 @@ def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320)):
                     (output_dir/f'{width}.html').write_text(client.evaluate('document.documentElement.outerHTML') or '')
                     shot=client.call('Page.captureScreenshot',dict(format='png',captureBeyondViewport=False))
                     (output_dir/f'{width}.png').write_bytes(base64.b64decode(shot['data']))
-                    print(f'Offline DS100 {width}px: '+('PASS' if passed else 'FAIL '+message),flush=True)
+                    print(f'{label} {width}px: '+('PASS' if passed else 'FAIL '+message),flush=True)
                 finally:
                     client.close()
                     with urllib.request.urlopen(base+'/json/close/'+target['id'],timeout=10):pass

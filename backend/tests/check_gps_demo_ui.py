@@ -41,12 +41,15 @@ def fixture():
  assert(requests.every(request=>!request.options.method||request.options.method==='GET'),'Only read requests');
  const width=innerWidth;for(const control of workspace.querySelectorAll('button,select,input')){if(control.hidden||!control.getClientRects().length)continue;const box=control.getBoundingClientRect();assert(box.left>=0&&box.right<=width+1,'Controls fit viewport');}
  fail=true;await load.onclick();assert(play.disabled,'Failed reload cannot play stale recording');
- fail=false;await load.onclick();seek.value='9000000';seek.dispatchEvent(new Event('input'));
+ fail=false;preferences.marker='steam';await load.onclick();seek.value='9000000';seek.dispatchEvent(new Event('input'));assert(workspace.querySelector('[data-gps-position] image')?.getAttribute('href')==='/tf/gps-marker-steam.png','Demo applies selected original PNG');const decoded=new Image();decoded.src=workspace.querySelector('[data-gps-position] image').getAttribute('href');await decoded.decode();assert(decoded.naturalWidth===128,'Demo original PNG loaded');
  document.documentElement.dataset.layoutStatus='pass';window.parent.postMessage({layoutStatus:'pass'},'*');
 })().catch(error=>{document.documentElement.dataset.layoutStatus='fail';document.documentElement.dataset.layoutMessage=error.stack;window.parent.postMessage({layoutStatus:'fail',message:error.stack},'*');});
 '''
     return page.replace('</head>','<style>'+css+'</style></head>').replace('</body>','<script>'+scripts+checks+'</script></body>')
 
 if __name__=='__main__':
-    runner.fixture=fixture
-    runner.main()
+    import argparse
+    from browser_realtime import check_pages
+    parser=argparse.ArgumentParser();parser.add_argument('--output-dir',required=True);args=parser.parse_args()
+    assets={'/tf/gps-marker-'+name+'.png':runner.STATIC/('gps-marker-'+name+'.png') for name in ['electric','steam','diesel','tank']}
+    check_pages(fixture,args.output_dir,assets=assets,label="GPS demo")

@@ -416,3 +416,10 @@ Ab 0.26.55 werden erkannte Standzeiten über die DS100-Koordinaten des Servers v
 ### DS100 ohne Netz ab 0.26.56
 
 Die APK enthält 13.720 DS100-Einträge und 5.408 geprüfte Koordinaten. Auch bei einem Offline-Neustart steht der Referenzkatalog bereit; ein erster Katalogdownload ist nicht nötig. Kürzel-/Namenssuche und Standzeit-Vorbelegung arbeiten lokal. Bei Onlineverbindung wird der vollständige aktuelle Serverkatalog nachgeladen und in IndexedDB gespeichert (automatisch beim Öffnen nach mindestens einem Tag). Häufige Orte werden pro TF gespeichert. Im Browser öffnest Du das Portal zunächst online und lässt die Seite für Offlinearbeit geöffnet. Die Kartenbilder benötigen weiterhin Netz.
+
+
+### Erweiterter Offline-Katalog ab 0.26.57
+
+Die APK enthält 14.886 DS100-Einträge und 6.450 geprüfte Koordinaten. Neu sind 1.166 aktive Betriebsstellen, davon 1.042 mit eindeutigen Koordinaten und 124 ohne automatische GPS-Zuordnung. Aktualisiere Server und APK. Beim Serverstart wird die Ergänzung einmalig eingetragen; eigene Namen und bestehende Koordinaten bleiben erhalten. Ein älterer Serverkatalog setzt den erweiterten APK-Referenzstand nicht zurück. Die Prüfliste enthält jetzt 981 Kürzel, einschließlich der früher offenen Fälle.
+
+Die vier Original-PNG-Bilder aus GPS-Icons.zip werden unverändert mitgeliefert und proportional verkleinert angezeigt. E-Lok, Dampflok, Diesellok und Kesselwagen verwenden dieselben Bilder in Auswahl, Karte und Demo. Auch diese Bilddateien sind offline in der APK verfügbar.
