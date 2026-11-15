@@ -1,4 +1,4 @@
-# Android 0.26.50 – aktuelles TF-Portal
+# Android 0.26.51 – aktuelles TF-Portal
 
 Die App öffnet nach der nativen Anmeldung das vollständige TF-Portal. Die gemeinsamen HTML-/CSS-/JavaScript-Dateien werden beim Android-Build aus `backend/lokzeitleiste/static` in die APK übernommen. Geschäftsregeln, Tabellen, Eingaben und Berechtigungen entsprechen damit dem Portalstand dieses Builds. Neue Portalversionen erfordern einen neuen APK-Build. Der Server muss mindestens zum selben Projektstand aktualisiert sein.
 
@@ -38,7 +38,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Bei einer APK mit anderer bisheriger Signatur kann Android kein direktes Update installieren. Vor einer Deinstallation unübertragene lokale Daten sichern/synchronisieren. Keine Deinstallation ohne Datensicherung empfehlen.
 
-Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 76 liegt unter dem bestätigten Tabletstand 100004.
+Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 77 liegt unter dem bestätigten Tabletstand 100004.
 
 Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Updates → Auf Updates prüfen** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
 
@@ -81,3 +81,14 @@ DB Digi-Bef. im GPS-Bereich öffnet dieselbe externe DB-Seite wie die Kachel Dig
 ## Arbeitsbericht ab 0.26.47
 
 Die drei Reiter verwenden das Design der Zugfahrten: **Dienstzeit und Gastfahrt**, **Zugfahrt und Details (GPS)** und **Arbeitsberichte des Monats**. Du wechselst ohne Verlust Deiner Eingaben; eine laufende GPS-Aufzeichnung läuft weiter. Ein neuer oder geöffneter Bericht zeigt Dienstzeit, eine wiederhergestellte GPS-Aufzeichnung den GPS-Reiter. Pflichtfeldfehler öffnen den passenden Reiter. Ein anderer Bericht kann während einer laufenden GPS-Aufzeichnung weiterhin nicht geladen werden.
+
+
+## Persönliche GPS-Einstellungen und Teilen ab 0.26.51
+
+Unter **Mein Konto → GPS-Einstellungen** stellst Du die Erkennungsdauer 1/2/4/5/10/15 Minuten, E-Lok/Dampflok/Diesellok/Kesselwagen/Kreis und Fahrzeit, Standzeit, Geschwindigkeit, Zugnummer sowie Vorname ein. Die Checkboxen gelten für die eigene Kartenanzeige und den Freigabeumfang. Fremde Angaben werden nur ausgegeben, wenn Sender und Empfänger das jeweilige Feld gewählt haben. Die Dauer wird beim Start in der Aufzeichnung gespeichert. Bereits gespeicherte Aufzeichnungen behalten ihren bisherigen Wert; historische Zuordnungen werden nicht neu berechnet. Kurze Aufenthalte werden bei neuen Aufzeichnungen erst nach Erreichen der gewählten Dauer als Standzeit gezählt, dann mit ihrer vollständigen Dauer. Manuelle Standzeiten bleiben unabhängig davon möglich.
+
+**Freigabe Nein ist Standard.** Ja und Speichern allein veröffentlicht keine Position. Erst das Teilen-Symbol in einer laufenden Aufzeichnung startet eine Freigabesitzung. Die erste aktuelle genaue Position wird gesendet, anschließend höchstens alle fünf Minuten. In Android läuft die Übertragung im vorhandenen GPS-Vordergrunddienst auch bei gesperrtem Bildschirm oder geöffnetem DB-Digi-Befehl-Browser weiter. Im Web hängt sie vom weiterlaufenden Browser ab. Ungenaue Fixes über 50 Meter, mehr als zwei Minuten alte Fixes und historische Demoaufzeichnungen werden nicht als Liveposition veröffentlicht; nach einer Netzpause wird keine Positionshistorie nachgesendet. Native Zugangsdaten bleiben im vorhandenen TokenVault; keine Tokens in Freigabeeinstellungen oder Dateien.
+
+Teilen beenden, Aufnahmeende und Freigabe Nein stoppen die Übertragung. Bei erreichbarem Server wird die geteilte Position entfernt. Bei Netzverlust kann der letzte Punkt bis zu zehn Minuten sichtbar bleiben; anschließend wird er ausgeblendet. Ein neuer Aufnahmestart aktiviert Teilen nicht automatisch. Nach App-Prozessende ohne weiterlaufenden Dienst ist ein erneuter bewusster Start nötig.
+
+Die Freigabe ist ausschließlich innerhalb der angemeldeten TF-Karten sichtbar. Es gibt keine öffentliche Karten-API. Der Server hält höchstens einen aktuellen Punkt je TF, keine zusätzliche gemeinsame Spurhistorie. Eigene private GPS-Aufzeichnungen und deren explizite oder Entwurfs-Synchronisierung bleiben davon getrennt. Neue additive Tabellen `gps_preferences` und `gps_live_positions` werden über das normale Serverupdate angelegt.

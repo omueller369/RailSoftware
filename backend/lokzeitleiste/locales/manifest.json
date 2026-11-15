@@ -164,6 +164,11 @@
     "en": "/locales/backend_worktime/en.json",
     "pl": "/locales/backend_worktime/pl.json"
   },
+  "gps_preferences": {
+    "de": "/locales/gps_preferences/de.json",
+    "en": "/locales/gps_preferences/en.json",
+    "pl": "/locales/gps_preferences/pl.json"
+  },
   "portal_brake_sheet": {
     "de": "/locales/portal_brake_sheet/de.json",
     "en": "/locales/portal_brake_sheet/en.json",

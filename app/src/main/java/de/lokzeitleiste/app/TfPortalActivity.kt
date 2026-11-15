@@ -226,7 +226,19 @@ class TfPortalActivity : ComponentActivity() {
                 "gps.snapshot" -> {
                     val key=trackKey(request);val after=request.optLong("after",0);val points=store.read(key);val result=JSONArray()
                     for(i in 0 until points.length()) if(points.getJSONObject(i).getLong("t")>after && result.length()<1000)result.put(points.getJSONObject(i))
-                    reply(proxy,request,true,JSONObject().put("points",result).put("running",GpsRecordingService.currentKey==key))
+                    reply(proxy,request,true,GpsLiveShare.status(key).put("points",result).put("running",GpsRecordingService.currentKey==key))
+                }
+                "gps.share" -> {
+                    require(Uri.parse(web.url).path=="/tf/arbeitsbericht")
+                    val key=trackKey(request)
+                    if(request.optBoolean("enabled"))GpsLiveShare.configure(this,key,request.getString("session_id"),request.getString("train_number"),request.optJSONArray("manual_stops")?:JSONArray(),if(request.isNull("stop_minutes"))null else request.getInt("stop_minutes"))
+                    else GpsLiveShare.stop(this,key)
+                    reply(proxy,request,true,GpsLiveShare.status(key))
+                }
+                "gps.shareContext" -> {
+                    val key=trackKey(request)
+                    GpsLiveShare.context(key,request.getString("session_id"),request.getString("train_number"),request.optJSONArray("manual_stops")?:JSONArray())
+                    reply(proxy,request,true,GpsLiveShare.status(key))
                 }
                 "gps.stop" -> { val key=trackKey(request);if(GpsRecordingService.currentKey==key){stopService(Intent(this,GpsRecordingService::class.java));GpsRecordingService.currentKey=null};reply(proxy,request,true,JSONObject()) }
                 "gps.erase" -> { val key=trackKey(request);require(GpsRecordingService.currentKey!=key);store.erase(key);reply(proxy,request,true,JSONObject()) }

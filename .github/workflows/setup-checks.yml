@@ -64,6 +64,13 @@ jobs:
         with:
           name: wgm-ui
           path: ${{ runner.temp }}/wgm-ui/
+      - name: GPS settings and explicit sharing browser checks
+        run: python backend/tests/check_gps_preferences_ui.py --output-dir "$RUNNER_TEMP/gps-preferences-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gps-preferences-ui
+          path: ${{ runner.temp }}/gps-preferences-ui/
       - name: Backend dependencies
         run: python -m pip install -r backend/requirements-dev.txt
       - name: Help overlay and print checks

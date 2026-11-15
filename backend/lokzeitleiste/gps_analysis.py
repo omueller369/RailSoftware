@@ -34,13 +34,13 @@ def confirmed_departures(points):
                 yield fixes[0]['t']
 
 
-def analyse(points,preserved_starts=(),legacy=False,version2=False,version3=False,version4=False):
+def analyse(points,preserved_starts=(),legacy=False,version2=False,version3=False,version4=False,stop_minutes=None):
     rows=[];gaps=[];run=[];last=None
     previous_rule=version2 or version3
     confirmed=None if legacy or previous_rule or version4 else set(confirmed_departures(points))
     def finish():
         duration=run[-1]['t']-run[0]['t'] if len(run)>1 else 0
-        if (duration>300_000 if legacy else duration>=240_000 if previous_rule else duration>120_000):
+        if (duration>300_000 if legacy else duration>=240_000 if previous_rule else duration>=stop_minutes*60_000 if stop_minutes is not None else duration>120_000):
             rows.append(dict(key='s'+str(len(rows)),kind=_text_source('server_gps_analysis.text_0fd998791d67'),start=run[0]['t'],end=run[-1]['t'],lat=run[0]['lat'],lon=run[0]['lon'],index=points.index(run[0])))
         run.clear()
     for index,point in enumerate(points):

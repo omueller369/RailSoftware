@@ -4,7 +4,7 @@ import json,math,time,threading,urllib.request,urllib.parse,re,unicodedata
 from datetime import timedelta
 from pathlib import Path
 from uuid import UUID
-from typing import Annotated
+from typing import Annotated,Literal
 from fastapi import APIRouter,Depends,HTTPException,Query
 from fastapi.responses import FileResponse
 from pydantic import BaseModel,Field,model_validator
@@ -45,6 +45,7 @@ class ManualStop(BaseModel):
         return self
 
 class Recording(BaseModel):
+    stop_minutes:Literal[1,2,4,5,10,15]|None=None
     train_number:str=Field(pattern=r'^[A-Za-z0-9]{1,12}$')
     points:list[Point]=Field(default_factory=list,max_length=20000)
     start_station:str|None=Field(default=None,max_length=10)
@@ -172,7 +173,7 @@ def create_router(require_account):
             if key not in edits and (station or reason):
                 edits[key]=dict(station=station,station_input=((station.get('code','')+' · ' if station.get('code') else '')+station.get('name','')) if station else '',reason=reason.get('reason',''),detail=reason.get('detail',''),end=None,manual_end=False,imported=False)
         payload['stop_edits']=edits
-        new=[r for r in analyse(payload['points'])['rows'] if r['kind']==_text_source('server_gps.text_0fd998791d67')]
+        new=[r for r in analyse(payload['points'],stop_minutes=payload.get('stop_minutes'))['rows'] if r['kind']==_text_source('server_gps.text_0fd998791d67')]
         key_map={}
         for item in old:
             match=next((r for r in new if r['start']<=item['start']<=r['end']),None)
@@ -187,7 +188,7 @@ def create_router(require_account):
         payload['detection_version']=5
         return payload
     def view(row):
-        payload=read_payload(row);result=analyse(payload['points'],payload.get('stop_edits') or {})
+        payload=read_payload(row);result=analyse(payload['points'],payload.get('stop_edits') or {},stop_minutes=payload.get('stop_minutes'))
         payload.setdefault('reasons',{})
         for item in result['rows']:
             item['station']=payload.get('stations',{}).get(item['key'])
@@ -221,9 +222,12 @@ def create_router(require_account):
         row=db.scalar(select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id,TrainGpsRecording.journey_id==str(journey_id)).with_for_update())
         if (row.revision if row else 0)!=data.expected_revision:raise HTTPException(409,_text_source('server_gps.text_e9455228bddf'))
         payload=data.model_dump(exclude={'expected_revision'});previous=read_payload(row) if row else {}
+        restarted=bool(previous.get('ended') and not data.ended and data.points and (not previous.get('points') or data.points[0].t>previous['points'][-1]['t']))
+        if row and not restarted and data.stop_minutes is not None and data.stop_minutes!=previous.get('stop_minutes'):raise HTTPException(409,_text_source('server_gps.text_e9455228bddf'))
+        payload['stop_minutes']=data.stop_minutes if not row or restarted else previous.get('stop_minutes')
         payload['detection_version']=5
         if payload['manual_stops'] is None:payload['manual_stops']=previous.get('manual_stops',[])
-        gps_stops=[item for item in analyse(payload['points'])['rows'] if item['kind']==_text_source('server_gps.text_0fd998791d67')]
+        gps_stops=[item for item in analyse(payload['points'],stop_minutes=payload.get('stop_minutes'))['rows'] if item['kind']==_text_source('server_gps.text_0fd998791d67')]
         stops={'live-'+str(item['start']):item for item in gps_stops}
         for item in payload['manual_stops']:stops[item['key']]=item
         timestamps={p['t'] for p in payload['points']}
@@ -249,7 +253,7 @@ def create_router(require_account):
                     if not station:raise HTTPException(422,_text_source('server_gps.text_b418a717a2d3'))
                     edit['station']=dict(code=station.code,name=station.name)
         # Preserve explicit assignments from older 0.25/RC recordings.
-        for item in analyse(previous.get('points',[]),(previous.get('stop_edits') or {}))['rows']:
+        for item in analyse(previous.get('points',[]),(previous.get('stop_edits') or {}),stop_minutes=previous.get('stop_minutes'))['rows']:
             key='live-'+str(item['start'])
             if item['kind']!=_text_source('server_gps.text_0fd998791d67') or key not in stops or key in edits:continue
             station=previous.get('stations',{}).get(item['key']) or previous.get('locations',{}).get(str(item['start']))
@@ -297,7 +301,7 @@ def create_router(require_account):
         ensure_defaults(db)
         row=owned(db,user,journey_id,True)
         if row.revision!=data.expected_revision:raise HTTPException(409,_text_source('server_gps.text_e9455228bddf'))
-        payload=read_payload(row);keys={item['key'] for item in analyse(payload['points'],payload.get('stop_edits') or {})['rows']};selected={}
+        payload=read_payload(row);keys={item['key'] for item in analyse(payload['points'],payload.get('stop_edits') or {},stop_minutes=payload.get('stop_minutes'))['rows']};selected={}
         for key,place in data.stations.items():
             if key in keys:
                 if isinstance(place,FreePlace):

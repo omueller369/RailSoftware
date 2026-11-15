@@ -43,13 +43,13 @@ class GpsRecordingService : Service(), LocationListener {
         if(count>=20000 || first>0 && t-first>48*3600000L) { stopSelf();return }
         val point=JSONObject().put("t",t).put("lat",location.latitude).put("lon",location.longitude).put("accuracy",location.accuracy.toDouble())
             .put("speed",if(location.hasSpeed() && location.speed>=0 && location.speed<=200) location.speed.toDouble() else JSONObject.NULL)
-        try { store.append(key,point);last=t;if(first==0L)first=t;count++ } catch(_:Exception) { stopSelf() }
+        try { store.append(key,point);GpsLiveShare.tick(this);last=t;if(first==0L)first=t;count++ } catch(_:Exception) { stopSelf() }
     }
     @Suppress("DEPRECATION")
     override fun onStatusChanged(provider:String?,status:Int,extras:android.os.Bundle?) { }
     override fun onProviderEnabled(provider:String) { }
     override fun onProviderDisabled(provider:String) { }
-    override fun onDestroy() { runCatching { locations.removeUpdates(this) };currentKey=null;stopForeground(STOP_FOREGROUND_REMOVE);super.onDestroy() }
+    override fun onDestroy() { GpsLiveShare.stop(this);runCatching { locations.removeUpdates(this) };currentKey=null;stopForeground(STOP_FOREGROUND_REMOVE);super.onDestroy() }
     override fun onBind(intent: Intent?): IBinder? = null
     companion object { @Volatile var currentKey: String?=null }
 }

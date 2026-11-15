@@ -913,3 +913,20 @@ class RailwayStationCoordinates(Base):
     source_url:Mapped[str]=mapped_column(String(500),nullable=False)
     source_date:Mapped[str]=mapped_column(String(7),nullable=False)
     max_spread_m:Mapped[float]=mapped_column(Double,nullable=False)
+
+
+class GpsPreference(Base):
+    __tablename__='gps_preferences'
+    user_id:Mapped[int]=mapped_column(ForeignKey('users.id'),primary_key=True)
+    payload_json:Mapped[str]=mapped_column(Text,nullable=False)
+    revision:Mapped[int]=mapped_column(Integer,nullable=False,default=1)
+
+
+class GpsLivePosition(Base):
+    """One expiring latest point per driver, never a shared location history."""
+    __tablename__='gps_live_positions'
+    user_id:Mapped[int]=mapped_column(ForeignKey('users.id'),primary_key=True)
+    session_id:Mapped[str]=mapped_column(String(36),nullable=False)
+    journey_id:Mapped[str]=mapped_column(String(36),nullable=False)
+    point_json:Mapped[str|None]=mapped_column(Text,nullable=True)
+    updated_at:Mapped[datetime|None]=mapped_column(DateTime,nullable=True)

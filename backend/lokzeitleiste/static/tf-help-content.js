@@ -531,6 +531,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{portal_updates.text_0ffc6ca8e70a}}"
         ],
         "steps": []
+      },
+      {
+        "title": "{{gps_preferences.text_9df5067d2313}}",
+        "paragraphs": [
+          "{{gps_preferences.text_4555f0787f33}}"
+        ],
+        "steps": []
       }
     ]
   },
@@ -933,6 +940,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{portal_tf_help_content.text_a36c101570cc}}",
         "paragraphs": [
           "{{portal_tf_help_content.text_f03bf53efe10}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{gps_preferences.text_9df5067d2313}}",
+        "paragraphs": [
+          "{{gps_preferences.text_4555f0787f33}}"
         ],
         "steps": []
       }

@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.50
+# LokZeitleiste v0.26.51
+
+**0.26.51:** Mein Konto enthält GPS-Einstellungen für Stopperkennung (1/2/4/5/10/15 Minuten), fünf Punktsymbole und Anzeige-/Freigabefelder. Freigabe ist standardmäßig Nein. Erst ein bewusster Druck auf Teilen während einer laufenden GPS-Aufzeichnung startet die Veröffentlichung einer aktuellen Position, danach höchstens alle fünf Minuten. Angaben erscheinen nur bei beidseitiger Auswahl. Android überträgt aus dem GPS-Hintergrunddienst; keine Nachsendung alter Positionen. Abgelaufene Positionen werden nach zehn Minuten ausgeblendet. Pro TF wird nur die letzte geteilte Position gespeichert. Alte Aufzeichnungen behalten ihre Erkennungsregel.
 
 **0.26.50:** 5.408 eindeutig zuordenbare DS100-Stellen um WGS84-Referenzkoordinaten aus DB-InfraGO-Infrastrukturdaten (Mai 2026) ergänzt. Der normale Serverupdateweg füllt fehlende Positionen in einer eigenen Tabelle; bestehende Positionen, Namen und Codes bleiben erhalten. 857 Kürzel mit abweichenden Namen oder mehreren Referenzpunkten stehen separat zur Prüfung bereit. Keine automatische Zuordnung von GPS-Halten.
 
