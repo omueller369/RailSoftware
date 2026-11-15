@@ -21,7 +21,16 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
 (async()=>{
  const field=new Element('input'),container=new Element('div');field.value='';
  const r=context.window.GpsRecorder.mount({userId:5,journeyId:'00000000-0000-4000-8000-000000000001',container,numberField:field,trainNumber:()=>field.value,readonly:()=>false,selectEnd:async()=>({code:'CCC',name:'Ziel'}),selectStart:async()=>({code:'BBB',name:'Berlin Beispiel'}),stations(){},resolve:async()=>({code:'BBB'})});
- await r.readyPromise;assert.equal(r.content.hidden,true);assert.equal(r.collapseButton.textContent,'+');assert.equal(r.collapseButton.attributes['aria-expanded'],'false');r.collapseButton.onclick();assert.equal(r.content.hidden,false);assert.equal(r.collapseButton.textContent,'−');assert.equal(r.collapseButton.attributes['aria-expanded'],'true');assert.equal(r.box.hidden,true);field.value='123';r.freeze();assert.equal(r.box.hidden,false);assert.equal(r.startButton.disabled,false);
+ await r.readyPromise;
+ // Full-screen SVGs may be letterboxed: pointer positions must use the actual SVG transform.
+ context.DOMPoint=class {constructor(x,y){this.x=x;this.y=y;}matrixTransform(m){return{x:this.x*m.scale+m.dx,y:this.y*m.scale+m.dy};}};
+ const originalDraw=r.drawMap;r.drawMap=()=>{};r.mapView={zoom:12,center:{x:.5,y:.5},size:1048576};
+ r.mapSvg={getScreenCTM:()=>({inverse:()=>({scale:.5,dx:-50,dy:-25})})};
+ const pointer=x=>({pointerId:1,pointerType:'touch',clientX:x,clientY:500,preventDefault(){}});
+ r.map.events.pointerdown(pointer(1000));r.map.events.pointermove(pointer(1040));
+ assert(Math.abs(r.mapState.center.x-(.5-20/1048576))<1e-12,'Full-screen drag respects SVG scale and offsets');
+ r.map.events.pointerup(pointer(1040));r.drawMap=originalDraw;r.drawMap();
+assert.equal(r.content.hidden,true);assert.equal(r.collapseButton.textContent,'+');assert.equal(r.collapseButton.attributes['aria-expanded'],'false');r.collapseButton.onclick();assert.equal(r.content.hidden,false);assert.equal(r.collapseButton.textContent,'−');assert.equal(r.collapseButton.attributes['aria-expanded'],'true');assert.equal(r.box.hidden,true);field.value='123';r.freeze();assert.equal(r.box.hidden,false);assert.equal(r.startButton.disabled,false);
  context.window.isSecureContext=false;await assert.rejects(r.start(),/HTTPS/);context.window.isSecureContext=true;
  await r.start();await new Promise(resolve=>setTimeout(resolve,5));assert(context.window.GpsRecorder.isActive());assert.equal(field.readOnly,true);assert.equal(r.record.points.length,1);
  r.collapseButton.onclick();assert.equal(r.content.hidden,true);await r.sample();assert.equal(r.record.points.length,2);assert(context.window.GpsRecorder.isActive());r.drawMap();assert(!r.mapSvg.children.some(e=>e.tag==='image'));r.collapseButton.onclick();r.drawMap();assert(r.mapSvg.children.some(e=>e.tag==='image'));assert(!r.mapSvg.children.some(e=>'data-gps-trail' in e.attributes));await r.stop();assert.equal(context.window.GpsRecorder.isActive(),false);assert.equal(field.readOnly,false);assert.equal(body.ended,true);assert.equal(body.points.length,3);assert(!('actual_pause' in body));assert(tracks.get(r.key));assert.equal(r.liveInputs.length,0);assert.equal(r.record.end_station,'CCC');
