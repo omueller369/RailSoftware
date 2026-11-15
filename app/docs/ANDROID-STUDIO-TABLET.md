@@ -409,3 +409,5 @@ Mit dem Vollbild-Symbol vergrößerst Du die Karte. Die Kartenwerkzeuge, DB Digi
 Bremszettel Int. öffnet bei jeder Zugfahrt ein bearbeitbares Overlay mit eigenem lokalen Entwurf. Schließen beendet GPS nicht. Endgültiges Speichern im Bremszettel bleibt ein eigener Schritt. Standortfelder verwenden eine deckende Vorschlagsliste; ein leeres Feld zeigt bis zu fünf häufige Orte, sofern bereits vorhanden und erreichbar.
 
 Ab 0.26.54 zeigt die GPS-Karte in Aufzeichnung und Demo die ausgewählten Zeiten ohne Labels: `02:15 / 00:30` bedeutet Gesamtzeit seit Abfahrt / addierte Standzeit. Ein einzeln gewählter Wert erscheint allein.
+
+Ab 0.26.55 werden erkannte Standzeiten über die DS100-Koordinaten des Servers vorbelegt: Ein eindeutiger nächster Treffer innerhalb von 1.000 Metern erscheint als Kürzel und Name im Ortsfeld. Prüfe oder ändere den Vorschlag und ergänze den Grund. Erst Übernehmen trägt den Halt in die Zugfahrtdetails ein. Eigene Ortsangaben bleiben erhalten. Ohne Netz, ohne Treffer oder bei zwei nahezu gleich weit entfernten Referenzpunkten bleibt die manuelle Eingabe möglich. Eine GPS-Lücke erhält keinen erfundenen DS100-Standort.

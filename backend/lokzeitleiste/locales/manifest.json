@@ -169,6 +169,11 @@
     "en": "/locales/gps_preferences/en.json",
     "pl": "/locales/gps_preferences/pl.json"
   },
+  "gps_stop_suggestions": {
+    "de": "/locales/gps_stop_suggestions/de.json",
+    "en": "/locales/gps_stop_suggestions/en.json",
+    "pl": "/locales/gps_stop_suggestions/pl.json"
+  },
   "portal_brake_sheet": {
     "de": "/locales/portal_brake_sheet/de.json",
     "en": "/locales/portal_brake_sheet/en.json",

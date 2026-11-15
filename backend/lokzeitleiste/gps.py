@@ -12,7 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from .db import database_session
-from .models import User,RailwayStation,TrainGpsRecording,GpsStationCache,now_utc
+from .models import User,RailwayStation,RailwayStationCoordinates,TrainGpsRecording,GpsStationCache,now_utc
 from .tf_portal import driver_dependency
 from .gps_analysis import analyse,distance
 
@@ -209,6 +209,24 @@ def create_router(require_account):
         return dict(items=items,next_offset=offset+100 if len(rows)>100 else None)
     @router.get('/tf/gps.js')
     def script():return FileResponse(Path(__file__).parent/'static'/'gps.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/api/v1/tf/gps/stop-station')
+    def stop_station(lat:float=Query(ge=-90,le=90,allow_inf_nan=False),lon:float=Query(ge=-180,le=180,allow_inf_nan=False),user:User=Depends(driver),db:Session=Depends(database_session)):
+        # Direct coordinate lookup: no OSM request or place-name approximation.
+        from .accounts.station_coordinates import normalized_name
+        radius=1000
+        latitude_band=radius/110000+0.001
+        matches=[]
+        query=select(RailwayStation,RailwayStationCoordinates).join(RailwayStationCoordinates,RailwayStation.code==RailwayStationCoordinates.code).where(RailwayStationCoordinates.latitude.between(max(-90,lat-latitude_band),min(90,lat+latitude_band)))
+        for station,position in db.execute(query):
+            if normalized_name(station.name)!=normalized_name(position.catalog_name):continue
+            meters=distance(dict(lat=lat,lon=lon),dict(lat=position.latitude,lon=position.longitude))
+            if meters<=radius:matches.append((meters,station.code,station.name))
+        matches.sort()
+        # Equally close reference points require an explicit user choice.
+        ambiguous=len(matches)>1 and matches[1][0]-matches[0][0]<25
+        station=dict(code=matches[0][1],name=matches[0][2],distance_m=round(matches[0][0])) if matches and not ambiguous else None
+        return dict(radius_m=radius,station=station,ambiguous=ambiguous)
+
     @router.get('/api/v1/tf/gps/nearby')
     def nearby(lat:float=Query(ge=-90,le=90,allow_inf_nan=False),lon:float=Query(ge=-180,le=180,allow_inf_nan=False),user:User=Depends(driver),db:Session=Depends(database_session)):
         stations=station_data(db,lat,lon,nearby=True)

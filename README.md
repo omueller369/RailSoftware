@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.54
+# LokZeitleiste v0.26.55
+
+**0.26.55:** Erkannte GPS-Standzeiten erhalten aus den gespeicherten DS100-Koordinaten einen bearbeitbaren Ortsvorschlag innerhalb von 1.000 Metern. Eigene Ortsangaben bleiben erhalten; unklare Treffer und fehlende Koordinaten werden nicht automatisch zugeordnet.
 
 **0.26.54:** Die GPS-Karte und die Demo zeigen Fahrzeit und Standzeit über dem Symbol ohne Labels als `02:15 / 00:30`. Die Anzeige-Checkboxen steuern weiterhin beide Werte einzeln.
 

@@ -69,6 +69,33 @@ class RecordingTest(unittest.TestCase):
         path=path or self.path();data=dict(train_number='ABC123',points=points(),ended=True,expected_revision=0);data.update(changes)
         result=self.driver.put(path,json=data);return path,result
 
+    def test_direct_ds100_stop_lookup_without_external_requests(self):
+        from lokzeitleiste.models import RailwayStationCoordinates,RailwayStation
+        def coordinates(code,name,lon):
+            return RailwayStationCoordinates(code=code,catalog_name=name,latitude=52,longitude=lon,source_name=name,source_url='https://example.test/stations',source_date='2026-11',max_spread_m=0)
+        with Session(self.engine) as db:
+            db.add_all([coordinates('BBB','Berlin Beispiel',13.001),coordinates('CCC','Berlin Süd',13.006)])
+            db.commit()
+        endpoint='/api/v1/tf/gps/stop-station?lat=52&lon=13'
+        with patch('lokzeitleiste.gps.osm_query',side_effect=AssertionError('External lookup forbidden')):
+            result=self.driver.get(endpoint)
+            self.assertEqual(result.status_code,200,result.text)
+            self.assertEqual(result.json()['station']['code'],'BBB')
+            self.assertLess(result.json()['station']['distance_m'],100)
+            self.assertEqual(result.json()['radius_m'],1000)
+        # Coordinates attached to a renamed catalogue entry must not be reused.
+        with Session(self.engine) as db:
+            db.get(RailwayStation,'BBB').name='Geänderter Name';db.commit()
+        self.assertEqual(self.driver.get(endpoint).json()['station']['code'],'CCC')
+        with Session(self.engine) as db:
+            db.add(coordinates('AAA','Aachen Beispiel',13.0062));db.commit()
+        ambiguous=self.driver.get(endpoint).json()
+        self.assertIsNone(ambiguous['station']);self.assertTrue(ambiguous['ambiguous'])
+        self.assertIsNone(self.driver.get('/api/v1/tf/gps/stop-station?lat=53&lon=13').json()['station'])
+        self.assertEqual(self.driver.get('/api/v1/tf/gps/stop-station?lat=nan&lon=13').status_code,422)
+        self.assertEqual(self.client.get(endpoint).status_code,403)
+        self.driver.cookies.clear();self.assertEqual(self.driver.get(endpoint).status_code,401)
+
     def test_free_text_endpoints_and_stop_roundtrip(self):
         key='live-'+str(BASE)
         path,response=self.save(start_station_name=' km 42,7 ',end_station='BBB',

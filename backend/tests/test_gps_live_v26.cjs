@@ -19,6 +19,7 @@ const context={console,Intl,Date,Number,Math,Promise,setTimeout,clearTimeout,set
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/train-journeys.js','utf8'),context);
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8'),context);
 
+if(require.main!==module){module.exports={context,Element,tracks};return;}
 (async()=>{
  let imports=[],stationQueries=0;const initialFetch=context.fetch;
  context.fetch=async(path,options)=>{if(path.includes('/nearby'))stationQueries++;return initialFetch(path,options);};
@@ -68,5 +69,5 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  assert.equal(r.liveInputs[0].endTime(),manualStops[2].end);
  assert.equal(r.liveInputs.length,2);
  await r.discard();assert.equal(context.window.GpsRecorder.isActive(),false);assert.equal(tracks.has(r.key),false);
- console.log('GPS 0.26: live list, manual end, custom reason, transfer/remove, measured-point preservation, gap bridge, no automatic station lookup, no network warning and concurrent checkpoint: PASS');
+ console.log('GPS 0.26: live list, manual end, custom reason, transfer/remove, measured-point preservation, gap bridge, no automatic OSM lookup, no network warning and concurrent checkpoint: PASS');
 })().catch(error=>{console.error(error);process.exitCode=1;});

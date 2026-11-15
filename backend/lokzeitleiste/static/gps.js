@@ -483,11 +483,36 @@ class Recorder{
  this.map.append(node('small',t(this.mapState.mode==='follow'?globalThis.CtlText.source("portal_gps.text_b2b3a3f2bec3"):globalThis.CtlText.source("portal_gps.text_8e02679954f1"))));if(this.railFailed)this.map.append(node('small',t(globalThis.CtlText.source("portal_gps.text_f1b2882182df"))));
  }
 
- draw(){normaliseRecording(this.record);if((this.mergeButton && document.activeElement === this.mergeButton) || this.liveInputs?.some(row=>[row.tr,row.station,row.reason,row.end,row.take,row.remove,row.check].includes(document.activeElement))){const rows=this.rows().filter(row=>!this.imported(row)&&!this.removed(row));for(const input of this.liveInputs){const current=rows.find(row=>row.key===input.row.key);if(current){Object.assign(input.row,current);if(current.end&&!this.record.stop_edits?.[current.key]?.manual_end)input.end.value=clock(current.end);}}if(rows.map(row=>row.key).join()===this.liveInputs.map(input=>input.row.key).join()){this.drawMap();this.freeze();return;}}this.drawMap();
+ draw(){normaliseRecording(this.record);Promise.resolve().then(()=>this.prefillStops()).catch(()=>{});if((this.mergeButton && document.activeElement === this.mergeButton) || this.liveInputs?.some(row=>[row.tr,row.station,row.reason,row.end,row.take,row.remove,row.check].includes(document.activeElement))){const rows=this.rows().filter(row=>!this.imported(row)&&!this.removed(row));for(const input of this.liveInputs){const current=rows.find(row=>row.key===input.row.key);if(current){Object.assign(input.row,current);if(current.end&&!this.record.stop_edits?.[current.key]?.manual_end)input.end.value=clock(current.end);}}if(rows.map(row=>row.key).join()===this.liveInputs.map(input=>input.row.key).join()){this.drawMap();this.freeze();return;}}this.drawMap();
  const scrollTop = this.stopScroll?.scrollTop || 0, scrollLeft = this.stopScroll?.scrollLeft || 0;
  this.results.replaceChildren();this.stationInputs=[];this.drawStops();
  if (this.stopScroll) {this.stopScroll.scrollTop = scrollTop;this.stopScroll.scrollLeft = scrollLeft;}
  this.freeze();}
+ async prefillStops(){
+  if(this.o.demo||this.o.readonly()||!this.record||navigator.onLine===false)return;
+  const record=this.record;
+  if(this.stopLookupRecord!==record){this.stopLookupRecord=record;this.stopLookups=new Map();}
+  const untouched=row=>!this.imported(row)&&!this.removed(row)&&!row.source_keys.some(key=>{const edit=record.stop_edits?.[key];return edit&&(Object.hasOwn(edit,'station_input')||edit.station);});
+  for(const row of this.rows()){
+   if(this.record!==record)return;
+   if(!untouched(row))continue;
+   const previous=this.stopLookups.get(row.key);if(previous&&previous.next>Date.now())continue;
+   // Manual stops need an actual, accurate fix close to their start, never an estimated gap point.
+   const point=row.manual?(record.points||[]).filter(p=>p.accuracy<=50&&Math.abs(p.t-row.start)<=30000).sort((a,b)=>Math.abs(a.t-row.start)-Math.abs(b.t-row.start))[0]:row;
+   if(!point||!Number.isFinite(point.lat)||!Number.isFinite(point.lon))continue;
+   const ticket={next:Infinity};this.stopLookups.set(row.key,ticket);
+   try{
+    const reply=await api('/api/v1/tf/gps/stop-station?lat='+encodeURIComponent(point.lat)+'&lon='+encodeURIComponent(point.lon));
+    if(this.record!==record||this.o.readonly()||!this.rows().some(current=>current.key===row.key)||!untouched(row))continue;
+    if(!reply?.station)continue;
+    const choice={code:reply.station.code,name:reply.station.name};
+    if(typeof choice.code!=='string'||typeof choice.name!=='string'||!choice.code||!choice.name)continue;
+    record.stop_edits||={};record.stop_edits[row.key]={...record.stop_edits[row.key],station:choice,station_input:placeLabel(choice)};
+    const input=this.liveInputs?.find(input=>input.row.key===row.key);input?.applyStation(choice);
+    record.dirty=true;await this.persist();
+   }catch{ticket.next=Date.now()+30000;}
+  }
+ }
  async checkpoint(){
  if(this.checkpointTask)return this.checkpointTask;
  this.checkpointTask=(async()=>{if(active===this&&window.AndroidPortal)await this.nativeRead();await this.persist();if(!this.record||(!this.record.points?.length&&!this.record.manual_stops?.length)||navigator.onLine===false)return false;
@@ -623,7 +648,7 @@ class Recorder{
     tr.append(td);
    }
    body.append(tr);
-   this.liveInputs.push({row,tr,station,reason,end,take,remove,check,endTime,readEdit});
+   this.liveInputs.push({row,tr,station,reason,end,take,remove,check,endTime,readEdit,applyStation:choice=>{draft.station=choice;draft.station_input=placeLabel(choice);station.value=draft.station_input;}});
   }
   scroll.replaceChildren(table);
   this.results.append(scroll);
