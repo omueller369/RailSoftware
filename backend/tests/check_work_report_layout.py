@@ -103,6 +103,8 @@ def fixture():
  assert(columns.every(box=>Math.abs(box.width-columns[0].width)<2),'Equal detail thirds');
  assert(columns[0].left<columns[1].left&&columns[1].left<columns[2].left&&Math.abs(columns[0].top-columns[2].top)<2,'Art, Grund and station share first row');
  assert(item.eventFields.start_at.parentElement.getBoundingClientRect().top>=columns[0].bottom,'Times below details');
+ assert(Math.abs(item.eventFields.start_at.getBoundingClientRect().width-columns[0].width)<2,'Time field fills its third');
+ assert(Math.abs(item.submit.getBoundingClientRect().width-columns[0].width)<2,'Add button fills its third');
  gps.collapseButton.click();const originalMap=gps.map,originalPoints=gps.record.points,originalParent=gps.map.parentNode;
  window.AndroidPortal={request:async()=>({})};window.TrainWorkspace.fullscreen(gps);
  assert(document.querySelector('.train-map-fullscreen').open&&gps.map===originalMap&&gps.record.points===originalPoints,'Fullscreen preserves map and recording');
