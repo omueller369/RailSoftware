@@ -31,6 +31,9 @@ def create_router(require_account):
     @router.get('/tf/work-report-feedback.js')
     def feedback_script():return FileResponse(Path(__file__).parent.parent/'static'/'work-report-feedback.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 
+    @router.get('/tf/station-contributions.js')
+    def station_contribution_script():return FileResponse(Path(__file__).parent.parent/'static'/'station-contributions.js',media_type='text/javascript')
+
     @router.get('/tf/station-catalog-data.js')
     def station_catalog_data():return FileResponse(Path(__file__).parent.parent/'static'/'station-catalog-data.js',media_type='text/javascript')
 
@@ -57,7 +60,8 @@ def create_router(require_account):
         text=q.strip().upper().replace('\\','\\\\').replace('%','\\%').replace('_','\\_')
         rows=db.scalars(select(RailwayStation).where(
             or_(RailwayStation.code.ilike(text+'%',escape='\\'),RailwayStation.name.ilike('%'+text+'%',escape='\\'))).order_by(case((RailwayStation.code==q.strip().upper(),0),(RailwayStation.code.ilike(text+'%',escape='\\'),1),else_=2),RailwayStation.code).limit(20)).all()
-        return [{'code':r.code,'name':r.name} for r in rows]
+        from ..accounts.station_coordinates import with_coordinates
+        return with_coordinates(db,[{'code':r.code,'name':r.name} for r in rows])
 
     @router.get('/api/v1/tf/work-reports/stations/frequent')
     def frequent_stations(user:User=Depends(driver),db:Session=Depends(database_session)):

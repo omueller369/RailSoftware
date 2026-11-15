@@ -1,0 +1,20 @@
+{
+  "text_7a5424e22744": "Im lokalen Katalog ist für {code} · {name} keine Koordinate hinterlegt. Möchtest Du die gemessene Position dieser Standzeit ({lat}, {lon}) als Standort ergänzen? Sie wird lokal gespeichert und nach dem Serverabgleich für alle TF verfügbar.",
+  "text_d32c0afc6290": "Auf dem Server hat {code} · {name} bereits eine Position. Dein Vorschlag liegt {distance} Meter entfernt, also mehr als 1.000 Meter. Ist Dein Standort richtig und soll die bisherige Position überschrieben werden?",
+  "text_baffedd06c2e": "Ja",
+  "text_500ec634e9d7": "Nein",
+  "text_32bd8fa8f72a": "Position lokal vorgemerkt. Der Serverabgleich erfolgt bei verfügbarer Verbindung.",
+  "text_95b68f502613": "Position auf dem Server gespeichert und lokal übernommen.",
+  "text_3b8229600b1f": "Neue Position verworfen. Die vorhandene Serverposition bleibt erhalten.",
+  "text_a03343f6b968": "Für diese Standzeit ist kein genauer, tatsächlich gemessener GPS-Punkt nahe ihrem Beginn verfügbar. Die DS100-Position kann nicht ergänzt werden.",
+  "text_3ac85241b51a": "Die Position konnte nicht gespeichert werden. Bitte versuche es erneut.",
+  "text_118cfc015f2f": "Der Servereintrag wurde inzwischen geändert. Der Vorschlag bleibt für einen erneuten Abgleich vorgemerkt.",
+  "text_209262112731": "Die Anmeldung hat sich geändert. Öffne Deine Zugfahrt erneut.",
+  "text_e5d2a953eccc": "Dieses DS100-Kürzel ist auf dem Server nicht vorhanden.",
+  "text_508fd1c00940": "Ungültiger oder ungenauer GPS-Punkt.",
+  "text_8d88d1bfad6b": "Der DS100-Eintrag wurde inzwischen geändert. Bitte erneut prüfen.",
+  "text_d4430353d852": "Diese Vorgangskennung wurde bereits für einen anderen Vorschlag verwendet.",
+  "text_5c892618829a": "Wenn Du in einer GPS-Standzeit ein DS100-Kürzel ohne Koordinaten auswählst, kannst Du den tatsächlich gemessenen GPS-Punkt dieser Standzeit als Position ergänzen. Die erste Frage nennt Kürzel, Namen und vorgeschlagene Koordinaten. Ja merkt den Punkt auf diesem Gerät für Deinen TF vor. Nein verwirft die Ergänzung. Ohne Netz kannst Du weiterarbeiten; der Vorschlag bleibt lokal vorgemerkt. Bei verfügbarer Verbindung prüft der Server den aktuellen Eintrag. Liegt eine vorhandene Position höchstens 1.000 Meter entfernt, wird Dein bestätigter Vorschlag übernommen. Bei mehr als 1.000 Metern wirst Du nochmals gefragt. Erst ein weiteres Ja erlaubt das Überschreiben; Nein verwirft den Vorschlag und übernimmt die vorhandene Serverposition in den lokalen Katalog. Hat jemand den Servereintrag währenddessen geändert, wird vor dem Schreiben erneut geprüft. Nach erfolgreichem Speichern stehen die Koordinaten allen TF zur Verfügung; geöffnete Apps gleichen Änderungen beim Fortsetzen und spätestens alle fünf Minuten bei verfügbarem Netz ab. Bis zum Serverabgleich gilt eine lokale Vormerkung nur für Deinen TF. Nur echte GPS-Punkte mit höchstens 50 Metern Genauigkeitsabweichung und höchstens 30 Sekunden Abstand zum Beginn der Standzeit werden angeboten. Aus geschätzten Kartenverbindungen entstehen keine DS100-Koordinaten. Die Standzeit und ihre Eingaben bleiben bei einer Ablehnung erhalten.",
+  "text_114c9b1151de": "Fehlende DS100-Koordinaten aus bestätigten GPS-Standzeiten ergänzen, offline vormerken und nach Serververgleich für alle TF speichern; über 1.000 Meter Abweichung mit zweiter Bestätigung.",
+  "text_6f5bfa32d26a": "DS100-Position aus einer Standzeit ergänzen"
+}

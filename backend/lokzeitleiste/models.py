@@ -936,3 +936,15 @@ class StationCatalogMigration(Base):
     __tablename__='station_catalog_migrations'
     key:Mapped[str]=mapped_column(String(64),primary_key=True)
     applied_at:Mapped[datetime]=mapped_column(DateTime,nullable=False,default=now_utc)
+
+
+class StationCoordinateContribution(Base):
+    __tablename__='station_coordinate_contributions'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    request_id:Mapped[str]=mapped_column(String(36),unique=True,nullable=False)
+    owner_id:Mapped[int|None]=mapped_column(ForeignKey('users.id',ondelete='SET NULL'),nullable=True)
+    code:Mapped[str]=mapped_column(ForeignKey('railway_stations.code',ondelete='CASCADE'),nullable=False)
+    proposal_json:Mapped[str]=mapped_column(Text,nullable=False)
+    before_json:Mapped[str|None]=mapped_column(Text,nullable=True)
+    after_json:Mapped[str]=mapped_column(Text,nullable=False)
+    created_at:Mapped[datetime]=mapped_column(DateTime,nullable=False,default=now_utc)

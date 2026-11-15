@@ -1,0 +1,20 @@
+{
+  "text_7a5424e22744": "W lokalnym katalogu nie ma współrzędnych dla {code} · {name}. Czy chcesz dodać zmierzoną pozycję tego postoju ({lat}, {lon})? Zostanie zapisana lokalnie, a po sprawdzeniu na serwerze udostępniona wszystkim maszynistom.",
+  "text_d32c0afc6290": "Na serwerze istnieje już pozycja dla {code} · {name}. Twoja propozycja jest oddalona o {distance} metrów, czyli ponad 1000 metrów. Czy Twoja lokalizacja jest prawidłowa i ma zastąpić dotychczasową pozycję?",
+  "text_baffedd06c2e": "Tak",
+  "text_500ec634e9d7": "Nie",
+  "text_32bd8fa8f72a": "Pozycja oczekuje lokalnie. Sprawdzenie na serwerze nastąpi po uzyskaniu połączenia.",
+  "text_95b68f502613": "Pozycja zapisana na serwerze i zastosowana lokalnie.",
+  "text_3b8229600b1f": "Nowa pozycja odrzucona. Dotychczasowa pozycja serwera pozostaje zachowana.",
+  "text_a03343f6b968": "Brak dokładnej, rzeczywiście zmierzonej pozycji GPS blisko początku tego postoju. Nie można uzupełnić pozycji DS100.",
+  "text_3ac85241b51a": "Nie udało się zapisać pozycji. Spróbuj ponownie.",
+  "text_118cfc015f2f": "Wpis serwera został w międzyczasie zmieniony. Propozycja pozostaje do ponownego sprawdzenia.",
+  "text_209262112731": "Zmieniono zalogowane konto. Otwórz ponownie swoją jazdę.",
+  "text_e5d2a953eccc": "Tego kodu DS100 nie ma na serwerze.",
+  "text_508fd1c00940": "Nieprawidłowy lub niedokładny pomiar GPS.",
+  "text_8d88d1bfad6b": "Wpis DS100 został w międzyczasie zmieniony. Sprawdź ponownie.",
+  "text_d4430353d852": "Ten identyfikator operacji został już użyty dla innej propozycji.",
+  "text_5c892618829a": "Gdy podczas postoju GPS wybierzesz kod DS100 bez współrzędnych, możesz dodać rzeczywiście zmierzoną pozycję tego postoju. Pierwsze pytanie pokazuje kod, nazwę i proponowane współrzędne. Tak zapisuje propozycję lokalnie dla Twojego konta, a Nie odrzuca uzupełnienie. Możesz dalej pracować offline; propozycja pozostaje zapisana lokalnie. Po uzyskaniu sieci serwer sprawdza aktualny wpis. Jeśli istniejąca pozycja jest oddalona najwyżej o 1000 metrów, potwierdzona propozycja zostaje zastosowana. Większa odległość wymaga drugiego potwierdzenia. Dopiero kolejne Tak pozwala nadpisać pozycję; Nie odrzuca propozycję i przywraca lokalnie istniejącą pozycję serwera. Przed zapisem ponownie sprawdzane są równoległe zmiany. Zapisane współrzędne są dostępne wszystkim maszynistom; otwarte aplikacje sprawdzają zmiany po wznowieniu i co najwyżej co pięć minut przy dostępnym internecie. Do synchronizacji lokalna propozycja jest widoczna tylko dla Twojego konta. Oferowane są wyłącznie rzeczywiste pomiary z dokładnością do 50 metrów i nie dalej niż 30 sekund od początku postoju. Szacowane połączenia na mapie nie stają się współrzędnymi DS100. Odrzucenie propozycji zachowuje postój i jego wpisy.",
+  "text_114c9b1151de": "Uzupełnianie brakujących współrzędnych DS100 z potwierdzonych postojów GPS, kolejka offline i zapis dla wszystkich po sprawdzeniu serwera; ponad 1000 metrów wymaga drugiego potwierdzenia.",
+  "text_6f5bfa32d26a": "Uzupełnij pozycję DS100 z postoju GPS"
+}

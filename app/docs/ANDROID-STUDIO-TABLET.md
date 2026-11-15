@@ -425,3 +425,8 @@ Die APK enthält 14.886 DS100-Einträge und 6.450 geprüfte Koordinaten. Neu sin
 Die vier Original-PNG-Bilder aus GPS-Icons.zip werden unverändert mitgeliefert und proportional verkleinert angezeigt. E-Lok, Dampflok, Diesellok und Kesselwagen verwenden dieselben Bilder in Auswahl, Karte und Demo. Auch diese Bilddateien sind offline in der APK verfügbar.
 
 Ab 0.26.58 erscheint um die vier GPS-Bildsymbole keine helle Hinterlegung mehr. Die Original-PNGs besitzen bereits einen Alphakanal; ihr transparenter Hintergrund wird jetzt auch in Karte, Auswahl und Demo erhalten.
+
+
+### Fehlende DS100-Position ergänzen ab 0.26.59
+
+Wählst Du in einer GPS-Standzeit ein DS100-Kürzel ohne Koordinate, fragt die App, ob sie den echten GPS-Messpunkt dieser Standzeit ergänzen soll. Ja speichert den Vorschlag lokal für Deinen TF, auch offline. Der Server prüft beim nächsten verfügbaren Abgleich den aktuellen Eintrag. Bis 1.000 Meter Abweichung wird die bestätigte Position übernommen; darüber erscheint eine zweite Frage. Ja erlaubt das Überschreiben, Nein verwirft den Vorschlag und erhält die Serverposition. Änderungen während des Dialogs werden erneut geprüft. Bestätigte Positionen sind nach erfolgreicher Übertragung für alle TF verfügbar. Lokale, noch nicht abgeglichene Vorschläge bleiben für andere Konten unsichtbar. Es wird kein geschätzter Punkt aus einer GPS-Lücke verwendet. Die GPS-Aufzeichnung läuft während der nicht blockierenden Dialoge weiter.

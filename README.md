@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.58
+# LokZeitleiste v0.26.59
+
+**0.26.59:** TF können fehlende DS100-Koordinaten aus einem gemessenen GPS-Punkt ihrer Standzeit bestätigen. Vorschläge werden TF-bezogen offline vorgemerkt und nach aktuellem Serverabgleich global gespeichert. Mehr als 1.000 Meter Abweichung zu einer vorhandenen Position verlangt ein zweites Ja; konkurrierende Änderungen werden vor dem Schreiben erneut geprüft.
 
 **0.26.58:** Die GPS-Bildsymbole zeigen ihren transparenten Hintergrund auch in Karte, Auswahl und Demo. Die helle Hinterlegung in der App-Darstellung wurde entfernt.
 

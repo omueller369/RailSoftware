@@ -644,6 +644,11 @@
     "en": "/locales/shared_legacy/en.json",
     "pl": "/locales/shared_legacy/pl.json"
   },
+  "station_contributions": {
+    "de": "/locales/station_contributions/de.json",
+    "en": "/locales/station_contributions/en.json",
+    "pl": "/locales/station_contributions/pl.json"
+  },
   "station_coordinates": {
     "de": "/locales/station_coordinates/de.json",
     "en": "/locales/station_coordinates/en.json",

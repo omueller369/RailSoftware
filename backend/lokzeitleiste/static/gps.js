@@ -156,7 +156,7 @@ class Recorder{
  this.digiButton=button(globalThis.CtlText.source("portal_updates.text_a73270dfd660"),()=>this.openDigi());this.digiButton.onclick=()=>this.openDigi().catch(error=>this.fail(error.message));
  this.manualButton=button(globalThis.CtlText.source("portal_gps.text_ea7a852a9397"),()=>this.toggleManual());this.manualButton.className='gps-stand-toggle';this.manualDuration=node('strong');this.manualDuration.className='gps-stand-duration';this.manualDuration.setAttribute('role','timer');this.manualDuration.setAttribute('aria-label',t(globalThis.CtlText.source("portal_gps.text_a698bdef0fac")));this.manualDuration.setAttribute('data-i18n-ignore','');tools.append(this.manualDuration);
  this.startButton=button(globalThis.CtlText.source("portal_gps.text_0a08578cb4ee"),()=>this.start());this.helpButton=button('?',()=>this.help());this.helpButton.onclick=()=>this.help();this.helpButton.setAttribute('aria-label',t(globalThis.CtlText.source("portal_gps.text_9864176d9d3d")));this.importButton=button(globalThis.CtlText.source("portal_gps.text_936378b371b9"),()=>this.importStops());this.stopButton=button(globalThis.CtlText.source("portal_gps.text_dd9f56658b7d"),()=>this.stop());this.syncButton=button(globalThis.CtlText.source("portal_gps.text_ea75d1374ab3"),()=>this.sync());this.loadButton=button(globalThis.CtlText.source("portal_gps.text_b4ba21896850"),()=>this.reload());this.resolveButton=button(globalThis.CtlText.source("portal_gps.text_0d03c4f256ee"),()=>this.resolve());this.choiceButton=button(globalThis.CtlText.source("portal_gps.text_8bf8e40c1815"),()=>this.choose());this.exportButton=button(globalThis.CtlText.source("portal_gps.text_acdcacf4345a"),()=>this.export());this.deleteButton=button(globalThis.CtlText.source("portal_gps.text_f4e43a8d31f2"),()=>this.erase());this.content.append(tools);this.message=node('p');this.message.setAttribute('role','status');this.message.setAttribute('aria-live','polite');this.message.setAttribute('data-i18n-ignore','');this.content.append(this.message);this.map=node('div');this.map.className='gps-map';this.setupMap();this.results=node('div');this.results.className='excel-scroll';this.content.append(this.map,this.results);o.container.append(this.box);this.live=window.GpsPreferences?.attach(this,tools,()=>active===this&&!this.record?.ended);
- if(o.demo){this.heading.hidden=true;this.hint.hidden=true;tools.hidden=true;this.results.hidden=true;this.content.hidden=false;}this.readyPromise=o.demo?Promise.resolve():this.read();window.addEventListener('languagechange',()=>{this.updateCollapse();this.draw();});window.addEventListener('stationcatalogchange',()=>this.prefillStops().catch(()=>{}));document.addEventListener('visibilitychange',()=>{if(active===this&&!window.AndroidPortal){if(document.visibilityState==='hidden')this.say(globalThis.CtlText.source("portal_gps.text_625519aef9da"));else{this.say(globalThis.CtlText.source("portal_gps.text_2bf0ce6687cd"));this.wake();}}});this.freeze();
+ if(o.demo){this.heading.hidden=true;this.hint.hidden=true;tools.hidden=true;this.results.hidden=true;this.content.hidden=false;}this.readyPromise=o.demo?Promise.resolve():this.read();window.addEventListener('languagechange',()=>{this.updateCollapse();this.draw();});window.addEventListener('stationcatalogchange',()=>this.prefillStops().catch(()=>{}));window.addEventListener('stationcoordinatefeedback',event=>{if(event.detail.owner===this.o.userId)this.say(event.detail.message);});document.addEventListener('visibilitychange',()=>{if(active===this&&!window.AndroidPortal){if(document.visibilityState==='hidden')this.say(globalThis.CtlText.source("portal_gps.text_625519aef9da"));else{this.say(globalThis.CtlText.source("portal_gps.text_2bf0ce6687cd"));this.wake();}}});this.freeze();
  }
  updateCollapse(){this.collapseButton.textContent=this.content.hidden?'+':'−';this.collapseButton.setAttribute('aria-expanded',String(!this.content.hidden));this.collapseButton.setAttribute('aria-label',t(this.content.hidden?globalThis.CtlText.source("portal_gps.text_37e7d85ac04d"):globalThis.CtlText.source("portal_gps.text_357b8d0b4dc0")));}
  setExpanded(expanded){this.content.hidden=!expanded;this.updateCollapse();if(expanded)this.draw();}
@@ -488,6 +488,12 @@ class Recorder{
  this.results.replaceChildren();this.stationInputs=[];this.drawStops();
  if (this.stopScroll) {this.stopScroll.scrollTop = scrollTop;this.stopScroll.scrollLeft = scrollLeft;}
  this.freeze();}
+ async offerCoordinate(row,choice,input,fromTransfer=false){
+  if(this.o.demo||this.o.readonly()||!this.record||!choice?.code||!window.StationContributions)return;
+  const record=this.record;if(this.coordinateOffersRecord!==record){this.coordinateOffersRecord=record;this.coordinateOffers=new Set();}const key=row.key+'|'+choice.code;if(fromTransfer&&this.coordinateOffers.has(key))return;this.coordinateOffers.add(key);
+  const point=(record.points||[]).filter(point=>point.accuracy>=0&&point.accuracy<=50&&Math.abs(point.t-row.start)<=30000).sort((a,b)=>Math.abs(a.t-row.start)-Math.abs(b.t-row.start))[0];
+  await window.StationContributions.offer({owner_id:this.o.userId,choice,point,valid:()=>this.record===record&&!this.o.readonly()&&!this.removed(row)&&this.rows().some(current=>current.key===row.key)&&[placeLabel(choice),choice.code].includes((record.stop_edits?.[row.key]?.station_input??input.value).trim())});
+ }
  async prefillStops(){
   if(this.o.demo||this.o.readonly()||!this.record||navigator.onLine===false&&!window.StationCatalog)return;
   const record=this.record;
@@ -502,7 +508,7 @@ class Recorder{
    if(!point||!Number.isFinite(point.lat)||!Number.isFinite(point.lon))continue;
    const ticket={next:Infinity,catalogRevision:window.StationCatalog?.revision};this.stopLookups.set(row.key,ticket);
    try{
-    const reply=window.StationCatalog?await window.StationCatalog.nearest(point.lat,point.lon):await api('/api/v1/tf/gps/stop-station?lat='+encodeURIComponent(point.lat)+'&lon='+encodeURIComponent(point.lon));
+    const reply=window.StationCatalog?await window.StationCatalog.nearest(point.lat,point.lon,this.o.userId):await api('/api/v1/tf/gps/stop-station?lat='+encodeURIComponent(point.lat)+'&lon='+encodeURIComponent(point.lon));
     if(this.record!==record||this.o.readonly()||!this.rows().some(current=>current.key===row.key)||!untouched(row))continue;
     if(!reply?.station)continue;
     const choice={code:reply.station.code,name:reply.station.name};
@@ -575,7 +581,7 @@ class Recorder{
    station.setAttribute('aria-label', t(globalThis.CtlText.source("portal_gps.text_792751a9dcdb")));
    list.id = 'gps-live-' + this.o.journeyId + '-' + row.key;
    station.setAttribute('list', list.id);
-   this.o.stations(station, list);
+   this.o.stations(station,list,{selected:choice=>this.offerCoordinate(row,choice,station).catch(error=>this.fail(error.message))});
    reasonList.id = list.id + '-reason';
    for (const label of choices.keys()) {
     const option = node('option');
@@ -625,6 +631,7 @@ class Recorder{
     if (!edit.reason) throw Error(t(globalThis.CtlText.source("portal_gps.text_f2df21cce73d")));
     if (edit.reason === other && !edit.detail) throw Error(t(globalThis.CtlText.source("portal_gps.text_58f91be54d8a")));
     const choice = edit.station || await this.o.resolve(station);
+    await this.offerCoordinate(row,choice,station,true);
     const imported = await this.o.importStops([{...row,end:until,station:choice,reason:{reason:edit.reason,cause:edit.cause,detail:edit.detail,label:window.TrainJourneyReasonLabel?.(edit.reason)||edit.reason}}]);
     if (imported === false) return;
     this.record.stop_edits ||= {};

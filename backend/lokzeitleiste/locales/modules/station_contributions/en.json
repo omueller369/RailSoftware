@@ -1,0 +1,20 @@
+{
+  "text_7a5424e22744": "The local catalogue has no coordinate for {code} · {name}. Add the measured position of this stop ({lat}, {lon})? It will be saved locally and made available to all drivers after the server check.",
+  "text_d32c0afc6290": "The server already has a position for {code} · {name}. Your proposal is {distance} metres away, more than 1,000 metres. Is your location correct and should it replace the existing position?",
+  "text_baffedd06c2e": "Yes",
+  "text_500ec634e9d7": "No",
+  "text_32bd8fa8f72a": "Position queued locally. The server check will run when a connection is available.",
+  "text_95b68f502613": "Position saved on the server and applied locally.",
+  "text_3b8229600b1f": "New position discarded. The existing server position is retained.",
+  "text_a03343f6b968": "This stop has no accurate, actually measured GPS fix close to its start. Its DS100 position cannot be added.",
+  "text_3ac85241b51a": "The position could not be saved. Please try again.",
+  "text_118cfc015f2f": "The server entry changed in the meantime. The proposal remains queued for another check.",
+  "text_209262112731": "The signed-in account changed. Open your journey again.",
+  "text_e5d2a953eccc": "This DS100 code is not present on the server.",
+  "text_508fd1c00940": "Invalid or inaccurate GPS fix.",
+  "text_8d88d1bfad6b": "The DS100 entry changed in the meantime. Check it again.",
+  "text_d4430353d852": "This request identifier was already used for a different proposal.",
+  "text_5c892618829a": "When selecting a DS100 code without coordinates in a GPS stop, you can add the actually measured GPS fix of that stop as its position. The first question shows code, name and proposed coordinates. Yes queues the point on this device for your driver account. No discards the addition. You can continue offline; the proposal remains queued locally. Once connected, the server checks the current entry. If an existing position is at most 1,000 metres away, your confirmed proposal is applied. More than 1,000 metres requires a second confirmation. Only another Yes permits replacement; No discards the proposal and applies the existing server position to the local catalogue. Concurrent changes are checked again before writing. Successfully saved coordinates are available to all drivers; open apps check changes on resume and at least every five minutes while online. Until synchronized, a local proposal is visible only to your driver account. Only real fixes with accuracy within 50 metres and within 30 seconds of the stop start are offered. Estimated map bridges never become DS100 coordinates. Rejecting a proposal preserves the stop and its entries.",
+  "text_114c9b1151de": "Add missing DS100 coordinates from confirmed GPS stops, queue offline and save for all drivers after server comparison; a second confirmation is required beyond 1,000 metres.",
+  "text_6f5bfa32d26a": "Add a DS100 position from a GPS stop"
+}

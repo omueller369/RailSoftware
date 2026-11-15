@@ -47,6 +47,13 @@ jobs:
         with:
           name: station-catalog-ui
           path: ${{ runner.temp }}/station-catalog-ui/
+      - name: GPS station coordinate contribution checks
+        run: python backend/tests/check_station_contributions_ui.py --output-dir "$RUNNER_TEMP/station-contributions-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: station-contributions-ui
+          path: ${{ runner.temp }}/station-contributions-ui/
       - name: Updates browser module
         run: python backend/tests/check_updates_ui.py --output-dir "$RUNNER_TEMP/updates-ui"
       - uses: actions/upload-artifact@v4

@@ -88,6 +88,8 @@ def contacts_json(contacts):
 
 def create_router(require_account):
     router=APIRouter()
+    from .station_coordinate_contributions import create_router as coordinate_router
+    router.include_router(coordinate_router(require_account))
     driver=driver_dependency(require_account)
 
     def owned(db,user,station_id,lock=False):
@@ -122,7 +124,8 @@ def create_router(require_account):
             if point and normalized_name(point.catalog_name)==normalized_name(station.name):item.extend([point.latitude,point.longitude])
             rows.append(item)
         manifest=json.loads((Path(__file__).parent/'accounts'/'station_catalog_manifest.json').read_text())
-        return dict(stations=rows,coordinate_count=sum(len(row)==4 for row in rows),reference_revision=manifest['revision'])
+        from .station_coordinate_contributions import coordinate_revision
+        return dict(stations=rows,coordinate_count=sum(len(row)==4 for row in rows),reference_revision=manifest['revision'],coordinate_revision=coordinate_revision(db))
 
     @router.get('/api/v1/tf/stations/catalog')
     def search_catalog(q:str=Query(min_length=1,max_length=255),user:User=Depends(driver),db:Session=Depends(database_session)):

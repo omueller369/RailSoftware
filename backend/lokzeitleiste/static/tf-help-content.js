@@ -597,6 +597,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{gpkg_station_catalog.text_bf07cce291d0}}"
         ],
         "steps": []
+      },
+      {
+        "title": "{{station_contributions.text_6f5bfa32d26a}}",
+        "paragraphs": [
+          "{{station_contributions.text_5c892618829a}}"
+        ],
+        "steps": []
       }
     ]
   },
@@ -646,6 +653,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
         "paragraphs": [
           "{{offline_station_catalog.text_930f72ca057f}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{station_contributions.text_6f5bfa32d26a}}",
+        "paragraphs": [
+          "{{station_contributions.text_5c892618829a}}"
         ],
         "steps": []
       }
@@ -958,6 +972,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{gpkg_station_catalog.text_50d0f57018f4}}",
         "paragraphs": [
           "{{gpkg_station_catalog.text_bf07cce291d0}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{station_contributions.text_6f5bfa32d26a}}",
+        "paragraphs": [
+          "{{station_contributions.text_5c892618829a}}"
         ],
         "steps": []
       }
