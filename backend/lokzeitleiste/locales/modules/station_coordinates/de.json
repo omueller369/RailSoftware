@@ -1,0 +1,6 @@
+{
+  "text_fed00b2cee7c": "Koordinatendatei ungültig. Import abgebrochen.",
+  "text_0db2769b1a95": "Referenzkoordinaten im Bahnhofskatalog",
+  "text_18da0457db31": "Für 5.408 eindeutig zugeordnete Betriebsstellen sind Referenzkoordinaten aus DB-InfraGO-Daten hinterlegt. Weitere 857 Stellen werden wegen abweichender Namen oder mehrerer Referenzpunkte zunächst nicht ergänzt. Diese Stammdaten ändern Deine GPS-Aufzeichnung nicht und ordnen keine Halte automatisch zu.",
+  "text_83b1d50e5483": "DS100-Katalog: 5.408 geprüfte Referenzkoordinaten ergänzt. Vorhandene Koordinaten bleiben erhalten; 857 mehrdeutige Kürzel als separate Prüfliste."
+}

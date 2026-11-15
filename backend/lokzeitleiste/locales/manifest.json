@@ -619,6 +619,11 @@
     "en": "/locales/shared_legacy/en.json",
     "pl": "/locales/shared_legacy/pl.json"
   },
+  "station_coordinates": {
+    "de": "/locales/station_coordinates/de.json",
+    "en": "/locales/station_coordinates/en.json",
+    "pl": "/locales/station_coordinates/pl.json"
+  },
   "wgm": {
     "de": "/locales/wgm/de.json",
     "en": "/locales/wgm/en.json",

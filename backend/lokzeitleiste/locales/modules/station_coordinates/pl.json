@@ -1,0 +1,6 @@
+{
+  "text_fed00b2cee7c": "Nieprawidłowy plik współrzędnych. Import przerwany.",
+  "text_0db2769b1a95": "Współrzędne referencyjne w katalogu stacji",
+  "text_18da0457db31": "Dla 5408 jednoznacznie dopasowanych punktów eksploatacyjnych zapisano współrzędne referencyjne z danych DB InfraGO. Kolejne 857 punktów pozostaje bez uzupełnienia do czasu sprawdzenia różnych nazw lub wielu punktów referencyjnych. Te dane katalogowe nie zmieniają zapisu GPS ani nie przypisują automatycznie postojów.",
+  "text_83b1d50e5483": "Katalog DS100: dodano 5408 sprawdzonych współrzędnych referencyjnych. Istniejące współrzędne zachowano; 857 niejednoznacznych skrótów zapisano na osobnej liście do sprawdzenia."
+}

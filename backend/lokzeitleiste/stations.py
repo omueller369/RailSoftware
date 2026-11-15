@@ -118,7 +118,8 @@ def create_router(require_account):
         rows=db.scalars(select(RailwayStation).where(or_(RailwayStation.code.ilike(escaped+'%',escape='\\'),
             RailwayStation.name.ilike('%'+escaped+'%',escape='\\'))).order_by(
                 case((RailwayStation.code==query,0),(RailwayStation.code.ilike(escaped+'%',escape='\\'),1),else_=2),RailwayStation.code).limit(30))
-        return [dict(code=row.code,name=row.name) for row in rows]
+        from .accounts.station_coordinates import with_coordinates
+        return with_coordinates(db,[dict(code=row.code,name=row.name) for row in rows])
 
     @router.get('/api/v1/tf/stations')
     def listing(q:str=Query(default='',max_length=255),user:User=Depends(driver),db:Session=Depends(database_session)):

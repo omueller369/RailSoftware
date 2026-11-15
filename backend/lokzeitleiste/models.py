@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 
-from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Integer, LargeBinary, String, Text, UniqueConstraint
+from sqlalchemy import Boolean, CheckConstraint, Date, DateTime, Double, ForeignKey, Integer, LargeBinary, String, Text, UniqueConstraint
 from sqlalchemy.dialects.mysql import LONGBLOB, MEDIUMTEXT
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -899,3 +899,17 @@ class WgmAddress(Base):
     city:Mapped[str]=mapped_column(String(120),nullable=False)
     federal_state:Mapped[str]=mapped_column(String(2),nullable=False)
     is_postal:Mapped[bool]=mapped_column(Boolean,nullable=False)
+
+
+class RailwayStationCoordinates(Base):
+    """Additive reference positions: no alteration of existing station tables."""
+    __tablename__='railway_station_coordinates'
+    __table_args__=(CheckConstraint('latitude >= -90 AND latitude <= 90'),CheckConstraint('longitude >= -180 AND longitude <= 180'))
+    code:Mapped[str]=mapped_column(ForeignKey('railway_stations.code'),primary_key=True)
+    catalog_name:Mapped[str]=mapped_column(String(200),nullable=False)
+    latitude:Mapped[float]=mapped_column(Double,nullable=False)
+    longitude:Mapped[float]=mapped_column(Double,nullable=False)
+    source_name:Mapped[str]=mapped_column(String(200),nullable=False)
+    source_url:Mapped[str]=mapped_column(String(500),nullable=False)
+    source_date:Mapped[str]=mapped_column(String(7),nullable=False)
+    max_spread_m:Mapped[float]=mapped_column(Double,nullable=False)

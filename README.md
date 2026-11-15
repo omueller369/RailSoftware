@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.49
+# LokZeitleiste v0.26.50
+
+**0.26.50:** 5.408 eindeutig zuordenbare DS100-Stellen um WGS84-Referenzkoordinaten aus DB-InfraGO-Infrastrukturdaten (Mai 2026) ergänzt. Der normale Serverupdateweg füllt fehlende Positionen in einer eigenen Tabelle; bestehende Positionen, Namen und Codes bleiben erhalten. 857 Kürzel mit abweichenden Namen oder mehreren Referenzpunkten stehen separat zur Prüfung bereit. Keine automatische Zuordnung von GPS-Halten.
 
 **0.26.49:** Wagenmeister haben ein eigenes Verwaltungsmodul mit eigenen Stammdatentabellen und Modulrechten. Personen-, Beschäftigungs- und Adressdaten sowie E-Mail des WGM und Profilbild; keine TF-Nummer, BahnCard, TF-Einsatzart oder Heimatbahnhof. Die bisherige WGM-Kategorie im TF-Modul entfällt. Bestehende WGM-Konten werden unter Erhalt ihrer IDs, Benutzernamen, Passworthashes, Dokumente und Berichte übernommen. Das eigene WGM-Portal folgt später.
 

@@ -1,0 +1,6 @@
+{
+  "text_fed00b2cee7c": "Invalid coordinate file. Import aborted.",
+  "text_0db2769b1a95": "Reference coordinates in the station catalogue",
+  "text_18da0457db31": "Reference coordinates from DB InfraGO data are stored for 5,408 unambiguously matched operating points. Another 857 points remain unfilled pending review of different names or multiple reference points. These catalogue data do not change your GPS recording or assign stops automatically.",
+  "text_83b1d50e5483": "DS100 catalogue: 5,408 checked reference coordinates added. Existing coordinates preserved; 857 ambiguous codes listed separately for review."
+}

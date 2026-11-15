@@ -22,6 +22,8 @@ def main():
         migrate_existing(db)
         migrate_legacy_gender(db)
         seed_stations(db)
+        from .accounts.station_coordinates import seed_coordinates
+        seed_coordinates(db)
         from .planning.clear_legacy_notes import migrate as clear_old_notes
         clear_old_notes(db)
         db.commit()
