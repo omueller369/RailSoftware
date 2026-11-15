@@ -111,14 +111,10 @@ def fixture():
  assert(document.querySelector('.train-map-fullscreen').contains(gps.manualButton)&&document.querySelector('.train-map-fullscreen').contains(gps.digiButton),'Fullscreen retains stand and Digi controls');
  assert(window.TrainWorkspace.back()&&gps.map.parentNode===originalParent,'Back restores same map');delete window.AndroidPortal;
  assert(item.brakeButton&&!item.headerSet.contains(item.brakeButton),'Brake overlay accessible outside locked fields');
- const station=document.createElement('input');document.body.append(station);window.StationPicker.mount(station,{frequent:async()=>Array.from({length:7},(_,i)=>({code:'A'+i,name:'Ort '+i})),search:async q=>[{code:q,name:'Treffer'}]});
- station.focus();await new Promise(resolve=>setTimeout(resolve,30));
- assert(document.querySelectorAll('.station-picker button').length===5,'Five frequent places');
- assert(getComputedStyle(document.querySelector('.station-picker')).backgroundColor==='rgb(255, 255, 255)','Opaque suggestions');
- document.querySelector('.station-picker button').click();assert(station.value==='A0 · Ort 0','Touch selection');station.remove();
  const scroll=document.createElement('div');scroll.className='excel-scroll';
  scroll.innerHTML='<table class="excel"><thead><tr><th>Test</th></tr></thead><tbody>'+Array.from({length:12},(_,i)=>'<tr><td style="height:'+String(24+i*4)+'px">'+(i+1)+'</td></tr>').join('')+'</tbody></table>';
  document.getElementById('workReport').append(scroll);
+ window.parent.postMessage({layoutStatus:'pending',message:'Table measurement frame'},'*');
  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
  const listRows=scroll.querySelector('tbody').rows;
  const viewportBottom=scroll.getBoundingClientRect().top+scroll.clientTop+scroll.clientHeight;
@@ -149,6 +145,12 @@ def fixture():
  outerTabs[0].dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true}));
  assert(window.ReportTabs.active==='train'&&document.activeElement===outerTabs[1],'Keyboard selects and focuses next tab');
  window.ReportTabs.activate('month');
+ window.parent.postMessage({layoutStatus:'pending',message:'Station picker timer'},'*');
+ const station=document.createElement('input');document.body.append(station);window.StationPicker.mount(station,{frequent:async()=>Array.from({length:7},(_,i)=>({code:'A'+i,name:'Ort '+i})),search:async q=>[{code:q,name:'Treffer'}]});
+ station.focus();await new Promise(resolve=>setTimeout(resolve,30));
+ assert(document.querySelectorAll('.station-picker button').length===5,'Five frequent places');
+ assert(getComputedStyle(document.querySelector('.station-picker')).backgroundColor==='rgb(255, 255, 255)','Opaque suggestions');
+ document.querySelector('.station-picker button').click();assert(station.value==='A0 · Ort 0','Touch selection');station.remove();
  window.parent.postMessage({layoutStatus:'pass',width:innerWidth},'*');
 })().catch(error=>window.parent.postMessage({layoutStatus:'fail',message:error.stack},'*'));
 '''
