@@ -70,7 +70,7 @@ def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None
     chrome=next((shutil.which(name) for name in ['google-chrome','google-chrome-stable','chromium','chromium-browser'] if shutil.which(name)),None)
     if not chrome:raise SystemExit('Chrome is required')
     results=[]
-    with tempfile.TemporaryDirectory() as directory:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
         root=Path(directory);profile=root/'profile';(root/'fixture.html').write_text(fixture())
         for route,path in (assets or {}).items():
             target=root/route.lstrip('/');target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(path,target)
@@ -109,7 +109,7 @@ def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None
                     with urllib.request.urlopen(base+'/json/close/'+target['id'],timeout=10):pass
         finally:
             server.shutdown();server.server_close()
-            process.terminate()
+            if process.poll() is None:process.terminate()
             try:process.wait(timeout=10)
             except subprocess.TimeoutExpired:process.kill();process.wait()
     (output_dir/'results.json').write_text(json.dumps(results,indent=2))
