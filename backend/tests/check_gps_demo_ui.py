@@ -33,6 +33,7 @@ def fixture():
  const position=workspace.querySelector('[data-gps-position]');assert(position,'Playback shows current train position');
  assert(!position.querySelector('path')&&position.querySelector('circle'),'Saved circle icon applied in demo');
  assert(position.textContent.includes('DemoName')&&!position.textContent.includes('DEMO123')&&!position.textContent.includes('km/h'),'Saved visible fields applied in demo');
+ assert(/^\d{2}:\d{2}$/.test(position.querySelector('text').textContent),'Demo time without labels or dangling slash');
  assert(!workspace.querySelector('[data-gps-stop]'),'Saved 15-minute threshold suppresses recorded five-minute stand');
  assert(!workspace.querySelector('[data-gps-peer]'),'Demo excludes real live positions');
  reset.click();assert(output.textContent.startsWith('00:00:00'),'Reset returns to beginning');

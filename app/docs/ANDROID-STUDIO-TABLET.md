@@ -407,3 +407,5 @@ DB Digi-Bef. im GPS-Bereich öffnet dieselbe externe DB-Seite wie die Kachel Dig
 Mit dem Vollbild-Symbol vergrößerst Du die Karte. Die Kartenwerkzeuge, DB Digi-Bef. und Start Stand/Ende Stand bleiben erreichbar. Android hält den Bildschirm in diesem Modus eingeschaltet. Mit Vollbild beenden oder Android-Zurück stellst Du die normale Ansicht und Bildschirmsteuerung wieder her. Die GPS-Aufzeichnung läuft weiter.
 
 Bremszettel Int. öffnet bei jeder Zugfahrt ein bearbeitbares Overlay mit eigenem lokalen Entwurf. Schließen beendet GPS nicht. Endgültiges Speichern im Bremszettel bleibt ein eigener Schritt. Standortfelder verwenden eine deckende Vorschlagsliste; ein leeres Feld zeigt bis zu fünf häufige Orte, sofern bereits vorhanden und erreichbar.
+
+Ab 0.26.54 zeigt die GPS-Karte in Aufzeichnung und Demo die ausgewählten Zeiten ohne Labels: `02:15 / 00:30` bedeutet Gesamtzeit seit Abfahrt / addierte Standzeit. Ein einzeln gewählter Wert erscheint allein.

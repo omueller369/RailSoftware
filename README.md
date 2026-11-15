@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.53
+# LokZeitleiste v0.26.54
+
+**0.26.54:** Die GPS-Karte und die Demo zeigen Fahrzeit und Standzeit über dem Symbol ohne Labels als `02:15 / 00:30`. Die Anzeige-Checkboxen steuern weiterhin beide Werte einzeln.
 
 **0.26.53:** GPS-Karte im Vollbild mit Bedienelementen und aktivem Android-Bildschirm. Internationaler Bremszettel als Overlay mit eigenem lokalen Entwurf je Zugfahrt. Deckende Standortauswahl mit bis zu fünf häufigen Orten, Zugfahrtdetails in zwei Zeilen zu je drei Spalten und zehn Tabellenzeilen vor dem Scrollen.
 
