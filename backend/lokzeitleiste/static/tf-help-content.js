@@ -54,6 +54,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{portal_gps_demo.text_7308284691e2}}",
           "{{portal_gps_demo.text_7b5fcfeda44b}}"
         ]
+      },
+      {
+        "title": "{{gps_preferences.text_9df5067d2313}}",
+        "paragraphs": [
+          "{{gps_preferences.text_56821ac555f7}}"
+        ],
+        "steps": []
       }
     ]
   },
@@ -535,7 +542,8 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{gps_preferences.text_9df5067d2313}}",
         "paragraphs": [
-          "{{gps_preferences.text_4555f0787f33}}"
+          "{{gps_preferences.text_4555f0787f33}}",
+          "{{gps_preferences.text_56821ac555f7}}"
         ],
         "steps": []
       }
@@ -946,7 +954,8 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{gps_preferences.text_9df5067d2313}}",
         "paragraphs": [
-          "{{gps_preferences.text_4555f0787f33}}"
+          "{{gps_preferences.text_4555f0787f33}}",
+          "{{gps_preferences.text_56821ac555f7}}"
         ],
         "steps": []
       }

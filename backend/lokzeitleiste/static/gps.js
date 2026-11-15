@@ -454,7 +454,7 @@ class Recorder{
  for(const row of this.record?.manual_stops||[]){if(!this.record.stop_edits?.[row.key]?.deleted)totals.intervals.push([row.start,this.record.stop_edits?.[row.key]?.end??row.end??this.o.now?.()??Date.now()]);}
  totals.stopped=intervalDuration(totals.intervals);
  totals.elapsed=departure!=null&&arrival!=null?Math.max(0,arrival-departure):0;
- const points=display.filter(p=>p.accuracy<=50);const mapPoints=[...(window.GpsPreferences?.peerPoints()||[]),...points];if(!mapPoints.length){this.mapSvg=null;this.mapView=null;this.mapZoomLevel.hidden=true;this.mapZoomIn.disabled=this.mapZoomOut.disabled=true;return;}
+ const points=display.filter(p=>p.accuracy<=50);const mapPoints=[...(!this.o.demo?window.GpsPreferences?.peerPoints()||[]:[]),...points];if(!mapPoints.length){this.mapSvg=null;this.mapView=null;this.mapZoomLevel.hidden=true;this.mapZoomIn.disabled=this.mapZoomOut.disabled=true;return;}
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),make=tag=>document.createElementNS(ns,tag);this.mapSvg=svg;svg.setAttribute('viewBox','0 0 600 300');svg.setAttribute('role','group');svg.setAttribute('aria-label',t(globalThis.CtlText.source("portal_gps.text_f5976363df27")));
  const project=projectPoint;
  const coords=mapPoints.map(project),minX=Math.min(...coords.map(p=>p.x)),maxX=Math.max(...coords.map(p=>p.x)),minY=Math.min(...coords.map(p=>p.y)),maxY=Math.max(...coords.map(p=>p.y));
@@ -475,7 +475,7 @@ class Recorder{
  const dot=make('circle');dot.setAttribute('r',8);dot.setAttribute('fill',row.manual?'#ffd600':'#1565c0');dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width',2);const half=make('path');half.setAttribute('d','M 0 -7 A 7 7 0 0 1 0 7 Z');half.setAttribute('fill','#d00000');half.setAttribute('pointer-events','none');const title=make('title');title.textContent=t(globalThis.CtlText.source(row.manual?"portal_gps.text_863943169fc2":"portal_gps.text_1a86455fdc47"))+' · '+stamp(row.start);marker.append(dot,half,title);
  marker.addEventListener('click',()=>this.focusStop(row.key));marker.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();this.focusStop(row.key);}});svg.append(marker);
  }
- window.GpsPreferences?.drawPeers(svg,make,project,size,left,top);
+ if(!this.o.demo)window.GpsPreferences?.drawPeers(svg,make,project,size,left,top);
  if(this.record&&!this.record.ended&&points.length){const position=coords.at(-1);this.drawPositionMarker(svg,make,position.x*size-left,position.y*size-top,points.at(-1),totals);}
  this.map.append(svg,this.trailLegend());
  const link=(label,url)=>{const a=node('a',label);a.href=url;a.target='_blank';a.rel='noopener';return a;};this.map.append(link(globalThis.CtlText.source("portal_gps.text_f834e3bb911e"),'https://www.openstreetmap.org/copyright'));if(this.railEnabled)this.map.append(link('OpenRailwayMap','https://www.openrailwaymap.org/'),link('CC-BY-SA 2.0','https://creativecommons.org/licenses/by-sa/2.0/'));

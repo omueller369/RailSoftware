@@ -8,7 +8,7 @@ def fixture():
     page=re.sub(r'<script\b[^>]*>.*?</script>','',page,flags=re.S)
     page=re.sub(r'<link\b[^>]*>','',page)
     css='\n'.join((runner.STATIC/name).read_text() for name in ['tf-portal.css','work-report.css','responsive.css'])
-    scripts='\n'.join((runner.STATIC/name).read_text() for name in ['messages.js','gps.js','gps-demo.js'])
+    scripts='\n'.join((runner.STATIC/name).read_text() for name in ['messages.js','gps-settings.js','gps.js','gps-demo.js'])
     checks=r'''
 (async()=>{
  const assert=(ok,message)=>{if(!ok)throw Error(message);},wait=()=>new Promise(resolve=>setTimeout(resolve,350));
@@ -18,9 +18,10 @@ def fixture():
  Object.defineProperty(navigator,'onLine',{get:()=>false});
  Object.defineProperty(window,'indexedDB',{get(){throw Error('Demo must not access recording storage');}});
  window.AndroidPortal={gps:()=>{nativeCalls++;throw Error('Demo must not use native GPS');}};
- const base=1794358800000,record={train_number:'DEMO123',ended:true,points:Array.from({length:1801},(_,i)=>({t:base+i*10000,lat:52,lon:13+i*.0008,accuracy:5,speed:10})),manual_stops:[],stop_edits:{}};
+ const preferences={owner_id:1,revision:1,first_name:'DemoName',stop_minutes:15,marker:'circle',share_enabled:true,show_elapsed:true,show_stopped:false,show_speed:false,show_train:false,show_first_name:true};
+ const base=1794358800000,record={train_number:'DEMO123',stop_minutes:1,ended:true,points:Array.from({length:1801},(_,i)=>({t:base+i*10000,lat:52,lon:13+Math.max(0,i-30)*.0008,accuracy:5,speed:i<=30?0:10})),manual_stops:[],stop_edits:{}};
  const original=JSON.stringify(record);
- window.fetch=async(url,options)=>{requests.push({url,options});if(fail)throw Error('Offline');return {ok:true,json:async()=>String(url).includes('gps-recordings')?{items:[{journey_id:'record',train_number:'DEMO123',start:base,end:base+18000000}],next_offset:null}:record};};
+ window.fetch=async(url,options)=>{requests.push({url,options});if(fail)throw Error('Offline');return {ok:true,json:async()=>String(url).endsWith('gps-settings')?preferences:String(url).includes('gps-recordings')?{items:[{journey_id:'record',train_number:'DEMO123',start:base,end:base+18000000}],next_offset:null}:String(url).includes('gps-shared-positions')?{positions:[{id:2,lat:53,lon:14,t:Date.now(),marker:'steam',first_name:'LivePeer'}]}:record};};
  await window.startGpsDemo({id:1});
  const workspace=document.getElementById('gpsDemoWorkspace'),buttons=workspace.querySelectorAll('.gps-demo-controls button');
  const [load,more,play,reset]=buttons,[selection,speed]=workspace.querySelectorAll('select'),seek=workspace.querySelector('input[type=range]'),output=workspace.querySelector('output');
@@ -30,6 +31,10 @@ def fixture():
  assert(output.textContent.startsWith('00:05:00'),'300x playback advances five minutes in one second');
  seek.value='9000000';seek.dispatchEvent(new Event('input'));assert(output.textContent.startsWith('02:30:00'),'Time slider seeks');
  const position=workspace.querySelector('[data-gps-position]');assert(position,'Playback shows current train position');
+ assert(!position.querySelector('path')&&position.querySelector('circle'),'Saved circle icon applied in demo');
+ assert(position.textContent.includes('DemoName')&&!position.textContent.includes('DEMO123')&&!position.textContent.includes('km/h'),'Saved visible fields applied in demo');
+ assert(!workspace.querySelector('[data-gps-stop]'),'Saved 15-minute threshold suppresses recorded five-minute stand');
+ assert(!workspace.querySelector('[data-gps-peer]'),'Demo excludes real live positions');
  reset.click();assert(output.textContent.startsWith('00:00:00'),'Reset returns to beginning');
  assert(!window.GpsRecorder.isActive()&&nativeCalls===0,'Demo never starts a recording');assert(JSON.stringify(record)===original,'Original recording unchanged');
  assert(requests.every(request=>!request.options.method||request.options.method==='GET'),'Only read requests');

@@ -8,10 +8,11 @@ class PlaybackClock {
  seek(value){this.position=Math.max(0,Math.min(this.duration,Number(value)||0));this.last=this.now();if(this.position>=this.duration)this.playing=false;}
  speed(value){this.update();if([1,5,10,30,60,120,300].includes(Number(value)))this.rate=Number(value);}
 }
-function frame(record,position){
+function frame(record,position,preferences=null){
  const at=record.points[0].t+position;let lo=0,hi=record.points.length;
  while(lo<hi){const mid=(lo+hi)>>1;if(record.points[mid].t<=at)lo=mid+1;else hi=mid;}
  const result={...record,ended:false,points:record.points.slice(0,Math.max(1,lo)).map(p=>({...p})),manual_stops:(record.manual_stops||[]).filter(row=>row.start<at).map(row=>({...row,end:Math.min(row.end??at,at)})),stop_edits:{}};
+ if(preferences&&[1,2,4,5,10,15].includes(preferences.stop_minutes))result.stop_minutes=preferences.stop_minutes;
  for(const [key,edit] of Object.entries(record.stop_edits||{}))result.stop_edits[key]={...edit,end:edit.end==null?edit.end:Math.min(edit.end,at)};
  return result;
 }
@@ -21,6 +22,7 @@ window.startGpsDemo=async user=>{
  const node=(tag,key)=>{const element=document.createElement(tag);if(key){element.textContent=t(key);labels.push([element,key]);}return element;};
  const status=node('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
  workspace.replaceChildren(status);if(window.GpsRecorder.isActive()){status.textContent=t('blocked');return;}
+ await window.GpsPreferences?.load(user.id).catch(()=>{});
  const field=(caption,input)=>{const label=node('label'),text=node('span',caption);label.append(text,input);return label;};
  const selection=node('select'),load=node('button','load'),more=node('button','more'),play=node('button','play'),reset=node('button','reset'),speed=node('select'),seek=node('input'),time=node('output');
  selection.setAttribute('aria-label',t('choose'));seek.type='range';seek.min='0';seek.max='1';seek.step='1';seek.value='0';seek.setAttribute('aria-label',t('seek'));
@@ -35,12 +37,13 @@ window.startGpsDemo=async user=>{
  const date=ms=>new Intl.DateTimeFormat(window.I18n?.locale||'de-DE',{timeZone:'Europe/Berlin',dateStyle:'short',timeStyle:'short'}).format(new Date(ms));
  const fillSelection=()=>{const value=selection.value;selection.replaceChildren();for(const item of items){const option=node('option');option.value=item.journey_id;option.textContent=item.train_number+' · '+date(item.start)+' · '+duration(item.end-item.start);option.setAttribute('data-i18n-ignore','');selection.append(option);}if(items.some(item=>item.journey_id===value))selection.value=value;};
  const get=async url=>{const response=await fetch(url,{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw Error(t('error'));return response.json();};
- const render=()=>{if(!clock||!record)return;clock.update();recorder.record=frame(record,clock.position);recorder.drawMap();seek.value=String(clock.position);seek.setAttribute('aria-valuetext',duration(clock.position)+' / '+duration(clock.duration));time.textContent=duration(clock.position)+' / '+duration(clock.duration)+' · '+date(record.points[0].t+clock.position);play.textContent=t(clock.playing?'pause':'play');const message=t(clock.playing?'running':clock.position>=clock.duration?'finished':'paused');if(status.textContent!==message)status.textContent=message;};
+ const render=()=>{if(!clock||!record)return;clock.update();recorder.record=frame(record,clock.position,window.GpsPreferences?.settings);recorder.drawMap();seek.value=String(clock.position);seek.setAttribute('aria-valuetext',duration(clock.position)+' / '+duration(clock.duration));time.textContent=duration(clock.position)+' / '+duration(clock.duration)+' · '+date(record.points[0].t+clock.position);play.textContent=t(clock.playing?'pause':'play');const message=t(clock.playing?'running':clock.position>=clock.duration?'finished':'paused');if(status.textContent!==message)status.textContent=message;};
  const stopTimer=()=>{clearInterval(timer);timer=null;};
  const run=()=>{stopTimer();timer=setInterval(()=>{render();if(!clock.playing)stopTimer();},250);};
  const listing=async()=>{if(busy||offset==null)return;busy=true;more.disabled=load.disabled=true;status.textContent=t('loading');try{const data=await get('/api/v1/tf/gps-recordings?offset='+offset);items.push(...data.items);offset=data.next_offset;fillSelection();status.textContent=items.length?'':t('empty');}catch(error){status.textContent=t('error');}finally{busy=false;more.disabled=false;load.disabled=!items.length;more.hidden=offset==null;}};
  more.onclick=listing;
  load.onclick=async()=>{if(busy||!selection.value)return;busy=true;const request=++generation;stopTimer();clock?.pause();record=null;clock=null;map.hidden=true;for(const control of [load,more,play,reset,speed,seek,selection])control.disabled=true;status.textContent=t('loading');try{
+  await window.GpsPreferences?.load(user.id).catch(()=>{});
   const data=await get('/api/v1/tf/gps/'+encodeURIComponent(selection.value));if(request!==generation)return;
   if(!Array.isArray(data.points)||data.points.length<2||data.points.at(-1).t<=data.points[0].t)throw Error(t('short'));
   record=structuredClone(data);clock=new PlaybackClock(record.points.at(-1).t-record.points[0].t);clock.speed(Number(speed.value));seek.max=String(clock.duration);
@@ -53,6 +56,7 @@ window.startGpsDemo=async user=>{
  const pause=()=>{clock?.pause();stopTimer();render();};
  window.addEventListener('pagehide',()=>{generation++;pause();});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')pause();});
  window.addEventListener('languagechange',()=>{for(const [element,key] of labels)element.textContent=t(key);selection.setAttribute('aria-label',t('choose'));seek.setAttribute('aria-label',t('seek'));fillSelection();render();});
+ window.addEventListener('focus',()=>{window.GpsPreferences?.load(user.id).then(()=>render()).catch(()=>{});});
  await listing();
 };
 })();

@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.51
+# LokZeitleiste v0.26.52
+
+**0.26.52:** GPS-Einstellungen zeigen dieselben kleinen SVG-Symbole wie die GPS-Karte, jeweils mit Radiobutton darunter. Die GPS-Demo lädt die gespeicherten Einstellungen für Symbol, sichtbare Angaben und Standzeitgrenze. Der Demo-Wiedergabestand übernimmt die gewählte Grenze, ohne die Originalaufzeichnung zu verändern. Historische Wiedergabepositionen werden nicht live geteilt; echte Livepositionen werden in der Demo nicht eingeblendet.
 
 **0.26.51:** Mein Konto enthält GPS-Einstellungen für Stopperkennung (1/2/4/5/10/15 Minuten), fünf Punktsymbole und Anzeige-/Freigabefelder. Freigabe ist standardmäßig Nein. Erst ein bewusster Druck auf Teilen während einer laufenden GPS-Aufzeichnung startet die Veröffentlichung einer aktuellen Position, danach höchstens alle fünf Minuten. Angaben erscheinen nur bei beidseitiger Auswahl. Android überträgt aus dem GPS-Hintergrunddienst; keine Nachsendung alter Positionen. Abgelaufene Positionen werden nach zehn Minuten ausgeblendet. Pro TF wird nur die letzte geteilte Position gespeichert. Alte Aufzeichnungen behalten ihre Erkennungsregel.
 

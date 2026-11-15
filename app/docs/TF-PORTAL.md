@@ -1,4 +1,4 @@
-# Android 0.26.51 – aktuelles TF-Portal
+# Android 0.26.52 – aktuelles TF-Portal
 
 Die App öffnet nach der nativen Anmeldung das vollständige TF-Portal. Die gemeinsamen HTML-/CSS-/JavaScript-Dateien werden beim Android-Build aus `backend/lokzeitleiste/static` in die APK übernommen. Geschäftsregeln, Tabellen, Eingaben und Berechtigungen entsprechen damit dem Portalstand dieses Builds. Neue Portalversionen erfordern einen neuen APK-Build. Der Server muss mindestens zum selben Projektstand aktualisiert sein.
 
@@ -38,7 +38,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Bei einer APK mit anderer bisheriger Signatur kann Android kein direktes Update installieren. Vor einer Deinstallation unübertragene lokale Daten sichern/synchronisieren. Keine Deinstallation ohne Datensicherung empfehlen.
 
-Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 77 liegt unter dem bestätigten Tabletstand 100004.
+Die GitHub Action **Android TF Portal APK** prüft Unit-Tests, Build, Lint und APK-Übersetzungen. Mit den bereits eingerichteten Signierungs-Secrets veröffentlicht sie die signierte APK und `update.json` als öffentliches `android-test-…`-Release in RailSoftware. [Erstinstallation, vorhandener Mac-Schlüssel und Updates](ANDROID-STUDIO-TABLET.md). Für normale Tablet-Updates die Release-APK statt eines lokalen Builds verwenden; der lokale Standard-versionCode 78 liegt unter dem bestätigten Tabletstand 100004.
 
 Die App prüft beim Öffnen/Fortsetzen höchstens alle sechs Stunden; **Updates → Auf Updates prüfen** prüft sofort. Sie lädt die APK automatisch, prüft Prüfsumme, Paket, höhere Version und Signatur. Offene Eingaben speichern, GPS beenden, **Update installieren** wählen und Android bestätigen. Bei Bedarf für die App **Aus dieser Quelle zulassen** aktivieren. Über die bestehende App installieren; nicht deinstallieren.
 
@@ -92,3 +92,10 @@ Unter **Mein Konto → GPS-Einstellungen** stellst Du die Erkennungsdauer 1/2/4/
 Teilen beenden, Aufnahmeende und Freigabe Nein stoppen die Übertragung. Bei erreichbarem Server wird die geteilte Position entfernt. Bei Netzverlust kann der letzte Punkt bis zu zehn Minuten sichtbar bleiben; anschließend wird er ausgeblendet. Ein neuer Aufnahmestart aktiviert Teilen nicht automatisch. Nach App-Prozessende ohne weiterlaufenden Dienst ist ein erneuter bewusster Start nötig.
 
 Die Freigabe ist ausschließlich innerhalb der angemeldeten TF-Karten sichtbar. Es gibt keine öffentliche Karten-API. Der Server hält höchstens einen aktuellen Punkt je TF, keine zusätzliche gemeinsame Spurhistorie. Eigene private GPS-Aufzeichnungen und deren explizite oder Entwurfs-Synchronisierung bleiben davon getrennt. Neue additive Tabellen `gps_preferences` und `gps_live_positions` werden über das normale Serverupdate angelegt.
+
+
+## GPS-Symbolauswahl und persönliche Demo ab 0.26.52
+
+Mein Konto → GPS-Einstellungen zeigt die fünf Punktsymbole als kleine Vorschau mit einem Radiobutton darunter. Die Vorschau verwendet denselben SVG-Renderer wie die GPS-Karte. Wähle genau ein Symbol und speichere. Die Auswahl bleibt auch bei einem Sprachwechsel erhalten.
+
+GPS-DEMO lädt die persönlichen Einstellungen beim Öffnen und beim Laden einer Aufnahme. Symbol, sichtbare Angaben einschließlich Vorname und Standzeitgrenze gelten für die Wiedergabe. Änderungen in einem anderen Fenster werden beim erneuten Fokussieren aktualisiert. Die Standzeitgrenze wird ausschließlich im temporären Demo-Wiedergabestand ersetzt; die archivierte Aufnahme bleibt unverändert. Demo und aktuelle Livepositionen werden getrennt dargestellt. Freigabe Ja startet weiterhin keine Übertragung aus der Demo; sie hat keine Teilen-Schaltfläche und greift nicht auf den nativen GPS-Dienst zu.
