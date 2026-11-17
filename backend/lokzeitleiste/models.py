@@ -971,3 +971,12 @@ class RouteKnowledgeEntry(Base):
     source_json:Mapped[str]=mapped_column(Text,nullable=False)
     source_sha256:Mapped[str]=mapped_column(String(64),nullable=False)
     imported_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
+
+
+class RailwayOperatingPoint(Base):
+    """Public M1 route-specific reference point, independent of TF knowledge."""
+    __tablename__='railway_operating_points'
+    key:Mapped[str]=mapped_column(String(64),primary_key=True)
+    code:Mapped[str]=mapped_column(String(10),index=True)
+    route_number:Mapped[str]=mapped_column(String(6),index=True)
+    payload_json:Mapped[str]=mapped_column(Text)

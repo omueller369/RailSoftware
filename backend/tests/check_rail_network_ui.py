@@ -6,7 +6,7 @@ from localized_fixtures import localize_html
 
 
 def fixture():
-    scripts='\n'.join((STATIC/name).read_text() for name in ['messages.js','route-coverage.js','rail-network.js','route-knowledge.js'])
+    scripts='\n'.join((STATIC/name).read_text() for name in ['messages.js','route-imports.js','route-coverage.js','rail-network.js','route-knowledge.js'])
     checks=r'''
 Object.defineProperty(navigator,'onLine',{value:false,configurable:true});
 window.I18n={t:s=>s,locale:'de-DE'};const ageTimers=[];window.setInterval=(fn,ms)=>{if(ms===60000)ageTimers.push(fn);return 1;};
@@ -18,6 +18,7 @@ window.I18n={t:s=>s,locale:'de-DE'};const ageTimers=[];window.setInterval=(fn,ms
  assert(reference,'Long real Flensburg reference line');
  const coords=reference[3],forward=[];for(let i=0;i<coords.length;i+=2)forward.push([Math.atan(Math.sinh(Math.PI*(1-2*coords[i+1]/data.scale)))*180/Math.PI,coords[i]/data.scale*360-180]);
  const make=(id,reverse,days=0)=>({journey_id:id,dirty:true,points:(reverse?[...forward].reverse():forward).map((p,i)=>({t:Date.now()-days*86400000-3600000+i*5000,lat:p[0],lon:p[1],accuracy:5}))});
+ let emitImports;window.RouteCsv={mount:async(user,root,receive)=>{emitImports=receive;}};
  let rows=[make('forward-1'),make('forward-2'),make('backward-1',true),make('backward-2',true)];let localLoads=0;window.GpsRecorder={localRecords:async()=>{localLoads++;return rows;}};
  await window.startRouteKnowledge({id:7});
  assert(document.querySelectorAll('[data-rail-network]').length>0,'National reference geometry visible offline');
@@ -59,6 +60,8 @@ window.I18n={t:s=>s,locale:'de-DE'};const ageTimers=[];window.setInterval=(fn,ms
  await reload.onclick();assert(document.querySelector('[data-route-track=expired]'),'Server-saved GPS dates produce red');assert(requests.every(url=>url.includes('dates=1')),'Timed API has a distinct offline-cache URL');
  legacy=true;await reload.onclick();assert(!document.querySelector('[data-route-track=qualified]')&&document.querySelector('[data-route-track=learning]'),'Undated legacy API never invents fresh green');
  Object.defineProperty(navigator,'onLine',{value:false,configurable:true});rows=[make('forward-1'),make('forward-2'),make('backward-1',true),make('backward-2',true)];await reload.onclick();
+ const before=localLoads;const mile=reference[5],imported={status:'streckenkundig',valid_until:'2099-01-01',map_match:{status:'mapped',route:'1000',from_m:Math.min(...mile),to_m:Math.max(...mile),reference_revision:window.RailNetwork.revision}};emitImports({items:[imported]});assert(document.querySelector('[data-imported-knowledge=qualified]'),'Manual CSV knowledge colours real M1 route without adding GPS journeys');assert(document.querySelector('[data-imported-knowledge=qualified]').getAttribute('stroke-dasharray'),'Imported knowledge visually separate');assert(localLoads===before,'Import rendering never manufactures/reloads GPS');const importedToggle=document.querySelector('[data-import-knowledge-toggle]');importedToggle.checked=false;importedToggle.dispatchEvent(new Event('change'));assert(!document.querySelector('[data-imported-knowledge]'),'Imported layer toggles independently');importedToggle.checked=true;importedToggle.dispatchEvent(new Event('change'));assert(document.querySelector('[data-imported-knowledge=qualified]'),'Imported layer restored');emitImports({items:[]});assert(!document.querySelector('[data-imported-knowledge]'),'Another owner or cleared import removes all imported marks');
+ window.StationCatalogSeed={operating_points:[{code:'TEST',name:'Testpunkt',route:'1000',km:'0,0 + 0',lat:51.15,lon:10.4,type_name:'Bahnhof',state:'in Betrieb'}]};const plus=[...document.querySelectorAll('.gps-map-tools button')].find(b=>b.textContent==='+');for(let i=0;i<7;i++)plus.click();const dot=document.querySelector('[data-operating-point=TEST]');assert(dot&&dot.getAttribute('role')==='button','Operating point shown at detailed zoom');dot.dispatchEvent(new MouseEvent('click',{bubbles:true}));assert(document.querySelector('[role=status]').textContent.includes('Testpunkt'),'Touch-accessible point details');assert([...document.querySelectorAll('.route-knowledge-map text')].some(t=>t.textContent==='TEST'),'DS100 code label at detailed zoom');
  const map=document.querySelector('.route-knowledge-map');assert(map.getBoundingClientRect().width<=innerWidth,'Map fits narrow tablet/phone width');
  window.parent.postMessage({layoutStatus:'pass'},'*');
 })().catch(error=>window.parent.postMessage({layoutStatus:'fail',message:error.stack},'*'));

@@ -1,0 +1,9 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
+const context={window:{},Intl,Date,Map,WeakMap};vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/route-imports.js','utf8'),context);const api=context.window.RouteImports;
+const data={scale:100,routes:[['1000','A-B'],['2000','Other']],lines:[[0,0,[0,0,100,0],[0,0,100,0],[0,0,100,0],[0,1000]],[1,0,[0,10,100,10],[0,10,100,10],[0,10,100,10],[0,1000]]]},view={size:100,left:0,top:0},now=Date.parse('2026-11-17T12:00:00Z');
+const row={status:'streckenkundig',valid_until:'2027-01-01',map_match:{status:'mapped',route:'1000',from_m:200,to_m:800,reference_revision:'hash'}};
+assert.equal(api.paths(data,[row],view,'hash',now).qualified,'M20.00 0.00L80.00 0.00','Clip strictly to endpoint mileages on exact VzG');assert.equal(api.paths(data,[row],view,'other',now).qualified,'','Stale geometry match rejected');
+assert.equal(api.state({...row,status:'abgelaufen'},now),'expired');assert.equal(api.state({...row,valid_until:'2026-11-16'},now),'expired');assert.equal(api.state({...row,valid_until:'2026-11-17'},now),'qualified');assert.equal(api.state({...row,valid_until:'0000-00-00'},now),'qualified');assert.equal(api.state({...row,status:'wird erworben',valid_until:''},now),'learning');
+assert.equal(api.paths(data,[{...row,map_match:{...row.map_match,status:'missing_endpoint'}}],view,'hash',now).qualified,'');
+assert.equal(api.paths(data,[{...row,map_match:{...row.map_match,from_m:800,to_m:200}}],view,'hash',now).qualified,'M20.00 0.00L80.00 0.00');
+console.log('Imported route knowledge: exact VzG clipping, statuses, validity, reverse endpoints, stale/unknown rejection; no GPS counts: PASS');

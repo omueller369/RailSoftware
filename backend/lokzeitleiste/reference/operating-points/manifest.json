@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "source": {
+    "name": "M1 Betriebsstellen.csv",
+    "sha256": "d31de7409099bf880f308a092b3016ee1798e41931b2e2d1c0252e448317b633",
+    "crs": "EPSG:4326",
+    "source_rows": 10632,
+    "imported_at": "2026-11-17",
+    "coordinate_fields": "Geographische Länge/Breite (EPSG 4326)",
+    "note": "Uploaded M1 export; retain route-specific points, do not average or infer train passages."
+  },
+  "canonical_sha256": "f13b1675d8dd28c07170c5047cb683a981b13bd5ee40e0d2455b18ca5f69e5bd",
+  "point_count": 10632,
+  "code_count": 7667
+}

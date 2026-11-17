@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.0
+# LokZeitleiste v0.27.1
+
+**0.27.1:** M1-Betriebsstellen für DS100, GPS und Streckenkunde: 42 neue aktive DS100-Einträge, 36 neue eindeutige GPS-Positionen sowie alle 10.632 streckenbezogenen Referenzpunkte. CSV-Import direkt oberhalb der Karte mit automatischer Vorschau nach Dateiauswahl. Importierte Kenntnisse färben die Referenzkarte anhand VzG und DS100 Von/Bis, ohne GPS-Fahrten zu erzeugen; offene Zuordnungen sind sichtbar. [Abgleich und Importregeln](docs/data/M1-BETRIEBSSTELLEN-2026-11-17.md).
 
 **0.27.0:** Web-Version `0.27.0`, Android-Testversion `0.27.0.0`. Weitere Android-Testbuilds zählen die vierte Stelle hoch (`0.27.0.1`, `0.27.0.2`, …). Der interne Android-versionCode steigt unabhängig davon weiter; Updates bleiben über der bestehenden Installation möglich.
 

@@ -1,0 +1,7 @@
+{
+  "text_dd84d6c388d3": "Katalog offline zawiera teraz 14 928 wpisów DS100 i 6486 sprawdzonych współrzędnych. Mapa znajomości szlaków obejmuje również 10 632 punkty eksploatacyjne przypisane do linii. Przybliż mapę, aby zobaczyć punkty; skróty pojawiają się od poziomu 13. Wiele punktów odniesienia pozostaje oddzielnych. Nie potwierdzają przejazdu.",
+  "text_84d7e7428aaf": "Sprawdzanie podglądu importu …",
+  "text_7d30d3ebafe9": "Zapisywanie CSV na Twoim koncie …",
+  "text_22acba6180a3": "Wybierz plik CSV. Podgląd otworzy się automatycznie. Sprawdź swoje imię, nazwisko i numer Tf, a następnie potwierdź przyciskiem Importuj dla tego maszynisty. Jeśli podgląd się nie pojawi, użyj przycisku Podgląd importu. Import wymaga połączenia z aktualnym serwerem.",
+  "text_a3c924724279": "Dodano punkty eksploatacyjne do DS100, GPS i znajomości szlaków. Import CSV nad mapą z automatycznym podglądem po wybraniu pliku. Importowana znajomość koloruje linie według VzG i DS100 Od/Do, bez tworzenia przejazdów GPS."
+}

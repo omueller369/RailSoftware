@@ -43,6 +43,8 @@ def create_router(require_account):
         if compressed:headers['Content-Encoding']='gzip'
         name='rail-network-data.js'+('.gz' if compressed else '')
         return FileResponse(Path(__file__).parent/'static'/name,media_type='text/javascript',headers=headers)
+    @router.get('/tf/route-imports.js')
+    def import_script():return FileResponse(Path(__file__).parent/'static'/'route-imports.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/route-coverage.js')
     def coverage_script():return FileResponse(Path(__file__).parent/'static'/'route-coverage.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/rail-network.js')

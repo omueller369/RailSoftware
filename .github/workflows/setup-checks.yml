@@ -113,6 +113,10 @@ jobs:
           path: ${{ runner.temp }}/gps-preferences-ui/
       - name: Backend dependencies
         run: python -m pip install -r backend/requirements-dev.txt
+      - name: CSV browser to authenticated server and operating point reproducibility
+        run: |
+          python tools/build-operating-points.py --check
+          PYTHONPATH=backend:backend/tests python backend/tests/check_route_csv_server.py --output-dir "$RUNNER_TEMP/route-csv-server"
       - name: Help overlay and print checks
         run: python backend/tests/check_tf_help_ui.py --output-dir "$RUNNER_TEMP/tf-help-ui"
       - uses: actions/upload-artifact@v4

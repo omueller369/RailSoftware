@@ -1,0 +1,18 @@
+{
+  "text_a2c0ebdf5052": "Imported knowledge (dashed)",
+  "text_c2ee396575d3": "Map assignment",
+  "text_e4f19a2309ba": "Mapped",
+  "text_b48ecae7a4d6": "Partly mapped; reference gaps remain empty",
+  "text_d4308f999db4": "Not yet mapped",
+  "text_689953ef34d5": "Can be mapped",
+  "text_1602ecf75bf7": "Unresolved map assignments",
+  "text_22c892592265": "Show unresolved map assignments only",
+  "text_249137f0f4eb": "Your imported knowledge colours the reference map using the VzG route number and DS100 From/To codes. Dashed lines indicate imported knowledge: green for qualified, blue for acquiring, red for expired status or a past validity date. No GPS journeys or last-travel dates are created. Missing or ambiguous endpoints and missing mileage are shown as unresolved map assignments. Where reference gaps exist, only the available parts are coloured. Other sections remain unchanged.",
+  "text_c7c0692f2ec4": "VzG number missing (0)",
+  "text_cb4bcf949018": "No reference geometry for this VzG number",
+  "text_cf51bc935d60": "DS100 endpoint missing on this route",
+  "text_a5fc4559a492": "Endpoint mileage missing",
+  "text_36b48c624b0a": "Endpoint has multiple mileages",
+  "text_ca50b6f711c7": "Both endpoints have the same mileage",
+  "text_5d28a92fdf4f": "Section lies outside reference geometry"
+}

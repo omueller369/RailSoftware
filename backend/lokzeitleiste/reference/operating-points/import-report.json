@@ -1,0 +1,8 @@
+{
+  "source_rows": 10632,
+  "distinct_codes": 7667,
+  "stations_added": 42,
+  "coordinates_added": 36,
+  "review_codes": 981,
+  "policy": "Keep existing names/coordinates; active exact-name matches, maximum spread 25m; no centroid."
+}

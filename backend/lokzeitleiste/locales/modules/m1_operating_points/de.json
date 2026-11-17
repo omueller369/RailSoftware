@@ -1,0 +1,7 @@
+{
+  "text_dd84d6c388d3": "Der Offline-Katalog enthält jetzt 14.928 DS100-Einträge und 6.486 geprüfte Koordinaten. Die Streckenkenntniskarte enthält außerdem 10.632 streckenbezogene Betriebsstellenpunkte. Vergrößere die Karte, um die Punkte zu sehen; ab Zoomstufe 13 erscheinen die Kürzel. Mehrere Referenzpunkte bleiben getrennt. Diese Punkte bestätigen keine gefahrene Strecke.",
+  "text_84d7e7428aaf": "Importvorschau wird geprüft …",
+  "text_7d30d3ebafe9": "CSV wird für Dein Konto gespeichert …",
+  "text_22acba6180a3": "Wähle Deine CSV-Datei. Die Vorschau öffnet sich automatisch. Prüfe Deinen Namen und Deine Tf-Nummer und bestätige erst dann mit Für diesen TF übernehmen. Falls die Vorschau nicht erscheint, verwende Importvorschau. Für die Übernahme brauchst Du eine Verbindung zum aktualisierten Server.",
+  "text_a3c924724279": "Betriebsstellen für DS100, GPS und Streckenkunde ergänzt. CSV-Import oberhalb der Karte mit automatischer Vorschau nach Dateiauswahl. Importierte Kenntnisse färben die Referenzkarte anhand VzG und DS100 Von/Bis, ohne GPS-Fahrten zu erzeugen."
+}

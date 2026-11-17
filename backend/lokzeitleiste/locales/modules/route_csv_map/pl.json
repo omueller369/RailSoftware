@@ -1,0 +1,18 @@
+{
+  "text_a2c0ebdf5052": "Importowana znajomość (linia przerywana)",
+  "text_c2ee396575d3": "Przypisanie do mapy",
+  "text_e4f19a2309ba": "Przypisano",
+  "text_b48ecae7a4d6": "Częściowo przypisano; luki danych pozostają puste",
+  "text_d4308f999db4": "Jeszcze nie przypisano",
+  "text_689953ef34d5": "Można przypisać do mapy",
+  "text_1602ecf75bf7": "Nierozstrzygnięte przypisania do mapy",
+  "text_22c892592265": "Pokaż tylko nierozstrzygnięte przypisania do mapy",
+  "text_249137f0f4eb": "Twoja importowana znajomość koloruje mapę odniesienia według numeru linii VzG i kodów DS100 Od/Do. Linie przerywane oznaczają importowaną znajomość: zielone — znajomość, niebieskie — w trakcie zdobywania, czerwone — wygasła lub minęła data ważności. Nie powstają przejazdy GPS ani daty ostatnich przejazdów. Brakujące lub niejednoznaczne punkty końcowe i brak kilometrażu są pokazane jako nierozstrzygnięte przypisania. Przy lukach danych kolorowane są tylko dostępne części. Pozostałe odcinki pozostają bez zmian.",
+  "text_c7c0692f2ec4": "Brak numeru VzG (0)",
+  "text_cb4bcf949018": "Brak geometrii dla tego numeru VzG",
+  "text_cf51bc935d60": "Brak punktu DS100 na tej linii",
+  "text_a5fc4559a492": "Brak kilometrażu punktu końcowego",
+  "text_36b48c624b0a": "Punkt końcowy ma kilka kilometraży",
+  "text_ca50b6f711c7": "Oba punkty mają ten sam kilometraż",
+  "text_5d28a92fdf4f": "Odcinek poza geometrią odniesienia"
+}

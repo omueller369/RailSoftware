@@ -189,6 +189,11 @@
     "en": "/locales/knowledge_tabs/en.json",
     "pl": "/locales/knowledge_tabs/pl.json"
   },
+  "m1_operating_points": {
+    "de": "/locales/m1_operating_points/de.json",
+    "en": "/locales/m1_operating_points/en.json",
+    "pl": "/locales/m1_operating_points/pl.json"
+  },
   "offline_station_catalog": {
     "de": "/locales/offline_station_catalog/de.json",
     "en": "/locales/offline_station_catalog/en.json",
@@ -338,6 +343,11 @@
     "de": "/locales/route_csv/de.json",
     "en": "/locales/route_csv/en.json",
     "pl": "/locales/route_csv/pl.json"
+  },
+  "route_csv_map": {
+    "de": "/locales/route_csv_map/de.json",
+    "en": "/locales/route_csv_map/en.json",
+    "pl": "/locales/route_csv_map/pl.json"
   },
   "server_accounts_access": {
     "de": "/locales/server_accounts_access/de.json",

@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from .db import database_session
 from .models import User,TfProfile,TfEmployment,RouteKnowledgeImport,RouteKnowledgeEntry
 from .tf_portal import driver_dependency
+from .route_knowledge_mapping import match as map_match,match_counts
 from .localization import source as _text_source
 
 KEYS={'title': 'route_csv.text_954717c83530', 'explain': 'route_csv.text_5374ddda8b31', 'file': 'route_csv.text_644bc976c685', 'preview': 'route_csv.text_37a53c653a36', 'apply': 'route_csv.text_38f5f91b7340', 'cancel': 'route_csv.text_f7ff1178af20', 'reload': 'route_csv.text_61a85dcd9f74', 'owner': 'route_csv.text_88b8088fee39', 'tf': 'route_csv.text_b6aceed73ea2', 'rows': 'route_csv.text_b0f5ce1bc0f6', 'new': 'route_csv.text_d9b1e13f3b97', 'existing': 'route_csv.text_fe250e7c72ea', 'conflicts': 'route_csv.text_70c3b3218a55', 'duplicates': 'route_csv.text_b94a7c8d6b07', 'unknown_dates': 'route_csv.text_3728dc519b01', 'saved': 'route_csv.text_6a914910f0b8', 'saved_reload': 'route_csv.text_d8acd525c1dd', 'empty': 'route_csv.text_1b913168fd2f', 'offline': 'route_csv.text_33e8958628af', 'error': 'route_csv.text_59fdcc2e3bf6', 'cache_error': 'route_csv.text_ba504d62b659', 'search': 'route_csv.text_d4383a843f93', 'all': 'route_csv.text_23ee74c4a81b', 'section': 'route_csv.text_4415abaef531', 'route': 'route_csv.text_5bc0b1861aef', 'status': 'route_csv.text_920e413c7d41', 'until': 'route_csv.text_ad350696ac38', 'since': 'route_csv.text_4e6f3b5fcc15', 'trips': 'route_csv.text_63f8b3f7d71b', 'from': 'route_csv.text_640e86cbc244', 'to': 'route_csv.text_078a815372af', 'qualified': 'route_csv.text_202d0cda8d0e', 'expired': 'route_csv.text_842f207c8543', 'acquiring': 'route_csv.text_7751ed14bc89', 'previous': 'route_csv.text_548611ce58f7', 'next': 'route_csv.text_1e14bdf34c3b', 'page': 'route_csv.text_e45a825b2f9a', 'invalid_csv': 'route_csv.text_de6de5a05ef8', 'invalid_row': 'route_csv.text_66ef13006ceb', 'too_large': 'route_csv.text_e4d68b32d733', 'empty_csv': 'route_csv.text_00d01502c539', 'identity_error': 'route_csv.text_c46e7b5993eb', 'file_changed': 'route_csv.text_47df666bbf20', 'confirmation': 'route_csv.text_bedf834c23b7', 'profile_missing': 'route_csv.text_7bf23e81e184', 'help': 'route_csv.text_daad55ef168f', 'history': 'route_csv.text_306348eb1b4f'}
@@ -68,7 +69,7 @@ def summary(db,owner_id,data,lock=False):
     if lock:query=query.with_for_update()
     existing={row.section_key:row.content_sha256 for row in db.scalars(query)}
     result={k:data[k] for k in ['file_sha256','source_rows','duplicates','unknown_dates','statuses']}
-    result.update(added=0,existing=0,conflicts=0)
+    result.update(added=0,existing=0,conflicts=0,map_matches=match_counts(data['records']))
     for row in data['records']:
         old=existing.get(row['section_key'])
         result['added' if old is None else 'existing' if old==row['content_sha256'] else 'conflicts']+=1
@@ -94,11 +95,17 @@ def create_router(require_account):
     def script():
         from fastapi.responses import FileResponse
         return FileResponse(Path(__file__).parent/'static'/'route-csv.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/api/v1/tf/route-knowledge/operating-points')
+    def references(route:str, user:User=Depends(driver),db:Session=Depends(database_session)):
+        if not re.fullmatch(r'[0-9]{1,6}',route):raise HTTPException(422,text('invalid_csv'))
+        from .models import RailwayOperatingPoint
+        rows=db.scalars(select(RailwayOperatingPoint).where(RailwayOperatingPoint.route_number==str(int(route))).order_by(RailwayOperatingPoint.code))
+        return dict(owner_id=user.id,items=[json.loads(row.payload_json) for row in rows])
     @router.get('/api/v1/tf/route-knowledge/imports')
     def listing(user:User=Depends(driver),db:Session=Depends(database_session)):
         target=identity(db,user)
         rows=list(db.scalars(select(RouteKnowledgeEntry).where(RouteKnowledgeEntry.owner_id==user.id).order_by(RouteKnowledgeEntry.id)))
-        return dict(identity=target,items=[dict(id=row.id,**json.loads(row.source_json)) for row in rows])
+        return dict(identity=target,items=[dict(id=row.id,**json.loads(row.source_json),map_match=map_match(json.loads(row.source_json))) for row in rows])
     def read(file):
         raw=file.file.read(MAX_BYTES+1)
         try:return parse_csv(raw)

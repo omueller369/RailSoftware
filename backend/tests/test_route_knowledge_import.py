@@ -24,11 +24,11 @@ class RouteKnowledgeImportTest(unittest.TestCase):
     def test_preview_apply_preserves_all_fields_and_is_idempotent_without_gps(self):
         response=self.preview();self.assertEqual(response.status_code,200,response.text);preview=response.json()
         self.assertEqual(preview['identity']['tf_number'],'787100');self.assertEqual(preview['summary']['added'],3);self.assertEqual(preview['summary']['unknown_dates'],2)
-        self.assertEqual(self.counts(),(0,0,0))
+        self.assertEqual(self.counts(),(0,0,0));self.assertIn('map_matches',preview['summary'])
         saved=self.apply(preview);self.assertEqual(saved.status_code,200,saved.text);self.assertEqual(self.counts(),(3,1,0))
         items=self.driver.get(self.path).json()['items']
         self.assertEqual([[row[k] for k in ['section','route_number','status','valid_until','acquired_since','acquisition_trips','from_code','to_code']] for row in items],ROWS)
-        again=self.apply(preview);self.assertEqual(again.status_code,200);self.assertEqual(again.json()['summary']['added'],0);self.assertEqual(again.json()['summary']['existing'],3);self.assertEqual(self.counts(),(3,1,0))
+        again=self.apply(preview);self.assertTrue(all('map_match' in row for row in items));self.assertEqual(again.status_code,200);self.assertEqual(again.json()['summary']['added'],0);self.assertEqual(again.json()['summary']['existing'],3);self.assertEqual(self.counts(),(3,1,0))
     def test_target_identity_and_file_change_and_confirmation_are_authoritative(self):
         preview=self.preview().json()
         self.assertEqual(self.apply(preview,confirmed='false').status_code,422)
@@ -65,3 +65,16 @@ class RouteKnowledgeImportTest(unittest.TestCase):
         conflict=list(ROWS[0]);conflict[2]='abgelaufen'
         with self.assertRaises(ValueError):parse_csv(csv_bytes([ROWS[0],conflict]))
         parsed=parse_csv(csv_bytes());self.assertEqual(json.loads(parsed['records'][1]['source_json'])['valid_until'],'0000-00-00')
+
+    def test_reference_endpoint_and_actual_vzg_ds100_mapping_without_gps(self):
+        from lokzeitleiste.operating_points import seed_operating_points
+        with Session(self.engine) as db:seed_operating_points(db);db.commit()
+        refs=self.driver.get('/api/v1/tf/route-knowledge/operating-points',params={'route':'1000'})
+        self.assertEqual(refs.status_code,200);self.assertTrue(refs.json()['items']);self.assertEqual(refs.json()['owner_id'],self.tf)
+        self.assertEqual(self.client.get('/api/v1/tf/route-knowledge/operating-points',params={'route':'1000'}).status_code,403)
+        raw=csv_bytes([['Referenzabschnitt','1000','streckenkundig','2027-01-01','-','-','AFW','AFR']])
+        preview=self.preview(raw);self.assertEqual(preview.status_code,200,preview.text)
+        self.assertEqual(self.apply(preview.json(),raw).status_code,200)
+        item=self.driver.get(self.path).json()['items'][0]
+        self.assertIn(item['map_match']['status'],['mapped','partial']);self.assertEqual(item['from_code'],'AFW');self.assertEqual(item['to_code'],'AFR')
+        self.assertEqual(item['status'],'streckenkundig');self.assertEqual(self.counts(),(1,1,0))

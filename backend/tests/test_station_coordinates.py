@@ -16,14 +16,14 @@ class StationCoordinatesTest(unittest.TestCase):
         self.addCleanup(self.engine.dispose)
 
     def test_complete_catalog_is_filled_once_and_review_codes_are_not_included(self):
-        bundle=load_bundle();records=bundle['records'];self.assertEqual(len(records),6450)
+        bundle=load_bundle();records=bundle['records'];self.assertEqual(len(records),6486)
         review=BUNDLE.with_name('station_coordinates_review.txt').read_text().splitlines()
         self.assertEqual(len(review),981);self.assertEqual(len(set(review)),981)
         self.assertFalse({row['code'] for row in records}&set(review))
         self.assertEqual(bundle['source_date'],'2026-05');self.assertEqual(bundle['license'],'CC-BY-4.0')
         with Session(self.engine) as db:
-            seed_stations(db);self.assertEqual(seed_coordinates(db),6450);db.commit()
-            self.assertEqual(db.scalar(select(func.count()).select_from(RailwayStation)),14886)
+            seed_stations(db);self.assertEqual(seed_coordinates(db),6486);db.commit()
+            self.assertEqual(db.scalar(select(func.count()).select_from(RailwayStation)),14928)
             self.assertEqual(seed_coordinates(db),0)
             row=db.get(RailwayStationCoordinates,'AABG');self.assertIsNotNone(row)
             self.assertTrue(47<=row.latitude<=56 and 5<=row.longitude<=16)
@@ -42,7 +42,7 @@ class StationCoordinatesTest(unittest.TestCase):
             self.assertEqual(db.get(RailwayStation,'AFS').name,'Eigene Bezeichnung')
             self.assertIsNone(db.get(RailwayStation,'AABG'),'Deleted legacy entries stay deleted')
             self.assertEqual(db.get(RailwayStation,'ALIN').name,'Lindaunis')
-            self.assertEqual(seed_coordinates(db),6448);db.commit()
+            self.assertEqual(seed_coordinates(db),6484);db.commit()
             self.assertIsNone(db.get(RailwayStationCoordinates,'AFS'))
             removed=db.get(RailwayStation,'ALIN');point=db.get(RailwayStationCoordinates,'ALIN')
             if point:db.delete(point);db.flush()

@@ -9,7 +9,7 @@ def fixture():
 (async()=>{
  const assert=(value,message)=>{if(!value)throw Error(message);},wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  await window.StationCatalog.ready;await wait(30);
- assert(window.StationCatalog.count===14886&&window.StationCatalog.coordinateCount===6450,'Full DS100 data available on first offline load');
+ assert(window.StationCatalog.count===14928&&window.StationCatalog.coordinateCount===6486,'Full DS100 data available on first offline load');
  assert(requests===0,'Cold start has no server dependency');
  online=true;await window.StationCatalog.frequent(async()=>Array.from({length:7},(_,i)=>({code:'F'+i,name:'Häufig '+i})),7);online=false;
  const input=document.getElementById('lookup');window.StationPicker.mount(input,{owner:()=>7});input.focus();for(let i=0;i<100&&document.querySelectorAll('.station-picker button').length!==5;i++)await wait(20);
