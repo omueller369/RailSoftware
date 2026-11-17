@@ -9,6 +9,7 @@ records.delete('four');r=C.calculate(d,records,cache);assert([...r.counts.values
 const repeated=new Map([['same-journey',[...forward(),...forward(),...backward(),...backward()]]]);r=C.calculate(d,repeated);assert([...r.counts.values()].every(n=>n[0]===1&&n[1]===1),'One journey gives at most one passage per direction');
 const raw=JSON.stringify(repeated.get('same-journey'));C.calculate(d,repeated);assert.equal(JSON.stringify(repeated.get('same-journey')),raw,'GPS is never mutated');
 const short=[[a,[52,13.0001]]];assert.equal(C.calculate(d,new Map([['short',short]])).counts.size,0,'Tiny partial movement cannot qualify a full 100m bin');
+const dense=[Array.from({length:1401},(_,i)=>[52,13+.02*i/1400])];d=data();const sparse=C.calculate(d,new Map([['sparse',forward()]])),denseResult=C.calculate(d,new Map([['dense',dense]]));assert.equal(denseResult.counts.size,sparse.counts.size,'Slow, densely sampled motion must count like the same sparsely sampled path');assert([...denseResult.counts.values()].every(n=>n[0]===1&&n[1]===0));
 // Two equally close DIFFERENT route numbers must never receive automatic credit.
 d=data();d.routes.push(['5678','Other']);d.lines.push([1,0,box,line,line,[0,1400]]);assert.equal(C.calculate(d,new Map([['ambiguous',forward()]])).counts.size,0);
 d=data();d.lines.push([0,0,box,line,line,[2000,3400]]);assert.equal(C.calculate(d,new Map([['same-route-ambiguous-mileage',forward()]])).counts.size,0,'Same route with ambiguous kilometre position remains blue');
