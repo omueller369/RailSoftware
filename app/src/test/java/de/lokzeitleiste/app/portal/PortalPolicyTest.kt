@@ -10,6 +10,7 @@ class PortalPolicyTest {
         assertEquals("rail-network-data.js",policy.asset("/tf/rail-network-data.js"))
         assertEquals("rail-network.js",policy.asset("/tf/rail-network.js"))
         assertEquals("route-coverage.js",policy.asset("/tf/route-coverage.js"))
+        assertEquals("knowledge-inventory.js",policy.asset("/tf/knowledge-inventory.js"))
         assertEquals("route-imports.js",policy.asset("/tf/route-imports.js"))
         assertEquals("route-csv.js",policy.asset("/tf/route-csv.js"))
         assertEquals("beta-traffic.js",policy.asset("/tf/beta-traffic.js"))

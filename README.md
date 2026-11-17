@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.1
+# LokZeitleiste v0.27.2
+
+**0.27.2:** Streckenimport unter der Karte mit vorläufiger Kartenansicht und „Import-bestätigen“. Nach dem Speichern ist die Importliste leer, bestätigte Kenntnisse bleiben auf der Karte und haben Vorrang vor GPS. Ortskenntnisse (Bahnhof, DS100, Kundig bis) und Baureihen (Baureihe, Gültig bis) bekommen getrennte TF-bezogene Bestände mit CSV-Import, Vorschau, Bestätigung und Listen.
 
 **0.27.1:** M1-Betriebsstellen für DS100, GPS und Streckenkunde: 42 neue aktive DS100-Einträge, 36 neue eindeutige GPS-Positionen sowie alle 10.632 streckenbezogenen Referenzpunkte. CSV-Import direkt oberhalb der Karte mit automatischer Vorschau nach Dateiauswahl. Importierte Kenntnisse färben die Referenzkarte anhand VzG und DS100 Von/Bis, ohne GPS-Fahrten zu erzeugen; offene Zuordnungen sind sichtbar. [Abgleich und Importregeln](docs/data/M1-BETRIEBSSTELLEN-2026-11-17.md).
 

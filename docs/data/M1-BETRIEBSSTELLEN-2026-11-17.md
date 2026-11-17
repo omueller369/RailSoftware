@@ -27,9 +27,9 @@ Referenzdaten allein Sie erzeugen keine GPS-Aufzeichnungen, Fahrtdaten, Richtung
 
 1. Aktualisiere zuerst den Server und bei Android auch die vorhandene App.
 2. Melde Dich im gewünschten TF-Konto an und öffne **Stecken-, BR- und Ortskenntnisse → Streckenkenntnis**.
-3. Die Importfunktion steht direkt oberhalb der Karte. Wähle Deine CSV-Datei. Die Vorschau öffnet sich automatisch; Du kannst sie auch mit **Importvorschau** erneut aufrufen.
+3. Die Importfunktion steht direkt unterhalb der Karte. Wähle Deine CSV-Datei. Die Vorschau öffnet sich automatisch und zeigt die CSV vorläufig auf der Karte und in der Importliste, ohne zu speichern; Du kannst sie auch mit **Importvorschau** erneut aufrufen.
 4. Prüfe Deinen Namen, Deine Tf-Nummer und die Anzahlen neuer, vorhandener und abweichender Einträge.
-5. Bestätige mit **Für diesen TF übernehmen**. Erst jetzt wird gespeichert.
+5. Bestätige mit **Import-bestätigen**. Erst jetzt wird dauerhaft gespeichert. Anschließend sind Dateiauswahl und Importliste leer; der bestätigte Bestand bleibt auf der Karte. Abbrechen entfernt nur die Vorschau.
 
 Import und Vorschau brauchen den erreichbaren aktualisierten Server. Die persönliche Liste wird nach dem Laden für Dein Konto offline gespeichert. Ursprüngliche Status-, Gültigkeits- und Erwerbsangaben bleiben erhalten, auch Platzhalter wie `0000-00-00`. Die ursprünglichen CSV-Felder werden nicht durch Referenzdaten ersetzt. Wiederholter Import erzeugt keine Duplikate; abweichende vorhandene Angaben werden erhalten. Persönliche Dateien gehören nicht in das öffentliche Repository oder in die APK.
 

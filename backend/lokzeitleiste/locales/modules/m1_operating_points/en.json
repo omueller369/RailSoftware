@@ -2,6 +2,6 @@
   "text_dd84d6c388d3": "The offline catalogue now contains 14,928 DS100 entries and 6,486 checked coordinates. The route knowledge map also includes 10,632 route-specific operating points. Zoom in to see points; codes appear from zoom level 13. Multiple reference points remain separate. They do not confirm travelled routes.",
   "text_84d7e7428aaf": "Checking import preview …",
   "text_7d30d3ebafe9": "Saving CSV to your account …",
-  "text_22acba6180a3": "Choose your CSV file. The preview opens automatically. Check your name and Tf number, then confirm with Import for this driver. If no preview appears, use Import preview. Importing requires a connection to the updated server.",
+  "text_22acba6180a3": "The import is below the map. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check your account, data and map. Only Confirm import permanently saves the knowledge to your TF account. The file selection and import list then clear; saved knowledge remains on the map. Cancel removes only the preview.",
   "text_a3c924724279": "Operating points added for DS100, GPS and route knowledge. CSV import above the map with an automatic preview after file selection. Imported knowledge colours reference lines by VzG and DS100 From/To, without creating GPS journeys."
 }

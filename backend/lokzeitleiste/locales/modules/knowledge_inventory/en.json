@@ -1,0 +1,15 @@
+{
+  "text_3799c6d7af84": "Confirm import",
+  "text_0881d489914e": "The import is below the map. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check your account, data and map. Only Confirm import permanently saves the knowledge to your TF account. The file selection and import list then clear; saved knowledge remains on the map. Cancel removes only the preview.",
+  "text_90678014927b": "Import your location knowledge inventory with the columns Bahnhof, DS100 and Kundig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
+  "text_7804e252711e": "Import your rolling-stock inventory with the columns Baureihe and Gültig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
+  "text_0ccc8fa79afa": "Station",
+  "text_96a2dc78fd80": "DS100",
+  "text_363a5863c963": "Knowledge valid until",
+  "text_7c1c344e8ca2": "Rolling-stock class",
+  "text_ad350696ac38": "Valid until",
+  "text_419b91825006": "Saved inventory",
+  "text_7b7e853fb18b": "Import preview — not saved yet",
+  "text_4bf3ce18875e": "Your route, location and rolling-stock knowledge with separate inventories and CSV imports for your TF account.",
+  "text_1b9adb828f0f": "Route import below the map: map preview before confirmation, import list cleared afterward. Location and rolling-stock knowledge with per-driver databases, CSV import and inventory lists."
+}

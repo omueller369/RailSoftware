@@ -3,10 +3,10 @@
   "text_681c646b05be": "Streckenkenntnis",
   "text_4aa4e3a2fe55": "Ortskenntnis",
   "text_be3484f014fc": "Baureihen",
-  "text_1308485034f1": "Hier findest Du Deine Streckenkenntnis. Ortskenntnis und Baureihen sind für spätere Funktionen vorbereitet.",
-  "text_24780c3c9616": "Die Funktionen zur Ortskenntnis folgen später.",
-  "text_376cf04ec77f": "Die Funktionen zu Baureihen folgen später.",
+  "text_1308485034f1": "Deine Strecken-, Orts- und Baureihenkenntnisse mit getrennten Beständen und CSV-Import für Dein TF-Konto.",
+  "text_24780c3c9616": "Importiere Deinen Bestand der Ortskenntnisse mit den Spalten Bahnhof, DS100 und Kundig bis. Prüfe die Vorschau und bestätige den Import. Darunter siehst Du Deinen gespeicherten Bestand. Bestehende abweichende Einträge bleiben erhalten; Bearbeiten folgt später.",
+  "text_376cf04ec77f": "Importiere Deinen Baureihenbestand mit den Spalten Baureihe und Gültig bis. Prüfe die Vorschau und bestätige den Import. Darunter siehst Du Deinen gespeicherten Bestand. Bestehende abweichende Einträge bleiben erhalten; Bearbeiten folgt später.",
   "text_45663fd76979": "Kenntnisse und Reiter",
-  "text_8562cceb9457": "Öffne Stecken-, BR- und Ortskenntnisse. Im Reiter Streckenkenntnis findest Du Deine bisherige Karte mit Streckennetz, Fahrtenfarben und Altersanzeige. Mit Ortskenntnis und Baureihen wechselst Du zu den vorbereiteten Bereichen. Dort kannst Du noch keine Daten erfassen oder speichern; die Funktionen folgen später. Beim Wechsel zwischen den Reitern bleiben Karte, Kartenausschnitt und Auswertung erhalten.",
+  "text_8562cceb9457": "Deine Strecken-, Orts- und Baureihenkenntnisse mit getrennten Beständen und CSV-Import für Dein TF-Konto. Der Import steht unter der Karte. Wähle Deine Strecken-CSV. Die Vorschau zeigt die zugeordneten Abschnitte sofort auf der Karte und in der Importliste, ohne sie zu speichern. Prüfe Konto, Angaben und Karte. Erst Import-bestätigen übernimmt die Kenntnisse dauerhaft für Dein TF-Konto. Danach werden Dateiauswahl und Importliste geleert; die gespeicherten Kenntnisse bleiben auf der Karte. Abbrechen entfernt nur die Vorschau. Importiere Deinen Bestand der Ortskenntnisse mit den Spalten Bahnhof, DS100 und Kundig bis. Prüfe die Vorschau und bestätige den Import. Darunter siehst Du Deinen gespeicherten Bestand. Bestehende abweichende Einträge bleiben erhalten; Bearbeiten folgt später. Importiere Deinen Baureihenbestand mit den Spalten Baureihe und Gültig bis. Prüfe die Vorschau und bestätige den Import. Darunter siehst Du Deinen gespeicherten Bestand. Bestehende abweichende Einträge bleiben erhalten; Bearbeiten folgt später.",
   "text_8f6a274eb4f8": "Modul Stecken-, BR- und Ortskenntnisse mit drei Reitern: Streckenkenntnis, Ortskenntnis und Baureihen. Karte bleibt erhalten; weitere Funktionen folgen später."
 }

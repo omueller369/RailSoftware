@@ -12,5 +12,11 @@ function paths(data,items,view,revision,now=Date.now()){
  }return groups;
 }
 function draw(svg,make,data,items,view,revision,now){const palette={learning:'#1565c0',qualified:'#16803a',expired:'#c62828'};for(const [kind,d]of Object.entries(paths(data,items,view,revision,now))){if(!d)continue;const path=make('path');for(const [k,v]of Object.entries({d,fill:'none',stroke:palette[kind],'stroke-width':'5','stroke-dasharray':'10 4','data-imported-knowledge':kind}))path.setAttribute(k,v);svg.append(path);}}
-window.RouteImports={paths,draw,state};
+function priority(svg,make,data,items,view,revision,now){
+ const groups=paths(data,items.filter(row=>row.status==='streckenkundig'),view,revision,now),d=groups.qualified+groups.expired;if(!d)return;
+ const targets=[...svg.querySelectorAll('[data-route-track],[data-rail-coverage]')];if(!targets.length)return;
+ const defs=make('defs'),mask=make('mask'),rect=make('rect'),path=make('path'),group=make('g');mask.setAttribute('id','route-confirmed-priority');mask.setAttribute('maskUnits','userSpaceOnUse');mask.setAttribute('x','0');mask.setAttribute('y','0');mask.setAttribute('width','600');mask.setAttribute('height','650');for(const [k,v]of Object.entries({x:0,y:0,width:600,height:650,fill:'white'}))rect.setAttribute(k,v);for(const [k,v]of Object.entries({d,fill:'none',stroke:'black','stroke-width':'10'}))path.setAttribute(k,v);mask.append(rect,path);defs.append(mask);svg.append(defs);group.setAttribute('mask','url(#route-confirmed-priority)');group.setAttribute('data-confirmed-priority','');for(const target of targets)group.append(target);svg.append(group);
+}
+function priorityState(items,revision,now=Date.now()){const routes=new Map();for(const row of items){const m=row.map_match;if(row.status!=='streckenkundig'||!m||!['mapped','partial'].includes(m.status)||m.reference_revision!==revision)continue;if(!routes.has(m.route))routes.set(m.route,[]);routes.get(m.route).push([Math.min(m.from_m,m.to_m),Math.max(m.from_m,m.to_m),state(row,now)]);}return key=>{if(typeof key!=='string')return null;const [route,bin]=key.split(':'),mid=Number(bin)*100+50;let found=null;for(const [a,b,s]of routes.get(route)||[])if(mid>=a&&mid<b){if(s==='qualified')return s;found=s;}return found;};}
+window.RouteImports={paths,draw,state,priority,priorityState};
 })();

@@ -7,7 +7,7 @@
   "text_689953ef34d5": "Auf Karte zuordenbar",
   "text_1602ecf75bf7": "Offene Kartenzuordnungen",
   "text_22c892592265": "Nur offene Kartenzuordnungen anzeigen",
-  "text_249137f0f4eb": "Deine importierten Kenntnisse färben die Referenzkarte anhand von VzG-Nummer und DS100 Von/Bis ein. Gestrichelte Linien bedeuten importierte Kenntnisse: Grün für streckenkundig, Blau für wird erworben, Rot für abgelaufen oder ein überschrittenes Gültig-bis-Datum. Daraus werden keine GPS-Fahrten oder letzten Fahrtdaten erzeugt. Fehlende oder mehrdeutige Endpunkte und fehlende Kilometer werden als offene Kartenzuordnung angezeigt. Bei Referenzlücken werden nur die vorhandenen Teile gefärbt. Die übrigen Abschnitte bleiben unverändert.",
+  "text_249137f0f4eb": "Deine importierten Kenntnisse färben die Referenzkarte anhand von VzG-Nummer und DS100 Von/Bis ein. Gestrichelte Linien bedeuten importierte Kenntnisse: Grün für streckenkundig, Blau für wird erworben, Rot für abgelaufen oder ein überschrittenes Gültig-bis-Datum. Daraus werden keine GPS-Fahrten oder letzten Fahrtdaten erzeugt. Fehlende oder mehrdeutige Endpunkte und fehlende Kilometer werden als offene Kartenzuordnung angezeigt. Bei Referenzlücken werden nur die vorhandenen Teile gefärbt. Die übrigen Abschnitte bleiben unverändert. Bestätigte importierte Streckenkenntnis hat Vorrang vor GPS-Auswertungen. GPS darf diesen Bestand ergänzen, aber nicht zurückstufen.",
   "text_c7c0692f2ec4": "VzG-Nummer fehlt (0)",
   "text_cb4bcf949018": "Keine Referenzstrecke für diese VzG-Nummer",
   "text_cf51bc935d60": "DS100-Endpunkt auf dieser Strecke fehlt",

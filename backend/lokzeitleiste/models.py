@@ -980,3 +980,28 @@ class RailwayOperatingPoint(Base):
     code:Mapped[str]=mapped_column(String(10),index=True)
     route_number:Mapped[str]=mapped_column(String(6),index=True)
     payload_json:Mapped[str]=mapped_column(Text)
+
+
+class TfLocationKnowledge(Base):
+    __tablename__='tf_location_knowledge'
+    __table_args__=(UniqueConstraint('owner_id','identity_key'),)
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),index=True)
+    identity_key:Mapped[str]=mapped_column(String(64))
+    station_name:Mapped[str]=mapped_column(String(200))
+    ds100:Mapped[str]=mapped_column(String(10))
+    known_until:Mapped[str]=mapped_column(String(10))
+    content_sha256:Mapped[str]=mapped_column(String(64))
+    imported_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)
+
+
+class TfRollingStockKnowledge(Base):
+    __tablename__='tf_rolling_stock_knowledge'
+    __table_args__=(UniqueConstraint('owner_id','identity_key'),)
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),index=True)
+    identity_key:Mapped[str]=mapped_column(String(64))
+    series:Mapped[str]=mapped_column(String(80))
+    valid_until:Mapped[str]=mapped_column(String(10))
+    content_sha256:Mapped[str]=mapped_column(String(64))
+    imported_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)

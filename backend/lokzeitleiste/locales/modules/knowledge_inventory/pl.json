@@ -1,0 +1,15 @@
+{
+  "text_3799c6d7af84": "Potwierdź import",
+  "text_0881d489914e": "Import znajduje się pod mapą. Wybierz CSV szlaków. Podgląd od razu pokazuje przypisane odcinki na mapie i liście importu, bez zapisywania. Sprawdź konto, dane i mapę. Dopiero Potwierdź import zapisuje znajomość na stałe na Twoim koncie Tf. Wybór pliku i lista importu są następnie czyszczone; zapisana znajomość pozostaje na mapie. Anuluj usuwa tylko podgląd.",
+  "text_90678014927b": "Importuj swoją znajomość miejsc z kolumnami Bahnhof, DS100 i Kundig bis. Sprawdź podgląd i potwierdź import. Poniżej widzisz zapisany stan. Istniejące rozbieżne wpisy pozostają zachowane; edycja pojawi się później.",
+  "text_7804e252711e": "Importuj swoją znajomość serii pojazdów z kolumnami Baureihe i Gültig bis. Sprawdź podgląd i potwierdź import. Poniżej widzisz zapisany stan. Istniejące rozbieżne wpisy pozostają zachowane; edycja pojawi się później.",
+  "text_0ccc8fa79afa": "Stacja",
+  "text_96a2dc78fd80": "DS100",
+  "text_363a5863c963": "Znajomość ważna do",
+  "text_7c1c344e8ca2": "Seria pojazdu",
+  "text_ad350696ac38": "Ważne do",
+  "text_419b91825006": "Zapisany stan",
+  "text_7b7e853fb18b": "Podgląd importu — jeszcze nie zapisano",
+  "text_4bf3ce18875e": "Twoja znajomość szlaków, miejsc i serii pojazdów z oddzielnymi zbiorami i importem CSV na Twoje konto Tf.",
+  "text_1b9adb828f0f": "Import szlaków pod mapą: podgląd mapy przed potwierdzeniem, potem pusta lista importu. Znajomość miejsc i serii z bazami przypisanymi do Tf, importem CSV i listami."
+}

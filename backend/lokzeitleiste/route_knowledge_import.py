@@ -113,7 +113,7 @@ def create_router(require_account):
     @router.post('/api/v1/tf/route-knowledge/imports/preview')
     def preview(file:UploadFile=File(...),user:User=Depends(driver),db:Session=Depends(database_session)):
         data=read(file);target=identity(db,user);result,_=summary(db,user.id,data)
-        return dict(identity=target,owner_token=token(target),summary=result)
+        return dict(identity=target,owner_token=token(target),summary=result,items=[dict(**json.loads(row['source_json']),map_match=map_match(json.loads(row['source_json']))) for row in data['records']])
     @router.post('/api/v1/tf/route-knowledge/imports')
     def apply(file:UploadFile=File(...),owner_token:str=Form(...),expected_sha256:str=Form(...),confirmed:bool=Form(False),user:User=Depends(driver),db:Session=Depends(database_session)):
         if not confirmed:raise HTTPException(422,text('confirmation'))

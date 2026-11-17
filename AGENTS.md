@@ -27,3 +27,8 @@
 
 - GitHub für autorisierte Projektänderungen ausdrücklich verwenden; die bereits erteilte Zustimmung nicht wiederholt erfragen. Änderungen nach erfolgreicher Prüfung in den Testbranch übernehmen.
 - Nach jedem Upload ins Repository beziehungsweise in den Branch im Abschluss einen passenden Linux-Updatebefehl und eine Android-Updateanleitung angeben. Vorhandene Installation berücksichtigen; Android-Daten durch Installation über die bestehende App erhalten.
+
+## Führender Streckenkenntnisbestand
+
+- Bestätigte importierte Streckenkenntnis hat gemäß Nutzervorgabe Vorrang vor GPS-Auswertungen. GPS darf den Kenntnisbestand ergänzen und pflegen, aber bestätigte importierte Kenntnisse nicht zurückstufen oder überschreiben. Importvorschau bleibt bis zur ausdrücklichen Bestätigung vorläufig.
+- Ortskenntnisse und Baureihen sind getrennte, TF-bezogene Bestände. Originale CSV-Werte und führende Nullen erhalten; persönliche Dateien niemals ins öffentliche Repository oder in die APK aufnehmen.

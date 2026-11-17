@@ -184,6 +184,11 @@
     "en": "/locales/gps_stop_suggestions/en.json",
     "pl": "/locales/gps_stop_suggestions/pl.json"
   },
+  "knowledge_inventory": {
+    "de": "/locales/knowledge_inventory/de.json",
+    "en": "/locales/knowledge_inventory/en.json",
+    "pl": "/locales/knowledge_inventory/pl.json"
+  },
   "knowledge_tabs": {
     "de": "/locales/knowledge_tabs/de.json",
     "en": "/locales/knowledge_tabs/en.json",

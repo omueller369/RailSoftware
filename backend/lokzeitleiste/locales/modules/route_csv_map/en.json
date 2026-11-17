@@ -7,7 +7,7 @@
   "text_689953ef34d5": "Can be mapped",
   "text_1602ecf75bf7": "Unresolved map assignments",
   "text_22c892592265": "Show unresolved map assignments only",
-  "text_249137f0f4eb": "Your imported knowledge colours the reference map using the VzG route number and DS100 From/To codes. Dashed lines indicate imported knowledge: green for qualified, blue for acquiring, red for expired status or a past validity date. No GPS journeys or last-travel dates are created. Missing or ambiguous endpoints and missing mileage are shown as unresolved map assignments. Where reference gaps exist, only the available parts are coloured. Other sections remain unchanged.",
+  "text_249137f0f4eb": "Your imported knowledge colours the reference map using the VzG route number and DS100 From/To codes. Dashed lines indicate imported knowledge: green for qualified, blue for acquiring, red for expired status or a past validity date. No GPS journeys or last-travel dates are created. Missing or ambiguous endpoints and missing mileage are shown as unresolved map assignments. Where reference gaps exist, only the available parts are coloured. Other sections remain unchanged. Confirmed imported route qualification takes precedence over GPS analysis. GPS may supplement this inventory, but must not downgrade it.",
   "text_c7c0692f2ec4": "VzG number missing (0)",
   "text_cb4bcf949018": "No reference geometry for this VzG number",
   "text_cf51bc935d60": "DS100 endpoint missing on this route",

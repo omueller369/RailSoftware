@@ -7,3 +7,4 @@ assert.equal(api.state({...row,status:'abgelaufen'},now),'expired');assert.equal
 assert.equal(api.paths(data,[{...row,map_match:{...row.map_match,status:'missing_endpoint'}}],view,'hash',now).qualified,'');
 assert.equal(api.paths(data,[{...row,map_match:{...row.map_match,from_m:800,to_m:200}}],view,'hash',now).qualified,'M20.00 0.00L80.00 0.00');
 console.log('Imported route knowledge: exact VzG clipping, statuses, validity, reverse endpoints, stale/unknown rejection; no GPS counts: PASS');
+const override=api.priorityState([row],'hash',now);assert.equal(override('1000:3'),'qualified','Confirmed import overrides GPS learning or ageing');assert.equal(override('2000:3'),null,'Other VzG remains unaffected');assert.equal(override('1000:9'),null,'Outside interval unaffected');assert.equal(api.priorityState([{...row,status:'wird erworben'}],'hash',now)('1000:3'),null,'Acquisition does not override GPS qualification');

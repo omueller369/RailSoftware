@@ -3,10 +3,10 @@
   "text_681c646b05be": "Route knowledge",
   "text_4aa4e3a2fe55": "Location knowledge",
   "text_be3484f014fc": "Vehicle classes",
-  "text_1308485034f1": "Here you can find your route knowledge. Location knowledge and vehicle classes are prepared for future features.",
-  "text_24780c3c9616": "Location knowledge features will follow later.",
-  "text_376cf04ec77f": "Vehicle class features will follow later.",
+  "text_1308485034f1": "Your route, location and rolling-stock knowledge with separate inventories and CSV imports for your TF account.",
+  "text_24780c3c9616": "Import your location knowledge inventory with the columns Bahnhof, DS100 and Kundig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
+  "text_376cf04ec77f": "Import your rolling-stock inventory with the columns Baureihe and Gültig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
   "text_45663fd76979": "Knowledge and tabs",
-  "text_8562cceb9457": "Open Route, class and location knowledge. The Route knowledge tab contains your existing map with the rail network, journey colours and age display. Location knowledge and Vehicle classes switch to the prepared areas. You cannot enter or save data there yet; the features will follow later. Switching tabs preserves the map, viewport and calculation.",
+  "text_8562cceb9457": "Your route, location and rolling-stock knowledge with separate inventories and CSV imports for your TF account. The import is below the map. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check your account, data and map. Only Confirm import permanently saves the knowledge to your TF account. The file selection and import list then clear; saved knowledge remains on the map. Cancel removes only the preview. Import your location knowledge inventory with the columns Bahnhof, DS100 and Kundig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later. Import your rolling-stock inventory with the columns Baureihe and Gültig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
   "text_8f6a274eb4f8": "Route, class and location knowledge module with three tabs. The map is retained; additional features will follow later."
 }

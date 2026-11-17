@@ -24,7 +24,7 @@ class RouteKnowledgeImportTest(unittest.TestCase):
     def test_preview_apply_preserves_all_fields_and_is_idempotent_without_gps(self):
         response=self.preview();self.assertEqual(response.status_code,200,response.text);preview=response.json()
         self.assertEqual(preview['identity']['tf_number'],'787100');self.assertEqual(preview['summary']['added'],3);self.assertEqual(preview['summary']['unknown_dates'],2)
-        self.assertEqual(self.counts(),(0,0,0));self.assertIn('map_matches',preview['summary'])
+        self.assertEqual(len(preview['items']),3);self.assertTrue(all('map_match' in row for row in preview['items']));self.assertEqual(self.counts(),(0,0,0));self.assertIn('map_matches',preview['summary'])
         saved=self.apply(preview);self.assertEqual(saved.status_code,200,saved.text);self.assertEqual(self.counts(),(3,1,0))
         items=self.driver.get(self.path).json()['items']
         self.assertEqual([[row[k] for k in ['section','route_number','status','valid_until','acquired_since','acquisition_trips','from_code','to_code']] for row in items],ROWS)

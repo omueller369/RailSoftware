@@ -1,0 +1,15 @@
+{
+  "text_3799c6d7af84": "Import-bestätigen",
+  "text_0881d489914e": "Der Import steht unter der Karte. Wähle Deine Strecken-CSV. Die Vorschau zeigt die zugeordneten Abschnitte sofort auf der Karte und in der Importliste, ohne sie zu speichern. Prüfe Konto, Angaben und Karte. Erst Import-bestätigen übernimmt die Kenntnisse dauerhaft für Dein TF-Konto. Danach werden Dateiauswahl und Importliste geleert; die gespeicherten Kenntnisse bleiben auf der Karte. Abbrechen entfernt nur die Vorschau.",
+  "text_90678014927b": "Importiere Deinen Bestand der Ortskenntnisse mit den Spalten Bahnhof, DS100 und Kundig bis. Prüfe die Vorschau und bestätige den Import. Darunter siehst Du Deinen gespeicherten Bestand. Bestehende abweichende Einträge bleiben erhalten; Bearbeiten folgt später.",
+  "text_7804e252711e": "Importiere Deinen Baureihenbestand mit den Spalten Baureihe und Gültig bis. Prüfe die Vorschau und bestätige den Import. Darunter siehst Du Deinen gespeicherten Bestand. Bestehende abweichende Einträge bleiben erhalten; Bearbeiten folgt später.",
+  "text_0ccc8fa79afa": "Bahnhof",
+  "text_96a2dc78fd80": "DS100",
+  "text_363a5863c963": "Kundig bis",
+  "text_7c1c344e8ca2": "Baureihe",
+  "text_ad350696ac38": "Gültig bis",
+  "text_419b91825006": "Gespeicherter Bestand",
+  "text_7b7e853fb18b": "Importvorschau – noch nicht gespeichert",
+  "text_4bf3ce18875e": "Deine Strecken-, Orts- und Baureihenkenntnisse mit getrennten Beständen und CSV-Import für Dein TF-Konto.",
+  "text_1b9adb828f0f": "Streckenimport unter der Karte: Kartenvorschau vor Bestätigung, danach leere Importliste. Ortskenntnisse und Baureihen mit TF-bezogener Datenbank, CSV-Import und Bestandslisten."
+}

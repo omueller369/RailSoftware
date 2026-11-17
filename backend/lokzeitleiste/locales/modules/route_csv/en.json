@@ -44,6 +44,6 @@
   "text_47df666bbf20": "The file no longer matches the preview. Reopen the import preview.",
   "text_bedf834c23b7": "Confirm the import in the preview first.",
   "text_7bf23e81e184": "This account has no driver profile.",
-  "text_daad55ef168f": "The route knowledge lines are twice as thick. Imported route knowledge (CSV) is above the map. Log in with your TF account and select your CSV; the preview opens automatically. Check your name, Tf number and counts, then confirm Import for this driver to save to the server. Repeated imports do not create duplicates; conflicting existing entries are retained. Original status, validity and acquisition fields remain unchanged, including zero-date placeholders. Imported knowledge colours reference lines using VzG and DS100 From/To as a separate dashed layer, without creating GPS journeys, direction counts or last-travel dates. After loading, your personal list and map assignments are cached for offline use on this device.",
+  "text_daad55ef168f": "The import is below the map. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check your account, data and map. Only Confirm import permanently saves the knowledge to your TF account. The file selection and import list then clear; saved knowledge remains on the map. Cancel removes only the preview.",
   "text_306348eb1b4f": "Twice-thick map lines and private CSV import of existing route knowledge with target-account preview, duplicate protection and unchanged original information."
 }

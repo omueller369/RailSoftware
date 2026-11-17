@@ -7,7 +7,7 @@
   "text_689953ef34d5": "Można przypisać do mapy",
   "text_1602ecf75bf7": "Nierozstrzygnięte przypisania do mapy",
   "text_22c892592265": "Pokaż tylko nierozstrzygnięte przypisania do mapy",
-  "text_249137f0f4eb": "Twoja importowana znajomość koloruje mapę odniesienia według numeru linii VzG i kodów DS100 Od/Do. Linie przerywane oznaczają importowaną znajomość: zielone — znajomość, niebieskie — w trakcie zdobywania, czerwone — wygasła lub minęła data ważności. Nie powstają przejazdy GPS ani daty ostatnich przejazdów. Brakujące lub niejednoznaczne punkty końcowe i brak kilometrażu są pokazane jako nierozstrzygnięte przypisania. Przy lukach danych kolorowane są tylko dostępne części. Pozostałe odcinki pozostają bez zmian.",
+  "text_249137f0f4eb": "Twoja importowana znajomość koloruje mapę odniesienia według numeru linii VzG i kodów DS100 Od/Do. Linie przerywane oznaczają importowaną znajomość: zielone — znajomość, niebieskie — w trakcie zdobywania, czerwone — wygasła lub minęła data ważności. Nie powstają przejazdy GPS ani daty ostatnich przejazdów. Brakujące lub niejednoznaczne punkty końcowe i brak kilometrażu są pokazane jako nierozstrzygnięte przypisania. Przy lukach danych kolorowane są tylko dostępne części. Pozostałe odcinki pozostają bez zmian. Potwierdzona importowana znajomość szlaku ma pierwszeństwo przed analizą GPS. GPS może uzupełniać ten stan, ale nie może go obniżać.",
   "text_c7c0692f2ec4": "Brak numeru VzG (0)",
   "text_cb4bcf949018": "Brak geometrii dla tego numeru VzG",
   "text_cf51bc935d60": "Brak punktu DS100 na tej linii",
