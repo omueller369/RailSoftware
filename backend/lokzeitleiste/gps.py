@@ -301,7 +301,10 @@ def create_router(require_account):
             if name:payload['stations'][kind]=dict(code=code,name=name)
             elif name_field in data.model_fields_set:payload['stations'].pop(kind,None)
         if not row:row=TrainGpsRecording(owner_id=user.id,journey_id=str(journey_id),revision=0);db.add(row)
-        row.payload_json=json.dumps(payload,ensure_ascii=False);row.revision+=1;db.commit();return view(row)
+        row.payload_json=json.dumps(payload,ensure_ascii=False);row.revision+=1
+        from .location_knowledge import renew_from_gps
+        renew_from_gps(db,user.id,payload)
+        db.commit();return view(row)
     @router.delete('/api/v1/tf/gps/{journey_id}')
     def remove(journey_id:UUID,user:User=Depends(driver),db:Session=Depends(database_session)):
         row=owned(db,user,journey_id,True);db.delete(row);db.commit();return {'ok':True}
@@ -351,5 +354,8 @@ def create_router(require_account):
             if kind in selected:
                 payload[kind+'_station']=selected[kind]['code'] or None
                 payload[kind+'_station_name']=selected[kind]['name']
-        row.payload_json=json.dumps(payload,ensure_ascii=False);row.revision+=1;db.commit();return view(row)
+        row.payload_json=json.dumps(payload,ensure_ascii=False);row.revision+=1
+        from .location_knowledge import renew_from_gps
+        renew_from_gps(db,user.id,payload)
+        db.commit();return view(row)
     return router

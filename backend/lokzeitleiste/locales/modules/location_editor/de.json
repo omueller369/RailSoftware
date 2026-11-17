@@ -1,0 +1,22 @@
+{
+  "text_3ae88835c15a": "Ortskenntnis eintragen oder verlängern",
+  "text_3be993b770a9": "Ort über DS100 suchen und auswählen",
+  "text_ad350696ac38": "Gültig bis",
+  "text_0df8087370c1": "Eintragen",
+  "text_1821aa222c47": "Verlängerung speichern",
+  "text_c325efcf92d9": "Neuer Eintrag",
+  "text_79d06d496595": "Wähle ein Datum zwischen heute und höchstens einem Jahr ab heute. Klicke für eine Verlängerung auf eine vorhandene Zeile. Bereits länger gültige Einträge werden nicht verkürzt.",
+  "text_2a7969e948c7": "Das Datum muss zwischen heute und einem Jahr ab heute liegen.",
+  "text_3f4f73514ded": "Die Gültigkeit kann hier nur verlängert werden.",
+  "text_d5f105a811d5": "Wähle den Ort aus der DS100-Auswahlliste.",
+  "text_849119279347": "Der Eintrag wurde inzwischen geändert. Lade den Bestand neu und wähle die Zeile erneut.",
+  "text_7beba8eb9d3d": "Dieser Ort ist bereits vorhanden. Wähle seine Zeile zum Verlängern.",
+  "text_0e823f077aa4": "Orange: noch höchstens drei Monate gültig. Rot: Gültigkeit abgelaufen. Einträge ohne gültiges Datum bleiben neutral.",
+  "text_0d7a3c1f177e": "Über der Ortskenntnisliste kannst Du einen Ort über die DS100-Suche auswählen und mit Gültig bis eintragen. Das Datum darf höchstens ein Jahr ab heute sein. Klicke auf eine vorhandene Zeile, um ausschließlich ihre Gültigkeit zu verlängern. Orange markiert Einträge mit höchstens drei Monaten Restgültigkeit, Rot abgelaufene Einträge. Die Importzeile steht unter der Liste. Beim Synchronisieren einer GPS-Aufzeichnung werden ausdrücklich gewählte Startbahnhöfe ab einem brauchbaren GPS-Punkt und Endbahnhöfe nach beendeter Aufzeichnung mit späteren GPS-Punkten bis ein Jahr ab ihrem Erfassungsdatum verlängert oder neu eingetragen. Späteres Hochladen oder erneutes Synchronisieren zählt nicht als neues Erfassungsdatum. Längere vorhandene Gültigkeiten bleiben erhalten. Ohne Serververbindung kannst Du Deinen gespeicherten Bestand ansehen; Eintragen und Verlängern brauchen eine Verbindung. Neueinträge sind pro TF und DS100 eindeutig; Duplikate werden abgewiesen. Mit der Suche über der Liste filterst Du nach Bahnhof oder DS100. Die Pfeile in den Spaltenköpfen wechseln zwischen auf- und absteigender Sortierung. Datumswerte erscheinen als TT.MM.JJJJ.",
+  "text_77b316b2e62e": "Ortskenntnisse über DS100 eintragen und bis höchstens ein Jahr verlängern; orange/rote Gültigkeitsanzeige und automatische Verlängerung erfasster GPS-Start-/Endbahnhöfe.",
+  "text_e24541ba28ab": "Bestand durchsuchen: Bahnhof oder DS100",
+  "text_b8e922885188": "Bestand durchsuchen: Baureihe",
+  "text_3d3f39a3b3e2": "Für einen neuen Ort: Wähle im Reiter Ortskenntnis einen Treffer aus der DS100-Suche, trage Gültig bis ein und klicke Eintragen.",
+  "text_19f615418c9a": "Zum Verlängern: Klicke auf die Zeile, wähle das neue Datum und klicke Verlängerung speichern. Neuer Eintrag beendet die Zeilenauswahl.",
+  "text_08aec9fd06e3": "Nutze Bestand durchsuchen für Bahnhof oder DS100. Mit den Pfeilen im Spaltenkopf wechselst Du die Sortierrichtung. Für CSV-Dateien verwendest Du die Importzeile unter der Liste."
+}

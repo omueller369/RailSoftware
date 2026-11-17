@@ -27,6 +27,17 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "steps": []
       },
       {
+        "title": "{{knowledge_tabs.text_4aa4e3a2fe55}}",
+        "paragraphs": [
+          "{{location_editor.text_0d7a3c1f177e}}"
+        ],
+        "steps": [
+          "{{location_editor.text_3d3f39a3b3e2}}",
+          "{{location_editor.text_19f615418c9a}}",
+          "{{location_editor.text_08aec9fd06e3}}"
+        ]
+      },
+      {
         "title": "{{knowledge_tabs.text_681c646b05be}}",
         "paragraphs": [
           "{{portal_beta60.text_a6fd4b95ede8}}",

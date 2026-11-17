@@ -1,0 +1,22 @@
+{
+  "text_3ae88835c15a": "Dodaj lub przedłuż znajomość miejsca",
+  "text_3be993b770a9": "Wyszukaj i wybierz miejsce przez DS100",
+  "text_ad350696ac38": "Ważne do",
+  "text_0df8087370c1": "Dodaj",
+  "text_1821aa222c47": "Zapisz przedłużenie",
+  "text_c325efcf92d9": "Nowy wpis",
+  "text_79d06d496595": "Wybierz datę od dziś do maksymalnie roku kalendarzowego od dziś. Kliknij istniejący wiersz, aby przedłużyć ważność. Dłuższa istniejąca ważność nie jest skracana.",
+  "text_2a7969e948c7": "Data musi przypadać między dziś a rokiem od dziś.",
+  "text_3f4f73514ded": "Tutaj można tylko przedłużyć ważność.",
+  "text_d5f105a811d5": "Wybierz miejsce z listy DS100.",
+  "text_849119279347": "Wpis został zmieniony. Wczytaj listę ponownie i wybierz wiersz.",
+  "text_7beba8eb9d3d": "To miejsce już istnieje. Wybierz jego wiersz, aby przedłużyć ważność.",
+  "text_0e823f077aa4": "Pomarańczowy: ważność do trzech miesięcy. Czerwony: ważność wygasła. Wpisy bez poprawnej daty pozostają neutralne.",
+  "text_0d7a3c1f177e": "Nad listą znajomości miejsc wybierz miejsce przez DS100 i dodaj datę Ważne do, maksymalnie rok od dziś. Kliknij istniejący wiersz, aby przedłużyć tylko ważność. Pomarańczowy oznacza do trzech miesięcy ważności, czerwony — wpis wygasły. Import CSV znajduje się pod listą. Podczas synchronizacji GPS wybrane stacje początkowe są przedłużane po użytecznym pomiarze GPS, a końcowe po zakończeniu nagrania z późniejszymi pomiarami, do roku od daty pomiaru; brakujące wpisy są dodawane. Późniejsze przesłanie ani ponowna synchronizacja nie zmienia daty pomiaru. Dłuższa istniejąca ważność zostaje zachowana. Offline można przeglądać zapisany stan; dodawanie i przedłużanie wymaga połączenia z serwerem. Nowe wpisy są unikalne dla maszynisty i DS100; duplikaty są odrzucane. Wyszukiwarka listy filtruje według stacji lub DS100. Strzałki nagłówków przełączają sortowanie rosnące i malejące. Daty są wyświetlane jako DD.MM.RRRR.",
+  "text_77b316b2e62e": "Dodawanie znajomości miejsc przez DS100 i przedłużanie do roku; pomarańczowe/czerwone oznaczenia i automatyczne przedłużanie stacji początkowych/końcowych GPS.",
+  "text_e24541ba28ab": "Szukaj w zbiorze: stacja lub DS100",
+  "text_b8e922885188": "Szukaj w zbiorze: seria pojazdu",
+  "text_3d3f39a3b3e2": "Dla nowego miejsca: w zakładce Znajomość miejsc wybierz wynik wyszukiwania DS100, wpisz Ważne do i kliknij Dodaj.",
+  "text_19f615418c9a": "Aby przedłużyć: kliknij wiersz, wybierz nową datę i kliknij Zapisz przedłużenie. Nowy wpis kończy wybór wiersza.",
+  "text_08aec9fd06e3": "Użyj wyszukiwania listy dla nazwy stacji lub DS100. Strzałki nagłówków zmieniają kierunek sortowania. Dla plików CSV użyj wiersza importu pod listą."
+}

@@ -1,0 +1,22 @@
+{
+  "text_3ae88835c15a": "Add or renew location knowledge",
+  "text_3be993b770a9": "Find and select a location using DS100",
+  "text_ad350696ac38": "Valid until",
+  "text_0df8087370c1": "Add",
+  "text_1821aa222c47": "Save renewal",
+  "text_c325efcf92d9": "New entry",
+  "text_79d06d496595": "Choose a date from today up to one calendar year from today. Click an existing row to renew it. Entries already valid for longer are not shortened.",
+  "text_2a7969e948c7": "The date must be between today and one year from today.",
+  "text_3f4f73514ded": "Validity can only be extended here.",
+  "text_d5f105a811d5": "Select the location from the DS100 list.",
+  "text_849119279347": "This entry has changed. Reload the inventory and select the row again.",
+  "text_7beba8eb9d3d": "This location already exists. Select its row to renew it.",
+  "text_0e823f077aa4": "Orange: valid for three months or less. Red: expired. Entries without a valid date remain neutral.",
+  "text_0d7a3c1f177e": "Above the location inventory, select a place with DS100 search and add a Valid until date, at most one year from today. Click an existing row to extend only its validity. Orange marks entries with three months or less remaining; red marks expired entries. CSV import is below the list. When syncing GPS, explicitly chosen start stations are renewed from a usable fix, and end stations after a finished recording with later usable fixes, until one year after their capture date; missing entries are created. Later uploads or replayed syncs do not count as new capture dates. Longer existing validity is preserved. Offline, you can view the saved inventory; adding and renewing requires a server connection. New entries are unique per driver and DS100; duplicates are rejected. Use the inventory search to filter by station or DS100. Header arrows toggle ascending and descending sorting. Dates are displayed as DD.MM.YYYY.",
+  "text_77b316b2e62e": "Add location knowledge via DS100 and renew for up to one year; orange/red validity indicators and automatic renewal of captured GPS start/end stations.",
+  "text_e24541ba28ab": "Search inventory: station or DS100",
+  "text_b8e922885188": "Search inventory: rolling-stock class",
+  "text_3d3f39a3b3e2": "For a new location: in Location knowledge, choose a DS100 search result, enter Valid until and click Add.",
+  "text_19f615418c9a": "To renew: click a row, choose the new date and click Save renewal. New entry clears the row selection.",
+  "text_08aec9fd06e3": "Use Search inventory for station names or DS100. Header arrows toggle the sort direction. For CSV files, use the import row below the list."
+}

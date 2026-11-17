@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.3
+# LokZeitleiste v0.27.4
+
+**0.27.4:** Ortskenntnisse über DS100 eintragen und per Zeilenauswahl bis höchstens ein Kalenderjahr ab heute verlängern. Pro TF keine doppelten Orte. Suche, Spaltensortierung, deutsche Datumsanzeige sowie orange/rote Gültigkeitsmarkierung. Der Import steht unter der Liste. Erfasste GPS-Start-/Endbahnhöfe verlängern den Bestand beim Synchronisieren bis ein Jahr ab ihrem tatsächlichen Erfassungsdatum, ohne längere Gültigkeiten zu verkürzen.
 
 **0.27.3:** Streckenkenntniskarte für große importierte Bestände beschleunigt: zusammengefasste Farbintervalle, zoomabhängige Darstellung und begrenzt zwischengespeicherte Ansichten. Kenntnisse, genaue Abschnittsgrenzen, Importbestätigung und Vorrang vor GPS bleiben erhalten; kein erneuter CSV-Import nötig.
 

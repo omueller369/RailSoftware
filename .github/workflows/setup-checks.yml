@@ -122,6 +122,7 @@ jobs:
         run: python -m pip install -r backend/requirements-dev.txt
       - name: CSV browser to authenticated server and operating point reproducibility
         run: |
+          python backend/tests/check_location_editor_ui.py --output-dir "$RUNNER_TEMP/location-editor-ui"
           python backend/tests/check_knowledge_inventory_ui.py --output-dir "$RUNNER_TEMP/knowledge-inventory-ui"
           python tools/build-operating-points.py --check
           PYTHONPATH=backend:backend/tests python backend/tests/check_route_csv_server.py --output-dir "$RUNNER_TEMP/route-csv-server"

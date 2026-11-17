@@ -75,3 +75,24 @@
 html[data-theme=dark] .route-network-swatch:is(.normal,.construction,.other){box-shadow:0 0 0 3px #e6edf2}
 
 .route-csv{margin-top:22px;padding:14px;border:1px solid #a8bac7;border-radius:8px}.route-csv-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0}.route-csv-controls input,.route-csv-controls select{max-width:100%;box-sizing:border-box}.route-csv-controls label{display:flex;flex-direction:column;gap:6px}.route-csv-controls input[type=search]{flex:1 1 220px;padding:10px}.route-csv-preview{padding:12px;border:2px solid #17445b;border-radius:8px;margin:12px 0}.route-csv-preview dl{display:grid;grid-template-columns:minmax(120px,1fr) auto;gap:5px 12px}.route-csv-preview dd{margin:0;font-weight:700}.route-csv-scroll{max-height:440px;overflow:auto}.route-csv-table{border-collapse:collapse;width:100%;min-width:1040px}.route-csv-table th,.route-csv-table td{padding:10px;border:1px solid #bdcbd5;white-space:nowrap}.route-csv-table thead{position:sticky;top:0;background:var(--bg,#fff)}.route-csv-table tbody tr{height:40px}.route-csv-preview[hidden],.route-csv-scroll[hidden]{display:none!important}
+/* TF location inventory: entry row above the list, import controls below it. */
+.location-editor-controls{display:flex;align-items:end;gap:.75rem;flex-wrap:wrap}
+.location-editor-controls label{display:flex;flex-direction:column;gap:.3rem;flex:1 1 14rem;min-width:0}
+.location-editor-controls input{width:100%;min-width:0;box-sizing:border-box}
+.route-csv-table th button{white-space:nowrap;padding:.35rem .5rem;min-height:2.5rem}
+.route-csv-table tr[data-location-state]{cursor:pointer}
+.route-csv-table tr[data-location-state=expiring]{background:#fff0cc;color:#6b3a00}
+.route-csv-table tr[data-location-state=expired]{background:#ffe2e2;color:#851e1e}
+.route-csv-table tr[data-location-state][aria-selected=true]{box-shadow:inset 4px 0 #1565c0}
+.route-csv-table tr[data-location-state]:focus-visible{outline:2px solid #1565c0;outline-offset:-2px}
+html[data-theme=dark] .route-csv-table tr[data-location-state=expiring]{background:#4a3418;color:#ffdc9f}
+html[data-theme=dark] .route-csv-table tr[data-location-state=expired]{background:#4d2026;color:#ffd2d2}
+.location-editor-controls label:nth-child(2){flex:1 1 10rem}
+[data-knowledge-inventory] input[data-knowledge-search]{width:100%;max-width:100%;box-sizing:border-box}
+[data-knowledge-inventory=places] .route-csv-table{min-width:32rem;width:100%}
+[data-knowledge-inventory=classes] .route-csv-table{min-width:20rem;width:100%}
+[data-knowledge-inventory=places] .route-csv-table tr[data-location-state=expiring]>td{background:#fff0cc;color:#6b3a00}
+[data-knowledge-inventory=places] .route-csv-table tr[data-location-state=expired]>td{background:#ffe2e2;color:#851e1e}
+html[data-theme=dark] [data-knowledge-inventory=places] .route-csv-table tr[data-location-state=expiring]>td{background:#4a3418;color:#ffdc9f}
+html[data-theme=dark] [data-knowledge-inventory=places] .route-csv-table tr[data-location-state=expired]>td{background:#4d2026;color:#ffd2d2}
+[data-knowledge-inventory=places] .route-csv-table tr[aria-selected=true]>td:first-child{box-shadow:inset 4px 0 #368bd2}

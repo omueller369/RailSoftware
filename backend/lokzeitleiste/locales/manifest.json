@@ -199,6 +199,11 @@
     "en": "/locales/knowledge_tabs/en.json",
     "pl": "/locales/knowledge_tabs/pl.json"
   },
+  "location_editor": {
+    "de": "/locales/location_editor/de.json",
+    "en": "/locales/location_editor/en.json",
+    "pl": "/locales/location_editor/pl.json"
+  },
   "m1_operating_points": {
     "de": "/locales/m1_operating_points/de.json",
     "en": "/locales/m1_operating_points/en.json",
