@@ -2,6 +2,7 @@
 import argparse
 from browser_realtime import check_pages
 from check_work_report_layout import STATIC
+from localized_fixtures import localize_html
 
 
 def fixture():
@@ -17,7 +18,7 @@ window.I18n={t:s=>s,locale:'de-DE'};const ageTimers=[];window.setInterval=(fn,ms
  assert(reference,'Long real Flensburg reference line');
  const coords=reference[3],forward=[];for(let i=0;i<coords.length;i+=2)forward.push([Math.atan(Math.sinh(Math.PI*(1-2*coords[i+1]/data.scale)))*180/Math.PI,coords[i]/data.scale*360-180]);
  const make=(id,reverse,days=0)=>({journey_id:id,dirty:true,points:(reverse?[...forward].reverse():forward).map((p,i)=>({t:Date.now()-days*86400000-3600000+i*5000,lat:p[0],lon:p[1],accuracy:5}))});
- let rows=[make('forward-1'),make('forward-2'),make('backward-1',true),make('backward-2',true)];window.GpsRecorder={localRecords:async()=>rows};
+ let rows=[make('forward-1'),make('forward-2'),make('backward-1',true),make('backward-2',true)];let localLoads=0;window.GpsRecorder={localRecords:async()=>{localLoads++;return rows;}};
  await window.startRouteKnowledge({id:7});
  assert(document.querySelectorAll('[data-rail-network]').length>0,'National reference geometry visible offline');
  assert(!document.querySelector('.route-knowledge-map image'),'Offline network does not request online map tiles');
@@ -25,6 +26,15 @@ window.I18n={t:s=>s,locale:'de-DE'};const ageTimers=[];window.setInterval=(fn,ms
  assert(document.querySelector('[data-rail-coverage=qualified]'),'Matched reference bins also green');
  assert(document.querySelector('[data-route-track=qualified]').getAttribute('stroke')==='#16803a','Green stroke');
  assert(performance.now()-started<10000,'Full offline network remains responsive');
+ const routesTab=document.getElementById('knowledgeTab-routes'),placesTab=document.getElementById('knowledgeTab-places'),classesTab=document.getElementById('knowledgeTab-classes'),panel=name=>document.getElementById('knowledgePanel-'+name),originalSvg=document.querySelector('.route-knowledge-map svg'),loadsBefore=localLoads;
+ assert(document.querySelector('#routeKnowledge h1').textContent==='Stecken-, BR- und Ortskenntnisse','Requested module name');
+ assert(routesTab.getAttribute('aria-selected')==='true'&&!panel('routes').hidden,'Route tab is initial selection');
+ placesTab.click();assert(!panel('places').hidden&&panel('routes').hidden&&panel('classes').hidden,'Location placeholder only');assert(!panel('places').querySelector('input,select,textarea,form'),'No invented location data entry');
+ classesTab.click();assert(!panel('classes').hidden&&panel('places').hidden,'Vehicle class placeholder only');assert(!panel('classes').querySelector('input,select,textarea,form'),'No invented class data entry');
+ classesTab.dispatchEvent(new KeyboardEvent('keydown',{key:'Home',bubbles:true}));assert(document.activeElement===routesTab&&!panel('routes').hidden,'Home activates first tab and restores focus');
+ routesTab.dispatchEvent(new KeyboardEvent('keydown',{key:'End',bubbles:true}));assert(document.activeElement===classesTab,'End activates last tab');classesTab.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));assert(document.activeElement===routesTab,'Arrow wraps to first tab');
+ assert(document.querySelector('.route-knowledge-map svg')===originalSvg&&localLoads===loadsBefore,'Tabs preserve the actual map and do not reload GPS or count again');
+
  const reload=document.querySelector('#routeKnowledgeWorkspace button');rows=rows.slice(0,3);await reload.onclick();
  assert(!document.querySelector('[data-route-track=qualified]'),'2 + 1 remains blue');
  assert(document.querySelector('[data-route-track=learning]'),'Blue GPS stroke retained');
@@ -52,8 +62,9 @@ window.I18n={t:s=>s,locale:'de-DE'};const ageTimers=[];window.setInterval=(fn,ms
  window.parent.postMessage({layoutStatus:'pass'},'*');
 })().catch(error=>window.parent.postMessage({layoutStatus:'fail',message:error.stack},'*'));
 '''
-    css='\n'.join((STATIC/name).read_text() for name in ['tf-portal.css','portal-theme.css','responsive.css'])
-    return '<!doctype html><html><head><meta charset="utf-8"><style>'+css+'</style></head><body><main><h1>Streck-Kenntnisse</h1><div id="routeKnowledgeWorkspace"></div></main><script>'+scripts+checks+'</script></body></html>'
+    css='\n'.join((STATIC/name).read_text() for name in ['tf-portal.css','work-report.css','portal-theme.css','responsive.css'])
+    source=localize_html((STATIC/'tf-portal.html').read_text());markup='<section id="routeKnowledge"'+source.split('<section id="routeKnowledge"',1)[1].split('<section id="updatesModule"',1)[0];markup=markup.replace('id="routeKnowledge" hidden','id="routeKnowledge"')
+    return '<!doctype html><html><head><meta charset="utf-8"><style>'+css+'</style></head><body><main>'+markup+'</main><script>'+scripts+checks+'</script></body></html>'
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--output-dir',required=True);args=parser.parse_args()

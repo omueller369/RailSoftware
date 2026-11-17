@@ -19,7 +19,7 @@
   "text_d754e9f36f12": "Beta: browser estimate since opening this tab. Payloads and measurable resources; external map tiles and protocol overhead may be missing.",
   "text_571a74ee9c6d": "Beta: Android data counters for the app since device restart, including native transfers. Not a mobile-plan counter.",
   "text_9a7fc357abb6": "View route knowledge",
-  "text_c7a64388e7a1": "Open Route knowledge. The app loads your own GPS tracks automatically. Use + and − to zoom. Drag the map to pan. Germany restores the overview. Load routes refreshes the display.",
+  "text_c7a64388e7a1": "Open the Route knowledge tab. The app loads your own GPS tracks automatically. Use + and − to zoom. Drag the map to pan. Germany restores the overview. Load routes refreshes the display.",
   "text_a5fd9225fa67": "Pause GPS stops only location capture. Resume GPS continues the same recording. The pause does not automatically count as stationary time. You can still explicitly use Start stand and End stand. Both GPS controls are also available in full screen. DB Digi-Bef. first exits full screen and then opens the command page.",
   "text_54bb08abd431": "You can also use Excel import in the brake-sheet overlay. Select your Excel file in the Android file picker. Check the import preview before applying it. Cancelling preserves your entries. GPS recording continues.",
   "text_1e9c72606ae4": "Hardened overlay Excel import, beta traffic counters, share icon, GPS pause, DB Digi-Bef. from full screen and route knowledge from own GPS tracks.",

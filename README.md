@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.62
+# LokZeitleiste v0.26.63
+
+**0.26.63:** Modulname „Stecken-, BR- und Ortskenntnisse“ mit drei Reitern: Streckenkenntnis, Ortskenntnis und Baureihen. Die bestehende Karte mit Netz, Fahrtenfarben und 180-/365-Tage-Alterung liegt unter Streckenkenntnis. Ortskenntnis und Baureihen zeigen vorerst ausschließlich einen Hinweis auf die späteren Funktionen.
 
 **0.26.62:** Streck-Kenntnisse: unbefahrene Strecken schwarz. Letzte zugeordnete Fahrt bis 180 Kalendertage weiterhin Blau/Grün; ab 181 Tagen Orange, ab 366 Tagen Rot. Grundlage sind die GPS-Zeitstempel je Abschnitt in Europe/Berlin, nicht der Zeitpunkt des Ladens. Legende, Hilfe und DE/PL/EN sind aktualisiert.
 

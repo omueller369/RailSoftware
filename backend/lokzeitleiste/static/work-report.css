@@ -232,3 +232,5 @@ html[data-theme="dark"] #reportSendCancel {
 
 .gps-share-icon{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}.gps-box .gps-share-icon svg{width:24px;height:24px;max-height:none;border:0;background:transparent;flex:none;pointer-events:none}
 .gps-pause[aria-pressed=true]{outline:3px solid #e4b640;outline-offset:1px}
+
+#routeKnowledge [role="tabpanel"][hidden]{display:none!important}.knowledge-tab-bar{margin-bottom:0}

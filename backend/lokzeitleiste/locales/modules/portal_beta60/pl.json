@@ -19,7 +19,7 @@
   "text_d754e9f36f12": "Beta: szacunek przeglądarki od otwarcia tej karty. Dane i mierzalne zasoby; zewnętrzne kafelki mapy i narzut protokołu mogą nie być uwzględnione.",
   "text_571a74ee9c6d": "Beta: licznik danych aplikacji Android od ponownego uruchomienia urządzenia, w tym transfery natywne. Nie jest to licznik pakietu operatora.",
   "text_9a7fc357abb6": "Wyświetlanie znajomości szlaków",
-  "text_c7a64388e7a1": "Otwórz Znajomość szlaków. Aplikacja automatycznie wczyta Twoje ślady GPS. Użyj + i −, aby zmienić powiększenie. Przeciągnij mapę, aby ją przesunąć. Niemcy przywracają widok ogólny. Wczytaj trasy odświeża widok.",
+  "text_c7a64388e7a1": "Otwórz zakładkę Znajomość szlaków. Aplikacja automatycznie wczyta Twoje ślady GPS. Użyj + i −, aby zmienić powiększenie. Przeciągnij mapę, aby ją przesunąć. Niemcy przywracają widok ogólny. Wczytaj trasy odświeża widok.",
   "text_a5fd9225fa67": "Wstrzymaj GPS zatrzymuje tylko rejestrację lokalizacji. Wznów GPS kontynuuje ten sam zapis. Przerwa nie jest automatycznie liczona jako postój. Nadal możesz świadomie używać Początek postoju i Koniec postoju. Przyciski GPS są też dostępne na pełnym ekranie. DB Digi-Bef. najpierw wyłącza pełny ekran, a potem otwiera stronę rozkazów.",
   "text_54bb08abd431": "Import Excel działa też w nakładce karty próby hamulca. Wybierz plik Excel w oknie plików Androida. Sprawdź podgląd przed zatwierdzeniem. Anulowanie zachowuje Twoje wpisy. Rejestracja GPS trwa nadal.",
   "text_1e9c72606ae4": "Zabezpieczony import Excel w nakładce, liczniki danych beta, ikona udostępniania, pauza GPS, DB Digi-Bef. z pełnego ekranu i znajomość szlaków z własnych śladów GPS.",

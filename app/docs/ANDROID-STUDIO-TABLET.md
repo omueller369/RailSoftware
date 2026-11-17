@@ -457,3 +457,8 @@ Die Auswertung verwendet die vorhandenen eigenen Aufzeichnungen auf Gerät und S
 Noch nicht befahrene Strecken sind **schwarz**, auch Bauabschnitte (gestrichelt) und Abschnitte außerhalb des DB-Netzbetriebs (gepunktet). Bis einschließlich **180 Kalendertagen** seit der letzten zugeordneten Fahrt gilt die bisherige Blau-/Grün-Regel. **181–365 Tage** sind **orange**, ab **366 Tagen** ist der Abschnitt **rot**. Orange und Rot haben Vorrang vor Blau/Grün. Maßgeblich ist die letzte zugeordnete Fahrt in beliebiger Richtung, nach Kalendertagen in Europe/Berlin. Erneutes Laden aktualisiert kein Fahrtdatum. Die Karte aktualisiert die Farben auch beim Tageswechsel.
 
 Server und App müssen aktualisiert sein, damit die Serveraufzeichnungen mit ihren vorhandenen GPS-Zeitstempeln ausgewertet werden. Ansichten ohne Fahrtdatum erhalten kein frisches Grün. Original-GPS-Daten und das öffentliche M1-Netzbündel werden nicht verändert.
+
+
+## Kenntnismodul ab 0.26.63
+
+Die Kachel heißt **Stecken-, BR- und Ortskenntnisse**. Die bisherige Karte liegt im Reiter **Streckenkenntnis**. **Ortskenntnis** und **Baureihen** enthalten zunächst nur den Hinweis, dass ihre Funktionen später folgen. Dort gibt es noch keine Datenerfassung. Das Wechseln der Reiter erhält Kartenausschnitt, Streckennetz und Fahrtenauswertung. Die Farben aus 0.26.62 gelten weiterhin. Der bestehende Link `/tf/streckenkenntnisse` bleibt gültig.

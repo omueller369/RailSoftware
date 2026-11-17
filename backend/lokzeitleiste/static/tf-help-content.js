@@ -15,12 +15,19 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "id": "route-knowledge",
     "path": "/tf/streckenkenntnisse",
     "aliases": [],
-    "group": "{{portal_beta60.text_90f7af776f9d}}",
-    "title": "{{portal_beta60.text_9a7fc357abb6}}",
-    "short": "{{portal_beta60.text_490ec1b23a5d}}",
+    "group": "{{knowledge_tabs.text_ffad8a8eb545}}",
+    "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
+    "short": "{{knowledge_tabs.text_1308485034f1}}",
     "sections": [
       {
-        "title": "{{portal_beta60.text_90f7af776f9d}}",
+        "title": "{{knowledge_tabs.text_45663fd76979}}",
+        "paragraphs": [
+          "{{knowledge_tabs.text_8562cceb9457}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{knowledge_tabs.text_681c646b05be}}",
         "paragraphs": [
           "{{portal_beta60.text_a6fd4b95ede8}}",
           "{{portal_beta60.text_c715069f00b0}}"
