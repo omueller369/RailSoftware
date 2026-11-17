@@ -324,6 +324,11 @@
     "en": "/locales/rail_network/en.json",
     "pl": "/locales/rail_network/pl.json"
   },
+  "route_age": {
+    "de": "/locales/route_age/de.json",
+    "en": "/locales/route_age/en.json",
+    "pl": "/locales/route_age/pl.json"
+  },
   "server_accounts_access": {
     "de": "/locales/server_accounts_access/de.json",
     "en": "/locales/server_accounts_access/en.json",

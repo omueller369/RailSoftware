@@ -38,6 +38,14 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{rail_network.text_7a563ef9b8ba}}"
         ],
         "steps": []
+      },
+      {
+        "title": "{{route_age.text_72714b02d10d}}",
+        "paragraphs": [
+          "{{route_age.text_5aaa70a46011}}",
+          "{{route_age.text_57cc4a68827f}}"
+        ],
+        "steps": []
       }
     ]
   },

@@ -14,6 +14,22 @@ class RouteKnowledgeTest(unittest.TestCase):
     path=test_gps.RecordingTest.path
     save=test_gps.RecordingTest.save
 
+    def test_timestamps_are_preserved_without_changing_geometry_or_originals(self):
+        points=[dict(p,lon=13+i*.001) for i,p in enumerate(test_gps.points(40))]
+        points[4]['break_before']=True;points[6]['accuracy']=100
+        original=json.loads(json.dumps(points))
+        timed=route_segments(points,timed=True)
+        self.assertEqual([[p[:2] for p in line] for line in timed],route_segments(points))
+        dates={p['t'] for p in points}
+        self.assertTrue(all(p[2] in dates for line in timed for p in line))
+        self.assertEqual(points,original)
+        path,saved=self.save(points=points)
+        self.assertEqual(saved.status_code,200)
+        item=self.driver.get('/api/v1/tf/route-knowledge?dates=1').json()['items'][0]
+        self.assertEqual(item['timed_segments'],timed)
+        self.assertNotIn('segments',item,'Timed requests avoid downloading duplicate coordinate arrays')
+        self.assertEqual(route_segments(test_gps.points(15),timed=True),[],'Stationary points do not invent a travelled line')
+
     def test_public_network_assets_and_gzip(self):
         plain=self.driver.get('/tf/rail-network-data.js?v=0.26.61',headers={'Accept-Encoding':'identity'})
         compressed=self.driver.get('/tf/rail-network-data.js?v=0.26.61',headers={'Accept-Encoding':'gzip'})

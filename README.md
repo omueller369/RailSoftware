@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.61
+# LokZeitleiste v0.26.62
+
+**0.26.62:** Streck-Kenntnisse: unbefahrene Strecken schwarz. Letzte zugeordnete Fahrt bis 180 Kalendertage weiterhin Blau/Grün; ab 181 Tagen Orange, ab 366 Tagen Rot. Grundlage sind die GPS-Zeitstempel je Abschnitt in Europe/Berlin, nicht der Zeitpunkt des Ladens. Legende, Hilfe und DE/PL/EN sind aktualisiert.
 
 **0.26.61:** Bereitgestellte M1-CSV mit 33.425 Datensätzen und 1.549 Streckennummern als einblendbare Referenzebene in Streck-Kenntnisse. Android enthält das Netz auch offline. Befahrene Abschnitte bleiben blau, bis mindestens zwei eigene Zugfahrten je Richtung vorliegen; danach werden sie grün. Die Zuordnung erfolgt konservativ in etwa 100-m-Abschnitten, ohne GPS-Lücken oder mehrdeutige Treffer gutzuschreiben.
 

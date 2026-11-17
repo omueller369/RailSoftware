@@ -1,16 +1,16 @@
 {
   "text_3614bb0d0ce7": "Sieć kolejowa",
-  "text_e81576f7b3c0": "Sieć kolejowa z pliku M1 CSV",
+  "text_e81576f7b3c0": "Jeszcze nieprzejechane",
   "text_e3e9c4076559": "W budowie według CSV",
   "text_1929fe8c4fdd": "Poza eksploatacją DB Netz według CSV",
   "text_8354a694a25c": "Twoje przejechane ślady GPS",
   "text_db77b75ec3dc": "Wczytywanie sieci kolejowej…",
   "text_5d886f48ce74": "Nie udało się wczytać sieci kolejowej. Wyłącz i ponownie włącz warstwę, aby spróbować jeszcze raz.",
   "text_592542a01569": "Źródło: dostarczony plik M1 Streckennetz.csv · 33 425 rekordów · 1549 numerów linii. Plik CSV nie podaje daty aktualności danych.",
-  "text_fc9ba5dcd225": "Użyj Sieć kolejowa, aby pokazać lub ukryć linie odniesienia z pliku M1 CSV. Szare odcinki nie zostały jeszcze przejechane. Pomarańczowe przerywane linie mają w CSV oznaczenie w budowie. Szare kropkowane linie są według CSV poza eksploatacją DB Netz. Przejechane odcinki i Twoje ślady GPS są niebieskie lub zielone zależnie od liczby przejazdów. Samo wyświetlenie sieci nie liczy się jako przejazd.",
+  "text_fc9ba5dcd225": "Użyj Sieć kolejowa, aby pokazać lub ukryć linie z pliku M1 CSV. Nieprzejechane odcinki są czarne, także odcinki w budowie i poza eksploatacją DB Netz. Odcinki w budowie są przerywane, poza DB Netz kropkowane. Kolory Twoich przejazdów są wyświetlane na wierzchu. Sama sieć odniesienia nie liczy się jako przejazd.",
   "text_0fb9b3b16771": "W Androidzie sieć kolejowa jest zapisana w aplikacji i widoczna bez internetu. W przeglądarce plik sieci jest pobierany przy pierwszym otwarciu; późniejszy dostęp offline wymaga zachowania go w pamięci podręcznej. Kafelki tła OpenStreetMap nadal wymagają internetu.",
   "text_0d83493024ae": "Sieć M1 jako przełączana warstwa odniesienia offline. Przejechane odcinki pozostają niebieskie; dwa przejazdy w każdym kierunku zmieniają je na zielone.",
   "text_4417896332fb": "Przejechano: jeszcze nie dwa razy w każdym kierunku",
   "text_6c30e00fbe9a": "Co najmniej dwa razy w każdym kierunku",
-  "text_7a563ef9b8ba": "Przejechane odcinki pozostają niebieskie, dopóki nie przejedziesz ich co najmniej dwa razy w każdym kierunku. Wtedy stają się zielone. Każda jazda pociągiem liczy się najwyżej raz w każdym kierunku na odcinek około 100 metrów. Wiele punktów GPS ani ponowne wczytanie tej samej jazdy nie zwiększa licznika. Liczą się tylko jednoznaczne dopasowania do sieci odniesienia; luki GPS i niejednoznaczne dopasowania nie są zaliczane. Obliczenia korzystają z Twoich własnych zapisów w urządzeniu i na serwerze. Bez sieci odniesienia ślady GPS pozostają niebieskie."
+  "text_7a563ef9b8ba": "Jeśli ostatni przejazd był do 180 dni temu, przejechane odcinki pozostają niebieskie do co najmniej dwóch przejazdów w każdym kierunku. Potem są zielone. Starsze przejazdy są pomarańczowe lub czerwone zgodnie z legendą. Każda jazda liczy się najwyżej raz w każdym kierunku na odcinek około 100 metrów. Wiele punktów GPS ani ponowne wczytanie nie zwiększa licznika. Liczą się tylko jednoznaczne dopasowania; luki i niejednoznaczne ślady nie są zaliczane. Obliczenia korzystają z Twoich własnych zapisów na urządzeniu i serwerze. Bez sieci odniesienia nie ma zielonego dopasowania; znane daty mogą nadal dawać pomarańczowy lub czerwony."
 }

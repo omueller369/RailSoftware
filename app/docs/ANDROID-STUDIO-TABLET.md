@@ -450,3 +450,10 @@ In **Streck-Kenntnisse** schaltest Du **Streckennetz** ein oder aus. Das mitgeli
 Noch nicht befahrene Referenzlinien sind grau. Befahrene Abschnitte bleiben **blau**, bis Du sie mindestens **zweimal in jeder Richtung** gefahren bist; danach werden sie **grün**. Die Auswertung ordnet eigene GPS-Spuren konservativ ungefähr 100 Meter langen Abschnitten zu. Pro Zugfahrt und Richtung gibt es höchstens eine Gutschrift. Mehrere GPS-Punkte oder das erneute Laden derselben Zugfahrt zählen nicht mehrfach. Bei unklarer Zuordnung bleibt die GPS-Spur blau. Zwei Fahrten nur in derselben Richtung reichen nicht für Grün.
 
 Die Auswertung verwendet die vorhandenen eigenen Aufzeichnungen auf Gerät und Server. Löschen einer Aufzeichnung kann die Anzahl wieder reduzieren. Die Referenzebene allein gibt Dir keine Fahrtengutschrift. CSV-Bauabschnitte sind orange gestrichelt, Einträge außerhalb des DB-Netzbetriebs grau gepunktet; eigene Fahrtenfarben werden darüber angezeigt. Der Datenstand der hochgeladenen CSV wurde nicht angegeben.
+
+
+## Streckenalter ab 0.26.62
+
+Noch nicht befahrene Strecken sind **schwarz**, auch Bauabschnitte (gestrichelt) und Abschnitte außerhalb des DB-Netzbetriebs (gepunktet). Bis einschließlich **180 Kalendertagen** seit der letzten zugeordneten Fahrt gilt die bisherige Blau-/Grün-Regel. **181–365 Tage** sind **orange**, ab **366 Tagen** ist der Abschnitt **rot**. Orange und Rot haben Vorrang vor Blau/Grün. Maßgeblich ist die letzte zugeordnete Fahrt in beliebiger Richtung, nach Kalendertagen in Europe/Berlin. Erneutes Laden aktualisiert kein Fahrtdatum. Die Karte aktualisiert die Farben auch beim Tageswechsel.
+
+Server und App müssen aktualisiert sein, damit die Serveraufzeichnungen mit ihren vorhandenen GPS-Zeitstempeln ausgewertet werden. Ansichten ohne Fahrtdatum erhalten kein frisches Grün. Original-GPS-Daten und das öffentliche M1-Netzbündel werden nicht verändert.
