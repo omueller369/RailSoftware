@@ -18,6 +18,7 @@ def confirmed_departures(points):
     """Return first timestamps of four-fix sequences that confirm motion."""
     for index in range(len(points)-3):
         fixes=points[index:index+4]
+        if any(p.get('break_before') for p in fixes[1:]):continue
         if any(p['accuracy']>MAX_ACCURACY or
                (p.get('speed') is not None and p['speed']*3.6<=10) for p in fixes):
             continue
@@ -44,14 +45,14 @@ def analyse(points,preserved_starts=(),legacy=False,version2=False,version3=Fals
             rows.append(dict(key='s'+str(len(rows)),kind=_text_source('server_gps_analysis.text_0fd998791d67'),start=run[0]['t'],end=run[-1]['t'],lat=run[0]['lat'],lon=run[0]['lon'],index=points.index(run[0])))
         run.clear()
     for index,point in enumerate(points):
-        if last and point['t']-last['t']>MAX_GAP:
+        if last and (point.get('break_before') or point['t']-last['t']>MAX_GAP):
             finish();gaps.append(dict(start=last['t'],end=point['t'],reason=_text_source('server_gps_analysis.text_a0e0d0ecf632')))
         if point['accuracy']>MAX_ACCURACY:
             finish();gaps.append(dict(start=point['t'],end=point['t'],reason=_text_source('server_gps_analysis.text_984f679d9207')));last=point;continue
         if version2 and run and 'live-'+str(point['t']) in preserved_starts:finish()
         reported_speed=point.get('speed') is not None
         speed=point.get('speed')
-        if speed is None and last and last['accuracy']<=MAX_ACCURACY and 0<point['t']-last['t']<=MAX_GAP:
+        if speed is None and last and last['accuracy']<=MAX_ACCURACY and 0<point['t']-last['t']<=MAX_GAP and not point.get('break_before'):
             speed=distance(last,point)/((point['t']-last['t'])/1000)
         if legacy:
             if speed is not None and speed*3.6<3:run.append(point)

@@ -29,6 +29,11 @@ class GpsLiveShareTest {
             assertFalse(GpsLiveShare.status(key).getBoolean("sharing"))
         }finally{GpsLiveShare.stop(app);GpsRecordingService.currentKey=null}
     }
+    @Test fun shortPauseBreaksAutomaticStandTime() {
+        val base=1794744000000L
+        val points=JSONArray();for(i in 0..25)points.put(point(base+i*5000).put("break_before",i==13))
+        assertEquals(0L,GpsLiveMetrics.calculate(points,JSONArray(),base+125000,2).getLong("stopped_ms"))
+    }
     @Test fun nativeTotalsHonorThresholdGapAndManualUnion() {
         val base=1794744000000L
         val points=JSONArray();for(i in 0..12)points.put(point(base+i*5000))

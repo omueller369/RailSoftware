@@ -430,3 +430,14 @@ Ab 0.26.58 erscheint um die vier GPS-Bildsymbole keine helle Hinterlegung mehr. 
 ### Fehlende DS100-Position ergänzen ab 0.26.59
 
 Wählst Du in einer GPS-Standzeit ein DS100-Kürzel ohne Koordinate, fragt die App, ob sie den echten GPS-Messpunkt dieser Standzeit ergänzen soll. Ja speichert den Vorschlag lokal für Deinen TF, auch offline. Der Server prüft beim nächsten verfügbaren Abgleich den aktuellen Eintrag. Bis 1.000 Meter Abweichung wird die bestätigte Position übernommen; darüber erscheint eine zweite Frage. Ja erlaubt das Überschreiben, Nein verwirft den Vorschlag und erhält die Serverposition. Änderungen während des Dialogs werden erneut geprüft. Bestätigte Positionen sind nach erfolgreicher Übertragung für alle TF verfügbar. Lokale, noch nicht abgeglichene Vorschläge bleiben für andere Konten unsichtbar. Es wird kein geschätzter Punkt aus einer GPS-Lücke verwendet. Die GPS-Aufzeichnung läuft während der nicht blockierenden Dialoge weiter.
+
+
+## TF-Beta ab 0.26.60
+
+- Im Bremszettel-Overlay kannst Du eine Excel-Wagenliste auswählen, die Vorschau prüfen und übernehmen. Abbrechen erhält die bisherigen Formulareingaben. Die native GPS-Aufzeichnung läuft dabei weiter.
+- **GPS pausieren** hält die Standorterfassung an, **GPS fortsetzen** setzt dieselbe Aufzeichnung fort. Die Pause zählt nicht automatisch als Standzeit. Bewusste Standzeiten kannst Du mit **Start Stand / Ende Stand** erfassen. Die Pause beendet eine aktive Positionsfreigabe; zum erneuten Teilen wählst Du das Teilen-Symbol wieder selbst.
+- Im Vollbild findest Du ebenfalls die GPS-Pause und **DB Digi-Bef.**. Letzteres verlässt zuerst das Vollbild und öffnet dann die Befehlsseite. Der GPS-Dienst läuft weiter, sofern Du ihn nicht pausiert hast.
+- **DU** (blau) / **DL** (rot) zeigt unter Android die App-Zähler seit dem Geräteneustart, im Web eine Schätzung seit Öffnen des Tabs. Externe Ressourcen können im Browser fehlen. Die Anzeige unterscheidet nicht zwischen WLAN und Mobilfunk und ist kein Tarifzähler.
+- **Streck-Kenntnisse** zeigt Deine eigenen GPS-Spuren auf einer Deutschlandkarte, einschließlich der Aufzeichnungen auf diesem Gerät. Serverdaten werden nachgeladen. GPS-Lücken, ungenaue Punkte und Pausen werden nicht als tatsächlich gefahrene Verbindungen dargestellt. Eine formale Qualifikationsverwaltung ist noch nicht enthalten.
+
+Für das Update beendest Du zuerst Deine GPS-Aufzeichnung, öffnest **Updates** und bestätigst die Android-Installation über die vorhandene App. Die vorhandenen Daten bleiben erhalten. Der Server muss ebenfalls auf 0.26.60 aktualisiert werden.

@@ -33,6 +33,13 @@ jobs:
         run: |
           for test in backend/tests/*.cjs; do node "$test" || exit 1; done
           node backend/tests/test_brake_sheet_ui.cjs --overlay
+      - name: TF beta import, pause, fullscreen, traffic and route checks
+        run: python backend/tests/check_portal_beta60_ui.py --output-dir "$RUNNER_TEMP/portal-beta60-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: portal-beta60-ui
+          path: ${{ runner.temp }}/portal-beta60-ui/
       - name: GPS demo browser playback
         run: python backend/tests/check_gps_demo_ui.py --output-dir "$RUNNER_TEMP/gps-demo-ui"
       - uses: actions/upload-artifact@v4

@@ -143,6 +143,7 @@ fun LoginScreen(
     )
     BoxWithConstraints(Modifier.fillMaxSize().imePadding().background(Color(0xFFF1F4F7))) {
         val availableHeight = maxHeight
+        BetaTrafficCounter(Modifier.align(Alignment.BottomEnd).padding(6.dp))
         Column(
             Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = availableHeight).padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -179,5 +180,30 @@ fun LoginScreen(
                 Text(text(LoginText.stored), style = MaterialTheme.typography.bodySmall, color = Color(0xFF495E6E), textAlign = TextAlign.Center)
             }
         }
+    }
+}
+
+/** OS app counters include WebView and the native GPS sharing service. */
+@Composable
+private fun BetaTrafficCounter(modifier: Modifier = Modifier) {
+    var upload by remember { mutableLongStateOf(0L) }
+    var download by remember { mutableLongStateOf(0L) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            val uid=android.os.Process.myUid()
+            upload=android.net.TrafficStats.getUidTxBytes(uid).coerceAtLeast(0)
+            download=android.net.TrafficStats.getUidRxBytes(uid).coerceAtLeast(0)
+            kotlinx.coroutines.delay(2000)
+        }
+    }
+    fun size(bytes: Long): String = when {
+        bytes<1024 -> "$bytes B"
+        bytes<1048576 -> String.format(java.util.Locale.ROOT,"%.1f KB",bytes/1024.0)
+        else -> String.format(java.util.Locale.ROOT,"%.2f MB",bytes/1048576.0)
+    }
+    Row(modifier.background(Color.White,RoundedCornerShape(6.dp)).padding(5.dp)) {
+        Text("DU: ${size(upload)}",color=Color(0xFF075FBE),style=MaterialTheme.typography.labelSmall)
+        Text(" / ",style=MaterialTheme.typography.labelSmall)
+        Text("DL: ${size(download)}",color=Color(0xFFC51723),style=MaterialTheme.typography.labelSmall)
     }
 }

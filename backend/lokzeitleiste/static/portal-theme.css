@@ -62,3 +62,6 @@
   border-color:#ff8585!important;outline-color:#ff8585!important
  }
 }
+
+.beta-traffic{position:fixed;bottom:4px;right:6px;z-index:2147483646;padding:4px 8px;border:1px solid #b8c6d4;border-radius:6px;background:#fff;color:#1b2632;font:600 12px/1.4 system-ui;pointer-events:auto;max-width:95vw;box-sizing:border-box}dialog>.beta-traffic{position:sticky;bottom:0;align-self:flex-end;float:right;flex:none}body:has(.beta-traffic){padding-bottom:30px}.beta-traffic .beta-upload{color:#075fbe!important}.beta-traffic .beta-download{color:#c51723!important}
+.route-knowledge-map{touch-action:none;user-select:none}.route-knowledge-map>svg{display:block;width:100%;max-width:700px;aspect-ratio:600/650;margin:auto;background:#e6edf2;border:1px solid #9badbe}.route-knowledge-map>a{display:block;text-align:center}

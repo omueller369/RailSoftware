@@ -189,6 +189,11 @@
     "en": "/locales/offline_station_catalog/en.json",
     "pl": "/locales/offline_station_catalog/pl.json"
   },
+  "portal_beta60": {
+    "de": "/locales/portal_beta60/de.json",
+    "en": "/locales/portal_beta60/en.json",
+    "pl": "/locales/portal_beta60/pl.json"
+  },
   "portal_brake_sheet": {
     "de": "/locales/portal_brake_sheet/de.json",
     "en": "/locales/portal_brake_sheet/en.json",

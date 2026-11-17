@@ -49,7 +49,9 @@ class TfPortalActivity : ComponentActivity() {
     private var exportBytes=0L
     private var leaving=false
     private val filePicker=registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        fileCallback?.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(result.resultCode,result.data));fileCallback=null
+        val callback=fileCallback;fileCallback=null
+        val uris=runCatching { WebChromeClient.FileChooserParams.parseResult(result.resultCode,result.data)?.filter { it.scheme=="content" }?.toTypedArray() }.getOrNull()
+        runCatching { callback?.onReceiveValue(uris?.takeIf { it.isNotEmpty() }) }
     }
     private val locationPermission=registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         val job=pendingGps;pendingGps=null
@@ -177,10 +179,10 @@ class TfPortalActivity : ComponentActivity() {
             override fun onJsAlert(view:WebView,url:String,message:String,result:JsResult):Boolean { android.app.AlertDialog.Builder(this@TfPortalActivity).setMessage(message).setPositiveButton(android.R.string.ok) { _,_->result.confirm() }.setOnCancelListener { result.cancel() }.show();return true }
             override fun onJsConfirm(view:WebView,url:String,message:String,result:JsResult):Boolean { android.app.AlertDialog.Builder(this@TfPortalActivity).setMessage(message).setPositiveButton(android.R.string.ok) { _,_->result.confirm() }.setNegativeButton(android.R.string.cancel) { _,_->result.cancel() }.setOnCancelListener { result.cancel() }.show();return true }
             override fun onShowFileChooser(view:WebView,callback:ValueCallback<Array<Uri>>,params:FileChooserParams):Boolean {
-                fileCallback?.onReceiveValue(null);fileCallback=callback
+                val previous=fileCallback;fileCallback=null;runCatching { previous?.onReceiveValue(null) };fileCallback=callback
                 val intent=Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("*/*").putExtra(Intent.EXTRA_ALLOW_MULTIPLE,params.mode==FileChooserParams.MODE_OPEN_MULTIPLE)
                 val types=params.acceptTypes.orEmpty().filter { it.contains('/') }.toTypedArray();if(types.isNotEmpty())intent.putExtra(Intent.EXTRA_MIME_TYPES,types)
-                try { filePicker.launch(intent) } catch(_:Exception) { fileCallback?.onReceiveValue(null);fileCallback=null }
+                try { filePicker.launch(intent) } catch(_:Exception) { fileCallback=null;runCatching { callback.onReceiveValue(null) } }
                 return true
             }
         }
@@ -199,6 +201,7 @@ class TfPortalActivity : ComponentActivity() {
         try {
             when(request.getString("method")) {
                 "help.print" -> startHelpPrint(request,proxy)
+                "traffic.status" -> reply(proxy,request,true,JSONObject().put("upload",android.net.TrafficStats.getUidTxBytes(android.os.Process.myUid())).put("download",android.net.TrafficStats.getUidRxBytes(android.os.Process.myUid())))
                 "session" -> reply(proxy,request,true,JSONObject(session.toString()).put("app_version",BuildConfig.VERSION_NAME))
                 "language" -> {
                     val language=request.getString("language");require(language in LanguageRuntime.codes);LanguageRuntime.code=language
@@ -235,7 +238,7 @@ class TfPortalActivity : ComponentActivity() {
                 "gps.snapshot" -> {
                     val key=trackKey(request);val after=request.optLong("after",0);val points=store.read(key);val result=JSONArray()
                     for(i in 0 until points.length()) if(points.getJSONObject(i).getLong("t")>after && result.length()<1000)result.put(points.getJSONObject(i))
-                    reply(proxy,request,true,GpsLiveShare.status(key).put("points",result).put("running",GpsRecordingService.currentKey==key))
+                    reply(proxy,request,true,GpsLiveShare.status(key).put("points",result).put("running",GpsRecordingService.currentKey==key).put("paused",GpsRecordingService.currentKey==key && GpsRecordingService.paused))
                 }
                 "gps.share" -> {
                     require(Uri.parse(web.url).path=="/tf/arbeitsbericht")
@@ -248,6 +251,19 @@ class TfPortalActivity : ComponentActivity() {
                     val key=trackKey(request)
                     GpsLiveShare.context(key,request.getString("session_id"),request.getString("train_number"),request.optJSONArray("manual_stops")?:JSONArray())
                     reply(proxy,request,true,GpsLiveShare.status(key))
+                }
+                "gps.pause" -> {
+                    require(Uri.parse(web.url).path=="/tf/arbeitsbericht")
+                    val key=trackKey(request);require(GpsRecordingService.currentKey==key)
+                    val paused=request.getBoolean("paused")
+                    startService(Intent(this,GpsRecordingService::class.java).putExtra("key",key).putExtra("paused",paused))
+                    lifecycleScope.launch {
+                        try {
+                            withTimeout(2000) { while(GpsRecordingService.currentKey==key && GpsRecordingService.paused!=paused) delay(10) }
+                            require(GpsRecordingService.currentKey==key && GpsRecordingService.paused==paused)
+                            reply(proxy,request,true,JSONObject().put("paused",paused))
+                        } catch(_:Exception) { reply(proxy,request,false,"GPS konnte nicht gestartet werden.") }
+                    }
                 }
                 "gps.stop" -> { val key=trackKey(request);if(GpsRecordingService.currentKey==key){stopService(Intent(this,GpsRecordingService::class.java));GpsRecordingService.currentKey=null};reply(proxy,request,true,JSONObject()) }
                 "gps.erase" -> { val key=trackKey(request);require(GpsRecordingService.currentKey!=key);store.erase(key);reply(proxy,request,true,JSONObject()) }
@@ -317,5 +333,5 @@ class TfPortalActivity : ComponentActivity() {
         }
     }
     override fun onResume() { super.onResume();if(::updater.isInitialized)updater.resume() }
-    override fun onDestroy() { helpPrintView?.destroy();helpPrintView=null;fileCallback?.onReceiveValue(null);exportStream?.close();if(::web.isInitialized){web.stopLoading();web.destroy()};super.onDestroy() }
+    override fun onDestroy() { helpPrintView?.destroy();helpPrintView=null;val callback=fileCallback;fileCallback=null;runCatching { callback?.onReceiveValue(null) };exportStream?.close();if(::web.isInitialized){web.stopLoading();web.destroy()};super.onDestroy() }
 }

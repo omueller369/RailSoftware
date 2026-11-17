@@ -9,8 +9,28 @@
 /* Zugfahrtdetails: Angaben links, Zeiten und Eintragen rechts. */
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
-window.TfHelpRevision="2026-11-15";
+window.TfHelpRevision="2026-11-17";
 window.TfHelpPages=globalThis.CtlText.restore([
+  {
+    "id": "route-knowledge",
+    "path": "/tf/streckenkenntnisse",
+    "aliases": [],
+    "group": "{{portal_beta60.text_90f7af776f9d}}",
+    "title": "{{portal_beta60.text_9a7fc357abb6}}",
+    "short": "{{portal_beta60.text_490ec1b23a5d}}",
+    "sections": [
+      {
+        "title": "{{portal_beta60.text_90f7af776f9d}}",
+        "paragraphs": [
+          "{{portal_beta60.text_a6fd4b95ede8}}",
+          "{{portal_beta60.text_c715069f00b0}}"
+        ],
+        "steps": [
+          "{{portal_beta60.text_c7a64388e7a1}}"
+        ]
+      }
+    ]
+  },
   {
     "id": "updates",
     "path": "/tf/updates",
@@ -104,6 +124,14 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{portal_tf_help_content.text_89d7731f9259}}",
         "paragraphs": [
           "{{portal_tf_help_content.text_1870abf16cde}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "DU / DL",
+        "paragraphs": [
+          "{{portal_beta60.text_d754e9f36f12}}",
+          "{{portal_beta60.text_571a74ee9c6d}}"
         ],
         "steps": []
       }
@@ -602,6 +630,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{station_contributions.text_6f5bfa32d26a}}",
         "paragraphs": [
           "{{station_contributions.text_5c892618829a}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{portal_beta60.text_e984905f80c5}}",
+        "paragraphs": [
+          "{{portal_beta60.text_a5fd9225fa67}}"
         ],
         "steps": []
       }
@@ -1116,6 +1151,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{offline_station_catalog.text_4f0ec90feb32}}",
         "paragraphs": [
           "{{offline_station_catalog.text_930f72ca057f}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{portal_brake_sheet.text_aa90b9036f16}}",
+        "paragraphs": [
+          "{{portal_beta60.text_54bb08abd431}}"
         ],
         "steps": []
       }

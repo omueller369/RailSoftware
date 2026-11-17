@@ -17,6 +17,26 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])
 class DigiCommandBrowserTest {
+    @Test fun pauseStopsFixesButPreservesRecordingAndMarksResumeBoundary() {
+        val app=RuntimeEnvironment.getApplication()
+        shadowOf(app).grantPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+        shadowOf(app.getSystemService(LocationManager::class.java)).setProviderEnabled(LocationManager.GPS_PROVIDER,true)
+        val controller=Robolectric.buildService(GpsRecordingService::class.java).create()
+        val service=controller.get();val key="1.test-pause";val store=GpsTrackStore(app);store.begin(key,true)
+        fun fix(t:Long)=Location(LocationManager.GPS_PROVIDER).apply { time=t;latitude=52.0;longitude=13.0;accuracy=5f;speed=0f }
+        try {
+            service.onStartCommand(Intent().putExtra("key",key),0,1)
+            service.onLocationChanged(fix(1794474000000L))
+            service.onStartCommand(Intent().putExtra("key",key).putExtra("paused",true),0,2)
+            service.onLocationChanged(fix(1794474005000L))
+            assertEquals(key,GpsRecordingService.currentKey);assertTrue(GpsRecordingService.paused)
+            assertEquals(1,store.read(key).length())
+            service.onStartCommand(Intent().putExtra("key",key).putExtra("paused",false),0,3)
+            service.onLocationChanged(fix(1794474010000L))
+            assertEquals(2,store.read(key).length());assertFalse(GpsRecordingService.paused)
+            assertTrue(store.read(key).getJSONObject(1).getBoolean("break_before"))
+        } finally {controller.destroy();store.erase(key)}
+    }
     @Test fun browserLaunchDoesNotInterruptGpsJournal() {
         val app=RuntimeEnvironment.getApplication()
         shadowOf(app).grantPermissions(Manifest.permission.ACCESS_FINE_LOCATION)

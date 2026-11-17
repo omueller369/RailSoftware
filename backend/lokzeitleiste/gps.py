@@ -18,6 +18,7 @@ from .gps_analysis import analyse,distance
 
 _finite=Annotated[float,Field(allow_inf_nan=False)]
 class Point(BaseModel):
+    break_before:bool=False
     t:int=Field(ge=946684800000,le=4133980800000)
     lat:_finite=Field(ge=-90,le=90)
     lon:_finite=Field(ge=-180,le=180)
@@ -153,7 +154,9 @@ def station_data(db,lat,lon,nearby=False):
     return stations
 
 def create_router(require_account):
-    router=APIRouter();driver=driver_dependency(require_account)
+    router=APIRouter()
+    from .route_knowledge import create_router as route_knowledge_router
+    router.include_router(route_knowledge_router(require_account));driver=driver_dependency(require_account)
     def owned(db,user,journey_id,lock=False):
         if lock:db.scalar(select(User).where(User.id==user.id).with_for_update())
         query=select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id,TrainGpsRecording.journey_id==str(journey_id))
@@ -244,6 +247,8 @@ def create_router(require_account):
         if row and not restarted and data.stop_minutes is not None and data.stop_minutes!=previous.get('stop_minutes'):raise HTTPException(409,_text_source('server_gps.text_e9455228bddf'))
         payload['stop_minutes']=data.stop_minutes if not row or restarted else previous.get('stop_minutes')
         payload['detection_version']=5
+        for point in payload['points']:
+            if not point.get('break_before'):point.pop('break_before',None)
         if payload['manual_stops'] is None:payload['manual_stops']=previous.get('manual_stops',[])
         gps_stops=[item for item in analyse(payload['points'],stop_minutes=payload.get('stop_minutes'))['rows'] if item['kind']==_text_source('server_gps.text_0fd998791d67')]
         stops={'live-'+str(item['start']):item for item in gps_stops}

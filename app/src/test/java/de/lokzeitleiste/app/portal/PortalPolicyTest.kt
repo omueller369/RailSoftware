@@ -3,6 +3,12 @@ import org.junit.Assert.*
 import org.junit.Test
 class PortalPolicyTest {
     private val policy=PortalPolicy("https://ctl-software.io-goerlitz.eu")
+    @Test fun routeKnowledgeAndTrafficArePackaged() {
+        val policy=PortalPolicy("https://example.test")
+        assertEquals("tf-portal.html",policy.asset("/tf/streckenkenntnisse"))
+        assertEquals("route-knowledge.js",policy.asset("/tf/route-knowledge.js"))
+        assertEquals("beta-traffic.js",policy.asset("/tf/beta-traffic.js"))
+    }
     @Test fun exactOrigin() {
         assertTrue(policy.sameOrigin("https://ctl-software.io-goerlitz.eu/tf"))
         assertTrue(policy.sameOrigin("https://ctl-software.io-goerlitz.eu:443/documents"))

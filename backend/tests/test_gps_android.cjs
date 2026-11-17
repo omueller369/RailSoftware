@@ -21,13 +21,14 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/report-tabs.js'
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/train-journeys.js','utf8'),context);
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8'),context);
 
-let nativeRunning=false,nativePoints=[],opened=[];context.window.openActiveGpsReport=id=>opened.push(id);
-context.window.AndroidPortal={gps:async(method,values)=>{if(method==='start'){nativeRunning=true;if(values.reset)nativePoints=[];return {};}if(method==='stop'){nativeRunning=false;return {};}if(method==='erase'){nativePoints=[];return {};}return {running:nativeRunning,points:nativePoints.filter(point=>point.t>values.after).slice(0,1000)};}};
+let nativePaused=false,nativeRunning=false,nativePoints=[],opened=[];context.window.openActiveGpsReport=id=>opened.push(id);
+context.window.AndroidPortal={gps:async(method,values)=>{if(method==='start'){nativeRunning=true;if(values.reset)nativePoints=[];return {};}if(method==='pause'){nativePaused=values.paused;return {};}if(method==='stop'){nativeRunning=false;return {};}if(method==='erase'){nativePoints=[];return {};}return {running:nativeRunning,paused:nativePaused,points:nativePoints.filter(point=>point.t>values.after).slice(0,1000)};}};
 (async()=>{
  const field=new Element('input'),container=new Element('div');field.value='123';
  const times=[];const options={journeyTime:(kind,time)=>times.push({kind,time}),userId:5,journeyId:'00000000-0000-4000-8000-000000000001',container,numberField:field,trainNumber:()=>field.value,readonly:()=>false,selectEnd:async()=>({code:'CCC',name:'Ziel'}),selectStart:async()=>({code:'BBB',name:'Berlin Beispiel'}),stations(){},resolve:async()=>({code:'BBB'})};
  context.window.isSecureContext=false;let recorder=context.window.GpsRecorder.mount(options);await recorder.readyPromise;await recorder.start();assert(nativeRunning);assert(context.window.GpsRecorder.isActive());
  nativePoints.push({t:1792627200000,lat:52,lon:13,accuracy:5,speed:0});await recorder.nativeRead();assert.equal(recorder.record.points.length,1);
+ const pausePoints=JSON.stringify(recorder.record.points);await recorder.togglePause();assert(nativePaused);assert(nativeRunning);assert(context.window.GpsRecorder.isActive());await recorder.nativeRead();assert(recorder.record.paused);assert.equal(JSON.stringify(recorder.record.points),pausePoints);assert(recorder.pauseButton.textContent.includes('fortsetzen'));await recorder.togglePause();assert(!nativePaused);assert(!recorder.record.ended);
  const sameRecord=recorder.record;for(const tab of ['month','duty','train']){context.window.ReportTabs.activate(tab);assert(nativeRunning);assert(context.window.GpsRecorder.isActive());assert.strictEqual(recorder.record,sameRecord);}
 
  recorder.clear();assert(nativeRunning);for(let i=0;i<4;i++)nativePoints.push({t:1792627205000+i*5000,lat:52,lon:13+i*.0003,accuracy:5,speed:10/3.6});recorder=context.window.GpsRecorder.mount(options);await recorder.readyPromise;assert(context.window.GpsRecorder.isActive());assert.equal(recorder.record.points.length,5);assert.deepEqual(times,[{kind:'start',time:1792627205000}]);assert(opened.includes(options.journeyId));const before=opened.length;await recorder.nativeRead();assert.equal(opened.length,before);

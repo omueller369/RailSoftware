@@ -1,5 +1,8 @@
 /* Android-only adapters. Shared portal rules and APIs remain the source of truth. */
 (()=>{
+// Same-origin brake overlay shares the main adapter; it must not create a
+// second session request or replace the bridge reply handler.
+if(window.parent&&window.parent!==window){try{if(window.parent.location.origin===location.origin&&window.parent.AndroidPortal){const parent=window.parent.AndroidPortal;window.AndroidPortal={version:parent.version,saveBlob:parent.saveBlob,printHelp:parent.printHelp};return;}}catch{}}
 if(!window.NativePortal)return;
 // Native login owns the TF cookie, including the initial password-change page.
 sessionStorage.setItem('ctl.area','tf');

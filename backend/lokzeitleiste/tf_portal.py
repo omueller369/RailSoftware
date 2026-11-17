@@ -26,12 +26,16 @@ def create_router(require_account):
 
     require_driver=driver_dependency(require_account)
 
+    @router.get('/tf/beta-traffic.js')
+    def traffic_script():return FileResponse(STATIC/'beta-traffic.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+
     @router.get('/tf/report-tabs.js')
     def report_tabs_script():return FileResponse(STATIC/'report-tabs.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 
     @router.get('/tf')
     @router.get('/tf/hilfe')
     @router.get('/tf/gps-demo')
+    @router.get('/tf/streckenkenntnisse')
     @router.get('/tf/updates')
     @router.get('/tf/notizen')
     @router.get('/tf/arbeitsbericht')

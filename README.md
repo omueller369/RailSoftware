@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.59
+# LokZeitleiste v0.26.60
+
+**0.26.60:** Excel-Import im Bremszettel-Overlay abgesichert; DU (blau) / DL (rot) als Beta-Anzeige. Android zeigt App-Daten seit Geräteneustart, das Web eine Schätzung pro Tab. GPS pausieren/fortsetzen auch im Vollbild, DB Digi-Bef. beendet das Vollbild vor dem Öffnen. Neue Kachel Streck-Kenntnisse zeigt eigene gemessene GPS-Spuren in Deutschland, ohne Lücken als gefahrene Strecke auszugeben.
 
 **0.26.59:** TF können fehlende DS100-Koordinaten aus einem gemessenen GPS-Punkt ihrer Standzeit bestätigen. Vorschläge werden TF-bezogen offline vorgemerkt und nach aktuellem Serverabgleich global gespeichert. Mehr als 1.000 Meter Abweichung zu einer vorhandenen Position verlangt ein zweites Ja; konkurrierende Änderungen werden vor dem Schreiben erneut geprüft.
 
