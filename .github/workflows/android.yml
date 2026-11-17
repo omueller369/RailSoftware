@@ -61,6 +61,10 @@ jobs:
           version=next(ast.literal_eval(node.value) for node in tree.body if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and target.id=='SOFTWARE_VERSION' for target in node.targets))
           with open(os.environ['GITHUB_ENV'],'a') as env:
               env.write('SOFTWARE_VERSION='+version+'\n')
+              base=next(ast.literal_eval(node.value) for node in tree.body if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and target.id=='ANDROID_TEST_RUN_BASE' for target in node.targets))
+              test_number=int(os.environ['GITHUB_RUN_NUMBER'])-base
+              if test_number < 0: raise ValueError('Android test sequence must not be negative')
+              env.write('ANDROID_VERSION_NAME='+version+'.'+str(test_number)+'\n')
           PYVERSION
       - name: Unit tests and APK
         env:
@@ -71,7 +75,7 @@ jobs:
           gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug :app:lintDebug \
             -PlokzeitleisteApiBaseUrl=https://ctl-software.io-goerlitz.eu \
             -PlokzeitleisteVersionCode=$((100000 + GITHUB_RUN_NUMBER)) \
-            -PlokzeitleisteVersionName="$SOFTWARE_VERSION-test.$GITHUB_RUN_NUMBER"
+            -PlokzeitleisteVersionName="$ANDROID_VERSION_NAME"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -97,10 +101,10 @@ jobs:
           python - <<'PYUPDATE'
           import hashlib, json, os, pathlib
           apk=pathlib.Path('update-release/LokZeitleiste-TF-Portal.apk')
-          metadata={'application_id':'de.lokzeitleiste.app','version_code':100000+int(os.environ['GITHUB_RUN_NUMBER']),'version_name':os.environ['SOFTWARE_VERSION']+'-test.'+os.environ['GITHUB_RUN_NUMBER'],'sha256':hashlib.sha256(apk.read_bytes()).hexdigest()}
+          metadata={'application_id':'de.lokzeitleiste.app','version_code':100000+int(os.environ['GITHUB_RUN_NUMBER']),'version_name':os.environ['ANDROID_VERSION_NAME'],'sha256':hashlib.sha256(apk.read_bytes()).hexdigest()}
           pathlib.Path('update-release/update.json').write_text(json.dumps(metadata,indent=2)+'\n')
           PYUPDATE
           gh release create "android-test-$GITHUB_RUN_NUMBER" \
             update-release/LokZeitleiste-TF-Portal.apk update-release/update.json \
-            --prerelease --target "$GITHUB_SHA" --title "TF Portal Android $SOFTWARE_VERSION Test $GITHUB_RUN_NUMBER" \
+            --prerelease --target "$GITHUB_SHA" --title "TF Portal Android $ANDROID_VERSION_NAME" \
             --notes "Automatisch geprüfte Tablet-Testversion. Installation und Updates erfordern denselben Signierschlüssel und die Android-Bestätigung."

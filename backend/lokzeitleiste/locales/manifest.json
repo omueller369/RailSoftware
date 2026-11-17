@@ -684,6 +684,11 @@
     "en": "/locales/train_workspace/en.json",
     "pl": "/locales/train_workspace/pl.json"
   },
+  "version_scheme": {
+    "de": "/locales/version_scheme/de.json",
+    "en": "/locales/version_scheme/en.json",
+    "pl": "/locales/version_scheme/pl.json"
+  },
   "wgm": {
     "de": "/locales/wgm/de.json",
     "en": "/locales/wgm/en.json",

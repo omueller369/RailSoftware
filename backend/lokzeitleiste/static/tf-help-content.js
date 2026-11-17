@@ -74,7 +74,8 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{portal_updates.text_5e791fe0d244}}",
         "paragraphs": [
-          "{{portal_updates.text_47c500af7794}}"
+          "{{portal_updates.text_47c500af7794}}",
+          "{{version_scheme.text_44b61532d8b9}}"
         ],
         "steps": [
           "{{portal_updates.text_7c48f6aa04d3}}",

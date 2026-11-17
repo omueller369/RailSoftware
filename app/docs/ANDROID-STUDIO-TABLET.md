@@ -473,3 +473,7 @@ Nach dem Server- und App-Update meldest Du Dich im TF-Portal mit dem Zielkonto a
 Der Import erhält die acht Originalspalten, auch `-`, leere Angaben und `0000-00-00`. Solche Platzhalter werden nicht in GPS-Fahrtdaten umgerechnet. Die Kenntnisliste ergänzt die Angaben unterhalb der Karte; sie erzeugt keine GPS-Punkte, Richtungsfahrten oder Karten-Fahrtengutschriften. Für die Kartenfarben bleiben die tatsächlichen GPS-Aufzeichnungen maßgeblich. Bereits vorhandene abweichende Angaben werden beibehalten, identische Zeilen nicht doppelt gespeichert. Ortskenntnis und Baureihen bleiben vorbereitet.
 
 Die CSV muss UTF-8 und Semikolon verwenden, höchstens 4 MiB/20.000 Datensätze. Nach dem Laden wird die persönliche Liste kontoabhängig auf diesem Gerät für offline gespeichert. Der Import selbst benötigt die Serververbindung. Die CSV gehört nicht ins öffentliche Repository oder in die APK.
+
+## Versionsschema ab 0.27.0
+
+Die Webversion lautet `0.27.0`. Android beginnt mit `0.27.0.0`; weitere Testbuilds erhöhen die vierte Stelle (`0.27.0.1`, `0.27.0.2`, …). Der bisherige Zusatz `-test.<Buildnummer>` entfällt. Die GitHub-Release-Tags bleiben `android-test-<Workflowlauf>`, damit der öffentliche Updatekanal weiter funktioniert. Der interne Android-versionCode steigt unabhängig von der sichtbaren Version weiter. Workflowlauf 38 beginnt bei Testnummer 0; `ANDROID_TEST_RUN_BASE` in `backend/lokzeitleiste/version.py` legt diesen Bezug fest. Lokale Builds verwenden ohne Versionsparameter die Webversion mit `.0`.

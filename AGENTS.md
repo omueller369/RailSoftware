@@ -18,10 +18,10 @@
 
 ## Version bei jeder Änderung erhöhen
 
-- Ab jetzt bei jeder abgeschlossenen Änderung, die ins Repository beziehungsweise in den Testbranch übernommen wird, die Patchversion erhöhen: `0.26.1`, `0.26.2`, `0.26.3` und so weiter. Das gilt auch für kleine Anpassungen und Fehlerbehebungen. Die Versionsfamilie `0.26` beibehalten, bis eine andere Vorgabe kommt.
+- Ab jetzt bei jeder abgeschlossenen Änderung, die ins Repository beziehungsweise in den Testbranch übernommen wird, die Patchversion erhöhen: `0.26.1`, `0.26.2`, `0.26.3` und so weiter. Das gilt auch für kleine Anpassungen und Fehlerbehebungen. Seit der ausdrücklichen Nutzervorgabe vom 17.11.2026 die Versionsfamilie `0.27` verwenden, beginnend mit Web `0.27.0`. Android zeigt vier Stellen: Webversion plus fortlaufende Testnummer, beginnend mit `0.27.0.0`.
 - `backend/lokzeitleiste/version.py` ist die gemeinsame Quelle für die sichtbare Softwareversion. Backend, Fußzeile, Dokumente, Android-Version und Android-Update-Metadaten müssen denselben Versionsstand verwenden. Android liest die Versionsbezeichnung automatisch aus dieser Datei; beim Versionssprung auch den Standard-`versionCode` in `app/build.gradle.kts` um eins erhöhen.
 - Pro zusammengehöriger Änderung genau einen Versionssprung vornehmen; mehrere bearbeitete Dateien und Korrekturen während derselben noch nicht übernommenen Aufgabe gehören zum selben Stand. Eine reine Versionsanpassung nicht rekursiv erneut erhöhen.
-- Den aktuellen Versionstitel in `README.md` mit aktualisieren. Historische Versionsdokumente und Testbeispiele nicht pauschal umnummerieren. Test-APKs dürfen zusätzlich die eindeutige Kennung `-test.<Buildnummer>` tragen.
+- Den aktuellen Versionstitel in `README.md` mit aktualisieren. Historische Versionsdokumente und Testbeispiele nicht pauschal umnummerieren. Android-Test-APKs verwenden die vierte Versionsstelle als fortlaufende Testnummer; keinen `-test.`-Zusatz verwenden. Die GitHub-Release-Tags `android-test-<Workflowlauf>` bleiben für den bestehenden Updatekanal erhalten. `ANDROID_TEST_RUN_BASE` in der gemeinsamen Versionsdatei legt den Startlauf der Testnummer fest; nicht bei gewöhnlichen Änderungen zurücksetzen. Der interne versionCode muss stets steigen.
 
 ## GitHub und Update-Anleitung
 

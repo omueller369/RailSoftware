@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.64
+# LokZeitleiste v0.27.0
+
+**0.27.0:** Web-Version `0.27.0`, Android-Testversion `0.27.0.0`. Weitere Android-Testbuilds zählen die vierte Stelle hoch (`0.27.0.1`, `0.27.0.2`, …). Der interne Android-versionCode steigt unabhängig davon weiter; Updates bleiben über der bestehenden Installation möglich.
 
 **0.26.64:** Doppelt so dicke Linien in der Streckenkenntniskarte. Private Kenntnis-CSV kann im angemeldeten TF-Konto nach Vorschau mit Name und Tf-Nummer importiert werden. Originalstatus, Gültigkeit und Erwerbsangaben bleiben erhalten; keine GPS-Fahrten oder letzten Fahrtdaten werden erzeugt. Wiederholungen erzeugen keine Duplikate, abweichende vorhandene Angaben bleiben erhalten. Persönliche Importlisten sind nach dem Laden auf dem Gerät offline verfügbar.
 
