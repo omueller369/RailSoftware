@@ -46,7 +46,7 @@ def fixture():
  const editor=new window.TrainJourneyEditor({userId:1,button:document.getElementById('newTrainJourney'),container:document.getElementById('trainJourneyEditor'),readonly:()=>false,viewOnly:()=>false,bounds:()=>({start:day+'T08:00',end:day+'T16:00'}),minute:value=>Date.parse(value)/60000,clock:n=>Math.floor(n/60)+':'+String(n%60).padStart(2,'0'),uuid:()=>String(++id),stations(){},resolve:async()=>({code:'BBB',name:'Beispiel'}),changed(){},editingChanged(){},message(){},block(){}});
  editor.restore([{id:'layout-journey',train_number:'123',start_station:'BBB',start_station_name:'Beispiel',end_station:'CCC',end_station_name:'Ziel',start_at:day+'T08:00',end_at:day+'T16:00',events:[{id:'event',station:'BBB',station_name:'Beispiel',reason:'V1',cause:'CTL',start_at:day+'T10:00',end_at:day+'T10:15'}]}]);
  window.LayoutReport.fill(editor,day);window.ReportTabs.activate('duty');
- const outerTabs=[...document.querySelectorAll('.report-tabs [role=tab]')];
+ const outerTabs=[...document.querySelectorAll('#workReport .report-tabs [role=tab]')];
  assert(outerTabs.length===3,'Three report tabs');
  assert(outerTabs[0].getAttribute('aria-selected')==='true','Duty tab selected');
  const dutyValue=document.getElementById('dutyStart').value;
