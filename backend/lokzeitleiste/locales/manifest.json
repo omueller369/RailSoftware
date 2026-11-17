@@ -319,6 +319,11 @@
     "en": "/locales/portal_work_report_feedback/en.json",
     "pl": "/locales/portal_work_report_feedback/pl.json"
   },
+  "rail_network": {
+    "de": "/locales/rail_network/de.json",
+    "en": "/locales/rail_network/en.json",
+    "pl": "/locales/rail_network/pl.json"
+  },
   "server_accounts_access": {
     "de": "/locales/server_accounts_access/de.json",
     "en": "/locales/server_accounts_access/en.json",

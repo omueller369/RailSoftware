@@ -1,0 +1,25 @@
+{
+  "schema": 2,
+  "source": {
+    "name": "M1 Streckennetz.csv",
+    "sha256": "5e58d31bcc8cfd69211f6c94874dca41a62aa4a6beb407e973d95d660ac071ce",
+    "crs": "EPSG:4326",
+    "source_rows": 33425,
+    "route_count": 1549,
+    "line_count": 32165,
+    "duplicates_removed": 1431,
+    "bounds": [
+      6.02135,
+      47.397795,
+      15.031943,
+      54.90765
+    ]
+  },
+  "canonical_sha256": "23a6569653de23debfe207cb99b3da34f2644a87ecf7e3e934d35b08f1e1f280",
+  "bundle_sha256": "46c6219268ba0fb31521540ef19506f6467025ee7663e7bd95909a94771c500a",
+  "bundle_bytes": 10454556,
+  "detail_points": 367614,
+  "overview_points": 96063,
+  "detail_tolerance_projected_m": 2,
+  "overview_tolerance_projected_m": 80
+}

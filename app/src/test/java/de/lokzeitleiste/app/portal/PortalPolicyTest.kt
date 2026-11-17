@@ -7,6 +7,9 @@ class PortalPolicyTest {
         val policy=PortalPolicy("https://example.test")
         assertEquals("tf-portal.html",policy.asset("/tf/streckenkenntnisse"))
         assertEquals("route-knowledge.js",policy.asset("/tf/route-knowledge.js"))
+        assertEquals("rail-network-data.js",policy.asset("/tf/rail-network-data.js"))
+        assertEquals("rail-network.js",policy.asset("/tf/rail-network.js"))
+        assertEquals("route-coverage.js",policy.asset("/tf/route-coverage.js"))
         assertEquals("beta-traffic.js",policy.asset("/tf/beta-traffic.js"))
     }
     @Test fun exactOrigin() {

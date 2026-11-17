@@ -441,3 +441,12 @@ Wählst Du in einer GPS-Standzeit ein DS100-Kürzel ohne Koordinate, fragt die A
 - **Streck-Kenntnisse** zeigt Deine eigenen GPS-Spuren auf einer Deutschlandkarte, einschließlich der Aufzeichnungen auf diesem Gerät. Serverdaten werden nachgeladen. GPS-Lücken, ungenaue Punkte und Pausen werden nicht als tatsächlich gefahrene Verbindungen dargestellt. Eine formale Qualifikationsverwaltung ist noch nicht enthalten.
 
 Für das Update beendest Du zuerst Deine GPS-Aufzeichnung, öffnest **Updates** und bestätigst die Android-Installation über die vorhandene App. Die vorhandenen Daten bleiben erhalten. Der Server muss ebenfalls auf 0.26.60 aktualisiert werden.
+
+
+## Streckennetz und Fahrtenfarben ab 0.26.61
+
+In **Streck-Kenntnisse** schaltest Du **Streckennetz** ein oder aus. Das mitgelieferte Netz stammt aus Deiner M1-CSV (33.425 Datensätze, 1.549 Streckennummern). Es bleibt in Android ohne Internet sichtbar; die OpenStreetMap-Hintergrundkarten benötigen weiterhin Internet. Im Web muss die beim ersten Öffnen geladene Netzdatei für eine spätere Offline-Anzeige noch im Browsercache vorhanden sein.
+
+Noch nicht befahrene Referenzlinien sind grau. Befahrene Abschnitte bleiben **blau**, bis Du sie mindestens **zweimal in jeder Richtung** gefahren bist; danach werden sie **grün**. Die Auswertung ordnet eigene GPS-Spuren konservativ ungefähr 100 Meter langen Abschnitten zu. Pro Zugfahrt und Richtung gibt es höchstens eine Gutschrift. Mehrere GPS-Punkte oder das erneute Laden derselben Zugfahrt zählen nicht mehrfach. Bei unklarer Zuordnung bleibt die GPS-Spur blau. Zwei Fahrten nur in derselben Richtung reichen nicht für Grün.
+
+Die Auswertung verwendet die vorhandenen eigenen Aufzeichnungen auf Gerät und Server. Löschen einer Aufzeichnung kann die Anzahl wieder reduzieren. Die Referenzebene allein gibt Dir keine Fahrtengutschrift. CSV-Bauabschnitte sind orange gestrichelt, Einträge außerhalb des DB-Netzbetriebs grau gepunktet; eigene Fahrtenfarben werden darüber angezeigt. Der Datenstand der hochgeladenen CSV wurde nicht angegeben.

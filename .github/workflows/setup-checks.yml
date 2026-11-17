@@ -29,10 +29,18 @@ jobs:
         run: |
           python tools/build-translations.py --check
           python tools/build-station-catalog.py --check
+          python tools/build-rail-network.py --check
       - name: JavaScript regression tests
         run: |
           for test in backend/tests/*.cjs; do node "$test" || exit 1; done
           node backend/tests/test_brake_sheet_ui.cjs --overlay
+      - name: M1 offline rail network and directional route coverage
+        run: python backend/tests/check_rail_network_ui.py --output-dir "$RUNNER_TEMP/rail-network-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rail-network-ui
+          path: ${{ runner.temp }}/rail-network-ui/
       - name: TF beta import, pause, fullscreen, traffic and route checks
         run: python backend/tests/check_portal_beta60_ui.py --output-dir "$RUNNER_TEMP/portal-beta60-ui"
       - uses: actions/upload-artifact@v4

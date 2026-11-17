@@ -14,6 +14,18 @@ class RouteKnowledgeTest(unittest.TestCase):
     path=test_gps.RecordingTest.path
     save=test_gps.RecordingTest.save
 
+    def test_public_network_assets_and_gzip(self):
+        plain=self.driver.get('/tf/rail-network-data.js?v=0.26.61',headers={'Accept-Encoding':'identity'})
+        compressed=self.driver.get('/tf/rail-network-data.js?v=0.26.61',headers={'Accept-Encoding':'gzip'})
+        disabled=self.driver.get('/tf/rail-network-data.js',headers={'Accept-Encoding':'gzip;q=0'})
+        self.assertEqual(plain.status_code,200)
+        self.assertEqual(compressed.headers.get('content-encoding'),'gzip')
+        self.assertEqual(compressed.content,plain.content)
+        self.assertNotIn('content-encoding',disabled.headers)
+        self.assertIn('Accept-Encoding',compressed.headers['vary'])
+        self.assertEqual(self.driver.get('/tf/rail-network.js').status_code,200)
+        self.assertEqual(self.driver.get('/tf/route-coverage.js').status_code,200)
+
     def test_own_tracks_pagination_and_access(self):
         path,saved=self.save(points=[dict(p,lon=13+i*.001) for i,p in enumerate(test_gps.points(15))])
         self.assertEqual(saved.status_code,200)

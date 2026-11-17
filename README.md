@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.60
+# LokZeitleiste v0.26.61
+
+**0.26.61:** Bereitgestellte M1-CSV mit 33.425 Datensätzen und 1.549 Streckennummern als einblendbare Referenzebene in Streck-Kenntnisse. Android enthält das Netz auch offline. Befahrene Abschnitte bleiben blau, bis mindestens zwei eigene Zugfahrten je Richtung vorliegen; danach werden sie grün. Die Zuordnung erfolgt konservativ in etwa 100-m-Abschnitten, ohne GPS-Lücken oder mehrdeutige Treffer gutzuschreiben.
 
 **0.26.60:** Excel-Import im Bremszettel-Overlay abgesichert; DU (blau) / DL (rot) als Beta-Anzeige. Android zeigt App-Daten seit Geräteneustart, das Web eine Schätzung pro Tab. GPS pausieren/fortsetzen auch im Vollbild, DB Digi-Bef. beendet das Vollbild vor dem Öffnen. Neue Kachel Streck-Kenntnisse zeigt eigene gemessene GPS-Spuren in Deutschland, ohne Lücken als gefahrene Strecke auszugeben.
 

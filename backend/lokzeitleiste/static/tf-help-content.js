@@ -28,6 +28,16 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "steps": [
           "{{portal_beta60.text_c7a64388e7a1}}"
         ]
+      },
+      {
+        "title": "{{rail_network.text_3614bb0d0ce7}}",
+        "paragraphs": [
+          "{{rail_network.text_fc9ba5dcd225}}",
+          "{{rail_network.text_0fb9b3b16771}}",
+          "{{rail_network.text_592542a01569}}",
+          "{{rail_network.text_7a563ef9b8ba}}"
+        ],
+        "steps": []
       }
     ]
   },

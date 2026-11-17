@@ -1,7 +1,7 @@
 """Private, paginated map geometry derived only from the driver's measured fixes."""
 import json
 from pathlib import Path
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from fastapi.responses import FileResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -33,6 +33,17 @@ def route_segments(points):
 
 def create_router(require_account):
     router=APIRouter();driver=driver_dependency(require_account)
+    @router.get('/tf/rail-network-data.js')
+    def network_data(request:Request):
+        compressed=any(part.split(';')[0].strip().lower()=='gzip' and not any(option.strip() in {'q=0','q=0.0','q=0.00','q=0.000'} for option in part.split(';')[1:]) for part in request.headers.get('accept-encoding','').split(','))
+        headers={'Cache-Control':'public, max-age=31536000, immutable','Vary':'Accept-Encoding'}
+        if compressed:headers['Content-Encoding']='gzip'
+        name='rail-network-data.js'+('.gz' if compressed else '')
+        return FileResponse(Path(__file__).parent/'static'/name,media_type='text/javascript',headers=headers)
+    @router.get('/tf/route-coverage.js')
+    def coverage_script():return FileResponse(Path(__file__).parent/'static'/'route-coverage.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/tf/rail-network.js')
+    def network_script():return FileResponse(Path(__file__).parent/'static'/'rail-network.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/route-knowledge.js')
     def script():return FileResponse(Path(__file__).parent/'static'/'route-knowledge.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/api/v1/tf/route-knowledge')
