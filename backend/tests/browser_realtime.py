@@ -65,7 +65,7 @@ class DevTools:
     def close(self):self.socket.close()
 
 
-def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None,label="Browser"):
+def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None,label="Browser",cpu_rate=1,timeout=20):
     output_dir=Path(output_dir);output_dir.mkdir(parents=True,exist_ok=True)
     chrome=next((shutil.which(name) for name in ['google-chrome','google-chrome-stable','chromium','chromium-browser'] if shutil.which(name)),None)
     if not chrome:raise SystemExit('Chrome is required')
@@ -93,7 +93,8 @@ def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None
                 client=DevTools(target['webSocketDebuggerUrl'])
                 try:
                     client.call('Emulation.setDeviceMetricsOverride',dict(width=1400,height=1800,deviceScaleFactor=1,mobile=False))
-                    client.call('Page.bringToFront');client.call('Page.navigate',dict(url=site+'/'+host.name));deadline=time.monotonic()+20
+                    if cpu_rate>1:client.call('Emulation.setCPUThrottlingRate',dict(rate=cpu_rate))
+                    client.call('Page.bringToFront');client.call('Page.navigate',dict(url=site+'/'+host.name));deadline=time.monotonic()+timeout
                     while time.monotonic()<deadline:
                         status=client.evaluate('document.documentElement.dataset.layoutStatus')
                         if status in ('pass','fail'):break

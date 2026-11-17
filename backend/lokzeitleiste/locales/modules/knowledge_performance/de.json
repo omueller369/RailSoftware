@@ -1,0 +1,4 @@
+{
+  "text_14b95bd159e1": "Die Streckenkenntniskarte zeichnet große importierte Bestände abhängig von der Zoomstufe. In der Übersicht werden Kurven für die Anzeige vereinfacht; beim Vergrößern erscheinen mehr Details. Bereits berechnete Ansichten werden wiederverwendet. Gespeicherte Kenntnisse, genaue Abschnittsgrenzen und der Vorrang gegenüber GPS bleiben erhalten. Du musst Deine CSV nicht erneut importieren.",
+  "text_b1021aa5b12f": "Streckenkenntniskarte nach großen CSV-Importen beschleunigt: überlappende Farbabschnitte zusammengefasst, zoomabhängige Anzeige und wiederverwendete Ansichten."
+}

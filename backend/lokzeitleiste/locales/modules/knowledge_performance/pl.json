@@ -1,0 +1,4 @@
+{
+  "text_14b95bd159e1": "Mapa znajomości szlaków rysuje duże importowane zbiory zależnie od przybliżenia. W widoku ogólnym krzywe są upraszczane tylko na potrzeby wyświetlania; przybliżenie pokazuje więcej szczegółów. Obliczone widoki są ponownie wykorzystywane. Zapisana znajomość, dokładne granice odcinków i pierwszeństwo przed GPS pozostają zachowane. Nie musisz ponownie importować CSV.",
+  "text_b1021aa5b12f": "Szybsza mapa znajomości szlaków po dużych importach CSV: scalone nakładające się odcinki kolorów, wyświetlanie zależne od przybliżenia i ponowne używanie widoków."
+}

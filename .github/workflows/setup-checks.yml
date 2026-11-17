@@ -48,6 +48,13 @@ jobs:
         with:
           name: rail-network-ui
           path: ${{ runner.temp }}/rail-network-ui/
+      - name: Large imported map at 4x CPU slowdown
+        run: python backend/tests/check_route_import_performance.py --output-dir "$RUNNER_TEMP/route-import-performance"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: route-import-performance
+          path: ${{ runner.temp }}/route-import-performance/
       - name: TF beta import, pause, fullscreen, traffic and route checks
         run: python backend/tests/check_portal_beta60_ui.py --output-dir "$RUNNER_TEMP/portal-beta60-ui"
       - uses: actions/upload-artifact@v4

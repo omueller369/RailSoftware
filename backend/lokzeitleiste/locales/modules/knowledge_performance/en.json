@@ -1,0 +1,4 @@
+{
+  "text_14b95bd159e1": "The route knowledge map draws large imported inventories according to zoom level. Curves are simplified for display in the overview; zooming in reveals more detail. Previously calculated views are reused. Stored knowledge, exact section boundaries and priority over GPS are preserved. You do not need to import your CSV again.",
+  "text_b1021aa5b12f": "Faster route knowledge map after large CSV imports: merged overlapping colour sections, zoom-aware display and reused views."
+}

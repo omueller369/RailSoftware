@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.2
+# LokZeitleiste v0.27.3
+
+**0.27.3:** Streckenkenntniskarte für große importierte Bestände beschleunigt: zusammengefasste Farbintervalle, zoomabhängige Darstellung und begrenzt zwischengespeicherte Ansichten. Kenntnisse, genaue Abschnittsgrenzen, Importbestätigung und Vorrang vor GPS bleiben erhalten; kein erneuter CSV-Import nötig.
 
 **0.27.2:** Streckenimport unter der Karte mit vorläufiger Kartenansicht und „Import-bestätigen“. Nach dem Speichern ist die Importliste leer, bestätigte Kenntnisse bleiben auf der Karte und haben Vorrang vor GPS. Ortskenntnisse (Bahnhof, DS100, Kundig bis) und Baureihen (Baureihe, Gültig bis) bekommen getrennte TF-bezogene Bestände mit CSV-Import, Vorschau, Bestätigung und Listen.
 

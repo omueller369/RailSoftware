@@ -59,6 +59,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "paragraphs": [
           "{{route_csv.text_daad55ef168f}}",
           "{{route_csv_map.text_249137f0f4eb}}",
+          "{{knowledge_performance.text_14b95bd159e1}}",
           "{{m1_operating_points.text_22acba6180a3}}",
           "{{m1_operating_points.text_dd84d6c388d3}}"
         ],
