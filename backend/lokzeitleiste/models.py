@@ -948,3 +948,26 @@ class StationCoordinateContribution(Base):
     before_json:Mapped[str|None]=mapped_column(Text,nullable=True)
     after_json:Mapped[str]=mapped_column(Text,nullable=False)
     created_at:Mapped[datetime]=mapped_column(DateTime,nullable=False,default=now_utc)
+
+
+class RouteKnowledgeImport(Base):
+    __tablename__='route_knowledge_imports'
+    __table_args__=(UniqueConstraint('owner_id','file_sha256'),)
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),nullable=False,index=True)
+    file_sha256:Mapped[str]=mapped_column(String(64),nullable=False)
+    filename:Mapped[str]=mapped_column(String(180),nullable=False)
+    summary_json:Mapped[str]=mapped_column(Text,nullable=False)
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
+
+
+class RouteKnowledgeEntry(Base):
+    __tablename__='route_knowledge_entries'
+    __table_args__=(UniqueConstraint('owner_id','section_key'),)
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),nullable=False,index=True)
+    section_key:Mapped[str]=mapped_column(String(64),nullable=False)
+    content_sha256:Mapped[str]=mapped_column(String(64),nullable=False)
+    source_json:Mapped[str]=mapped_column(Text,nullable=False)
+    source_sha256:Mapped[str]=mapped_column(String(64),nullable=False)
+    imported_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)

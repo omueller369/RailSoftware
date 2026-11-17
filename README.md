@@ -1,4 +1,6 @@
-# LokZeitleiste v0.26.63
+# LokZeitleiste v0.26.64
+
+**0.26.64:** Doppelt so dicke Linien in der Streckenkenntniskarte. Private Kenntnis-CSV kann im angemeldeten TF-Konto nach Vorschau mit Name und Tf-Nummer importiert werden. Originalstatus, Gültigkeit und Erwerbsangaben bleiben erhalten; keine GPS-Fahrten oder letzten Fahrtdaten werden erzeugt. Wiederholungen erzeugen keine Duplikate, abweichende vorhandene Angaben bleiben erhalten. Persönliche Importlisten sind nach dem Laden auf dem Gerät offline verfügbar.
 
 **0.26.63:** Modulname „Stecken-, BR- und Ortskenntnisse“ mit drei Reitern: Streckenkenntnis, Ortskenntnis und Baureihen. Die bestehende Karte mit Netz, Fahrtenfarben und 180-/365-Tage-Alterung liegt unter Streckenkenntnis. Ortskenntnis und Baureihen zeigen vorerst ausschließlich einen Hinweis auf die späteren Funktionen.
 

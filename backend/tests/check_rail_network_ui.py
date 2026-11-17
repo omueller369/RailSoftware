@@ -25,6 +25,7 @@ window.I18n={t:s=>s,locale:'de-DE'};const ageTimers=[];window.setInterval=(fn,ms
  assert(document.querySelector('[data-route-track=qualified]'),'2 + 2 real-network journeys turn GPS green');
  assert(document.querySelector('[data-rail-coverage=qualified]'),'Matched reference bins also green');
  assert(document.querySelector('[data-route-track=qualified]').getAttribute('stroke')==='#16803a','Green stroke');
+ assert(document.querySelector('[data-route-track=qualified]').getAttribute('stroke-width')==='6','GPS lines doubled from 3 to 6');assert(document.querySelector('[data-rail-coverage=qualified]').getAttribute('stroke-width')==='5','Coverage doubled from 2.5 to 5');assert(document.querySelector('[data-rail-network="0"]').getAttribute('stroke-width')==='2.7','Reference doubled from 1.35 to 2.7');assert(getComputedStyle(document.querySelector('.route-network-swatch.qualified')).borderTopWidth==='6px','Legend lines doubled too');
  assert(performance.now()-started<10000,'Full offline network remains responsive');
  const routesTab=document.getElementById('knowledgeTab-routes'),placesTab=document.getElementById('knowledgeTab-places'),classesTab=document.getElementById('knowledgeTab-classes'),panel=name=>document.getElementById('knowledgePanel-'+name),originalSvg=document.querySelector('.route-knowledge-map svg'),loadsBefore=localLoads;
  assert(document.querySelector('#routeKnowledge h1').textContent==='Stecken-, BR- und Ortskenntnisse','Requested module name');

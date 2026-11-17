@@ -34,6 +34,8 @@ def route_segments(points,timed=False):
 
 def create_router(require_account):
     router=APIRouter();driver=driver_dependency(require_account)
+    from .route_knowledge_import import create_router as import_router
+    router.include_router(import_router(require_account))
     @router.get('/tf/rail-network-data.js')
     def network_data(request:Request):
         compressed=any(part.split(';')[0].strip().lower()=='gzip' and not any(option.strip() in {'q=0','q=0.0','q=0.00','q=0.000'} for option in part.split(';')[1:]) for part in request.headers.get('accept-encoding','').split(','))

@@ -34,6 +34,13 @@ jobs:
         run: |
           for test in backend/tests/*.cjs; do node "$test" || exit 1; done
           node backend/tests/test_brake_sheet_ui.cjs --overlay
+      - name: Private route knowledge CSV preview, import and offline cache
+        run: python backend/tests/check_route_csv_ui.py --output-dir "$RUNNER_TEMP/route-csv-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: route-csv-ui
+          path: ${{ runner.temp }}/route-csv-ui/
       - name: M1 offline rail network and directional route coverage
         run: python backend/tests/check_rail_network_ui.py --output-dir "$RUNNER_TEMP/rail-network-ui"
       - uses: actions/upload-artifact@v4

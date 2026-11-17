@@ -462,3 +462,14 @@ Server und App müssen aktualisiert sein, damit die Serveraufzeichnungen mit ihr
 ## Kenntnismodul ab 0.26.63
 
 Die Kachel heißt **Stecken-, BR- und Ortskenntnisse**. Die bisherige Karte liegt im Reiter **Streckenkenntnis**. **Ortskenntnis** und **Baureihen** enthalten zunächst nur den Hinweis, dass ihre Funktionen später folgen. Dort gibt es noch keine Datenerfassung. Das Wechseln der Reiter erhält Kartenausschnitt, Streckennetz und Fahrtenauswertung. Die Farben aus 0.26.62 gelten weiterhin. Der bestehende Link `/tf/streckenkenntnisse` bleibt gültig.
+
+
+## Kenntnis-CSV und Linien ab 0.26.64
+
+Die Streckenkenntniskarte zeigt Netzlinien, Fahrtenfarben und GPS-Spuren doppelt so dick. Strichelung und Legende werden passend dargestellt.
+
+Nach dem Server- und App-Update meldest Du Dich im TF-Portal mit dem Zielkonto an. Öffne **Stecken-, BR- und Ortskenntnisse → Streckenkenntnis → Importierte Streckenkenntnisse (CSV)**. Wähle die CSV und öffne **Importvorschau**. Prüfe den angezeigten Namen, die Tf-Nummer und die Anzahl neuer, vorhandener oder abweichender Einträge. Erst **Für diesen TF übernehmen** speichert den Import auf dem Server. Das geht auch im Webbrowser auf dem Mac; anschließend kann die Tablet-App dieselbe persönliche Liste laden.
+
+Der Import erhält die acht Originalspalten, auch `-`, leere Angaben und `0000-00-00`. Solche Platzhalter werden nicht in GPS-Fahrtdaten umgerechnet. Die Kenntnisliste ergänzt die Angaben unterhalb der Karte; sie erzeugt keine GPS-Punkte, Richtungsfahrten oder Karten-Fahrtengutschriften. Für die Kartenfarben bleiben die tatsächlichen GPS-Aufzeichnungen maßgeblich. Bereits vorhandene abweichende Angaben werden beibehalten, identische Zeilen nicht doppelt gespeichert. Ortskenntnis und Baureihen bleiben vorbereitet.
+
+Die CSV muss UTF-8 und Semikolon verwenden, höchstens 4 MiB/20.000 Datensätze. Nach dem Laden wird die persönliche Liste kontoabhängig auf diesem Gerät für offline gespeichert. Der Import selbst benötigt die Serververbindung. Die CSV gehört nicht ins öffentliche Repository oder in die APK.

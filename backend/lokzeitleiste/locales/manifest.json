@@ -334,6 +334,11 @@
     "en": "/locales/route_age/en.json",
     "pl": "/locales/route_age/pl.json"
   },
+  "route_csv": {
+    "de": "/locales/route_csv/de.json",
+    "en": "/locales/route_csv/en.json",
+    "pl": "/locales/route_csv/pl.json"
+  },
   "server_accounts_access": {
     "de": "/locales/server_accounts_access/de.json",
     "en": "/locales/server_accounts_access/en.json",
