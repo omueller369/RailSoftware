@@ -116,7 +116,8 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{portal_gps_demo.text_d2a6f5151788}}",
         "paragraphs": [
-          "{{portal_gps_demo.text_8e157c16c15f}}"
+          "{{portal_gps_demo.text_8e157c16c15f}}",
+          "{{portal_gps_demo.text_fdeb3c706255}}"
         ],
         "steps": [
           "{{portal_gps_demo.text_1eb67856daaf}}",
@@ -1114,6 +1115,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/me",
     "aliases": [],
     "sections": [
+      {"title":"{{portal_gps_demo.text_d2b780035db6}}","paragraphs":["{{portal_gps_demo.text_fdeb3c706255}}"],"steps":[]},
       {
         "title": "{{portal_tf_help_content.text_12c2b302b860}}",
         "paragraphs": [

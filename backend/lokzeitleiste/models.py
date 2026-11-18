@@ -1041,3 +1041,18 @@ class DutyReportCorrection(Base):
     payload_json:Mapped[str]=mapped_column(Text,nullable=False)
     pdf_content:Mapped[bytes]=mapped_column(LargeBinary().with_variant(LONGBLOB(),'mysql'),nullable=False)
     submitted_json:Mapped[str|None]=mapped_column(Text,nullable=True)
+
+
+class GpsDemoShare(Base):
+    """Explicitly shared snapshot; replay never mutates the original recording."""
+    __tablename__='gps_demo_shares'
+    recording_id:Mapped[int]=mapped_column(ForeignKey('train_gps_recordings.id',ondelete='CASCADE'),primary_key=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),nullable=False,index=True)
+    payload_json:Mapped[str]=mapped_column(Text().with_variant(MEDIUMTEXT(),'mysql'),nullable=False)
+    source_revision:Mapped[int]=mapped_column(Integer,nullable=False)
+
+
+class GpsDemoPreference(Base):
+    __tablename__='gps_demo_preferences'
+    user_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),primary_key=True)
+    hidden:Mapped[bool]=mapped_column(Boolean,default=False,nullable=False)

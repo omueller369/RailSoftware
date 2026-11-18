@@ -236,3 +236,5 @@ html[data-theme="dark"] #reportSendCancel {
 #routeKnowledge [role="tabpanel"][hidden]{display:none!important}.knowledge-tab-bar{margin-bottom:0}
 
 #reportListRows tr[data-sync-state=returned]>td{background:#fff2a8!important;color:#193044}#reportListRows tr[data-sync-state=returned]{border-left:5px solid #d6a300}
+
+.gps-demo-share-list{display:grid;gap:.75rem;margin:1rem 0}.gps-demo-share-list label{display:flex;align-items:center;gap:.7rem}.gps-demo-share-list input[type=checkbox]{width:1.4rem;height:1.4rem;flex:0 0 auto}.gps-demo-stops table{min-width:42rem}.gps-demo-stops td{white-space:nowrap}a.module[hidden]{display:none!important}

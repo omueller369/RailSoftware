@@ -64,6 +64,7 @@ class PortalPolicy(base: String) {
         "/tf/route-knowledge.js" -> "route-knowledge.js"
         "/tf/beta-traffic.js" -> "beta-traffic.js"
         "/tf/gps-demo.js" -> "gps-demo.js"
+        "/tf/gps-demo-visibility.js" -> "gps-demo-visibility.js"
         "/tf/help.js" -> "tf-help.js"
         "/tf/help-content.js" -> "tf-help-content.js"
         "/tf/help.css" -> "tf-help.css"

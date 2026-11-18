@@ -21,7 +21,7 @@ def fixture():
  const preferences={owner_id:1,revision:1,first_name:'DemoName',stop_minutes:15,marker:'circle',share_enabled:true,show_elapsed:true,show_stopped:false,show_speed:false,show_train:false,show_first_name:true};
  const base=1794358800000,record={train_number:'DEMO123',stop_minutes:1,ended:true,points:Array.from({length:1801},(_,i)=>({t:base+i*10000,lat:52,lon:13+Math.max(0,i-30)*.0008,accuracy:5,speed:i<=30?0:10})),manual_stops:[],stop_edits:{}};
  const original=JSON.stringify(record);
- window.fetch=async(url,options)=>{requests.push({url,options});if(fail)throw Error('Offline');return {ok:true,json:async()=>String(url).endsWith('gps-settings')?preferences:String(url).includes('gps-recordings')?{items:[{journey_id:'record',train_number:'DEMO123',start:base,end:base+18000000}],next_offset:null}:String(url).includes('gps-shared-positions')?{positions:[{id:2,lat:53,lon:14,t:Date.now(),marker:'steam',first_name:'LivePeer'}]}:record};};
+ window.fetch=async(url,options)=>{requests.push({url,options});if(fail)throw Error('Offline');return {ok:true,json:async()=>String(url).includes('/gps-demo/shared')?{items:[],next_offset:null}:String(url).includes('/gps-demo/stations')?{items:JSON.parse(options.body).points.map(()=>({station:null}))}:String(url).endsWith('gps-settings')?preferences:String(url).includes('gps-recordings')?{items:[{journey_id:'record',train_number:'DEMO123',start:base,end:base+18000000}],next_offset:null}:String(url).includes('gps-shared-positions')?{positions:[{id:2,lat:53,lon:14,t:Date.now(),marker:'steam',first_name:'LivePeer'}]}:record};};
  await window.startGpsDemo({id:1});
  const workspace=document.getElementById('gpsDemoWorkspace'),buttons=workspace.querySelectorAll('.gps-demo-controls button');
  const [load,more,play,reset]=buttons,[selection,speed]=workspace.querySelectorAll('select'),seek=workspace.querySelector('input[type=range]'),output=workspace.querySelector('output');
@@ -38,7 +38,7 @@ def fixture():
  assert(!workspace.querySelector('[data-gps-peer]'),'Demo excludes real live positions');
  reset.click();assert(output.textContent.startsWith('00:00:00'),'Reset returns to beginning');
  assert(!window.GpsRecorder.isActive()&&nativeCalls===0,'Demo never starts a recording');assert(JSON.stringify(record)===original,'Original recording unchanged');
- assert(requests.every(request=>!request.options.method||request.options.method==='GET'),'Only read requests');
+ assert(requests.every(request=>!request.options.method||request.options.method==='GET'||(request.options.method==='POST'&&request.url.endsWith('/gps-demo/stations'))),'Only read requests and read-only station lookups');
  const width=innerWidth;for(const control of workspace.querySelectorAll('button,select,input')){if(control.hidden||!control.getClientRects().length)continue;const box=control.getBoundingClientRect();assert(box.left>=0&&box.right<=width+1,'Controls fit viewport');}
  fail=true;await load.onclick();assert(play.disabled,'Failed reload cannot play stale recording');
  fail=false;preferences.marker='steam';await load.onclick();seek.value='9000000';seek.dispatchEvent(new Event('input'));assert(workspace.querySelector('[data-gps-position] image')?.getAttribute('href')==='/tf/gps-marker-steam.png','Demo applies selected original PNG');const decoded=new Image();decoded.src=workspace.querySelector('[data-gps-position] image').getAttribute('href');await decoded.decode();assert(decoded.naturalWidth===128,'Demo original PNG loaded');

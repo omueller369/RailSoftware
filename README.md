@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.8
+# LokZeitleiste v0.27.9
+
+**0.27.9:** Einzelne abgeschlossene GPS-Aufzeichnungen per Checkbox für andere TF und berechtigte Verwaltungsmitarbeiter freigeben und widerrufen. Gemeinsame GPS-DEMO mit schreibgeschützten Standzeiten und aktuellen DS100-Ortsvorschlägen; Originaldaten bleiben unverändert. TF können die Kachel ausblenden und unter Mein Konto wieder einschalten. Verwaltungszugriff über das Modulrecht GPS-DEMO.
 
 **0.27.8:** Arbeitsberichte mit Schreibrecht zur Überarbeitung an den TF zurückgeben: geschützter Korrekturentwurf, gelbe Monatszeile, Begründung und erneute Synchronisierung als neue Version. Vorherige PDF-Fassung bleibt erhalten; derselbe Arbeitszeiteintrag wird korrigiert und nicht doppelt gebucht. Gesperrte oder zwischenzeitlich geänderte Einträge bleiben geschützt. GPS-Halte nach erkannter Abfahrt schlagen Zugfolge und DB-InfraGo vor. Zwischenstände dürfen Zugfahrten und Details außerhalb der Dienstzeit enthalten; die endgültige Synchronisierung prüft weiterhin die Dienstgrenzen. GPS-Aufzeichnungen werden nicht automatisch gekürzt.
 

@@ -12,7 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from .db import database_session
-from .models import User,RailwayStation,RailwayStationCoordinates,TrainGpsRecording,GpsStationCache,now_utc
+from .models import User,RailwayStation,RailwayStationCoordinates,TrainGpsRecording,GpsDemoShare,GpsStationCache,now_utc
 from .tf_portal import driver_dependency
 from .gps_analysis import analyse,distance
 
@@ -153,6 +153,51 @@ def station_data(db,lat,lon,nearby=False):
             stations.append(dict(code=station.code,name=station.name,lat=place['lat'],lon=place['lon'],place_name=place['name']))
     return stations
 
+def read_payload(row):
+    payload=json.loads(row.payload_json)
+    if payload.get('detection_version')==5:return payload
+    # Resolve old numbered assignments by their original start time.
+    old=[r for r in analyse(payload['points'],payload.get('stop_edits') or {},legacy=payload.get('detection_version') not in (2,3,4),version2=payload.get('detection_version')==2,version3=payload.get('detection_version')==3,version4=payload.get('detection_version')==4)['rows'] if r['kind']==_text_source('server_gps.text_0fd998791d67')]
+    edits=payload.get('stop_edits') or {}
+    for item in old:
+        station=payload.get('stations',{}).get(item['key']) or payload.get('locations',{}).get(str(item['start']))
+        reason=payload.get('reasons',{}).get(item['key'],{})
+        key='live-'+str(item['start'])
+        if key not in edits and (station or reason):
+            edits[key]=dict(station=station,station_input=((station.get('code','')+' · ' if station.get('code') else '')+station.get('name','')) if station else '',reason=reason.get('reason',''),detail=reason.get('detail',''),end=None,manual_end=False,imported=False)
+    payload['stop_edits']=edits
+    new=[r for r in analyse(payload['points'],stop_minutes=payload.get('stop_minutes'))['rows'] if r['kind']==_text_source('server_gps.text_0fd998791d67')]
+    key_map={}
+    for item in old:
+        match=next((r for r in new if r['start']<=item['start']<=r['end']),None)
+        if match:key_map[item['key']]=match['key']
+    key_map.update(start='start',end='end')
+    for field in ('stations','reasons'):
+        values={}
+        for key,value in payload.get(field,{}).items():
+            if key in key_map:values.setdefault(key_map[key],value)
+        payload[field]=values
+    payload['selection']=list(dict.fromkeys(key_map[k] for k in payload.get('selection',[]) if k in key_map))
+    payload['detection_version']=5
+    return payload
+
+def nearest_station(db,lat,lon):
+    # Direct coordinate lookup: no OSM request or place-name approximation.
+    from .accounts.station_coordinates import normalized_name
+    radius=1000
+    latitude_band=radius/110000+0.001
+    matches=[]
+    query=select(RailwayStation,RailwayStationCoordinates).join(RailwayStationCoordinates,RailwayStation.code==RailwayStationCoordinates.code).where(RailwayStationCoordinates.latitude.between(max(-90,lat-latitude_band),min(90,lat+latitude_band)))
+    for station,position in db.execute(query):
+        if normalized_name(station.name)!=normalized_name(position.catalog_name):continue
+        meters=distance(dict(lat=lat,lon=lon),dict(lat=position.latitude,lon=position.longitude))
+        if meters<=radius:matches.append((meters,station.code,station.name))
+    matches.sort()
+    # Equally close reference points require an explicit user choice.
+    ambiguous=len(matches)>1 and matches[1][0]-matches[0][0]<25
+    station=dict(code=matches[0][1],name=matches[0][2],distance_m=round(matches[0][0])) if matches and not ambiguous else None
+    return dict(radius_m=radius,station=station,ambiguous=ambiguous)
+
 def create_router(require_account):
     router=APIRouter()
     from .route_knowledge import create_router as route_knowledge_router
@@ -163,33 +208,6 @@ def create_router(require_account):
         row=db.scalar(query.with_for_update() if lock else query)
         if not row:raise HTTPException(404,_text_source('server_gps.text_d425fe5589f1'))
         return row
-    def read_payload(row):
-        payload=json.loads(row.payload_json)
-        if payload.get('detection_version')==5:return payload
-        # Resolve old numbered assignments by their original start time.
-        old=[r for r in analyse(payload['points'],payload.get('stop_edits') or {},legacy=payload.get('detection_version') not in (2,3,4),version2=payload.get('detection_version')==2,version3=payload.get('detection_version')==3,version4=payload.get('detection_version')==4)['rows'] if r['kind']==_text_source('server_gps.text_0fd998791d67')]
-        edits=payload.get('stop_edits') or {}
-        for item in old:
-            station=payload.get('stations',{}).get(item['key']) or payload.get('locations',{}).get(str(item['start']))
-            reason=payload.get('reasons',{}).get(item['key'],{})
-            key='live-'+str(item['start'])
-            if key not in edits and (station or reason):
-                edits[key]=dict(station=station,station_input=((station.get('code','')+' · ' if station.get('code') else '')+station.get('name','')) if station else '',reason=reason.get('reason',''),detail=reason.get('detail',''),end=None,manual_end=False,imported=False)
-        payload['stop_edits']=edits
-        new=[r for r in analyse(payload['points'],stop_minutes=payload.get('stop_minutes'))['rows'] if r['kind']==_text_source('server_gps.text_0fd998791d67')]
-        key_map={}
-        for item in old:
-            match=next((r for r in new if r['start']<=item['start']<=r['end']),None)
-            if match:key_map[item['key']]=match['key']
-        key_map.update(start='start',end='end')
-        for field in ('stations','reasons'):
-            values={}
-            for key,value in payload.get(field,{}).items():
-                if key in key_map:values.setdefault(key_map[key],value)
-            payload[field]=values
-        payload['selection']=list(dict.fromkeys(key_map[k] for k in payload.get('selection',[]) if k in key_map))
-        payload['detection_version']=5
-        return payload
     def view(row):
         payload=read_payload(row);result=analyse(payload['points'],payload.get('stop_edits') or {},stop_minutes=payload.get('stop_minutes'))
         payload.setdefault('reasons',{})
@@ -208,27 +226,13 @@ def create_router(require_account):
         for row in rows[:100]:
             payload=json.loads(row.payload_json);points=payload.get('points',[])
             if len(points)<2 or not payload.get('ended',True):continue
-            items.append(dict(journey_id=row.journey_id,train_number=payload['train_number'],start=points[0]['t'],end=points[-1]['t'],point_count=len(points)))
+            items.append(dict(journey_id=row.journey_id,train_number=payload['train_number'],start=points[0]['t'],end=points[-1]['t'],point_count=len(points),revision=row.revision,shared=db.get(GpsDemoShare,row.id) is not None))
         return dict(items=items,next_offset=offset+100 if len(rows)>100 else None)
     @router.get('/tf/gps.js')
     def script():return FileResponse(Path(__file__).parent/'static'/'gps.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/api/v1/tf/gps/stop-station')
     def stop_station(lat:float=Query(ge=-90,le=90,allow_inf_nan=False),lon:float=Query(ge=-180,le=180,allow_inf_nan=False),user:User=Depends(driver),db:Session=Depends(database_session)):
-        # Direct coordinate lookup: no OSM request or place-name approximation.
-        from .accounts.station_coordinates import normalized_name
-        radius=1000
-        latitude_band=radius/110000+0.001
-        matches=[]
-        query=select(RailwayStation,RailwayStationCoordinates).join(RailwayStationCoordinates,RailwayStation.code==RailwayStationCoordinates.code).where(RailwayStationCoordinates.latitude.between(max(-90,lat-latitude_band),min(90,lat+latitude_band)))
-        for station,position in db.execute(query):
-            if normalized_name(station.name)!=normalized_name(position.catalog_name):continue
-            meters=distance(dict(lat=lat,lon=lon),dict(lat=position.latitude,lon=position.longitude))
-            if meters<=radius:matches.append((meters,station.code,station.name))
-        matches.sort()
-        # Equally close reference points require an explicit user choice.
-        ambiguous=len(matches)>1 and matches[1][0]-matches[0][0]<25
-        station=dict(code=matches[0][1],name=matches[0][2],distance_m=round(matches[0][0])) if matches and not ambiguous else None
-        return dict(radius_m=radius,station=station,ambiguous=ambiguous)
+        return nearest_station(db,lat,lon)
 
     @router.get('/api/v1/tf/gps/nearby')
     def nearby(lat:float=Query(ge=-90,le=90,allow_inf_nan=False),lon:float=Query(ge=-180,le=180,allow_inf_nan=False),user:User=Depends(driver),db:Session=Depends(database_session)):

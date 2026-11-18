@@ -785,3 +785,6 @@ app.include_router(dispatch_tracking_router(require_admin))
 
 from .la_instructions import create_router as la_instructions_router
 app.include_router(la_instructions_router(require_account,require_admin))
+
+from .gps_demo import create_router as gps_demo_router
+app.include_router(gps_demo_router(require_account,require_admin))

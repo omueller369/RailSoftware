@@ -73,6 +73,10 @@ jobs:
           path: ${{ runner.temp }}/portal-beta60-ui/
       - name: GPS demo browser playback
         run: python backend/tests/check_gps_demo_ui.py --output-dir "$RUNNER_TEMP/gps-demo-ui"
+      - name: Check shared GPS demo and read-only stops
+        run: |
+          python backend/tests/check_gps_demo_sharing_ui.py --output-dir "$RUNNER_TEMP/gps-demo-sharing-ui"
+          python backend/tests/check_gps_demo_visibility_ui.py --output-dir "$RUNNER_TEMP/gps-demo-visibility-ui"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

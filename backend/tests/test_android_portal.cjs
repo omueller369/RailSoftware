@@ -17,5 +17,6 @@ async function boot(id){let online=true,status=200,calls=[];const native={postMe
  const embedded={parent:{location:{origin:'https://testserver'},AndroidPortal:app.window.AndroidPortal},NativePortal:{postMessage(){throw Error('Iframe must not request a native session');}},fetch:async()=>new Response('{}')};const beforeHandler=app.window.NativePortal.onmessage;const iframeFetch=embedded.fetch;
  vm.runInNewContext(source,{window:embedded,location:{origin:'https://testserver'}});assert.equal(embedded.fetch,iframeFetch);assert.strictEqual(embedded.AndroidPortal.saveBlob,app.window.AndroidPortal.saveBlob);assert.strictEqual(app.window.NativePortal.onmessage,beforeHandler);assert.equal(embedded.AndroidPortal.gps,undefined);
  const la=await boot(3),pdf='/api/v1/tf/la-instructions/1/pdf';assert((await (await la.window.fetch(pdf)).text()).startsWith('%PDF-'));la.offline();await assert.rejects(la.window.fetch(pdf));
+ const demo=await boot(4),shared='/api/v1/tf/gps-demo/shared/7';await demo.window.fetch(shared);await new Promise(r=>setTimeout(r,0));demo.offline();await assert.rejects(demo.window.fetch(shared));
  console.log('Android portal: account-isolated offline cache, rejected writes, authoritative 401 and chunked export passed.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

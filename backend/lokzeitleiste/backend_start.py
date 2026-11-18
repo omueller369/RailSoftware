@@ -12,6 +12,7 @@ from .models import StaffProfile
 def start_modules(user,p):
     employees=any(p.get(key,0) for key in ('employees','planning','worktime','reports','directory','shifts','email'))
     definitions=[
+        ('gps_demo',_text_source('portal_gps_demo.text_d2a6f5151788'),'/admin/gps-demo',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('gps_demo',0)),
         ('la',_text_source('la_instructions.text_aaf232064610'),'/admin/la-instructions',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('la',0)),
         ('dispatchers',_text_source('dispatch_tracking.text_640480716e00'),'/admin/dispatchers',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('dispatchers',0)),
         ('tracking',_text_source('dispatch_tracking.text_5a95db2aa8e5'),'/admin/tracking',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('tracking',0)),

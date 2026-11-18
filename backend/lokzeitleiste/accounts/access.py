@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from ..models import AccountPolicy, ModulePermission, User, EmployeeCategory
 
-MODULES = {"la":_text_source('la_instructions.text_aaf232064610'), "dispatchers":_text_source('dispatch_tracking.text_640480716e00'), "tracking":_text_source('dispatch_tracking.text_5a95db2aa8e5'), "knowledge":_text_source('admin_knowledge.text_64d055aab207'), "wgm":_text_source('wgm.text_159c423d8698'), "work_reports":_text_source('admin_work_reports.text_1bc38267fc84'), "leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
+MODULES = {"gps_demo":_text_source('portal_gps_demo.text_d2a6f5151788'), "la":_text_source('la_instructions.text_aaf232064610'), "dispatchers":_text_source('dispatch_tracking.text_640480716e00'), "tracking":_text_source('dispatch_tracking.text_5a95db2aa8e5'), "knowledge":_text_source('admin_knowledge.text_64d055aab207'), "wgm":_text_source('wgm.text_159c423d8698'), "work_reports":_text_source('admin_work_reports.text_1bc38267fc84'), "leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
            "worktime":_text_source('server_accounts_access.text_dd4fd942cb88'), "reports":_text_source('server_accounts_access.text_1948beff57ad'),
            "staff":_text_source('server_accounts_access.text_ce72f4c833ff'), "directory":_text_source('server_accounts_access.text_ef61cbee3c30'),
            "shifts":_text_source('server_accounts_access.text_3d64eed6e362'), "email":"Mitarbeiter-E-Mail"}
@@ -49,6 +49,8 @@ def redact_plan(db,user,summary):
 
 def authorize_route(db, user, request):
     path, method = request.url.path.rstrip('/'), request.method
+    if path.startswith('/api/v1/admin/gps-demo'):
+        return demand(db,user,'gps_demo',1)
     if path=='/api/v1/admin/la-instructions' or path.startswith('/api/v1/admin/la-instructions/'):
         return demand(db,user,'la',1 if method=='GET' else 2)
     if path.startswith('/api/v1/admin/tracking'):
