@@ -46,7 +46,7 @@ context.window.AndroidPortal={gps:async(method,values)=>{if(method==='start'){na
  const priorConfirm=context.confirm;let external;
  context.confirm=()=>true;context.window.AndroidPortal.request=async method=>{external=method;};
  await recorder.openDigi();assert.equal(external,'external.db');assert(nativeRunning);
- const digi=recorder.manualRunning();assert(digi);assert.equal(recorder.record.stop_edits[digi.key].cause,'DB InfraGo');assert.equal(recorder.record.stop_edits[digi.key].reason,'DB-Digi-Befehl');
+ const digi=recorder.manualRunning();assert(digi);assert.equal(recorder.record.stop_edits[digi.key].cause,'DB-InfraGo');assert.equal(recorder.record.stop_edits[digi.key].reason,'DB-Digi-Befehl');
  const currentNow=Date.now;Date.now=()=>digi.start+1000;await recorder.toggleManual();Date.now=currentNow;
  context.confirm=()=>false;const stands=recorder.record.manual_stops.length;await recorder.openDigi();assert.equal(recorder.record.manual_stops.length,stands);context.confirm=priorConfirm;
  const questions=[];context.confirm=message=>{questions.push(message);return true;};

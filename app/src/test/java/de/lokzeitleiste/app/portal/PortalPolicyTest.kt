@@ -49,6 +49,7 @@ class PortalPolicyTest {
         assertEquals("updates.js",policy.asset("/tf/updates.js"))
         assertEquals("tf-portal.html",policy.asset("/tf/gps-demo"))
         assertEquals("gps-demo.js",policy.asset("/tf/gps-demo.js"))
+        assertEquals("infra-go.js",policy.asset("/tf/infra-go.js"))
         assertEquals("gps-demo-visibility.js",policy.asset("/tf/gps-demo-visibility.js"))
         assertEquals("loco-handover.html",policy.asset("/tf/lokuebergabebuch"))
         assertEquals("loco-handover.html",policy.asset("/tf/loco-handover"))

@@ -93,7 +93,7 @@ window.startGpsDemo=async (user,{administration=false}={})=>{
   selectedShared=selection.value.startsWith('shared:')?Number(selection.value.slice(7)):null;
   const data=await get(selectedShared!=null?base+'/shared/'+selectedShared:'/api/v1/tf/gps/'+encodeURIComponent(selection.value));if(request!==generation)return;
   if(!Array.isArray(data.points)||data.points.length<2||data.points.at(-1).t<=data.points[0].t)throw Error(t('short'));
-  record=structuredClone(data);clock=new PlaybackClock(record.points.at(-1).t-record.points[0].t);clock.speed(Number(speed.value));seek.max=String(clock.duration);
+  record=structuredClone(window.InfraGo?.normalize(data)||data);clock=new PlaybackClock(record.points.at(-1).t-record.points[0].t);clock.speed(Number(speed.value));seek.max=String(clock.duration);
   if(!recorder)recorder=window.GpsRecorder.mount({demo:true,demoShared:()=>selectedShared!=null,userId:user.id,journeyId:'demo',container:map,trainNumber:()=>record.train_number,readonly:()=>true,now:()=>record?record.points[0].t+(clock?.position||0):0});
   recorder.mapState={mode:'follow',zoom:10};recorder.focusedStopKey=null;await recorder.readyPromise;try{await enrichStops(request);dsHint.textContent=t('ds100');}catch(error){dsHint.textContent=t('ds100_error');}if(request!==generation)return;if(selectedShared!=null&&!await verifyAccess())return;map.hidden=false;render();status.textContent=t('ready');if(selectedShared!=null)accessTimer=setInterval(verifyAccess,30000);
  }catch(error){status.textContent=error.message===t('short')?t('short'):t('error');}finally{busy=false;for(const control of [load,more,selection])control.disabled=false;for(const control of [play,reset,speed,seek])control.disabled=!clock;}};

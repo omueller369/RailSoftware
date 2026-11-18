@@ -59,6 +59,8 @@ def return_report(db,report_id,actor,reason,expected_version):
     db.commit();return row
 
 def resubmit(db,user,data,row):
+    from ..infra_go import normalize_model
+    normalize_model(db,data)
     from .service import resolve_train_stations
     from ..app_defaults import use_journeys
     from ..worktime.service import validate_no_overlap

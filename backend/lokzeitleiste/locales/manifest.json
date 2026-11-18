@@ -199,6 +199,11 @@
     "en": "/locales/gps_stop_suggestions/en.json",
     "pl": "/locales/gps_stop_suggestions/pl.json"
   },
+  "infra_go": {
+    "de": "/locales/infra_go/de.json",
+    "en": "/locales/infra_go/en.json",
+    "pl": "/locales/infra_go/pl.json"
+  },
   "knowledge_inventory": {
     "de": "/locales/knowledge_inventory/de.json",
     "en": "/locales/knowledge_inventory/en.json",

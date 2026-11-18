@@ -73,6 +73,8 @@ jobs:
           path: ${{ runner.temp }}/portal-beta60-ui/
       - name: GPS demo browser playback
         run: python backend/tests/check_gps_demo_ui.py --output-dir "$RUNNER_TEMP/gps-demo-ui"
+      - name: Offline DB-InfraGo vocabulary conversion
+        run: python backend/tests/check_infra_go_ui.py --output-dir "$RUNNER_TEMP/infra-go-ui"
       - name: Android monthly report synchronization error navigation
         run: python backend/tests/check_android_report_navigation_ui.py --output-dir "$RUNNER_TEMP/android-report-navigation"
       - name: Field error navigation and Android-only update tile

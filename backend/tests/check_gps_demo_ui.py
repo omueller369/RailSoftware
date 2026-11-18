@@ -18,7 +18,7 @@ def fixture():
  Object.defineProperty(navigator,'onLine',{get:()=>false});
  Object.defineProperty(window,'indexedDB',{get(){throw Error('Demo must not access recording storage');}});
  window.AndroidPortal={gps:()=>{nativeCalls++;throw Error('Demo must not use native GPS');}};
- const preferences={owner_id:1,revision:1,first_name:'DemoName',stop_minutes:15,marker:'circle',share_enabled:true,show_elapsed:true,show_stopped:false,show_speed:false,show_train:false,show_first_name:true};
+ const preferences={owner_id:1,revision:1,first_name:'DemoName',stop_minutes:15,marker:'circle',share_enabled:true,show_elapsed:true,show_stopped:false,show_speed:true,show_train:false,show_first_name:true};
  const base=1794358800000,record={train_number:'DEMO123',stop_minutes:1,ended:true,points:Array.from({length:1801},(_,i)=>({t:base+i*10000,lat:52,lon:13+Math.max(0,i-30)*.0008,accuracy:5,speed:i<=30?0:10})),manual_stops:[],stop_edits:{}};
  const original=JSON.stringify(record);
  window.fetch=async(url,options)=>{requests.push({url,options});if(fail)throw Error('Offline');return {ok:true,json:async()=>String(url).includes('/gps-demo/shared')?{items:[],next_offset:null}:String(url).includes('/gps-demo/stations')?{items:JSON.parse(options.body).points.map(()=>({station:null}))}:String(url).endsWith('gps-settings')?preferences:String(url).includes('gps-recordings')?{items:[{journey_id:'record',train_number:'DEMO123',start:base,end:base+18000000}],next_offset:null}:String(url).includes('gps-shared-positions')?{positions:[{id:2,lat:53,lon:14,t:Date.now(),marker:'steam',first_name:'LivePeer'}]}:record};};
@@ -35,6 +35,7 @@ def fixture():
  assert(position.textContent.includes('DemoName')&&!position.textContent.includes('DEMO123')&&!position.textContent.includes('km/h'),'Saved visible fields applied in demo');
  assert(/^\d{2}:\d{2}$/.test(position.querySelector('text').textContent),'Demo time without labels or dangling slash');
  assert(!workspace.querySelector('[data-gps-stop]'),'Saved 15-minute threshold suppresses recorded five-minute stand');
+ assert(!workspace.querySelector('.gps-map').textContent.includes('km/h')&&!workspace.querySelector('.gps-trail-scale'),'Demo never displays speeds or speed legend even when enabled in preferences');assert([...workspace.querySelectorAll('[data-gps-trail]')].every(path=>path.getAttribute('stroke')==='#16465b'),'Demo trail never encodes actual speeds');
  assert(!workspace.querySelector('[data-gps-peer]'),'Demo excludes real live positions');
  reset.click();assert(output.textContent.startsWith('00:00:00'),'Reset returns to beginning');
  assert(!window.GpsRecorder.isActive()&&nativeCalls===0,'Demo never starts a recording');assert(JSON.stringify(record)===original,'Original recording unchanged');

@@ -24,12 +24,12 @@ class TrainJourneysTest(unittest.TestCase):
     def test_digi_command_reason_and_operator_roundtrip(self):
         data=self.data();data['train_journeys'][0]['events'][0].update(reason='DB-Digi-Befehl',cause='DB InfraGo')
         report=self.create(data);event=report['train_journeys'][0]['events'][0]
-        self.assertEqual(event['reason'],'DB-Digi-Befehl');self.assertEqual(event['cause'],'DB InfraGo')
+        self.assertEqual(event['reason'],'DB-Digi-Befehl');self.assertEqual(event['cause'],'DB-InfraGo')
         self.assertEqual(event['reason_label'],'DB-Digi-Befehl')
         trains=copy.deepcopy(report['train_journeys']);trains[0]['events'][0]['end_at']='2026-10-12T10:25'
         updated=self.update(report['id'],trains)
         self.assertEqual(updated.status_code,200,updated.text)
-        self.assertEqual(updated.json()['train_journeys'][0]['events'][0]['cause'],'DB InfraGo')
+        self.assertEqual(updated.json()['train_journeys'][0]['events'][0]['cause'],'DB-InfraGo')
 
     def test_train_places_accept_free_text_alongside_ds100(self):
         data=self.data()

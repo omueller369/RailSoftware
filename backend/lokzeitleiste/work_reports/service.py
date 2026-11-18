@@ -50,6 +50,8 @@ def report_view(db,report):
 
 
 def save_report(db,user,data,commit=True):
+    from ..infra_go import normalize_model
+    normalize_model(db,data)
     from ..app_defaults import ensure_defaults
     ensure_defaults(db)
     db.scalar(select(User).where(User.id==user.id).with_for_update())

@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.11
+# LokZeitleiste v0.27.12
+
+**0.27.12:** Einheitliche Art DB-InfraGo. Das Serverupdate führt bestehende Schreibweisen und doppelte Auswahlwerte in Arbeitsberichten, Entwürfen, Korrekturdaten, GPS-Aufzeichnungen und Demo-Freigaben zusammen. Alte App-Werte bleiben beim Speichern kompatibel. Die Android-App gleicht lokale Berichte und alte GPS-Daten beim Öffnen an. Zeiten, Koordinaten und Revisionsstände bleiben erhalten; PDF-Originale werden nicht neu geschrieben. Zuerst Server, danach App aktualisieren. GPS-Demos zeigen grundsätzlich keine tatsächlichen Geschwindigkeiten oder km/h-Legenden; die Spur wird neutral gefärbt. Freigaben und Kontoeinstellungen können dies nicht einschalten.
 
 **0.27.11:** Synchronisationsfehler öffnen auch einen anderen Arbeitsbericht aus der Monatsliste und dessen fehlerhafte Zeile. Der Dialog nennt Datum, Zugnummer, Uhrzeit und den abgelehnten Wert. Android wertet die Feldzuordnung direkt an der fehlgeschlagenen Anfrage aus; ältere Serverantworten werden mit dem aktuellen Auswahlkatalog abgeglichen. Offene Eingaben im zuvor geöffneten Bericht werden lokal gesichert und beim Wiederöffnen wiederhergestellt. Werte werden nicht automatisch ersetzt.
 

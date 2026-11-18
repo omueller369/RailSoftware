@@ -76,6 +76,8 @@ def create_router(require_account):
     @router.put('/{client_id}')
     def save(client_id:UUID,data:DraftInput,user=Depends(driver),db:Session=Depends(database_session)):
         if client_id!=data.report.client_id:raise HTTPException(422,_text_source('server_work_reports_drafts.text_ad0998f02720'))
+        from ..infra_go import normalize_model
+        normalize_model(db,data.report)
         payload=data.report.model_dump_json()
         if len(payload.encode('utf-8'))>60000:raise HTTPException(422,_text_source('server_work_reports_drafts.text_a14edc14d076'))
         lock_owner(db,user);row=find(db,user,client_id)

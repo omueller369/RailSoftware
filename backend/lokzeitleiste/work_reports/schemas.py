@@ -68,6 +68,12 @@ class TrainEventIn(BaseModel):
     end_at:datetime
     _times=field_validator('start_at','end_at')(check_time)
 
+    @field_validator('cause','cause_label',mode='before')
+    @classmethod
+    def infra_go(cls,value):
+        from ..infra_go import canonical
+        return canonical(value)
+
     @field_validator('station')
     @classmethod
     def code(cls,value):return value.strip().upper()

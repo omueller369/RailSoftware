@@ -1,0 +1,4 @@
+{
+  "text_b4a005154fb3": "Für die Art verwendest Du einheitlich DB-InfraGo. Beim Serverupdate werden alte Schreibweisen wie DB InfraGo und DB InfraoGo in Berichten, Entwürfen, GPS-Aufzeichnungen und Demo-Freigaben zusammengeführt. Nach dem App-Update werden auch Deine lokal gespeicherten Daten beim Öffnen angeglichen. Zeiten, GPS-Punkte und Berichtsversionen bleiben erhalten. Bereits ausgestellte PDF-Originale bleiben unverändert. Aktualisiere zuerst den Server und danach die Android-App.",
+  "text_e153b8cb417a": "Art überall DB-InfraGo: bestehende Berichte, Entwürfe, alte GPS-Aufzeichnungen, Demo-Freigaben und lokale Tablet-Daten werden angeglichen; doppelte Auswahlwerte zusammengeführt. In GPS-Demos werden niemals tatsächliche Geschwindigkeiten oder eine km/h-Skala angezeigt. Die Spur hat eine einheitliche Farbe; Freigaben und Konto-Einstellungen ändern diese Regel nicht. Abspieltempo steuert nur die beschleunigte Wiedergabe."
+}

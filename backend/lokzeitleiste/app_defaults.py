@@ -1,5 +1,5 @@
+"""Versioned app vocabulary with explicit DB-InfraGo legacy compatibility."""
 from .field_errors import FieldError
-"""Versioned app vocabulary. Stable keys preserve historical report semantics."""
 from .localization import source as _text_source
 import json
 from pathlib import Path
@@ -32,6 +32,11 @@ def historical_values(db):
 
 
 def ensure_defaults(db):
+    _ensure_defaults(db)
+    from .infra_go import migrate
+    migrate(db)
+
+def _ensure_defaults(db):
     if db.get(AppDefaultSeed,1):
         if not db.get(AppDefaultSeed,2):
             value='DB-Digi-Befehl'
@@ -57,8 +62,13 @@ def ensure_defaults(db):
         if not db.get(AppDefaultSeed,1):raise
 
 
-def use_value(db,category,value,previous=None,loc=None,context=None):
+def use_value(db,category,value,previous=None,loc=None,context=None,aliases=None):
     # Match historical CTL DE to its current key without rewriting report snapshots.
+    from .infra_go import canonical as infra_canonical,alias_map
+    if category=='cause':
+        lookup=alias_map(db) if aliases is None else aliases
+        value=infra_canonical(value,lookup)
+        if previous:previous=infra_canonical(previous,lookup)
     canonical='CTL' if category=='cause' and value==_text_source('server_app_defaults.text_2087c99eb939') else value
     row=db.scalar(select(Value).where(Value.category==category,Value.value==canonical).with_for_update())
     if not row or (not row.active and value!=previous):
@@ -71,6 +81,10 @@ def use_value(db,category,value,previous=None,loc=None,context=None):
 
 def use_journeys(db,journeys,previous=()):
     ensure_defaults(db)
+    from .infra_go import normalize_model,alias_map
+    from types import SimpleNamespace
+    aliases=alias_map(db)
+    normalize_model(db,SimpleNamespace(train_journeys=journeys),aliases)
     old={(str(train['id']),str(event['id'])):event for train in previous for event in train.get('events',[])}
     # A consistent order also serializes use/deletion of shared values.
     selections=[]
@@ -79,7 +93,7 @@ def use_journeys(db,journeys,previous=()):
             prior=old.get((str(train.id),str(event.id)),{})
             selections += [(category,getattr(event,category),prior.get(category),['train_journeys',ti,'events',ei,category],dict(journey_id=str(train.id),event_id=str(event.id))) for category in ('cause','reason')]
     labels={}
-    for category,value,previous_value,loc,context in sorted(selections,key=lambda item:(item[0],item[1])):labels[category,value]=use_value(db,category,value,previous_value,loc,context).label
+    for category,value,previous_value,loc,context in sorted(selections,key=lambda item:(item[0],item[1])):labels[category,value]=use_value(db,category,value,previous_value,loc,context,aliases).label
     for train in journeys:
         for event in train.events:
             prior=old.get((str(train.id),str(event.id)),{})
@@ -112,11 +126,15 @@ def create_router(require_admin,require_account):
     @router.get('/api/v1/tf/app-defaults')
     def choices(user=Depends(driver),db:Session=Depends(database_session)):
         ensure_defaults(db)
-        return [view(row) for category in ('reason','cause') for row in ordered(db,category,db.scalars(select(Value).where(Value.category==category).order_by(Value.id)))]
+        from .infra_go import alias_map,CANONICAL
+        aliases=list(alias_map(db))
+        return [dict(view(row),**({'aliases':aliases} if row.category=='cause' and row.value==CANONICAL else {})) for category in ('reason','cause') for row in ordered(db,category,db.scalars(select(Value).where(Value.category==category).order_by(Value.id)))]
     @router.get('/api/v1/admin/app-defaults',dependencies=[Depends(require_admin)])
     def listing(db:Session=Depends(database_session)):
         ensure_defaults(db)
-        return [view(row) for category in ('reason','cause') for row in ordered(db,category,db.scalars(select(Value).where(Value.category==category).order_by(Value.id)))]
+        from .infra_go import alias_map,CANONICAL
+        aliases=list(alias_map(db))
+        return [dict(view(row),**({'aliases':aliases} if row.category=='cause' and row.value==CANONICAL else {})) for category in ('reason','cause') for row in ordered(db,category,db.scalars(select(Value).where(Value.category==category).order_by(Value.id)))]
     def commit(db,row):
         try:db.commit()
         except IntegrityError as exc:
@@ -125,6 +143,8 @@ def create_router(require_admin,require_account):
     @router.post('/api/v1/admin/app-defaults/{category}',status_code=201,dependencies=[Depends(require_admin)])
     def create(category:Literal['reason','cause'],data:ValueInput,db:Session=Depends(database_session)):
         ensure_defaults(db)
+        from .infra_go import named,CANONICAL
+        if category=='cause' and named(data.label):data.label=CANONICAL
         row=Value(category=category,value='custom-'+uuid4().hex[:24],label=data.label,label_key=data.label.casefold(),active=data.active,ever_used=False,revision=1);db.add(row)
         return commit(db,row)
     @router.put('/api/v1/admin/app-defaults/value/{value_id}',dependencies=[Depends(require_admin)])
@@ -132,6 +152,8 @@ def create_router(require_admin,require_account):
         row=db.scalar(select(Value).where(Value.id==value_id).with_for_update())
         if not row:raise HTTPException(404,_text_source('server_app_defaults.text_5c5fa14fef76'))
         if row.revision!=data.expected_revision:raise HTTPException(409,_text_source('server_app_defaults.text_60fe685fe99d'))
+        from .infra_go import named,CANONICAL
+        if row.category=='cause' and (named(data.label) or row.value==CANONICAL):data.label=CANONICAL
         row.label=data.label;row.label_key=data.label.casefold();row.active=data.active;row.revision+=1
         return commit(db,row)
     @router.delete('/api/v1/admin/app-defaults/value/{value_id}',dependencies=[Depends(require_admin)])

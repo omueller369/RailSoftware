@@ -1,0 +1,4 @@
+{
+  "text_b4a005154fb3": "Dla rodzaju używaj jednej nazwy DB-InfraGo. Aktualizacja serwera ujednolica stare nazwy DB InfraGo i DB InfraoGo w raportach, szkicach, nagraniach GPS i udostępnionych demonstracjach. Po aktualizacji aplikacji lokalne dane są ujednolicane przy otwarciu. Czasy, punkty GPS i wersje raportów pozostają zachowane. Wystawione oryginały PDF pozostają bez zmian. Najpierw zaktualizuj serwer, potem aplikację Android.",
+  "text_e153b8cb417a": "Jednolity rodzaj DB-InfraGo w istniejących raportach, szkicach, starszych nagraniach GPS, demonstracjach i lokalnych danych tabletu; połączenie powtarzających się wartości wyboru. Demonstracje GPS nigdy nie pokazują rzeczywistych prędkości ani skali km/h. Ślad ma jednolity kolor; udostępnianie i ustawienia konta nie zmieniają tej zasady. Tempo odtwarzania dotyczy wyłącznie przyspieszenia demonstracji."
+}

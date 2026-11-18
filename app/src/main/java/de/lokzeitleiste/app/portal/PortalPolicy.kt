@@ -54,6 +54,7 @@ class PortalPolicy(base: String) {
         "/tf/gps-marker-electric.png" -> "gps-marker-electric.png"
         "/tf/gps-marker-tank.png" -> "gps-marker-tank.png"
         "/tf/gps-settings.js" -> "gps-settings.js"
+        "/tf/infra-go.js" -> "infra-go.js"
         "/tf/rail-network-data.js" -> "rail-network-data.js"
         "/tf/location-editor.js" -> "location-editor.js"
         "/tf/knowledge-inventory.js" -> "knowledge-inventory.js"

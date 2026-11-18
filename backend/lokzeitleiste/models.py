@@ -585,6 +585,13 @@ class AppDefaultValue(Base):
     ever_used:Mapped[bool]=mapped_column(Boolean,nullable=False,default=False)
     revision:Mapped[int]=mapped_column(Integer,nullable=False,default=1)
 
+class AppDefaultAlias(Base):
+    __tablename__='app_default_aliases'
+    category:Mapped[str]=mapped_column(String(10),primary_key=True)
+    alias:Mapped[str]=mapped_column(String(64),primary_key=True)
+    canonical:Mapped[str]=mapped_column(String(64),nullable=False)
+
+
 class AppDefaultSeed(Base):
     __tablename__='app_default_seed'
     id:Mapped[int]=mapped_column(Integer,primary_key=True)

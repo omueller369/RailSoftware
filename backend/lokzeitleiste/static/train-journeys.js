@@ -19,6 +19,7 @@ window.loadTrainJourneyChoices=async()=>{
 };
 window.refreshTrainJourneyChoices=values=>{
  if(!Array.isArray(values))return;
+ values=window.InfraGo?.catalogue(values)||values;
  try{localStorage.setItem('lokzeitleiste.app-defaults',JSON.stringify(values));}catch{}
  for(const row of values)choiceLabels[row.category+':'+row.value]=row.label;
  REASONS.splice(0,REASONS.length,...values.filter(row=>row.category==='reason'&&row.active).map(row=>row.value));
@@ -55,6 +56,7 @@ window.TrainJourneyEditor=class{
   for(const value of values){const option=node('option',choiceLabel(values===REASONS?'reason':'cause',value));option.value=value;select.append(option);}label.append(node('span',title),select);parent.append(label);return select;
  }
  make(data){
+  data=window.InfraGo?.normalize(data)||data;
   this.cacheStation(data.start_station,data.start_station_name);this.cacheStation(data.end_station,data.end_station_name);for(const event of data.events||[])this.cacheStation(event.station,event.station_name);
   const item={id:data.id,events:chronological(data.events||[]).map(e=>({...e,cause:e.cause===globalThis.CtlText.source("portal_train_journeys.text_2087c99eb939")?'CTL':e.cause})),editing:null};
   item.panel=node('section');item.panel.addEventListener('ctlrevealfield',()=>this.activate(item.id));item.panel.className='train-panel';item.panel.id='train-panel-'+data.id;item.panel.setAttribute('role','tabpanel');
@@ -169,6 +171,7 @@ window.TrainJourneyEditor=class{
  pendingEvent(item){if(item.editing)return true;return Object.entries(item.eventFields).some(([name,field])=>field.value.trim()!==(item.suggestedTimes?.[name]||''));}
  hasPending(){return this.items.some(item=>this.pendingEvent(item));}
  async importGps(item,rows){
+  rows=window.InfraGo?.normalize(rows)||rows;
   if(this.o.readonly())throw Error(globalThis.CtlText.source("portal_train_journeys.text_ea479be144a5"));
   if(this.pendingEvent(item))throw Error(globalThis.CtlText.source("portal_train_journeys.text_5d7697a40f10"));
   const localTime=ms=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(ms)),p=Object.fromEntries(parts.map(p=>[p.type,p.value]));return p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;};

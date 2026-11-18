@@ -1,0 +1,4 @@
+{
+  "text_b4a005154fb3": "Use DB-InfraGo consistently for Type. The server update merges old spellings such as DB InfraGo and DB InfraoGo in reports, drafts, GPS recordings and shared demos. After the app update, local data is normalized when opened. Times, GPS points and report versions are preserved. Previously issued original PDFs remain unchanged. Update the server first, then the Android app.",
+  "text_e153b8cb417a": "Consistent DB-InfraGo Type across existing reports, drafts, old GPS recordings, shared demos and local tablet data; duplicate choices merged. GPS demos never show actual speeds or a km/h scale. The track has one neutral color; sharing and account settings cannot override this rule. Playback rate only controls replay acceleration."
+}

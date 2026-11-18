@@ -117,6 +117,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{portal_gps_demo.text_d2a6f5151788}}",
         "paragraphs": [
+          "{{infra_go.text_b4a005154fb3}}",
           "{{portal_gps_demo.text_8e157c16c15f}}",
           "{{portal_gps_demo.text_fdeb3c706255}}"
         ],
@@ -404,6 +405,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{portal_report_tabs.text_8f92cd7b253a}}",
         "paragraphs": [
+          "{{infra_go.text_b4a005154fb3}}",
           "{{field_navigation.text_ed1b54f61704}}",
           "{{field_navigation.text_ab0a303e2a2e}}",
           "{{report_rework.text_106a5842fc5f}}",

@@ -206,7 +206,7 @@ class RecordingTest(unittest.TestCase):
         path,response=self.save(manual_stops=[dict(key=key,start=BASE,end=BASE+60000)],stop_edits={key:dict(reason='DB-Digi-Befehl',cause='DB InfraGo')})
         self.assertEqual(response.status_code,200,response.text)
         saved=self.driver.get(path).json()['stop_edits'][key]
-        self.assertEqual(saved['reason'],'DB-Digi-Befehl');self.assertEqual(saved['cause'],'DB InfraGo')
+        self.assertEqual(saved['reason'],'DB-Digi-Befehl');self.assertEqual(saved['cause'],'DB-InfraGo')
 
     def test_manual_stand_without_gps_points_roundtrip_and_validation(self):
         key='manual-'+str(BASE)

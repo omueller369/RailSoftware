@@ -154,7 +154,8 @@ def station_data(db,lat,lon,nearby=False):
     return stations
 
 def read_payload(row):
-    payload=json.loads(row.payload_json)
+    from .infra_go import normalize
+    payload=normalize(json.loads(row.payload_json))
     if payload.get('detection_version')==5:return payload
     # Resolve old numbered assignments by their original start time.
     old=[r for r in analyse(payload['points'],payload.get('stop_edits') or {},legacy=payload.get('detection_version') not in (2,3,4),version2=payload.get('detection_version')==2,version3=payload.get('detection_version')==3,version4=payload.get('detection_version')==4)['rows'] if r['kind']==_text_source('server_gps.text_0fd998791d67')]
@@ -217,6 +218,8 @@ def create_router(require_account):
         return dict(payload,revision=row.revision,analysis=result)
     @router.get('/tf/updates.js')
     def updates_script():return FileResponse(Path(__file__).parent/'static'/'updates.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/tf/infra-go.js')
+    def infra_script():return FileResponse(Path(__file__).parent/'static'/'infra-go.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/gps-demo.js')
     def demo_script():return FileResponse(Path(__file__).parent/'static'/'gps-demo.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/api/v1/tf/gps-recordings')
@@ -246,7 +249,8 @@ def create_router(require_account):
         db.scalar(select(User).where(User.id==user.id).with_for_update())
         row=db.scalar(select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id,TrainGpsRecording.journey_id==str(journey_id)).with_for_update())
         if (row.revision if row else 0)!=data.expected_revision:raise HTTPException(409,_text_source('server_gps.text_e9455228bddf'))
-        payload=data.model_dump(exclude={'expected_revision'});previous=read_payload(row) if row else {}
+        from .infra_go import normalize,alias_map
+        payload=normalize(data.model_dump(exclude={'expected_revision'}),alias_map(db));previous=read_payload(row) if row else {}
         restarted=bool(previous.get('ended') and not data.ended and data.points and (not previous.get('points') or data.points[0].t>previous['points'][-1]['t']))
         if row and not restarted and data.stop_minutes is not None and data.stop_minutes!=previous.get('stop_minutes'):raise HTTPException(409,_text_source('server_gps.text_e9455228bddf'))
         payload['stop_minutes']=data.stop_minutes if not row or restarted else previous.get('stop_minutes')

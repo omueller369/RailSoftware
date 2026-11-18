@@ -15,7 +15,7 @@ def fixture():
     source=re.sub(r'\}\)\(\);\s*$',r'''window.FieldNavFixture={setup(editor){state={client_id:'test-report'};trainEditor=editor;window.CtlValidation.registerResolver(el('workReport'),reportIssueField);}};})();''',source)
     source+='// Keep collapse buttons'+blocks
     validation='/* Shared field feedback'+(runner.STATIC/'auth-session.js').read_text().split('/* Shared field feedback',1)[1]
-    scripts='\n'.join([(runner.STATIC/'messages.js').read_text(),validation,(runner.STATIC/'work-report-feedback.js').read_text(),(runner.STATIC/'report-tabs.js').read_text(),(runner.STATIC/'train-journeys.js').read_text(),source])
+    scripts='\n'.join([(runner.STATIC/'messages.js').read_text(),(runner.STATIC/'infra-go.js').read_text(),validation,(runner.STATIC/'work-report-feedback.js').read_text(),(runner.STATIC/'report-tabs.js').read_text(),(runner.STATIC/'train-journeys.js').read_text(),source])
     checks=r'''
 (async()=>{
  const assert=(v,m)=>{if(!v)throw Error(m);},tick=()=>new Promise(resolve=>setTimeout(resolve,100)),el=id=>document.getElementById(id);
@@ -23,7 +23,7 @@ def fixture():
  const event=(id,time='10:00')=>({id,reason:'V3',reason_detail:'',cause:'DB InfraGo',cause_detail:'',station:'BBB',station_name:'Bahnhof',start_at:'2026-11-18T'+time,end_at:'2026-11-18T10:20'});
  const trains=[1,2].map(n=>({id:'train-'+n,train_number:String(n),start_station:'AAA',start_station_name:'Start',end_station:'BBB',end_station_name:'Ziel',start_at:'2026-11-18T09:00',end_at:'2026-11-18T11:00',events:[event('event-'+n)]}));
  const editor=new TrainJourneyEditor({userId:7,container:el('trainJourneyEditor'),button:el('newTrainJourney'),readonly:()=>false,viewOnly:()=>false,bounds:()=>({start:el('dutyStart').value,end:el('dutyEnd').value}),minute:value=>Date.parse(value)/60000,clock:String,uuid:()=>crypto.randomUUID(),stations(){},resolve:async input=>({code:input.value.split(' · ')[0],name:'Bahnhof'}),changed(){},editingChanged(){},message:value=>ReportFeedback.error(value),block(){}});
- editor.restore(trains);assert(editor.draft()[1].events[0].cause==='DB InfraGo','Restoring rows preserves the stored choice key');FieldNavFixture.setup(editor);editor.activate('train-1');ReportTabs.activate('duty');ReportBlocks.collapse('trainJourneys');
+ editor.restore(trains);assert(editor.draft()[1].events[0].cause==='DB-InfraGo','Restoring rows preserves the stored choice key');FieldNavFixture.setup(editor);editor.activate('train-1');ReportTabs.activate('duty');ReportBlocks.collapse('trainJourneys');
  const message='Auswahlwert ist nicht mehr verfügbar. Bitte neu auswählen.',payload={client_id:'test-report',train_journeys:editor.draft()},snapshot=CtlValidation.capture({body:JSON.stringify(payload)});
  const fail=async(loc,context={})=>{await CtlValidation.response(new Response(JSON.stringify({detail:message,errors:[{loc:['body',...loc],msg:message,context}]}),{status:422}),snapshot);ReportFeedback.error(message);};
  await fail(['train_journeys',1,'events',0,'reason'],{journey_id:'train-2',event_id:'event-2'});assert(ReportTabs.active==='duty','Error waits for Okay before changing tabs');

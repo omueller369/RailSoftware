@@ -33,7 +33,7 @@ class AppDefaultsTest(unittest.TestCase):
 
     def test_initial_defaults_and_delete_not_recreated_by_update(self):
         rows=self.catalogue();self.assertEqual(len(rows),21)
-        self.assertEqual([r['value'] for r in rows if r['category']=='cause'],['CTL','DB InfraGo','Dritte Stelle','sonstiges'])
+        self.assertEqual([r['value'] for r in rows if r['category']=='cause'],['CTL','DB-InfraGo','Dritte Stelle','sonstiges'])
         self.assertTrue(all(r['active'] and not r['used'] for r in rows))
         row=next(r for r in rows if r['value']=='V3');self.assertEqual(self.remove(row).status_code,200)
         with Session(self.engine) as db:ensure_defaults(db)
