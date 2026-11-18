@@ -38,7 +38,7 @@ test('event editor uses current types and renders date changes across rows',()=>
   const editor=new context.window.TrainJourneyEditor({container:new Element('div'),button:new Element('button'),readonly:()=>false,bounds:()=>bounds,minute:v=>Date.parse(v+'Z')/60000,uuid:()=>String(++id),clock:n=>String(n),stations(){},changed(){}});
   editor.restore([{id:'train',train_number:'123',start_station:'BHF',end_station:'LL',start_at:bounds.start,end_at:bounds.end,events:[{id:'1',reason:'Pause',cause:'CTL Logistics DE',station:'',start_at:'2026-10-12T23:55',end_at:'2026-10-13T00:10'},{id:'2',reason:'V1',cause:'DB InfraGo',station:'LL',start_at:'2026-10-13T00:15',end_at:'2026-10-13T00:30'}]}]);
   const item=editor.items[0],fields=item.eventFields;
-  assert.deepEqual(Array.from(fields.cause.options,o=>o.value),['','CTL','DB InfraGo','Dritte Stelle','sonstiges']);
+  assert.deepEqual(Array.from(fields.cause.options,o=>o.value),['','CTL','DB-InfraGo','Dritte Stelle','sonstiges']);
   assert.equal(fields.cause.parentElement.children[0].textContent,'Art');
   const rows=item.rows.children.map(row=>row.children.map(cell=>cell.textContent));
   assert.equal(rows[0][0],'CTL');assert.equal(rows[0][1],'Pause');
