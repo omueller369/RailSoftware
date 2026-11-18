@@ -1,6 +1,6 @@
 /* Apply the saved appearance in the head, before page content is painted. */
 (()=>{const root=document.documentElement;if(!root)return;let mode='light';try{if(localStorage.getItem('ctl.portal.theme')==='dark')mode='dark';}catch{}root.dataset.theme=mode;root.style.colorScheme=mode;
-const css=document.createElement('link');css.id='portalThemeStyles';css.rel='stylesheet';css.href='/theme.css?v=20261118-field-navigation-02710';document.head.append(css);
+const css=document.createElement('link');css.id='portalThemeStyles';css.rel='stylesheet';css.href='/theme.css?v=20261118-report-error-repair-02711';document.head.append(css);
 const script=document.createElement('script');script.src='/theme.js?v=20261108-validation-02619';document.head.append(script);})();
 /* Per-tab bearer credentials keep TF and backend logins independent. */
 (()=>{const native=window.fetch.bind(window);let area=location.pathname.startsWith('/tf')?'tf':location.pathname.startsWith('/admin')?'backend':new URLSearchParams(location.search).get('area')||sessionStorage.getItem('ctl.area')||'backend';sessionStorage.setItem('ctl.area',area);const key=a=>'ctl.session.'+a;
@@ -13,7 +13,7 @@ window.loadTfHelp=()=>{
  helpTask=new Promise((resolve,reject)=>{
   if(!document.getElementById('tfHelpStyles')){const css=document.createElement('link');css.id='tfHelpStyles';css.rel='stylesheet';css.href='/tf/help.css?v=20261108-validation-02619';document.head.append(css);}
   const load=path=>new Promise((done,fail)=>{const script=document.createElement('script');script.src=path;script.onload=done;script.onerror=()=>{script.remove();fail(Error(globalThis.CtlText.source("backend_auth_session.text_6227b32686e3")));};document.head.append(script);});
-  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261118-field-navigation-02710')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
+  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261118-report-error-repair-02711')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
  }).catch(error=>{helpTask=null;throw error;});return helpTask;
 };
 // Downloads need the same tab identity as API requests, rather than shared cookies.
@@ -112,12 +112,16 @@ function reveal(field,message=''){
  const focus=()=>{if(field.isConnected===false)return;field.scrollIntoView?.({behavior:'smooth',block:'center',inline:'nearest'});if(!field.disabled)field.focus?.({preventScroll:true});};
  if(window.requestAnimationFrame)window.requestAnimationFrame(focus);else focus();
 }
+function errorDetails(data){
+ const errors=Array.isArray(data.detail)?data.detail:Array.isArray(data.errors)?data.errors:Array.isArray(data.fields)?data.fields.map(error=>({loc:String(error.field||'').split('.').map(part=>/^\d+$/.test(part)?Number(part):part),msg:data.detail})):[];
+ const envelope=typeof data.detail==='string'?data.detail:errors.map(error=>error.msg||error.message).join('; ');return {errors,envelope};
+}
+function issuesFromResponse(data,snapshot){const {errors,envelope}=errorDetails(data);return errors.map(error=>({loc:error.loc||error.path||[],context:error.context||{},message:error.msg||error.message||envelope,envelope,snapshot}));}
 async function response(response,snapshot){
  if(response.ok||![400,401,403,409,422].includes(response.status))return;
  let data;try{data=await response.clone().json();}catch{return;}
- const errors=Array.isArray(data.detail)?data.detail:Array.isArray(data.errors)?data.errors:Array.isArray(data.fields)?data.fields.map(error=>({loc:String(error.field||'').split('.').map(part=>/^\d+$/.test(part)?Number(part):part),msg:data.detail})):[];
- const envelope=typeof data.detail==='string'?data.detail:errors.map(error=>error.msg||error.message).join('; ');
- lastIssues=errors.map(error=>({loc:error.loc||error.path||[],context:error.context||{},message:error.msg||error.message||envelope,envelope,snapshot}));
+ const {errors,envelope}=errorDetails(data);
+ lastIssues=issuesFromResponse(data,snapshot);
  for(const error of errors){
   const targets=locate(snapshot,error.loc||error.path||[]);
   for(const field of targets){
@@ -152,5 +156,5 @@ for(const type of ['click','submit'])document.addEventListener(type,event=>{
  const scope=event.target.closest?.('form')||event.target.closest?.('dialog,section');
  if(scope)actionScope=scope;
 },true);
-window.CtlValidation={mark,clear,validate,fields,capture,response,report,takeIssues,resolveIssues,reveal,rememberIssue,registerResolver:(owner,resolver)=>resolvers.set(owner,resolver)};
+window.CtlValidation={issuesFromResponse,mark,clear,validate,fields,capture,response,report,takeIssues,resolveIssues,reveal,rememberIssue,registerResolver:(owner,resolver)=>resolvers.set(owner,resolver)};
 })();

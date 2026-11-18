@@ -15,7 +15,11 @@ window.TrainJourneyReasonLabel=value=>choiceLabel('reason',value);
 window.loadTrainJourneyChoices=async()=>{
  let values;
  try{const response=await fetch('/api/v1/tf/app-defaults',{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw Error(globalThis.CtlText.source("portal_train_journeys.text_1e6760b90c10"));values=await response.json();localStorage.setItem('lokzeitleiste.app-defaults',JSON.stringify(values));}catch(error){try{values=JSON.parse(localStorage.getItem('lokzeitleiste.app-defaults')||'null');}catch(ignored){}}
+ window.refreshTrainJourneyChoices(values);
+};
+window.refreshTrainJourneyChoices=values=>{
  if(!Array.isArray(values))return;
+ try{localStorage.setItem('lokzeitleiste.app-defaults',JSON.stringify(values));}catch{}
  for(const row of values)choiceLabels[row.category+':'+row.value]=row.label;
  REASONS.splice(0,REASONS.length,...values.filter(row=>row.category==='reason'&&row.active).map(row=>row.value));
  CAUSES.splice(0,CAUSES.length,...values.filter(row=>row.category==='cause'&&row.active).map(row=>row.value));
@@ -109,6 +113,14 @@ window.TrainJourneyEditor=class{
    for(const value of [cause,reason,labelStation(event.station,event.station_name),stamp(event.start_at,previous),stamp(event.end_at,event.start_at),this.o.clock(n),this.o.clock(event.reason===globalThis.CtlText.source("portal_train_journeys.text_858e4ba7a29f")?n:0)]){const cell=node('td',value);cell.setAttribute('data-i18n-ignore','');row.append(cell);}
    previous=event.end_at;
    const load=()=>{if(this.o.readonly())return;item.editing=event.id;for(const kind of ['reason','cause']){if(![...item.eventFields[kind].options].some(o=>o.value===event[kind])){const legacy=node('option',event[kind+'_label']||choiceLabel(kind,event[kind]));legacy.value=event[kind];legacy.disabled=true;item.eventFields[kind].append(legacy);}}for(const name of ['reason','reason_detail','cause','cause_detail','start_at','end_at'])item.eventFields[name].value=(event[name]||'').toString().slice(0,name.endsWith('_at')?16:undefined);item.eventFields.station.value=labelStation(event.station,event.station_name);item.eventFields.start_at.dataset.previous=item.eventFields.start_at.value;item.eventFields.end_at.min=item.eventFields.start_at.value;this.details(item);item.submit.textContent=globalThis.CtlText.source("portal_train_journeys.text_f6b2ff39f540");item.cancel.hidden=false;item.deleteEvent.hidden=false;this.table(item);item.form.scrollIntoView?.({behavior:'smooth',block:'nearest'});};row.onclick=load;row.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();load();}};item.rows.append(row);
+  }
+ }
+ refreshChoiceOptions(){
+  for(const item of this.items)for(const kind of ['cause','reason']){
+   const field=item.eventFields[kind],value=field.value,caption=[...field.options].find(option=>option.value===value)?.textContent||value;
+   field.replaceChildren();const empty=node('option',globalThis.CtlText.source("portal_train_journeys.text_4112179c8995"));empty.value='';field.append(empty);
+   for(const choice of kind==='cause'?CAUSES:REASONS){const option=node('option',choiceLabel(kind,choice));option.value=choice;field.append(option);}
+   if(value&&![...field.options].some(option=>option.value===value)){const old=node('option',caption);old.value=value;old.disabled=true;field.append(old);}field.value=value;
   }
  }
  resolveIssue(issue){

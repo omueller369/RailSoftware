@@ -73,6 +73,8 @@ jobs:
           path: ${{ runner.temp }}/portal-beta60-ui/
       - name: GPS demo browser playback
         run: python backend/tests/check_gps_demo_ui.py --output-dir "$RUNNER_TEMP/gps-demo-ui"
+      - name: Android monthly report synchronization error navigation
+        run: python backend/tests/check_android_report_navigation_ui.py --output-dir "$RUNNER_TEMP/android-report-navigation"
       - name: Field error navigation and Android-only update tile
         run: python backend/tests/check_field_error_navigation_ui.py --output-dir "$RUNNER_TEMP/field-error-navigation"
       - name: Check shared GPS demo and read-only stops

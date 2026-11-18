@@ -238,3 +238,5 @@ html[data-theme="dark"] #reportSendCancel {
 #reportListRows tr[data-sync-state=returned]>td{background:#fff2a8!important;color:#193044}#reportListRows tr[data-sync-state=returned]{border-left:5px solid #d6a300}
 
 .gps-demo-share-list{display:grid;gap:.75rem;margin:1rem 0}.gps-demo-share-list label{display:flex;align-items:center;gap:.7rem}.gps-demo-share-list input[type=checkbox]{width:1.4rem;height:1.4rem;flex:0 0 auto}.gps-demo-stops{width:100%;max-width:100%;box-sizing:border-box}.gps-demo-stops table{width:100%;min-width:0;table-layout:fixed}.gps-demo-stops th:first-child{width:26%}.gps-demo-stops th,.gps-demo-stops td{white-space:normal;overflow-wrap:anywhere}.gps-demo-share-list label{min-height:44px;cursor:pointer}.gps-demo-share-list input[type=checkbox]{appearance:auto;pointer-events:auto;touch-action:manipulation;opacity:1}a.module[hidden]{display:none!important}
+
+#reportErrorText{white-space:pre-line;overflow-wrap:anywhere}

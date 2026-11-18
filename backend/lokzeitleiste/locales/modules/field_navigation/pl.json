@@ -2,5 +2,13 @@
   "text_560a8d1bc3b6": "Po wybraniu Okay przejdziesz do wiersza przypisanego do błędu. Pole zostanie pokazane i otoczone czerwoną ramką.",
   "text_ab0a303e2a2e": "Potwierdź błąd podczas wysyłania przyciskiem Okay. Jeśli błąd jest przypisany do pola, otworzy się właściwa zakładka z przejazdem, postojem lub danymi służby. Pole otrzyma czerwoną ramkę i fokus. Popraw wartość i zapisz wiersz przed ponownym wysłaniem. Jeśli edytujesz inny wiersz, jego dane zostaną zachowane, a błędna komórka tabeli zostanie oznaczona. Opóźnione komunikaty nie przywracają już poprawionych wartości. Błędy połączenia i dostępu nie oznaczają błędnego pola.",
   "text_6c83f129717f": "Kafelek Aktualizacje jest widoczny tylko w aplikacji Android. W wersji internetowej korzystasz z aktualnego stanu po aktualizacji wykonanej przez administrację.",
-  "text_39ddf1aab866": "Okay prowadzi do błędnego wiersza i oznacza pole na czerwono; otwarte zmiany oraz poprawione wartości zostają zachowane. Kafelek aktualizacji tylko w Androidzie. Demonstracja GPS: zaznaczenia są tylko przygotowaniem; Udostępnij wybór publikuje lub cofa dostęp. Postoje pokazują godziny w elastycznej tabeli na pełną szerokość."
+  "text_39ddf1aab866": "Okay prowadzi do błędnego wiersza i oznacza pole na czerwono; otwarte zmiany oraz poprawione wartości zostają zachowane. Kafelek aktualizacji tylko w Androidzie. Demonstracja GPS: zaznaczenia są tylko przygotowaniem; Udostępnij wybór publikuje lub cofa dostęp. Postoje pokazują godziny w elastycznej tabeli na pełną szerokość.",
+  "text_cf6051929202": "Raport pracy",
+  "text_7669f7f5709e": "Pociąg",
+  "text_72c95310a2d6": "Rodzaj",
+  "text_7449c50fc324": "Powód",
+  "text_9d2615d23f73": "Nie udało się otworzyć wskazanego raportu. Twoje dane pozostają zachowane. Odśwież listę i otwórz raport wskazany powyżej.",
+  "text_24c8b06bc6b7": "Przejście zatrzymano, ponieważ nie można było bezpiecznie zapisać bieżących danych. Najpierw je zapisz, a następnie otwórz raport wskazany powyżej.",
+  "text_ed1b54f61704": "W razie błędu synchronizacji komunikat wskazuje raport, datę, numer pociągu, godzinę i odrzuconą wartość. Okay otwiera także inny raport z listy miesięcznej oraz oznaczony wiersz. Bieżące dane są wcześniej zapisywane lokalnie i przywracane po ponownym otwarciu ich raportu. Niedostępna wartość nie jest zastępowana automatycznie: wybierz poprawną wartość w czerwonym polu, zapisz wiersz i ponów synchronizację.",
+  "text_645087f320ac": "Błędy synchronizacji otwierają właściwy raport z listy miesięcznej. Data, numer pociągu, godzina i odrzucona wartość ułatwiają znalezienie błędu; bieżące dane są zachowane lokalnie."
 }

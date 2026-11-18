@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.10
+# LokZeitleiste v0.27.11
+
+**0.27.11:** Synchronisationsfehler öffnen auch einen anderen Arbeitsbericht aus der Monatsliste und dessen fehlerhafte Zeile. Der Dialog nennt Datum, Zugnummer, Uhrzeit und den abgelehnten Wert. Android wertet die Feldzuordnung direkt an der fehlgeschlagenen Anfrage aus; ältere Serverantworten werden mit dem aktuellen Auswahlkatalog abgeglichen. Offene Eingaben im zuvor geöffneten Bericht werden lokal gesichert und beim Wiederöffnen wiederhergestellt. Werte werden nicht automatisch ersetzt.
 
 **0.27.10:** Eingabefehler beim Senden mit Okay gezielt öffnen: Reiter, Zugfahrt und Datenzeile werden eingeblendet, das betroffene Feld wird rot markiert. Veraltete Auswahlwerte und unbekannte DS100-Orte erhalten eindeutige Feldpfade. Offene Bearbeitungen und bereits korrigierte Eingaben bleiben erhalten. Die Updates-Kachel erscheint nur in der Android-App. GPS-Demo-Freigaben werden per Checkbox vorgemerkt und erst mit Auswahl freigeben gemeinsam übernommen. Demo-Standzeiten zeigen nur Uhrzeiten in einer flexiblen Tabelle über die volle Breite.
 

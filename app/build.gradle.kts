@@ -22,7 +22,7 @@ android {
         applicationId = "de.lokzeitleiste.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("101").get().toInt()
+        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("102").get().toInt()
         versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.0").get()
         buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl}\"")
     }
