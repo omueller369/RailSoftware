@@ -21,6 +21,7 @@ class DispatchTrackingTest(unittest.TestCase):
         response=self.client.post('/api/v1/admin/dispatchers',json=self.payload(name,permissions))
         self.assertEqual(response.status_code,201,response.text);return response.json()['id']
     def test_separate_stocks_default_access_login_and_explicit_opt_out(self):
+        self.assertEqual(self.client.post('/api/v1/admin/dispatchers',json={**self.payload('invalid-dispatch'),'permissions':None}).status_code,422)
         dispatcher=self.dispatcher();office=self.create_staff({},'normal-office')
         self.assertEqual([r['id'] for r in self.client.get('/api/v1/admin/dispatchers').json()],[dispatcher])
         self.assertEqual([r['id'] for r in self.client.get('/api/v1/admin/staff').json()],[office])

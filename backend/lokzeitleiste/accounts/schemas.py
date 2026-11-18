@@ -72,7 +72,7 @@ class DispatcherCreate(StaffCreate):
     @model_validator(mode="before")
     @classmethod
     def defaults(cls,value):
-        if isinstance(value,dict):
+        if isinstance(value,dict) and isinstance(value.get("permissions",{}),dict):
             value={**value,"permissions":{**value.get("permissions",{})}}
             value["permissions"].setdefault("tracking",1)
         return value
