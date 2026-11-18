@@ -12,6 +12,8 @@ from .models import StaffProfile
 def start_modules(user,p):
     employees=any(p.get(key,0) for key in ('employees','planning','worktime','reports','directory','shifts','email'))
     definitions=[
+        ('dispatchers',_text_source('dispatch_tracking.text_640480716e00'),'/admin/dispatchers',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('dispatchers',0)),
+        ('tracking',_text_source('dispatch_tracking.text_5a95db2aa8e5'),'/admin/tracking',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('tracking',0)),
         ('knowledge',_text_source('admin_knowledge.text_64d055aab207'),'/admin/knowledge',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('knowledge',0)),
         ('wgm',_text_source('wgm.text_159c423d8698'),'/admin/wgm',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('wgm',0)),
         ('work_reports',_text_source('admin_work_reports.text_1bc38267fc84'),'/admin/work-reports',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('work_reports',0)),
@@ -34,9 +36,8 @@ def start_modules(user,p):
         ('documents',_text_source('server_backend_start.text_52b5952bea66'),'/documents',_text_source('server_backend_start.text_824543888534'),2),
         ('password',_text_source('server_backend_start.text_b4d616199968'),'/admin/me',_text_source('server_backend_start.text_824543888534'),2),
     ]
-    if user.role=='admin':definitions.extend([('phpmyadmin','phpMyAdmin','/phpmyadmin',_text_source('server_backend_start.text_4b42c6690ebe'),3),('webmailer',_text_source('server_backend_start.text_99ed27bf3bdb'),'/webmailer',_text_source('server_backend_start.text_4b42c6690ebe'),3)])
     if user.role=='staff':definitions.append(('own_time',_text_source('server_backend_start.text_e71e0296d76b'),'/my/worktime',_text_source('server_backend_start.text_824543888534'),2))
-    return [dict(id=id,label=label,url=url,group=group,level=level,new_tab=id in ('phpmyadmin','webmailer')) for id,label,url,group,level in definitions if level]
+    return [dict(id=id,label=label,url=url,group=group,level=level,new_tab=False,**({'description':_text_source('dispatch_tracking.text_c432b372e0e3')} if id=='tracking' else {})) for id,label,url,group,level in definitions if level]
 
 
 def create_router(require_admin):
@@ -52,6 +53,6 @@ def create_router(require_admin):
         profile=db.get(StaffProfile,user.id) if user.role=='staff' else None
         name=(profile.first_name+' '+profile.last_name).strip() if profile else user.username
         modules=start_modules(user,permissions(db,user))
-        return dict(name=name,modules=modules,admin_tools=[row for row in modules if row['id'] in ('phpmyadmin','webmailer')] if user.role=='admin' else [])
+        return dict(name=name,modules=modules,admin_tools=[])
     return router
 

@@ -97,6 +97,20 @@ jobs:
         with:
           name: work-report-layout
           path: ${{ runner.temp }}/work-report-layout/
+      - name: Train tracking live positions, expiry and read-only map
+        run: python backend/tests/check_train_tracking_ui.py --output-dir "$RUNNER_TEMP/train-tracking-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: train-tracking-ui
+          path: ${{ runner.temp }}/train-tracking-ui/
+      - name: Dispatcher personnel management browser checks
+        run: python backend/tests/check_dispatchers_ui.py --output-dir "$RUNNER_TEMP/dispatchers-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dispatchers-ui
+          path: ${{ runner.temp }}/dispatchers-ui/
       - name: Administrative knowledge target isolation and shared map
         run: python backend/tests/check_admin_knowledge_ui.py --output-dir "$RUNNER_TEMP/admin-knowledge-ui"
       - uses: actions/upload-artifact@v4

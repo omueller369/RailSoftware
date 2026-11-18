@@ -865,7 +865,8 @@ class TfNote(Base):
 class EmployeeCategory(Base):
     """Occupational category independent of login role and TF route qualification.
 
-    Missing rows on existing installations mean TF; no existing profile is altered.
+    Missing rows retain the original category for the login role (TF or office staff).
+    Staff rows marked dispatch identify dispatchers; existing profiles stay unchanged.
     """
     __tablename__ = 'employee_categories'
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), primary_key=True)

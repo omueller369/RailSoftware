@@ -122,16 +122,20 @@ def create_router(require_account):
 
     @router.get('/api/v1/tf/gps-shared-positions')
     def feed(user=Depends(driver),db:Session=Depends(database_session)):
-        now=now_utc();viewer=preferences(db,user.id);rows=db.execute(select(GpsLivePosition,User,TfProfile).join(User,User.id==GpsLivePosition.user_id).join(TfProfile,TfProfile.user_id==User.id).where(GpsLivePosition.user_id!=user.id,GpsLivePosition.updated_at>=now-timedelta(seconds=TTL),User.role=='tf').limit(500))
-        result=[]
-        for row,sender,profile in rows:
-            pref=preferences(db,sender.id)
-            if not pref.share_enabled or not account_active(db,sender) or not row.point_json:continue
-            point=json.loads(row.point_json)
-            if point['t']<int(now.replace(tzinfo=timezone.utc).timestamp()*1000)-TTL*1000:continue
-            item={key:point[key] for key in ('lat','lon','t')};item.update(id=sender.id,marker=pref.marker)
-            for field,option in FIELDS.items():
-                if getattr(pref,option) and getattr(viewer,option):item[field]=profile.first_name if field=='first_name' else point[field]
-            result.append(item)
-        return dict(positions=result,expires_after_seconds=TTL)
+        return shared_positions(db,viewer=preferences(db,user.id),exclude_id=user.id)
     return router
+
+def shared_positions(db,viewer=None,exclude_id=None):
+    now=now_utc();rows=db.execute(select(GpsLivePosition,User,TfProfile).join(User,User.id==GpsLivePosition.user_id).join(TfProfile,TfProfile.user_id==User.id).where(GpsLivePosition.updated_at>=now-timedelta(seconds=TTL),User.role=='tf').limit(500))
+    result=[]
+    for row,sender,profile in rows:
+        if sender.id==exclude_id:continue
+        pref=preferences(db,sender.id)
+        if not pref.share_enabled or not account_active(db,sender) or not row.point_json:continue
+        point=json.loads(row.point_json)
+        if point['t']<int(now.replace(tzinfo=timezone.utc).timestamp()*1000)-TTL*1000:continue
+        item={key:point[key] for key in ('lat','lon','t')};item.update(id=sender.id,marker=pref.marker)
+        for field,option in FIELDS.items():
+            if getattr(pref,option) and (viewer is None or getattr(viewer,option)):item[field]=profile.first_name if field=='first_name' else point[field]
+        result.append(item)
+    return dict(positions=result,expires_after_seconds=TTL)

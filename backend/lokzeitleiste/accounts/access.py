@@ -3,12 +3,17 @@ from ..localization import source as _text_source
 import re
 from fastapi import HTTPException
 from sqlalchemy import select
-from ..models import AccountPolicy, ModulePermission, User
+from ..models import AccountPolicy, ModulePermission, User, EmployeeCategory
 
-MODULES = {"knowledge":_text_source('admin_knowledge.text_64d055aab207'), "wgm":_text_source('wgm.text_159c423d8698'), "work_reports":_text_source('admin_work_reports.text_1bc38267fc84'), "leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
+MODULES = {"dispatchers":_text_source('dispatch_tracking.text_640480716e00'), "tracking":_text_source('dispatch_tracking.text_5a95db2aa8e5'), "knowledge":_text_source('admin_knowledge.text_64d055aab207'), "wgm":_text_source('wgm.text_159c423d8698'), "work_reports":_text_source('admin_work_reports.text_1bc38267fc84'), "leasing":_text_source('server_accounts_access.text_a23174dc39c0'), "loco_handover":_text_source('server_accounts_access.text_2f571b7ba8ad'), "app_defaults":_text_source('server_accounts_access.text_cb5129c1d8f0'), "vehicles":_text_source('server_accounts_access.text_e76efaf41a3e'), "employees":"Mitarbeiter-Stammdaten", "planning":_text_source('server_accounts_access.text_32fc56971e4d'),
            "worktime":_text_source('server_accounts_access.text_dd4fd942cb88'), "reports":_text_source('server_accounts_access.text_1948beff57ad'),
            "staff":_text_source('server_accounts_access.text_ce72f4c833ff'), "directory":_text_source('server_accounts_access.text_ef61cbee3c30'),
            "shifts":_text_source('server_accounts_access.text_3d64eed6e362'), "email":"Mitarbeiter-E-Mail"}
+
+
+def staff_module(db,user_id):
+    category=db.get(EmployeeCategory,user_id)
+    return 'dispatchers' if category and category.category=='dispatch' else 'staff'
 
 
 def password_required(db, user):
@@ -44,6 +49,10 @@ def redact_plan(db,user,summary):
 
 def authorize_route(db, user, request):
     path, method = request.url.path.rstrip('/'), request.method
+    if path.startswith('/api/v1/admin/tracking'):
+        return demand(db,user,'tracking',1 if method=='GET' else 3)
+    if path.startswith('/api/v1/admin/dispatchers'):
+        return demand(db,user,'dispatchers',1 if method=='GET' else 2 if method=='PUT' else 3)
     if path=='/api/v1/admin/knowledge' or path.startswith('/api/v1/admin/knowledge/'):
         return demand(db,user,'knowledge',1 if method=='GET' else 2)
     if path=='/api/v1/admin/wgm' or path.startswith('/api/v1/admin/wgm/'):
@@ -66,7 +75,7 @@ def authorize_route(db, user, request):
         return
     ready(db,user)
     if path in ('/api/v1/admin/email-domains','/api/v1/admin/email-suggestion') and method=='GET':
-        if not any(permissions(db,user)[m] for m in ('employees','staff','app_defaults')):raise HTTPException(403,_text_source('server_accounts_access.text_9f384d3442b4'))
+        if not any(permissions(db,user)[m] for m in ('employees','staff','dispatchers','app_defaults')):raise HTTPException(403,_text_source('server_accounts_access.text_9f384d3442b4'))
         return
     if path in ('/api/v1/admin/me','/api/v1/admin/modules','/api/v1/admin/start','/api/v1/admin/menu-preference'):
         return
@@ -95,7 +104,7 @@ def authorize_route(db, user, request):
     if re.fullmatch(r'/api/v1/admin/tf/\d+/photo',path):
         return demand(db,user,'employees',1 if method=='GET' else 2)
     if re.fullmatch(r'/api/v1/admin/staff/\d+/photo',path):
-        return demand(db,user,'staff',1 if method=='GET' else 2)
+        return demand(db,user,staff_module(db,int(path.split('/')[-2])),1 if method=='GET' else 2)
     if re.fullmatch(r'/api/v1/admin/tf/\d+/overtime/\d+(?:/\d+(?:/(?:policy|close|reopen))?)?',path):
         return demand(db,user,'reports',1 if method=='GET' else 3 if path.endswith(('/policy','/reopen')) else 2)
     if path.startswith('/api/v1/admin/worktime/'):
@@ -106,7 +115,7 @@ def authorize_route(db, user, request):
         target = db.get(User,int(path.split('/')[-2]))
         if not target:
             raise HTTPException(404, _text_source('server_accounts_access.text_b59ef1fdfb31'))
-        return demand(db,user,'employees' if target.role == 'tf' else 'wgm' if target.role=='wgm' else 'staff',3)
+        return demand(db,user,'employees' if target.role == 'tf' else 'wgm' if target.role=='wgm' else staff_module(db,target.id),3)
     if re.fullmatch(r'/api/v1/admin/tf/\d+',path) and method=='PUT':
         return demand(db,user,'employees',2)
     if re.fullmatch(r'/api/v1/admin/tf/\d+/delivery',path):

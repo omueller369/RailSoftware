@@ -779,3 +779,6 @@ app.include_router(gps_preferences_router(require_account))
 
 from .admin_knowledge import create_router as admin_knowledge_router
 app.include_router(admin_knowledge_router(require_admin))
+
+from .dispatch_tracking import create_router as dispatch_tracking_router
+app.include_router(dispatch_tracking_router(require_admin))

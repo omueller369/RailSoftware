@@ -19,7 +19,8 @@ class BackendStartTest(unittest.TestCase):
         ids={row['id'] for row in response.json()['modules']}
         self.assertTrue({'tf','staff','directory','planning','shifts','vehicles','app_defaults','reports','documents','password'}<=ids)
         tools=response.json()['admin_tools']
-        self.assertEqual({row['url'] for row in tools},{'/phpmyadmin','/webmailer'})
+        self.assertEqual(tools,[])
+        self.assertFalse({'phpmyadmin','webmailer'} & ids)
         self.assertTrue(all(row['new_tab'] for row in tools))
         self.assertIn('no-store',response.headers['cache-control'])
         self.assertNotIn('start',self.client.get('/api/v1/admin/me').json()['permissions'])

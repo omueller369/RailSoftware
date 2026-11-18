@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.5
+# LokZeitleiste v0.27.6
+
+**0.27.6:** Disponentenverwaltung mit denselben Stammdaten- und Berechtigungsfunktionen wie Verwaltungsmitarbeiter, getrenntem Bestand und standardmäßigem Leserecht für Zugverfolgung. Die Deutschlandkarte zeigt das deutsche Streckennetz und aktiv geteilte GPS-Positionen mit freigegebener Zugnummer und TF-Vornamen; ohne Freigabe und nach zehn Minuten ohne Position bleiben keine Punkte sichtbar. Administratoren finden phpMyAdmin und WebMailer im Administrationsmenü statt als Kacheln. Das angekündigte eigene PNG kann später das vorläufige vorhandene GPS-Symbol ersetzen.
 
 **0.27.5:** Neues Verwaltungsmodul „Strecken- BR- und Ortskenntnisse“: TF über Suche und Dropdown wählen, gemeinsame Karten und Bestände anzeigen, Baureihenkenntnisse anlegen und bearbeiten. Sachbearbeitern das neue Modulrecht „Lesen“ oder „Lesen/Schreiben“ zuweisen. Verwaltungsansichten laden ausschließlich den ausgewählten TF vom Server; private Gerätebestände werden nicht verwendet. Kartenfarben und Legendenbegriffe sind in beiden Portalen vereinheitlicht. Bestätigte importierte Streckenkenntnis bleibt führend.
 

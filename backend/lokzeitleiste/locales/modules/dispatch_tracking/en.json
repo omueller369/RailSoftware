@@ -1,0 +1,12 @@
+{
+  "text_640480716e00": "Dispatchers",
+  "text_11507a0e2f5e": "Create dispatcher",
+  "text_5a95db2aa8e5": "Train tracking",
+  "text_c432b372e0e3": "Germany map with its railway network and actively shared driver positions. Train number above the marker, shared first name below.",
+  "text_9368a7d21e01": "Only explicitly started sharing is shown. Train number and first-name disclosure settings are respected. Positions expire after ten minutes; refresh every 30 seconds.",
+  "text_d6cc0a088c07": "Load positions",
+  "text_ca00fccfb408": "Could not load positions. Check the connection and access rights.",
+  "text_6c35493a2b93": "Shared positions",
+  "text_259aa8ef98a8": "Separate dispatcher records with default tracking access. Administrator tools moved to the menu. Tracking shows only actively shared GPS positions.",
+  "text_106a5842fc5f": "Consent Yes and the share button also share current positions with authorized staff and dispatchers in Train tracking. Train number and first name appear only if you enable the respective checkboxes. Your surname is not transmitted. Stop sharing or consent No removes your position; without an update it disappears within ten minutes."
+}

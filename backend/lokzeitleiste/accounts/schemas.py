@@ -66,3 +66,13 @@ class PasswordChange(BaseModel):
 
 class PasswordReset(BaseModel):
     initial_password: str = Field(min_length=6,max_length=4096)
+
+
+class DispatcherCreate(StaffCreate):
+    @model_validator(mode="before")
+    @classmethod
+    def defaults(cls,value):
+        if isinstance(value,dict):
+            value={**value,"permissions":{**value.get("permissions",{})}}
+            value["permissions"].setdefault("tracking",1)
+        return value

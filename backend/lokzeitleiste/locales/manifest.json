@@ -169,6 +169,11 @@
     "en": "/locales/backend_worktime/en.json",
     "pl": "/locales/backend_worktime/pl.json"
   },
+  "dispatch_tracking": {
+    "de": "/locales/dispatch_tracking/de.json",
+    "en": "/locales/dispatch_tracking/en.json",
+    "pl": "/locales/dispatch_tracking/pl.json"
+  },
   "gpkg_station_catalog": {
     "de": "/locales/gpkg_station_catalog/de.json",
     "en": "/locales/gpkg_station_catalog/en.json",

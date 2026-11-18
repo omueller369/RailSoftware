@@ -1,0 +1,12 @@
+{
+  "text_640480716e00": "Disponenten",
+  "text_11507a0e2f5e": "Disponenten anlegen",
+  "text_5a95db2aa8e5": "Zugverfolgung",
+  "text_c432b372e0e3": "Deutschlandkarte mit deutschem Streckennetz und aktiv geteilten TF-Positionen. Zugnummer über dem Symbol, freigegebener TF-Vorname darunter.",
+  "text_9368a7d21e01": "Nur bewusst gestartetes Teilen wird angezeigt. Freigaben für Zugnummer und Vorname bleiben wirksam. Positionen verfallen nach zehn Minuten; Aktualisierung alle 30 Sekunden.",
+  "text_d6cc0a088c07": "Positionen laden",
+  "text_ca00fccfb408": "Positionen konnten nicht geladen werden. Prüfe Verbindung und Zugriffsrechte.",
+  "text_6c35493a2b93": "Geteilte Positionen",
+  "text_259aa8ef98a8": "Disponenten mit eigenen Stammdaten und standardmäßigem Zugriff auf Zugverfolgung. Administrator-Werkzeuge stehen im Menü. Zugverfolgung zeigt nur aktiv freigegebene GPS-Positionen.",
+  "text_106a5842fc5f": "Mit Freigabe Ja und dem Teilen-Symbol gibst Du aktuelle Positionen auch für die Zugverfolgung berechtigter Verwaltungsmitarbeiter und Disponenten frei. Zugnummer und Vorname erscheinen dort nur, wenn Du die jeweiligen Anzeige-Checkboxen aktiviert hast. Dein Nachname wird nicht übertragen. Teilen beenden oder Freigabe Nein entfernt Deine Position; ohne neue Position verschwindet sie spätestens nach zehn Minuten."
+}

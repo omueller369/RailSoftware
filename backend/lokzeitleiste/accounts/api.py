@@ -6,13 +6,13 @@ from sqlalchemy.orm import Session
 
 from ..db import database_session
 from ..user_directories import directory_transaction
-from ..models import StaffPersonnelNumber, AccountAudit, AccountPolicy, ModulePermission, SessionToken, StaffAddress, StaffProfile, User, ProfilePhoto, EmployeeEmail
+from ..models import StaffPersonnelNumber, AccountAudit, AccountPolicy, ModulePermission, SessionToken, StaffAddress, StaffProfile, User, ProfilePhoto, EmployeeEmail, EmployeeCategory
 from ..schemas import Credentials
 from ..security import hash_password, issue_token, revoke_token, user_from_token, verify_password, account_active
-from .access import MODULES, check_delegation, demand, password_required, permissions
+from .access import MODULES, check_delegation, demand, password_required, permissions, staff_module
 from ..change_log import bind_actor
 from .photos import decode_photo, save_photo
-from .schemas import PasswordChange, PasswordReset, StaffCreate, StaffIn
+from .schemas import PasswordChange, PasswordReset, StaffCreate, StaffIn, DispatcherCreate
 
 
 def account_dependency(origin):
@@ -155,19 +155,20 @@ def create_router(admin_dependency, origin, cookie_secure, dependency=None):
         db.add_all([StaffAddress(user_id=user.id,**a.model_dump()) for a in data.addresses])
         db.add_all([ModulePermission(user_id=user.id,module=m,level=v) for m,v in data.permissions.items() if v])
 
+    @router.get('/api/v1/admin/dispatchers')
     @router.get('/api/v1/admin/staff')
-    def staff_list(user: User = Depends(admin_dependency),db: Session = Depends(database_session)):
+    def staff_list(request:Request,user: User = Depends(admin_dependency),db: Session = Depends(database_session)):
         rows = db.execute(select(User,StaffProfile).join(StaffProfile,User.id == StaffProfile.user_id)
                           .where(User.role == 'staff').order_by(StaffProfile.last_name)).all()
-        return [staff_dict(db,u,p) for u,p in rows]
+        return [staff_dict(db,u,p) for u,p in rows if staff_module(db,u.id)==('dispatchers' if '/dispatchers' in request.url.path else 'staff')]
 
-    @router.post('/api/v1/admin/staff',status_code=201)
-    def create(data: StaffCreate,actor: User = Depends(admin_dependency),db: Session = Depends(database_session)):
+    def create_staff(data,actor,db,dispatcher=False):
         check_delegation(db,actor,data.permissions)
         image=decode_photo(data.photo_base64)
         try:
             user = User(username=data.username,password_hash=hash_password(data.initial_password),role='staff')
             db.add(user); db.flush()
+            if dispatcher:db.add(EmployeeCategory(user_id=user.id,category='dispatch'))
             profile = StaffProfile(user_id=user.id)
             db.add(profile)
             # Stammdaten setzen, bevor die neue Profilzeile für Adressen angelegt wird.
@@ -181,7 +182,7 @@ def create_router(admin_dependency, origin, cookie_secure, dependency=None):
             address=str(data.email) if data.email else suggest(db,data.first_name,data.last_name,data.birth_date,available[0].name,user.id) if available else None
             if address:save_email(db,user,address,data.initial_password)
             db.add(AccountPolicy(user_id=user.id,must_change_password=True))
-            db.add(AccountAudit(actor_id=actor.id,target_id=user.id,action='staff_created'))
+            db.add(AccountAudit(actor_id=actor.id,target_id=user.id,action='dispatcher_created' if dispatcher else 'staff_created'))
             with directory_transaction(user,creating=True):
                 db.commit()
             return {'id':user.id,'username':user.username,'password_change_required':True}
@@ -189,14 +190,23 @@ def create_router(admin_dependency, origin, cookie_secure, dependency=None):
             db.rollback()
             raise HTTPException(409,_text_source('server_accounts_api.text_caa6e4fbaee2')) from exc
 
+    @router.post('/api/v1/admin/staff',status_code=201)
+    def create(data:StaffCreate,actor:User=Depends(admin_dependency),db:Session=Depends(database_session)):
+        return create_staff(data,actor,db)
+    @router.post('/api/v1/admin/dispatchers',status_code=201)
+    def create_dispatcher(data:DispatcherCreate,actor:User=Depends(admin_dependency),db:Session=Depends(database_session)):
+        return create_staff(data,actor,db,dispatcher=True)
+
+    @router.put('/api/v1/admin/dispatchers/{user_id}')
     @router.put('/api/v1/admin/staff/{user_id}')
-    def update(user_id: int,data: StaffIn,actor: User = Depends(admin_dependency),db: Session = Depends(database_session)):
+    def update(user_id: int,data: StaffIn,request:Request,actor: User = Depends(admin_dependency),db: Session = Depends(database_session)):
         user = db.scalar(select(User).where(User.id == user_id).with_for_update())
         profile = db.get(StaffProfile,user_id)
-        if not user or user.role != 'staff' or not profile:
+        module='dispatchers' if '/dispatchers' in request.url.path else 'staff'
+        if not user or user.role != 'staff' or not profile or staff_module(db,user.id)!=module:
             raise HTTPException(404,_text_source('server_accounts_api.text_288eba24f387'))
         if data.permissions != permissions(db,user):
-            demand(db,actor,'staff',3)
+            demand(db,actor,module,3)
         check_delegation(db,actor,data.permissions,user)
         image=decode_photo(data.photo_base64)
         save_profile(db,user,profile,data)
@@ -206,7 +216,7 @@ def create_router(admin_dependency, origin, cookie_secure, dependency=None):
         save_photo(db,user.id,image)
         # Rechteänderungen beenden alle Sitzungen; erneute Anmeldung übernimmt die Freigaben.
         db.execute(delete(SessionToken).where(SessionToken.user_id == user.id))
-        db.add(AccountAudit(actor_id=actor.id,target_id=user.id,action='staff_profile_permissions_updated'))
+        db.add(AccountAudit(actor_id=actor.id,target_id=user.id,action='dispatcher_profile_permissions_updated' if module=='dispatchers' else 'staff_profile_permissions_updated'))
         db.commit()
         return staff_dict(db,user,profile)
 

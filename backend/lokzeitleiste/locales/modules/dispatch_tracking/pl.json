@@ -1,0 +1,12 @@
+{
+  "text_640480716e00": "Dyspozytorzy",
+  "text_11507a0e2f5e": "Utwórz dyspozytora",
+  "text_5a95db2aa8e5": "Śledzenie pociągów",
+  "text_c432b372e0e3": "Mapa Niemiec z siecią kolejową i aktywnie udostępnianymi pozycjami maszynistów. Numer pociągu nad symbolem, udostępnione imię pod nim.",
+  "text_9368a7d21e01": "Widoczne jest tylko świadomie uruchomione udostępnianie. Ustawienia numeru pociągu i imienia są respektowane. Pozycje wygasają po dziesięciu minutach; odświeżanie co 30 sekund.",
+  "text_d6cc0a088c07": "Wczytaj pozycje",
+  "text_ca00fccfb408": "Nie udało się wczytać pozycji. Sprawdź połączenie i uprawnienia.",
+  "text_6c35493a2b93": "Udostępnione pozycje",
+  "text_259aa8ef98a8": "Dyspozytorzy z oddzielnymi danymi i domyślnym dostępem do śledzenia. Narzędzia administratora w menu. Mapa pokazuje tylko aktywnie udostępniane pozycje GPS.",
+  "text_106a5842fc5f": "Zgoda Tak i przycisk udostępniania udostępniają pozycję również uprawnionym pracownikom i dyspozytorom. Numer pociągu i imię są widoczne tylko po włączeniu odpowiednich pól. Nazwisko nie jest przekazywane. Zakończenie udostępniania lub zgoda Nie usuwa pozycję; bez aktualizacji znika najpóźniej po dziesięciu minutach."
+}
