@@ -234,3 +234,5 @@ html[data-theme="dark"] #reportSendCancel {
 .gps-pause[aria-pressed=true]{outline:3px solid #e4b640;outline-offset:1px}
 
 #routeKnowledge [role="tabpanel"][hidden]{display:none!important}.knowledge-tab-bar{margin-bottom:0}
+
+#reportListRows tr[data-sync-state=returned]>td{background:#fff2a8!important;color:#193044}#reportListRows tr[data-sync-state=returned]{border-left:5px solid #d6a300}

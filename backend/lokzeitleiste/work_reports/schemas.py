@@ -140,6 +140,7 @@ class TrainJourneysUpdate(BaseModel):
 
 
 class ReportIn(BaseModel):
+    check_duty_bounds:ClassVar[bool]=True
     check_required_pause:ClassVar[bool]=True
     kind:Literal['Sonstige Erfassung','Bereitschaft','Rufbereitschaft','Ausfallschicht','Urlaub','Krank']=_text_source('server_work_reports_schemas.text_f31b8681bfca')
     client_id:UUID
@@ -182,20 +183,21 @@ class ReportIn(BaseModel):
         if len({t.id for t in self.train_journeys})!=len(self.train_journeys):raise ValueError(_text_source('server_work_reports_schemas.text_bd3d01392d89'))
         event_ids=set();pauses=[]
         for train in self.train_journeys:
-            if train.start_at<self.start_at or train.end_at>self.end_at:raise ValueError(_text_source('server_work_reports_schemas.text_7f776149fd52'))
+            if self.check_duty_bounds and (train.start_at<self.start_at or train.end_at>self.end_at):raise ValueError(_text_source('server_work_reports_schemas.text_7f776149fd52'))
             for event in train.events:
                 if event.id in event_ids:raise ValueError(_text_source('server_work_reports_schemas.text_e8489536b599'))
                 event_ids.add(event.id)
-                if event.start_at<self.start_at or event.end_at>self.end_at:raise ValueError(_text_source('server_work_reports_schemas.text_daa968801d2d'))
+                if self.check_duty_bounds and (event.start_at<self.start_at or event.end_at>self.end_at):raise ValueError(_text_source('server_work_reports_schemas.text_daa968801d2d'))
                 if event.reason==_text_source('server_work_reports_schemas.text_858e4ba7a29f'):pauses.append((event.start_at,event.end_at))
         pauses.sort()
         if any(pauses[i][0]<pauses[i-1][1] for i in range(1,len(pauses))):raise ValueError(_text_source('server_work_reports_schemas.text_5f35fa8f3600'))
-        if self.actual_pause+sum(minutes(a,b) for a,b in pauses)>duration:raise ValueError(_text_source('server_work_reports_schemas.text_c00121dc0425'))
+        if self.check_duty_bounds and self.actual_pause+sum(minutes(a,b) for a,b in pauses)>duration:raise ValueError(_text_source('server_work_reports_schemas.text_c00121dc0425'))
         if self.check_required_pause and self.pause_policy==2 and self.kind==_text_source('server_work_reports_schemas.text_f31b8681bfca') and self.actual_pause+sum(minutes(a,b) for a,b in pauses)<required_pause(duration):raise ValueError(_text_source('server_work_reports_schemas.text_3eb7d4c1515c')+str(required_pause(duration))+_text_source('server_work_reports_schemas.text_54542d79a9f0'))
         return self
 
 
 class DraftReportIn(ReportIn):
-    # Only the draft endpoint relaxes minimum-pause completion. Final reports
-    # always use ReportIn; clients cannot disable this check through payloads.
+    check_duty_bounds:ClassVar[bool]=False
+    # Only drafts relax duty bounds and minimum-pause completion. Final reports
+    # always use ReportIn; clients cannot disable these checks through payloads.
     check_required_pause:ClassVar[bool]=False

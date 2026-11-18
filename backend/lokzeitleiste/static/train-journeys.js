@@ -9,7 +9,7 @@ const t=value=>window.I18n?.t(value)||value;
 const labelStation=(code,name)=>code&&name?code+' · '+name:name||code||'';
 const stationParts=value=>{const parts=value.trim().split(' · ');return {code:parts[0],name:parts.slice(1).join(' · ')};};
 window.ReportTableTime=(value,start,end,previous=start)=>{if(!value)return '';const day=value.slice(0,10),time=value.slice(11,16);return start&&end&&start.slice(0,10)!==end.slice(0,10)&&day!==(previous||start).slice(0,10)?day.split('-').reverse().join('.')+' · '+time:time;};
-const causeLabel=value=>value===globalThis.CtlText.source("portal_train_journeys.text_2087c99eb939")?'CTL':value;
+const causeLabel=value=>value===globalThis.CtlText.source("portal_train_journeys.text_1abed57a73e2")?globalThis.CtlText.source('report_rework.text_eb0de251ac21'):value===globalThis.CtlText.source("portal_train_journeys.text_2087c99eb939")?'CTL':value;
 const choiceLabels={};
 const choiceLabel=(kind,value)=>choiceLabels[kind+':'+value]||value;
 window.TrainJourneyReasonLabel=value=>choiceLabel('reason',value);
@@ -121,7 +121,7 @@ window.TrainJourneyEditor=class{
  changed(){this.refreshSuggestions();this.pauseSummary();this.o.changed(this.draft());}
  restore(data){this.items=[];this.active=null;this.tabs.replaceChildren();this.panels.replaceChildren();for(const train of data||[])this.items.push(this.make(train));this.activate(this.items[0]?.id);this.pauseSummary();}
  freeze(){const disabled=this.o.readonly(),viewOnly=!!this.o.viewOnly?.();this.o.button.disabled=disabled;this.o.button.hidden=viewOnly;for(const item of this.items){this.ready(item);item.remove.hidden=viewOnly;item.headerSet.disabled=disabled;item.eventSet.disabled=disabled;this.pauseCopyVisibility(item);item.remove.disabled=disabled;item.gps?.freeze();}}
- checkRange(start,end,fields=[]){const a=this.o.minute(start),b=this.o.minute(end),bounds=this.o.bounds();if(!Number.isFinite(a)||!Number.isFinite(b)||b<=a){fields.forEach(field=>window.CtlValidation?.mark(field));throw Error(globalThis.CtlText.source("portal_train_journeys.text_7191a2755c05"));}if(a<this.o.minute(bounds.start)||b>this.o.minute(bounds.end)){fields.forEach(field=>window.CtlValidation?.mark(field));throw Error(globalThis.CtlText.source("portal_train_journeys.text_758f409ac4de"));}}
+ checkRange(start,end,fields=[]){const a=this.o.minute(start),b=this.o.minute(end),bounds=this.o.bounds();if(!Number.isFinite(a)||!Number.isFinite(b)||b<=a){fields.forEach(field=>window.CtlValidation?.mark(field));throw Error(globalThis.CtlText.source("portal_train_journeys.text_7191a2755c05"));}if(!this.draftMode&&(a<this.o.minute(bounds.start)||b>this.o.minute(bounds.end))){fields.forEach(field=>window.CtlValidation?.mark(field));throw Error(globalThis.CtlText.source("portal_train_journeys.text_758f409ac4de"));}}
  cacheStation(code,name){if(code&&name)this.stationCache.set(code.toUpperCase(),{code,name});}
  draftPlace(field){
   const value=field.value.trim(),known=this.stationCache.get(stationParts(value).code.toUpperCase());
@@ -158,7 +158,7 @@ window.TrainJourneyEditor=class{
   for(const [key,kind]of [['start_station',globalThis.CtlText.source("portal_train_journeys.text_e4bb9f1ece9a")],['end_station',globalThis.CtlText.source("portal_train_journeys.text_2ddcd606c872")]]){const station=rows.find(r=>r.kind===kind)?.station;if((station?.code||station?.name)&&!item.fields[key].value){item.fields[key].value=labelStation(station.code,station.name);this.cacheStation(station.code,station.name);}}
   this.clearEvent(item);this.changed();return true;
  }
- async validate(){for(const item of this.items){if(this.pendingEvent(item))throw Error(globalThis.CtlText.source("portal_train_journeys.text_69cbb24c1115"));await this.header(item);for(const event of item.events)this.checkRange(event.start_at,event.end_at);}this.changed();return this.draft();}
+ async validate({draft=false}={}){this.draftMode=draft;try{for(const item of this.items){if(this.pendingEvent(item))throw Error(globalThis.CtlText.source("portal_train_journeys.text_69cbb24c1115"));await this.header(item);for(const event of item.events)this.checkRange(event.start_at,event.end_at);}this.changed();return this.draft();}finally{this.draftMode=false;}}
  async insert(item,withPause=false){
   if(this.o.readonly()||!item.form.reportValidity())return;
   this.o.block(true);

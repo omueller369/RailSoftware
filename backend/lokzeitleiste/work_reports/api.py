@@ -191,4 +191,12 @@ def create_router(require_account):
         if row.status!='sent':row.status='pending';row.attempts=0;row.last_error='';db.commit();tasks.add_task(process_receipt,row.id)
         return receipt_view(row)
 
+    @router.get('/api/v1/tf/work-reports/{report_id}/versions/{version}/pdf')
+    def previous_pdf(report_id:int,version:int,user=Depends(driver),db:Session=Depends(database_session)):
+        from ..models import DutyReportCorrection
+        owned(db,user,report_id)
+        row=db.scalar(select(DutyReportCorrection).where(DutyReportCorrection.report_id==report_id,DutyReportCorrection.version==version))
+        if not row:raise HTTPException(404)
+        return Response(row.pdf_content,media_type='application/pdf',headers={'Content-Disposition':f'attachment; filename="Arbeitsbericht-{report_id}-v{version}.pdf"','Cache-Control':'private, no-store'})
+
     return router

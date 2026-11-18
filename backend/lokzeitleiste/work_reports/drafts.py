@@ -28,7 +28,9 @@ def draft_files(db,row):
     return list(db.scalars(select(DraftFile).where(DraftFile.draft_id==row.id,DraftFile.file_key.in_(keys)))) if keys else []
 def view(db,row):
     payload=json.loads(row.payload_json);sort_train_events(payload.get('train_journeys',[]))
-    return dict(client_id=row.client_id,report=payload,revision=row.revision,updated_at=row.updated_at.isoformat(),receipt_keys=json.loads(row.receipt_keys_json),files=[dict(key=f.file_key,name=f.filename,mime_type=f.mime_type) for f in draft_files(db,row)])
+    from .corrections import for_draft,info
+    correction=for_draft(db,row.owner_id,row.client_id)
+    return dict(returned=info(correction) if correction and not correction.completed_at else None,client_id=row.client_id,report=payload,revision=row.revision,updated_at=row.updated_at.isoformat(),receipt_keys=json.loads(row.receipt_keys_json),files=[dict(key=f.file_key,name=f.filename,mime_type=f.mime_type) for f in draft_files(db,row)])
 def before_finalize(db,user,client_id,revision):
     lock_owner(db,user);row=find(db,user,client_id)
     if deleted(row):raise HTTPException(409,_text_source('server_work_reports_drafts.text_f7ed8ff759bc'))
@@ -62,6 +64,9 @@ def create_router(require_account):
     @router.delete('/{client_id}')
     def remove(client_id:UUID,user=Depends(driver),db:Session=Depends(database_session)):
         lock_owner(db,user)
+        from .corrections import for_draft,text
+        correction=for_draft(db,user.id,client_id)
+        if correction and not correction.completed_at:raise HTTPException(409,text('protected'))
         if db.scalar(select(DutyReport.id).where(DutyReport.tf_user_id==user.id,DutyReport.client_id==str(client_id))):raise HTTPException(409,_text_source('server_work_reports_drafts.text_6fa02de23390'))
         row=find(db,user,client_id)
         if row:

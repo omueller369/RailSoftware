@@ -1,6 +1,6 @@
 /* Apply the saved appearance in the head, before page content is painted. */
 (()=>{const root=document.documentElement;if(!root)return;let mode='light';try{if(localStorage.getItem('ctl.portal.theme')==='dark')mode='dark';}catch{}root.dataset.theme=mode;root.style.colorScheme=mode;
-const css=document.createElement('link');css.id='portalThemeStyles';css.rel='stylesheet';css.href='/theme.css?v=20261118-la-instructions-02707';document.head.append(css);
+const css=document.createElement('link');css.id='portalThemeStyles';css.rel='stylesheet';css.href='/theme.css?v=20261118-report-rework-02708';document.head.append(css);
 const script=document.createElement('script');script.src='/theme.js?v=20261108-validation-02619';document.head.append(script);})();
 /* Per-tab bearer credentials keep TF and backend logins independent. */
 (()=>{const native=window.fetch.bind(window);let area=location.pathname.startsWith('/tf')?'tf':location.pathname.startsWith('/admin')?'backend':new URLSearchParams(location.search).get('area')||sessionStorage.getItem('ctl.area')||'backend';sessionStorage.setItem('ctl.area',area);const key=a=>'ctl.session.'+a;
@@ -13,7 +13,7 @@ window.loadTfHelp=()=>{
  helpTask=new Promise((resolve,reject)=>{
   if(!document.getElementById('tfHelpStyles')){const css=document.createElement('link');css.id='tfHelpStyles';css.rel='stylesheet';css.href='/tf/help.css?v=20261108-validation-02619';document.head.append(css);}
   const load=path=>new Promise((done,fail)=>{const script=document.createElement('script');script.src=path;script.onload=done;script.onerror=()=>{script.remove();fail(Error(globalThis.CtlText.source("backend_auth_session.text_6227b32686e3")));};document.head.append(script);});
-  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261118-la-instructions-02707')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
+  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261118-report-rework-02708')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
  }).catch(error=>{helpTask=null;throw error;});return helpTask;
 };
 // Downloads need the same tab identity as API requests, rather than shared cookies.

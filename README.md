@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.7
+# LokZeitleiste v0.27.8
+
+**0.27.8:** Arbeitsberichte mit Schreibrecht zur Überarbeitung an den TF zurückgeben: geschützter Korrekturentwurf, gelbe Monatszeile, Begründung und erneute Synchronisierung als neue Version. Vorherige PDF-Fassung bleibt erhalten; derselbe Arbeitszeiteintrag wird korrigiert und nicht doppelt gebucht. Gesperrte oder zwischenzeitlich geänderte Einträge bleiben geschützt. GPS-Halte nach erkannter Abfahrt schlagen Zugfolge und DB-InfraGo vor. Zwischenstände dürfen Zugfahrten und Details außerhalb der Dienstzeit enthalten; die endgültige Synchronisierung prüft weiterhin die Dienstgrenzen. GPS-Aufzeichnungen werden nicht automatisch gekürzt.
 
 **0.27.7:** Neue TF-Kachel „La-Anweisungen“: PDF-Vorschau und bewusstes Offline-Speichern nach sieben DB-InfraGO-Regionen. Die Verwaltung stellt PDFs mit Ausgabestand und Gültigkeitszeitraum über das Modulrecht „La-Anweisungen“ bereit. Kein automatischer DB-Abruf; vorbereitete Loginfelder und Anmeldebutton sind deaktiviert. Offline-Bestand ist je Konto getrennt und deutlich gekennzeichnet. PDF.js 6.5.438 (Apache-2.0) ist lokal enthalten, damit die Vorschau auch im Android-WebView und ohne externen PDF-Dienst funktioniert.
 

@@ -1,10 +1,11 @@
-"""Administration inbox for finalized reports. Editing rules are deliberately deferred."""
+"""Finalized report inbox and explicitly versioned TF correction returns."""
 import calendar
 import json
 from datetime import date, datetime
 from pathlib import Path
 from typing import Literal
 
+from pydantic import BaseModel,Field
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse, Response
 from sqlalchemy import select, func
@@ -15,6 +16,10 @@ from ..models import DutyReport, TfProfile, User, WorkEntry, EmployeeCategory, W
 from ..localization import source
 from ..accounts.employee_categories import category
 from .service import report_view
+
+class ReturnInput(BaseModel):
+    reason:str=Field(min_length=1,max_length=2000)
+    expected_version:int=Field(ge=1)
 
 STATIC = Path(__file__).parent.parent / 'static'
 
@@ -69,13 +74,20 @@ def create_router(require_admin):
             payload=json.loads(report.payload_json)
             start=datetime.fromisoformat(payload['start_at']);end=datetime.fromisoformat(payload['end_at'])
             items.append(dict(id=report.id,employee=employee(profile,kind or 'tf'),start_at=payload['start_at'],end_at=payload['end_at'],
-                              kind=payload.get('kind','Dienstschicht'),duration_minutes=int((end-start).total_seconds()//60),created_at=report.created_at.isoformat()))
+                              kind=payload.get('kind','Dienstschicht'),duration_minutes=int((end-start).total_seconds()//60),created_at=report.created_at.isoformat(),returned=report_view(db,report)['returned'],version=report_view(db,report)['version']))
         return dict(items=items,total=total,offset=offset,limit=limit)
 
     @router.get('/api/v1/admin/work-reports/{report_id}')
     def details(report_id:int,user=Depends(require_admin),db:Session=Depends(database_session)):
         report=owned_report(db,report_id)
-        return dict(report=report_view(db,report),employee=employee(db.get(WgmProfile,report.tf_user_id) or db.get(TfProfile,report.tf_user_id),category(db,report.tf_user_id)))
+        from ..accounts.access import permissions
+        return dict(can_return=permissions(db,user)['work_reports']>=2 and category(db,report.tf_user_id)=='tf',report=report_view(db,report),employee=employee(db.get(WgmProfile,report.tf_user_id) or db.get(TfProfile,report.tf_user_id),category(db,report.tf_user_id)))
+
+    @router.post('/api/v1/admin/work-reports/{report_id}/return')
+    def return_to_tf(report_id:int,data:ReturnInput,user=Depends(require_admin),db:Session=Depends(database_session)):
+        from .corrections import return_report,info,text
+        if not data.reason.strip():raise HTTPException(422,text('reason'))
+        return info(return_report(db,report_id,user,data.reason.strip(),data.expected_version))
 
     @router.get('/api/v1/admin/work-reports/{report_id}/pdf')
     def pdf(report_id:int,user=Depends(require_admin),db:Session=Depends(database_session)):
@@ -83,5 +95,13 @@ def create_router(require_admin):
         report=owned_report(db,report_id)
         content=work_report_pdf(db,db.get(User,report.tf_user_id),report)
         return Response(content,media_type='application/pdf',headers={'Content-Disposition':f'attachment; filename="{report_filename(report)}"','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'})
+
+    @router.get('/api/v1/admin/work-reports/{report_id}/versions/{version}/pdf')
+    def previous_pdf(report_id:int,version:int,user=Depends(require_admin),db:Session=Depends(database_session)):
+        from ..models import DutyReportCorrection
+        owned_report(db,report_id)
+        row=db.scalar(select(DutyReportCorrection).where(DutyReportCorrection.report_id==report_id,DutyReportCorrection.version==version))
+        if not row:raise HTTPException(404)
+        return Response(row.pdf_content,media_type='application/pdf',headers={'Content-Disposition':f'attachment; filename="Arbeitsbericht-{report_id}-v{version}.pdf"','Cache-Control':'private, no-store'})
 
     return router

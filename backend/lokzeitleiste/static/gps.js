@@ -111,6 +111,7 @@ function normaliseRecording(record){
  for(const field of ['stations','reasons']){const values={};for(const [key,value]of Object.entries(record[field]||{}))if(mapping[key]&&!(mapping[key] in values))values[mapping[key]]=value;record[field]=values;}
  record.selection=[...new Set((record.selection||[]).filter(key=>mapping[key]).map(key=>mapping[key]))];record.detection_version=5;
 }
+function stopDefaults(record,row){const departure=firstDeparture(record?.points||[]);return departure!=null&&row.start>=departure?{reason:globalThis.CtlText.source("portal_train_journeys.text_64f45b98b2db"),cause:globalThis.CtlText.source("portal_train_journeys.text_1abed57a73e2"),detail:''}:{};}
 function firstDeparture(points){
  return confirmedMotion(points,true).next().value??null;
 }
@@ -526,7 +527,7 @@ class Recorder{
     if(!reply?.station)continue;
     const choice={code:reply.station.code,name:reply.station.name};
     if(typeof choice.code!=='string'||typeof choice.name!=='string'||!choice.code||!choice.name)continue;
-    record.stop_edits||={};record.stop_edits[row.key]={...record.stop_edits[row.key],station:choice,station_input:placeLabel(choice)};
+    record.stop_edits||={};record.stop_edits[row.key]={...stopDefaults(record,row),...record.stop_edits[row.key],station:choice,station_input:placeLabel(choice)};
     const input=this.liveInputs?.find(input=>input.row.key===row.key);input?.applyStation(choice);
     record.dirty=true;await this.persist();
    }catch{ticket.next=Date.now()+30000;}
@@ -574,8 +575,8 @@ class Recorder{
   for (const row of stops) {
    const old = this.analysis?.rows?.find(item => item.kind === globalThis.CtlText.source("portal_gps.text_0fd998791d67") && item.start === row.start);
    const legacy = this.record.locations?.[String(row.start)] || old?.station;
-   const draft = row.source_keys.map(key => this.record.stop_edits?.[key]).find(Boolean)
-       || (legacy ? {station: legacy, station_input: placeLabel(legacy), reason: old?.reason?.reason || '', detail: old?.reason?.detail || ''} : {});
+   const draft = {...stopDefaults(this.record,row),...(row.source_keys.map(key => this.record.stop_edits?.[key]).find(Boolean)
+       || (legacy ? {station: legacy, station_input: placeLabel(legacy), reason: old?.reason?.reason || '', detail: old?.reason?.detail || ''} : {}))};
    const tr = node('tr'), station = node('input'), list = node('datalist');
    const reason = node('input'), reasonList = node('datalist'), end = node('input'), check = node('input');
    const take = stopAction(globalThis.CtlText.source("portal_gps.text_936378b371b9"), 'M12 16V4m-5 5 5-5 5 5M4 15v5h16v-5');

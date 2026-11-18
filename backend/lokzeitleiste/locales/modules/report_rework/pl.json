@@ -1,0 +1,12 @@
+{
+  "text_7187f0675eb3": "Zwróć do poprawy",
+  "text_8fcfccf675b1": "Powód zwrotu",
+  "text_68752bf62253": "Zwrócony do poprawy",
+  "text_5ca4f3850ccc": "Wersja",
+  "text_3f267c2ab422": "Zwrócić raport maszyniście do poprawy?",
+  "text_fa9e1d22205a": "Raport został zmieniony lub ponownie zwrócony. Wczytaj aktualne dane.",
+  "text_9b2bbce6c72d": "Ten szkic korekty należy do zwróconego raportu i nie może zostać usunięty.",
+  "text_eb0de251ac21": "DB-InfraGo",
+  "text_106a5842fc5f": "Administracja może zwrócić wysłany raport z uzasadnieniem. Zobaczysz go na żółto na liście miesięcznej. Otwórz, popraw godziny, przejazdy lub pociągi i zsynchronizuj nową wersję. Poprzednia wersja pozostaje zachowana, a czas pracy nie jest naliczany podwójnie. Do ponownej synchronizacji obowiązuje poprzednie rozliczenie. Zablokowane wpisy wymagają wcześniejszego odblokowania przez administrację. Czasy GPS poza służbą można zapisać tymczasowo; przed końcową synchronizacją pociągi i szczegóły muszą mieścić się w służbie. GPS nie jest automatycznie skracany. Po wykrytym odjeździe nowe postoje otrzymują propozycje Zugfolge i DB-InfraGo. Własne ustawienia pozostają.",
+  "text_259aa8ef98a8": "Zwrot raportów do poprawy i synchronizacja nowej wersji z żółtym oznaczeniem. Propozycje Zugfolge/DB-InfraGo dla postojów po odjeździe; granice służby wymagane przy synchronizacji końcowej."
+}

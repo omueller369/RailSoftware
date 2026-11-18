@@ -118,3 +118,9 @@ Für einen Dienstbeginn vor dem heutigen Berliner Kalendertag wird der GPS-Berei
 ### Fehler- und Hilfe-Overlay
 
 `work-report-feedback.js` zeigt Validierungs- und Vorgangsfehler im Arbeitsbericht einschließlich Zugfahrten und GPS als modale Dialoge. „Okay“ schließt den Fehlerdialog; „Hilfe“ öffnet einen zweiten Dialog mit vorläufigem Hilfetext und X zum Schließen. Passende Korrekturhinweise werden aus der Fehlerart abgeleitet. Pflichtfeldfehler zeigen das erste ungültige Feld, zu dem der Fokus beim Schließen zurückkehrt. Erfolgsmeldungen und laufende GPS-Statusmeldungen lösen keine Fehlerdialoge aus. Wiederholte identische Meldungen werden im offenen Dialog nicht mehrfach eingereiht.
+
+## Rückgabe und Zwischenstände (0.27.8)
+
+Die Verwaltung kann mit Arbeitsberichte-Schreibrecht ungesperrte Berichte mit Begründung zurückgeben. Der TF bekommt einen ownergebundenen Korrekturentwurf, in der Monatsliste gelb markiert. Die ursprüngliche Dienstbuchung bleibt bis zur erneuten Synchronisierung unverändert. Anschließend wird derselbe Eintrag aktualisiert, eine neue PDF-Version erzeugt und die vorherige Fassung unveränderlich gespeichert. Optimistische Entwurfsrevisionen und Eintragssperren gelten weiter. Korrekturentwürfe können vom TF nicht gelöscht werden.
+
+DraftReportIn erlaubt Zeiten außerhalb der Dienstgrenzen nur für Zwischenstände. ReportIn bleibt strikt; weder Payload-Felder noch Clientparameter können die abschließende Prüfung abschalten. GPS-Punkte bleiben unverändert.

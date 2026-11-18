@@ -127,6 +127,13 @@ jobs:
         with:
           name: admin-knowledge-ui
           path: ${{ runner.temp }}/admin-knowledge-ui/
+      - name: Report return, yellow correction row and final duty bounds
+        run: python backend/tests/check_report_rework_ui.py --output-dir "$RUNNER_TEMP/report-rework-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-rework-ui
+          path: ${{ runner.temp }}/report-rework-ui/
       - name: Administrative work report inbox browser checks
         run: python backend/tests/check_admin_work_reports_ui.py --output-dir "$RUNNER_TEMP/admin-work-reports-ui"
       - uses: actions/upload-artifact@v4

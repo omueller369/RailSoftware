@@ -1,0 +1,12 @@
+{
+  "text_7187f0675eb3": "Zur Überarbeitung zurückgeben",
+  "text_8fcfccf675b1": "Grund der Rückgabe",
+  "text_68752bf62253": "Zur Überarbeitung zurückgegeben",
+  "text_5ca4f3850ccc": "Version",
+  "text_3f267c2ab422": "Den Bericht zur Überarbeitung an den TF zurückgeben?",
+  "text_fa9e1d22205a": "Der Bericht wurde inzwischen geändert oder erneut zurückgegeben. Lade den aktuellen Stand.",
+  "text_9b2bbce6c72d": "Dieser Korrekturentwurf gehört zu einem zurückgegebenen Bericht und kann nicht gelöscht werden.",
+  "text_eb0de251ac21": "DB-InfraGo",
+  "text_106a5842fc5f": "Die Verwaltung kann Dir einen gesendeten Arbeitsbericht mit Begründung zurückgeben. Du siehst ihn gelb in der Monatsliste. Öffne ihn, korrigiere Dienstzeiten, Gastfahrten oder Zugfahrten und synchronisiere abschließend. Dabei entsteht eine neue Berichtsversion; die vorherige Fassung bleibt erhalten und die Dienstzeit wird nicht doppelt gebucht. Ein zurückgegebener Bericht bleibt bis zur neuen Synchronisierung als bisherige Abrechnung erhalten. Gesperrte Einträge müssen zuerst in der Verwaltung entsperrt werden. Du kannst GPS-Zeiten außerhalb der Dienstzeit zwischenspeichern; vor der endgültigen Synchronisierung müssen Zugfahrten und Details wieder innerhalb der Dienstzeit liegen. GPS-Aufzeichnungen werden dafür nicht automatisch gekürzt. Nach der ersten erkannten Abfahrt werden bei neuen GPS-Halten Zugfolge und DB-InfraGo vorgeschlagen. Deine bereits gewählten Angaben bleiben erhalten.",
+  "text_259aa8ef98a8": "Arbeitsberichte zur Korrektur zurückgeben und gelb markiert als neue Version synchronisieren. GPS-Halte nach Abfahrt mit Zugfolge/DB-InfraGo vorbelegen; Zeitgrenzen erst bei endgültiger Synchronisierung erzwingen."
+}

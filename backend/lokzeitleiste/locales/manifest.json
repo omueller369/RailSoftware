@@ -364,6 +364,11 @@
     "en": "/locales/rail_network/en.json",
     "pl": "/locales/rail_network/pl.json"
   },
+  "report_rework": {
+    "de": "/locales/report_rework/de.json",
+    "en": "/locales/report_rework/en.json",
+    "pl": "/locales/report_rework/pl.json"
+  },
   "route_age": {
     "de": "/locales/route_age/de.json",
     "en": "/locales/route_age/en.json",

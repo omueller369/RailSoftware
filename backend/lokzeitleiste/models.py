@@ -1023,3 +1023,21 @@ class LaInstruction(Base):
     content:Mapped[bytes]=mapped_column(LargeBinary().with_variant(LONGBLOB(),'mysql'),nullable=False)
     created_by:Mapped[int]=mapped_column(ForeignKey('users.id'),nullable=False)
     created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
+
+
+class DutyReportCorrection(Base):
+    """One explicitly returned version and its owner-bound correction draft."""
+    __tablename__='duty_report_corrections'
+    __table_args__=(UniqueConstraint('report_id','version'),UniqueConstraint('owner_id','client_id'))
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    report_id:Mapped[int]=mapped_column(ForeignKey('duty_reports.id'),nullable=False,index=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id'),nullable=False,index=True)
+    client_id:Mapped[str]=mapped_column(String(36),nullable=False)
+    version:Mapped[int]=mapped_column(Integer,nullable=False)
+    reason:Mapped[str]=mapped_column(String(2000),nullable=False)
+    returned_by:Mapped[int]=mapped_column(ForeignKey('users.id'),nullable=False)
+    returned_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
+    completed_at:Mapped[datetime|None]=mapped_column(DateTime,nullable=True)
+    payload_json:Mapped[str]=mapped_column(Text,nullable=False)
+    pdf_content:Mapped[bytes]=mapped_column(LargeBinary().with_variant(LONGBLOB(),'mysql'),nullable=False)
+    submitted_json:Mapped[str|None]=mapped_column(Text,nullable=True)

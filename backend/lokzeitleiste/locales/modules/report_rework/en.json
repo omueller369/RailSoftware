@@ -1,0 +1,12 @@
+{
+  "text_7187f0675eb3": "Return for correction",
+  "text_8fcfccf675b1": "Reason for return",
+  "text_68752bf62253": "Returned for correction",
+  "text_5ca4f3850ccc": "Version",
+  "text_3f267c2ab422": "Return the report to the driver for correction?",
+  "text_fa9e1d22205a": "The report changed or was returned again. Reload the current version.",
+  "text_9b2bbce6c72d": "This correction draft belongs to a returned report and cannot be deleted.",
+  "text_eb0de251ac21": "DB-InfraGo",
+  "text_106a5842fc5f": "Staff can return a submitted report with a reason. It appears yellow in the monthly list. Open it, correct duty times, guest trips or train journeys, then synchronize a new version. The previous version is retained and duty time is not counted twice. The previous accounting entry remains in effect until resubmission. Locked entries must first be unlocked by staff. GPS times outside the duty period can be saved as a draft; train journeys and details must fit inside the duty period before final synchronization. GPS recordings are not trimmed automatically. After detected departure, new GPS stops suggest Zugfolge and DB-InfraGo. Existing choices are preserved.",
+  "text_259aa8ef98a8": "Return reports for correction and resubmit a yellow-marked new version. Suggest Zugfolge/DB-InfraGo for post-departure GPS stops; enforce duty bounds at final synchronization."
+}

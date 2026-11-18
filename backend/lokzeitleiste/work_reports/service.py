@@ -32,12 +32,17 @@ def report_view(db,report):
     revision=payload.pop('_train_revision',0)
     payload.pop('_pdf_version_offset',None)
     entry=db.get(WorkEntry,report.entry_id)
-    return dict(id=report.id,entry_id=report.entry_id,**payload,
+    from .corrections import active,info
+    from ..documents.archive import report_version
+    returned=active(db,report.id)
+    from ..models import DutyReportCorrection
+    versions=[dict(version=v,reason=reason) for v,reason in db.execute(select(DutyReportCorrection.version,DutyReportCorrection.reason).where(DutyReportCorrection.report_id==report.id).order_by(DutyReportCorrection.version.desc()))]
+    return dict(versions=versions,version=report_version(json.loads(report.payload_json)),returned=info(returned) if returned else None,id=report.id,entry_id=report.entry_id,**payload,
                 duration_minutes=minutes(datetime.fromisoformat(payload['start_at']),datetime.fromisoformat(payload['end_at'])),
                 minimum_pause_minutes=minimum_pause(minutes(start,end)) if payload['kind']==_text_source('server_work_reports_service.text_f31b8681bfca') else 0,
                 required_pause_minutes=required_pause(minutes(start,end)) if payload['kind']==_text_source('server_work_reports_service.text_f31b8681bfca') else 0,
                 credited_minutes=credit,is_rest_day=rest,
-                train_editable=not is_locked(db,entry.id) and interval(entry)==(start,end) and entry.pause_minutes==payload['actual_pause']+train_pause_minutes(payload['train_journeys']),
+                train_editable=not returned and not is_locked(db,entry.id) and interval(entry)==(start,end) and entry.pause_minutes==payload['actual_pause']+train_pause_minutes(payload['train_journeys']),
                 train_revision=revision,documented_pause_minutes=payload['actual_pause']+train_pause_minutes(payload['train_journeys']),
                 guest_total_minutes=guest_total,guest_minutes=guest_inside,external_guest_minutes=guest_total-guest_inside,
                 locked=is_locked(db,entry.id))
@@ -47,6 +52,12 @@ def save_report(db,user,data,commit=True):
     from ..app_defaults import ensure_defaults
     ensure_defaults(db)
     db.scalar(select(User).where(User.id==user.id).with_for_update())
+    from .corrections import for_draft,resubmit
+    correction=for_draft(db,user.id,data.client_id)
+    if correction:
+        report=resubmit(db,user,data,correction)
+        if commit:db.commit()
+        return report
     existing=db.scalar(select(DutyReport).where(DutyReport.tf_user_id==user.id,DutyReport.client_id==str(data.client_id)))
     if existing:
         # Historical reports have no station names. Compare the actual duty/trip data;
@@ -118,6 +129,8 @@ def resolve_train_stations(db,journeys):
 
 
 def update_train_journeys(db,user,report,changes):
+    from .corrections import active,text
+    if active(db,report.id):raise HTTPException(409,text('conflict'))
     assert_unlocked(db,report.entry_id)
     payload=json.loads(report.payload_json)
     current=payload.get('train_journeys',[]);revision=payload.get('_train_revision',0)

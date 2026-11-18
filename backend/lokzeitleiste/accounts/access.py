@@ -61,7 +61,7 @@ def authorize_route(db, user, request):
         return demand(db,user,'wgm',1 if method=='GET' else 3 if method=='POST' and path=='/api/v1/admin/wgm' else 2)
     if path=='/api/v1/admin/work-reports' or path.startswith('/api/v1/admin/work-reports/'):
         # This first stage deliberately exposes no write operation.
-        return demand(db,user,'work_reports',1 if method=='GET' else 3)
+        return demand(db,user,'work_reports',1 if method=='GET' else 2 if method=='POST' and path.endswith('/return') else 3)
     if path=='/api/v1/admin/leasing' or path.startswith('/api/v1/admin/leasing/'):
         if method=='GET' and permissions(db,user).get('vehicles',0):return demand(db,user,'vehicles',1)
         return demand(db,user,'leasing',1 if method=='GET' else 2)

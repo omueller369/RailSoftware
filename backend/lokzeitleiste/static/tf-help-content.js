@@ -402,6 +402,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{portal_report_tabs.text_8f92cd7b253a}}",
         "paragraphs": [
+          "{{report_rework.text_106a5842fc5f}}",
           "{{portal_report_tabs.text_7aba019c05af}}"
         ],
         "steps": []
