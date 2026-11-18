@@ -79,6 +79,7 @@ def create_router(require_account):
         payload=data.report.model_dump_json()
         if len(payload.encode('utf-8'))>60000:raise HTTPException(422,_text_source('server_work_reports_drafts.text_a14edc14d076'))
         lock_owner(db,user);row=find(db,user,client_id)
+        if row and row.finalized_report_id:raise HTTPException(409,_text_source('server_work_reports_drafts.text_f2392b45d69d'))
         if db.scalar(select(DutyReport.id).where(DutyReport.tf_user_id==user.id,DutyReport.client_id==str(client_id))):raise HTTPException(409,_text_source('server_work_reports_drafts.text_f2392b45d69d'))
         if deleted(row):raise HTTPException(409,_text_source('server_work_reports_drafts.text_410e588051de'))
         if (row.revision if row else 0)!=data.expected_revision:raise HTTPException(409,_text_source('server_work_reports_drafts.text_8c2bc6f77ea1'))

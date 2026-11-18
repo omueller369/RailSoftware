@@ -30,6 +30,7 @@ class CorrectionTest(unittest.TestCase):
         submit=self.driver.post('/api/v1/tf/work-reports',headers={'X-CTL-Draft-Revision':str(save.json()['revision'])},json=corrected);self.assertEqual(submit.status_code,201,submit.text)
         new=submit.json();followup=self.driver.put(f'/api/v1/tf/work-reports/{rid}/train-journeys',json={'expected_revision':new['train_revision'],'train_journeys':corrected['train_journeys']});self.assertEqual(followup.status_code,200,followup.text);self.assertEqual(followup.json()['version'],new['version']);self.assertEqual(new['id'],rid);self.assertEqual(new['version'],report['version']+1);self.assertIsNone(new['returned']);self.assertEqual(new['end_at'],'2026-10-12T18:00:00')
         again=self.driver.post('/api/v1/tf/work-reports',json=corrected);self.assertEqual(again.status_code,201,again.text);self.assertEqual(again.json()['version'],new['version'])
+        closed=self.driver.put('/api/v1/tf/work-report-drafts/'+draft['client_id'],json={'expected_revision':save.json()['revision'],'report':corrected,'receipt_keys':[]});self.assertEqual(closed.status_code,409,'Closed correction drafts are immutable')
         self.assertEqual(self.client.get(base+'/versions/1/pdf').content,snapshot)
         with Session(self.engine) as db:
             self.assertEqual(db.scalar(select(func.count()).select_from(WorkEntry)),1);self.assertEqual(db.scalar(select(func.count()).select_from(DutyReport)),1)
