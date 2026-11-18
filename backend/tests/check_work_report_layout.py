@@ -137,7 +137,7 @@ def fixture():
  const actions=[...monthly.querySelectorAll('.report-row-actions button')];
  assert(actions.length===3&&actions.every(button=>button.querySelector('svg')&&!button.textContent),'Action icons only, including conflict reload');
  assert(actions[0].getBoundingClientRect().top===actions[2].getBoundingClientRect().top,'Actions stay on one row');
- assert(document.querySelectorAll('#reportTableLegend li').length===8,'Status and action legend beneath table');
+ assert(document.querySelectorAll('#reportTableLegend li').length===9,'Status and action legend beneath table');
 
  // Invalid duty input brings the correct pane back before browser focus handling.
  document.getElementById('dutyStart').dispatchEvent(new Event('invalid',{cancelable:true}));
