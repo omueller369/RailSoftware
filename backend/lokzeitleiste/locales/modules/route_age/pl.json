@@ -1,8 +1,8 @@
 {
-  "text_54367acf5ec6": "Ostatni przejazd: 181–365 dni",
-  "text_d5a563de4eaa": "Ostatni przejazd: ponad 365 dni",
+  "text_54367acf5ec6": "Zbliża się wygaśnięcie",
+  "text_d5a563de4eaa": "wygasłe",
   "text_72714b02d10d": "Wiek przejazdów i kolory mapy",
-  "text_5aaa70a46011": "Nieprzejechane linie są czarne. Jeśli ostatni dopasowany przejazd odbył się do 180 dni temu, niebieski oznacza mniej niż dwa przejazdy w każdym kierunku, a zielony co najmniej dwa w każdym kierunku. Od 181. dnia odcinki są pomarańczowe, a od 366. czerwone. Pomarańczowy i czerwony mają pierwszeństwo przed niebieskim i zielonym. Dla każdego odcinka liczy się najnowsza data z Twoich zapisów GPS, niezależnie od kierunku. Aplikacja liczy dni kalendarzowe w strefie Europe/Berlin. Wczytanie lub oglądanie mapy nie zmienia daty; aktualizuje ją kolejny przejazd odcinkiem.",
+  "text_5aaa70a46011": "Nieznane odcinki są szare (#4A4A4A). Do 180 dni od ostatniego przejazdu zdobywanie znajomości jest niebieskie (#436EEE), aż do dwóch przejazdów w każdym kierunku; wtedy znajomość jest jasnozielona (#7cfc00). Od 181 do 365 dni zbliżające się wygaśnięcie jest pomarańczowe (#FF8C00), po 365 dniach wygasłe jest czerwone (#FF0000). Liczy się ostatni dopasowany przejazd GPS w dowolnym kierunku, według dni kalendarzowych Berlina. Wyświetlenie nie odnawia daty. Potwierdzona importowana znajomość zachowuje pierwszeństwo przed GPS.",
   "text_57cc4a68827f": "Jeśli starszy widok nie zawiera daty przejazdu, ślad GPS pozostaje niebieski i nie jest uznawany za aktualny zielony. Zaktualizuj także serwer i wybierz Wczytaj trasy, aby pobrać zapisane znaczniki czasu GPS. Oryginalne dane GPS pozostają bez zmian.",
   "text_24bb17956723": "Nieprzejechane linie czarne; ostatni przejazd ponad 180 dni temu pomarańczowy, ponad 365 dni czerwony. Daty ze znaczników GPS; do 180 dni nadal niebieski/zielony."
 }

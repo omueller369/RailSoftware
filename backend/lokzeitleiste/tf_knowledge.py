@@ -86,8 +86,8 @@ def summary(data,old):
 
 def public_items(data,fields):return [{k:row[k] for k in fields} for row in data['records']]
 
-def create_router(require_account):
-    router=APIRouter();driver=driver_dependency(require_account)
+def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/tf'):
+    router=APIRouter();driver=target_dependency or driver_dependency(require_account)
     @router.get('/tf/location-editor.js')
     def location_script():
         from fastapi.responses import FileResponse
@@ -98,9 +98,9 @@ def create_router(require_account):
         return FileResponse(Path(__file__).parent/'static'/'knowledge-inventory.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     def lock_owner(db,user):
         current=db.scalar(select(User).where(User.id==user.id).with_for_update().execution_options(populate_existing=True))
-        if not current or not current.active or current.role!='tf':raise HTTPException(403,text('identity_error'))
+        if not current or (not current.active and target_dependency is None) or current.role!='tf':raise HTTPException(403,text('identity_error'))
         return identity(db,current,lock=True)
-    @router.post('/api/v1/tf/location-knowledge')
+    @router.post(api_prefix+'/location-knowledge')
     def add_location(data:LocationNew,user:User=Depends(driver),db:Session=Depends(database_session)):
         target=lock_owner(db,user);end=checked_date(data.known_until);code=' '.join(data.ds100.strip().upper().split())
         from .models import RailwayStation
@@ -111,7 +111,7 @@ def create_router(require_account):
         if old:raise HTTPException(409,local_text('duplicate'))
         row=TfLocationKnowledge(owner_id=user.id,identity_key=key,station_name=station.name,ds100=station.code,known_until=end.isoformat());location.refresh_hash(row);db.add(row);db.commit()
         return dict(identity=target,id=row.id)
-    @router.patch('/api/v1/tf/location-knowledge/{entry_id}')
+    @router.patch(api_prefix+'/location-knowledge/{entry_id}')
     def renew_location(entry_id:int,data:LocationRenew,user:User=Depends(driver),db:Session=Depends(database_session)):
         target=lock_owner(db,user)
         row=db.scalar(select(TfLocationKnowledge).where(TfLocationKnowledge.owner_id==user.id,TfLocationKnowledge.id==entry_id).with_for_update())
@@ -120,31 +120,32 @@ def create_router(require_account):
         end=checked_date(data.known_until);old=location.until_date(row.known_until)
         if old and end<=old:raise HTTPException(422,local_text('no_shorten'))
         row.known_until=end.isoformat();location.refresh_hash(row);db.commit();return dict(identity=target,id=row.id)
-    @router.get('/api/v1/tf/knowledge/{kind}')
+    @router.get(api_prefix+'/knowledge/{kind}')
     def listing(kind:str,user:User=Depends(driver),db:Session=Depends(database_session)):
         model,_,fields=schema(kind);target=identity(db,user)
-        items=[dict(id=r.id,**{k:getattr(r,k) for k in fields},**(dict(revision=r.content_sha256,validity=location.validity(r.known_until)) if kind=='places' else {})) for r in db.scalars(select(model).where(model.owner_id==user.id).order_by(model.id))]
+        items=[dict(id=r.id,**{k:getattr(r,k) for k in fields},**(dict(revision=r.content_sha256,validity=location.validity(r.known_until)) if kind=='places' else dict(revision=r.content_sha256) if target_dependency is not None else {})) for r in db.scalars(select(model).where(model.owner_id==user.id).order_by(model.id))]
         return dict(identity=target,items=items,**(dict(date_limits=dict(today=location.today().isoformat(),max_until=location.add_months(location.today(),12).isoformat(),warning_until=location.add_months(location.today(),3).isoformat())) if kind=='places' else {}))
     def read(file,kind):
         raw=file.file.read(MAX_BYTES+1)
         try:return parse(raw,kind)
         except ValueError as exc:raise HTTPException(413 if len(raw)>MAX_BYTES else 422,str(exc)) from None
-    @router.post('/api/v1/tf/knowledge/{kind}/preview')
+    @router.post(api_prefix+'/knowledge/{kind}/preview')
     def preview(kind:str,file:UploadFile=File(...),user:User=Depends(driver),db:Session=Depends(database_session)):
         model,_,fields=schema(kind);data=read(file,kind);target=identity(db,user)
         return dict(identity=target,owner_token=token(target),summary=summary(data,existing(db,model,user.id)),items=public_items(data,fields))
-    @router.post('/api/v1/tf/knowledge/{kind}')
+    @router.post(api_prefix+'/knowledge/{kind}')
     def apply(kind:str,file:UploadFile=File(...),owner_token:str=Form(...),expected_sha256:str=Form(...),confirmed:bool=Form(False),user:User=Depends(driver),db:Session=Depends(database_session)):
         model,_,fields=schema(kind)
         if not confirmed:raise HTTPException(422,text('confirmation'))
         data=read(file,kind)
         if data['file_sha256']!=expected_sha256:raise HTTPException(409,text('file_changed'))
         current=db.scalar(select(User).where(User.id==user.id).with_for_update().execution_options(populate_existing=True))
-        if current is None or not current.active or current.role!='tf':raise HTTPException(403,text('identity_error'))
+        if current is None or (not current.active and target_dependency is None) or current.role!='tf':raise HTTPException(403,text('identity_error'))
         target=identity(db,current,lock=True)
         if token(target)!=owner_token:raise HTTPException(409,text('identity_error'))
         old=existing(db,model,user.id,lock=True);result=summary(data,old)
         for row in data['records']:
             if row['identity_key'] not in old:db.add(model(owner_id=user.id,**row))
         db.commit();return dict(identity=target,summary=result)
+    if target_dependency is not None:router.routes[:]=[route for route in router.routes if not getattr(route,'path',None) or route.path.startswith(api_prefix)]
     return router

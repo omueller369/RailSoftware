@@ -32,12 +32,12 @@ def route_segments(points,timed=False):
     return segments
 
 
-def create_router(require_account):
-    router=APIRouter();driver=driver_dependency(require_account)
+def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/tf'):
+    router=APIRouter();driver=target_dependency or driver_dependency(require_account)
     from .route_knowledge_import import create_router as import_router
-    router.include_router(import_router(require_account))
+    router.include_router(import_router(require_account,target_dependency=target_dependency,api_prefix=api_prefix))
     from .tf_knowledge import create_router as inventory_router
-    router.include_router(inventory_router(require_account))
+    router.include_router(inventory_router(require_account,target_dependency=target_dependency,api_prefix=api_prefix))
     @router.get('/tf/rail-network-data.js')
     def network_data(request:Request):
         compressed=any(part.split(';')[0].strip().lower()=='gzip' and not any(option.strip() in {'q=0','q=0.0','q=0.00','q=0.000'} for option in part.split(';')[1:]) for part in request.headers.get('accept-encoding','').split(','))
@@ -53,7 +53,7 @@ def create_router(require_account):
     def network_script():return FileResponse(Path(__file__).parent/'static'/'rail-network.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/route-knowledge.js')
     def script():return FileResponse(Path(__file__).parent/'static'/'route-knowledge.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
-    @router.get('/api/v1/tf/route-knowledge')
+    @router.get(api_prefix+'/route-knowledge')
     def listing(offset:int=Query(default=0,ge=0),dates:bool=Query(default=False),user:User=Depends(driver),db:Session=Depends(database_session)):
         rows=list(db.scalars(select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id).order_by(TrainGpsRecording.id.desc()).offset(offset).limit(21)))
         items=[]
@@ -62,4 +62,5 @@ def create_router(require_account):
             field='timed_segments' if dates else 'segments'
             items.append({'journey_id':row.journey_id,field:route_segments(payload.get('points',[]),timed=dates)})
         return dict(owner_id=user.id,items=items,next_offset=offset+20 if len(rows)>20 else None)
+    if target_dependency is not None:router.routes[:]=[route for route in router.routes if not getattr(route,'path',None) or route.path.startswith(api_prefix)]
     return router

@@ -1,0 +1,17 @@
+{
+  "text_64d055aab207": "Znajomość szlaków, serii i miejsc",
+  "text_d8540198fe92": "Wybierz maszynistę, aby zobaczyć znajomość szlaków, miejsc i serii. Prawo zapisu pozwala importować dane, przedłużać znajomość miejsc oraz dodawać lub edytować znajomość serii.",
+  "text_97ad4bce6620": "Szukaj maszynisty: nazwisko, numer Tf lub personalny",
+  "text_11584457e67f": "Wybierz maszynistę",
+  "text_a00deeebd72a": "Nie znaleziono maszynisty.",
+  "text_58570aaa3dd7": "Wczytywanie znajomości …",
+  "text_0946d5917273": "Nie masz prawa odczytu tego modułu.",
+  "text_6b9a4ba09b16": "Tylko odczyt: zmiany i import są zablokowane.",
+  "text_4393bd057e8a": "Nie udało się wczytać lub zapisać danych. Sprawdź połączenie i ponownie wybierz maszynistę.",
+  "text_96453327a4fc": "Dodaj znajomość serii",
+  "text_455faa1eea5c": "Zapisz znajomość serii",
+  "text_7d8b71e08aef": "Wpisz serię pojazdu i poprawną datę.",
+  "text_9db33041272a": "Ta seria już istnieje dla maszynisty. Wybierz jej wiersz do edycji.",
+  "text_284bc2a831a1": "Ta sama legenda obowiązuje w portalu Tf i administracji: nieznane — szare, w trakcie zdobywania — niebieskie, znajomość — jasnozielone, zbliża się wygaśnięcie — pomarańczowe, wygasłe — czerwone. Budowa DB InfaGo jest szarobrązowa, sieć poza DB InfaGo — żółta. Potwierdzona importowana znajomość zachowuje pierwszeństwo przed GPS. W administracji wybierz maszynistę przez wyszukiwanie i listę. Dane są pobierane z serwera dla tego maszynisty; lokalne nagrania i prywatna pamięć zalogowanego Tf nie są używane. Podczas zapisywania wybór maszynisty jest zablokowany. Pracownik potrzebuje nowego prawa Odczyt lub Odczyt/Zapis. Z prawem zapisu można dodawać i edytować znajomość serii przez wybór wiersza. Zera wiodące są zachowane.",
+  "text_06452a53499d": "Moduł administracyjny znajomości z wyszukiwaniem maszynisty i edycją serii. Wspólne nowe kolory mapy i nazwy legendy w obu portalach."
+}

@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.4
+# LokZeitleiste v0.27.5
+
+**0.27.5:** Neues Verwaltungsmodul „Strecken- BR- und Ortskenntnisse“: TF über Suche und Dropdown wählen, gemeinsame Karten und Bestände anzeigen, Baureihenkenntnisse anlegen und bearbeiten. Sachbearbeitern das neue Modulrecht „Lesen“ oder „Lesen/Schreiben“ zuweisen. Verwaltungsansichten laden ausschließlich den ausgewählten TF vom Server; private Gerätebestände werden nicht verwendet. Kartenfarben und Legendenbegriffe sind in beiden Portalen vereinheitlicht. Bestätigte importierte Streckenkenntnis bleibt führend.
 
 **0.27.4:** Ortskenntnisse über DS100 eintragen und per Zeilenauswahl bis höchstens ein Kalenderjahr ab heute verlängern. Pro TF keine doppelten Orte. Suche, Spaltensortierung, deutsche Datumsanzeige sowie orange/rote Gültigkeitsmarkierung. Der Import steht unter der Liste. Erfasste GPS-Start-/Endbahnhöfe verlängern den Bestand beim Synchronisieren bis ein Jahr ab ihrem tatsächlichen Erfassungsdatum, ohne längere Gültigkeiten zu verkürzen.
 

@@ -1,0 +1,17 @@
+{
+  "text_64d055aab207": "Strecken- BR- und Ortskenntnisse",
+  "text_d8540198fe92": "Wähle einen TF, um dessen Strecken-, Orts- und Baureihenkenntnisse anzuzeigen. Mit Schreibrechten kannst Du Bestände importieren, Ortskenntnisse verlängern und Baureihenkenntnisse anlegen oder bearbeiten.",
+  "text_97ad4bce6620": "TF suchen: Name, Tf-Nummer oder Personalnummer",
+  "text_11584457e67f": "TF auswählen",
+  "text_a00deeebd72a": "Kein TF gefunden.",
+  "text_58570aaa3dd7": "Kenntnisse werden geladen …",
+  "text_0946d5917273": "Für dieses Modul fehlen Dir die Leserechte.",
+  "text_6b9a4ba09b16": "Nur Lesen: Änderungen und Importe sind gesperrt.",
+  "text_4393bd057e8a": "Die Kenntnisse konnten nicht geladen oder gespeichert werden. Prüfe die Verbindung und lade die Auswahl erneut.",
+  "text_96453327a4fc": "Baureihenkenntnis neu anlegen",
+  "text_455faa1eea5c": "Baureihenkenntnis speichern",
+  "text_7d8b71e08aef": "Wähle eine Baureihe und ein gültiges Datum.",
+  "text_9db33041272a": "Diese Baureihe ist für den TF bereits vorhanden. Wähle die Zeile zum Bearbeiten.",
+  "text_284bc2a831a1": "Die Kartenlegende gilt in TF-Portal und Verwaltung gleich: Unbekannt grau, Im Erwerb blau, Streckenkundig hellgrün, Im Ablauf orange, abgelaufen rot. DB-InfaGo-Bauabschnitte sind graubraun, Nicht-DB-InfaGo-Netz gelb. Bestätigte importierte Streckenkenntnis behält ihren Vorrang vor GPS. In der Verwaltung wählst Du den TF über Suche und Dropdown aus. Daten werden für diesen TF vom Server geladen; lokale Aufzeichnungen oder private Zwischenspeicher eines angemeldeten TF werden dort nicht verwendet. Während des Speicherns bleibt die TF-Auswahl gesperrt. Sachbearbeiter benötigen das neue Modulrecht Lesen oder Lesen/Schreiben. Unter Baureihen kannst Du mit Schreibrechten Einträge neu anlegen oder per Zeilenauswahl bearbeiten. Führende Nullen bleiben erhalten.",
+  "text_06452a53499d": "Verwaltungsmodul für Strecken-, BR- und Ortskenntnisse mit TF-Suche und Baureihenbearbeitung. Gemeinsame neue Kartenfarben und Legendenbegriffe in beiden Portalen."
+}

@@ -7,7 +7,7 @@ const berlinDayFormat=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',
 const dayCache=new Map();
 const validTime=value=>Number.isFinite(value)&&value>0;
 function day(value){if(!validTime(value))return null;const key=Math.floor(value/60000);if(dayCache.has(key))return dayCache.get(key);const parts=Object.fromEntries(berlinDayFormat.formatToParts(new Date(value)).map(p=>[p.type,p.value]));const result=Math.floor(Date.UTC(Number(parts.year),Number(parts.month)-1,Number(parts.day))/86400000);if(dayCache.size>=4096)dayCache.clear();dayCache.set(key,result);return result;}
-const palette={learning:'#1565c0',qualified:'#16803a',aging:'#e67e00',expired:'#c62828'};
+const palette={learning:'#436EEE',qualified:'#7cfc00',aging:'#FF8C00',expired:'#FF0000'};
 function ageState(counts,lastAt,now=Date.now()){const current=day(now),last=day(lastAt);if(current!=null&&last!=null){const age=Math.max(0,current-last);if(age>365)return 'expired';if(age>180)return 'aging';if(qualified(counts))return 'qualified';}return 'learning';}
 const WORLD=40075016.68557849,indexes=new WeakMap(),CELL=5000;
 function project(p,scale){return [(p[1]+180)/360*scale,(1-Math.asinh(Math.tan(p[0]*Math.PI/180))/Math.PI)/2*scale];}

@@ -9,7 +9,7 @@
 /* Zugfahrtdetails: Angaben links, Zeiten und Eintragen rechts. */
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
-window.TfHelpRevision="2026-11-17";
+window.TfHelpRevision="2026-11-18";
 window.TfHelpPages=globalThis.CtlText.restore([
   {
     "id": "route-knowledge",
@@ -61,6 +61,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{route_age.text_72714b02d10d}}",
         "paragraphs": [
           "{{route_age.text_5aaa70a46011}}",
+          "{{admin_knowledge.text_284bc2a831a1}}",
           "{{route_age.text_57cc4a68827f}}"
         ],
         "steps": []

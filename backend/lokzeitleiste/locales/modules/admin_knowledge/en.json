@@ -1,0 +1,17 @@
+{
+  "text_64d055aab207": "Route, rolling-stock and location knowledge",
+  "text_d8540198fe92": "Select a driver to view their route, location and rolling-stock knowledge. Write access allows inventory import, location renewal and adding or editing rolling-stock knowledge.",
+  "text_97ad4bce6620": "Find driver: name, Tf number or personnel number",
+  "text_11584457e67f": "Select driver",
+  "text_a00deeebd72a": "No driver found.",
+  "text_58570aaa3dd7": "Loading knowledge …",
+  "text_0946d5917273": "You do not have read access to this module.",
+  "text_6b9a4ba09b16": "Read-only: changes and imports are disabled.",
+  "text_4393bd057e8a": "Knowledge could not be loaded or saved. Check the connection and reload the selection.",
+  "text_96453327a4fc": "Add rolling-stock knowledge",
+  "text_455faa1eea5c": "Save rolling-stock knowledge",
+  "text_7d8b71e08aef": "Enter a rolling-stock class and a valid date.",
+  "text_9db33041272a": "This driver already has this rolling-stock class. Select its row to edit it.",
+  "text_284bc2a831a1": "The same map legend applies to the driver portal and administration: unknown grey, acquiring blue, qualified light green, ageing orange, expired red. DB InfaGo construction sections are grey-brown; non-DB InfaGo network is yellow. Confirmed imported qualification keeps priority over GPS. Administration selects a driver through search and a dropdown. Data is loaded from the server for that driver; local recordings and a logged-in driver’s private cache are not used. Driver selection is locked while saving. Staff need the new module permission Read or Read/Write. With write access, rolling-stock entries can be added or selected for editing. Leading zeros are preserved.",
+  "text_06452a53499d": "Administration knowledge module with driver search and rolling-stock editing. Shared new map colours and legend labels in both portals."
+}

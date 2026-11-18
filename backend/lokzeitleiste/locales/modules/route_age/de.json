@@ -1,8 +1,8 @@
 {
-  "text_54367acf5ec6": "Letzte Fahrt: 181–365 Tage",
-  "text_d5a563de4eaa": "Letzte Fahrt: mehr als 365 Tage",
+  "text_54367acf5ec6": "Im Ablauf",
+  "text_d5a563de4eaa": "abgelaufen",
   "text_72714b02d10d": "Fahrtenalter und Kartenfarben",
-  "text_5aaa70a46011": "Noch nicht befahrene Strecken sind schwarz. Liegt die letzte zugeordnete Fahrt bis zu 180 Tage zurück, gilt Blau für weniger als zwei Fahrten je Richtung und Grün ab mindestens zwei Fahrten in jeder Richtung. Ab 181 Tagen wird der Abschnitt orange, ab 366 Tagen rot. Orange und Rot haben Vorrang vor Blau und Grün. Für jeden Abschnitt zählt das jüngste Fahrtdatum aus Deinen GPS-Aufzeichnungen, unabhängig von der Richtung. Die App zählt Kalendertage in der Zeitzone Europe/Berlin. Das Laden der Karte setzt das Fahrtdatum nicht zurück. Eine neue Fahrt über den Abschnitt aktualisiert es; bloßes Anzeigen der Karte nicht.",
+  "text_5aaa70a46011": "Unbekannte Abschnitte sind grau (#4A4A4A). Bei einer letzten Fahrt bis zu 180 Tagen gilt Im Erwerb in Blau (#436EEE), bis mindestens zwei Fahrten je Richtung belegt sind; dann gilt Streckenkundig in Hellgrün (#7cfc00). Ab 181 bis 365 Tagen gilt Im Ablauf in Orange (#FF8C00), ab 366 Tagen abgelaufen in Rot (#FF0000). Maßgeblich ist das jüngste zugeordnete GPS-Fahrtdatum, unabhängig von der Richtung, nach Berliner Kalendertagen. Bloßes Anzeigen erneuert kein Datum. Bestätigte importierte Streckenkenntnis behält ihren Vorrang vor GPS.",
   "text_57cc4a68827f": "Fehlt bei älteren Ansichten das Fahrtdatum, bleibt die GPS-Spur blau und wird nicht als frisch grün bewertet. Aktualisiere auch den Server und wähle Strecken laden, damit die Karte die gespeicherten GPS-Zeitstempel erhält. Die GPS-Originaldaten bleiben unverändert.",
   "text_24bb17956723": "Unbefahrene Strecken schwarz; letzte Fahrt nach 180 Tagen orange und nach 365 Tagen rot. Fahrtdaten aus GPS-Zeitstempeln, bis 180 Tage weiterhin Blau/Grün."
 }

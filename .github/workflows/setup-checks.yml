@@ -97,6 +97,13 @@ jobs:
         with:
           name: work-report-layout
           path: ${{ runner.temp }}/work-report-layout/
+      - name: Administrative knowledge target isolation and shared map
+        run: python backend/tests/check_admin_knowledge_ui.py --output-dir "$RUNNER_TEMP/admin-knowledge-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: admin-knowledge-ui
+          path: ${{ runner.temp }}/admin-knowledge-ui/
       - name: Administrative work report inbox browser checks
         run: python backend/tests/check_admin_work_reports_ui.py --output-dir "$RUNNER_TEMP/admin-work-reports-ui"
       - uses: actions/upload-artifact@v4

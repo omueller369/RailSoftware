@@ -1,4 +1,9 @@
 {
+  "admin_knowledge": {
+    "de": "/locales/admin_knowledge/de.json",
+    "en": "/locales/admin_knowledge/en.json",
+    "pl": "/locales/admin_knowledge/pl.json"
+  },
   "admin_work_reports": {
     "de": "/locales/admin_work_reports/de.json",
     "en": "/locales/admin_work_reports/en.json",

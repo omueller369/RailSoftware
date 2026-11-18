@@ -776,3 +776,6 @@ app.include_router(wgm_router(require_admin))
 
 from .gps_preferences import create_router as gps_preferences_router
 app.include_router(gps_preferences_router(require_account))
+
+from .admin_knowledge import create_router as admin_knowledge_router
+app.include_router(admin_knowledge_router(require_admin))

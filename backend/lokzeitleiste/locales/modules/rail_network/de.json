@@ -1,16 +1,16 @@
 {
   "text_3614bb0d0ce7": "Streckennetz",
-  "text_e81576f7b3c0": "Noch nicht befahren",
-  "text_e3e9c4076559": "Im Bau laut CSV",
-  "text_1929fe8c4fdd": "Nicht in DB Netz Betrieb laut CSV",
+  "text_e81576f7b3c0": "Unbekannt",
+  "text_e3e9c4076559": "Im Bau DB InfaGo",
+  "text_1929fe8c4fdd": "Nicht DB InfaGo Netz",
   "text_8354a694a25c": "Deine gefahrenen GPS-Spuren",
   "text_db77b75ec3dc": "Streckennetz wird geladen …",
   "text_5d886f48ce74": "Streckennetz konnte nicht geladen werden. Schalte die Ebene aus und wieder ein, um es erneut zu versuchen.",
   "text_592542a01569": "Quelle: bereitgestellte M1 Streckennetz.csv · 33.425 Datensätze · 1.549 Streckennummern. Der Datenstand der CSV ist nicht angegeben.",
-  "text_fc9ba5dcd225": "Mit Streckennetz blendest Du die Referenzlinien aus Deiner M1-CSV ein oder aus. Noch nicht befahrene Abschnitte sind schwarz, auch CSV-Bauabschnitte und Einträge außerhalb des DB-Netzbetriebs. Bauabschnitte sind gestrichelt, Einträge außerhalb des DB-Netzbetriebs gepunktet. Eigene Fahrtenfarben werden darüber angezeigt. Das Referenznetz allein zählt nicht als Fahrt.",
+  "text_fc9ba5dcd225": "Mit Streckennetz blendest Du die Referenzlinien ein oder aus. Unbekannt ist grau (#4A4A4A), Im Bau DB InfaGo graubraun (#8b8378) und gestrichelt, Nicht DB InfaGo Netz gelb (#ffff00) und gepunktet. Eigene Kenntnisse und GPS-Farben liegen darüber. Das Referenznetz allein zählt nicht als Fahrt.",
   "text_0fb9b3b16771": "In Android ist das Streckennetz mit der App gespeichert und auch ohne Internet sichtbar. Im Web wird die Netzdatei beim ersten Öffnen geladen; für eine spätere Offline-Anzeige muss sie noch im Browsercache liegen. Die OpenStreetMap-Hintergrundkarten benötigen weiterhin Internet.",
   "text_0d83493024ae": "M1-Streckennetz als schaltbare Offline-Referenzebene. Befahrene Abschnitte bleiben blau; ab zwei Fahrten in jeder Richtung werden sie grün.",
-  "text_4417896332fb": "Befahren: noch nicht zweimal je Richtung",
-  "text_6c30e00fbe9a": "Mindestens zweimal in jeder Richtung",
+  "text_4417896332fb": "Im Erwerb",
+  "text_6c30e00fbe9a": "Streckenkundig",
   "text_7a563ef9b8ba": "Bei einer letzten Fahrt bis zu 180 Tagen bleiben befahrene Abschnitte blau, bis Du sie mindestens zweimal in jeder Richtung gefahren bist. Danach sind sie grün. Ältere Fahrten werden nach der Legende orange oder rot. Die App zählt pro Zugfahrt und Richtung höchstens eine Fahrt je etwa 100 Meter Streckenabschnitt. Mehrere GPS-Punkte oder das erneute Laden derselben Zugfahrt erhöhen den Zähler nicht. Nur eindeutige Zuordnungen zum Referenznetz zählen; GPS-Lücken und mehrdeutige Zuordnungen erhalten keine Fahrtengutschrift. Die Auswertung verwendet Deine vorhandenen eigenen Aufzeichnungen auf Gerät und Server. Ohne Referenznetz gibt es keine grüne Zuordnung; bekannte Fahrtdaten können weiterhin Orange oder Rot ergeben."
 }

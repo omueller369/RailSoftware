@@ -1,16 +1,16 @@
 {
   "text_3614bb0d0ce7": "Rail network",
-  "text_e81576f7b3c0": "Not yet travelled",
-  "text_e3e9c4076559": "Under construction in CSV",
-  "text_1929fe8c4fdd": "Outside DB Netz operation in CSV",
+  "text_e81576f7b3c0": "Unknown",
+  "text_e3e9c4076559": "DB InfaGo construction",
+  "text_1929fe8c4fdd": "Outside DB InfaGo network",
   "text_8354a694a25c": "Your travelled GPS tracks",
   "text_db77b75ec3dc": "Loading rail network …",
   "text_5d886f48ce74": "The rail network could not be loaded. Switch the layer off and on to retry.",
   "text_592542a01569": "Source: supplied M1 Streckennetz.csv · 33,425 records · 1,549 route numbers. The CSV does not specify its data date.",
-  "text_fc9ba5dcd225": "Use Rail network to show or hide reference lines from your M1 CSV. Untravelled sections are black, including CSV construction sections and entries outside DB Netz operation. Construction sections are dashed, entries outside DB Netz operation dotted. Your own journey colours appear above them. The reference network alone never counts as a journey.",
+  "text_fc9ba5dcd225": "Toggle the reference lines with Railway network. Unknown is grey (#4A4A4A), DB InfaGo construction grey-brown (#8b8378) and dashed, outside the DB InfaGo network yellow (#ffff00) and dotted. Personal knowledge and GPS colours appear above it. Reference geometry alone never counts as a trip.",
   "text_0fb9b3b16771": "On Android the rail network is packaged with the app and remains visible without internet. On the web the network file loads on first opening; later offline use requires it to remain in the browser cache. OpenStreetMap background tiles still require internet.",
   "text_0d83493024ae": "M1 rail network as a toggleable offline reference layer. Travelled sections remain blue; two passes in each direction turn them green.",
-  "text_4417896332fb": "Travelled: fewer than two passes in each direction",
-  "text_6c30e00fbe9a": "At least twice in each direction",
+  "text_4417896332fb": "Acquiring",
+  "text_6c30e00fbe9a": "Route qualified",
   "text_7a563ef9b8ba": "When the last journey was up to 180 days ago, travelled sections stay blue until you have travelled them at least twice in each direction. They then turn green. Older journeys are orange or red as shown in the legend. Each train journey counts at most once per direction for each roughly 100-metre section. Multiple GPS fixes or reloading a journey never increase the count. Only unambiguous matches to the reference network count; gaps and ambiguous matches earn no credit. The calculation uses your own available recordings on the device and server. Without the reference network no green match is possible; known journey dates may still produce orange or red."
 }

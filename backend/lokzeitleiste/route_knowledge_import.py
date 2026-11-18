@@ -75,9 +75,9 @@ def summary(db,owner_id,data,lock=False):
         result['added' if old is None else 'existing' if old==row['content_sha256'] else 'conflicts']+=1
     return result,existing
 
-def apply_import(db,user,data,filename,expected_token):
+def apply_import(db,user,data,filename,expected_token,allow_inactive=False):
     current=db.scalar(select(User).where(User.id==user.id).with_for_update().execution_options(populate_existing=True))
-    if current is None or not current.active or current.role!='tf':raise HTTPException(403,text('identity_error'))
+    if current is None or (not current.active and not allow_inactive) or current.role!='tf':raise HTTPException(403,text('identity_error'))
     target=identity(db,current,lock=True)
     if token(target)!=expected_token:raise HTTPException(409,text('identity_error'))
     result,existing=summary(db,user.id,data,lock=True)
@@ -89,19 +89,19 @@ def apply_import(db,user,data,filename,expected_token):
     return dict(identity=target,summary=result)
 
 
-def create_router(require_account):
-    router=APIRouter();driver=driver_dependency(require_account)
+def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/tf'):
+    router=APIRouter();driver=target_dependency or driver_dependency(require_account)
     @router.get('/tf/route-csv.js')
     def script():
         from fastapi.responses import FileResponse
         return FileResponse(Path(__file__).parent/'static'/'route-csv.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
-    @router.get('/api/v1/tf/route-knowledge/operating-points')
+    @router.get(api_prefix+'/route-knowledge/operating-points')
     def references(route:str, user:User=Depends(driver),db:Session=Depends(database_session)):
         if not re.fullmatch(r'[0-9]{1,6}',route):raise HTTPException(422,text('invalid_csv'))
         from .models import RailwayOperatingPoint
         rows=db.scalars(select(RailwayOperatingPoint).where(RailwayOperatingPoint.route_number==str(int(route))).order_by(RailwayOperatingPoint.code))
         return dict(owner_id=user.id,items=[json.loads(row.payload_json) for row in rows])
-    @router.get('/api/v1/tf/route-knowledge/imports')
+    @router.get(api_prefix+'/route-knowledge/imports')
     def listing(user:User=Depends(driver),db:Session=Depends(database_session)):
         target=identity(db,user)
         rows=list(db.scalars(select(RouteKnowledgeEntry).where(RouteKnowledgeEntry.owner_id==user.id).order_by(RouteKnowledgeEntry.id)))
@@ -110,16 +110,17 @@ def create_router(require_account):
         raw=file.file.read(MAX_BYTES+1)
         try:return parse_csv(raw)
         except ValueError as exc:raise HTTPException(413 if len(raw)>MAX_BYTES else 422,str(exc)) from None
-    @router.post('/api/v1/tf/route-knowledge/imports/preview')
+    @router.post(api_prefix+'/route-knowledge/imports/preview')
     def preview(file:UploadFile=File(...),user:User=Depends(driver),db:Session=Depends(database_session)):
         data=read(file);target=identity(db,user);result,_=summary(db,user.id,data)
         return dict(identity=target,owner_token=token(target),summary=result,items=[dict(**json.loads(row['source_json']),map_match=map_match(json.loads(row['source_json']))) for row in data['records']])
-    @router.post('/api/v1/tf/route-knowledge/imports')
+    @router.post(api_prefix+'/route-knowledge/imports')
     def apply(file:UploadFile=File(...),owner_token:str=Form(...),expected_sha256:str=Form(...),confirmed:bool=Form(False),user:User=Depends(driver),db:Session=Depends(database_session)):
         if not confirmed:raise HTTPException(422,text('confirmation'))
         data=read(file)
         if data['file_sha256']!=expected_sha256:raise HTTPException(409,text('file_changed'))
         filename=Path((file.filename or 'Kenntnisse.csv').replace('\\','/')).name
         filename=''.join(c for c in filename if ord(c)>=32)[:180] or 'Kenntnisse.csv'
-        return apply_import(db,user,data,filename,owner_token)
+        return apply_import(db,user,data,filename,owner_token,allow_inactive=target_dependency is not None)
+    if target_dependency is not None:router.routes[:]=[route for route in router.routes if not getattr(route,'path',None) or route.path.startswith(api_prefix)]
     return router
