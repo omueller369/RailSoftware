@@ -82,10 +82,16 @@ def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None
         process=subprocess.Popen([chrome,'--headless=new','--no-sandbox','--disable-gpu','--disable-background-networking','--allow-file-access-from-files','--remote-debugging-address=127.0.0.1','--remote-debugging-port=0','--remote-allow-origins=http://localhost','--window-size=1400,1800',f'--user-data-dir={profile}','about:blank'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         try:
             deadline=time.monotonic()+15;port_file=profile/'DevToolsActivePort'
-            while not port_file.exists():
+            # Chrome creates this file before writing its port and WebSocket path.
+            # Existence alone can race with the first write on fast CI runners.
+            while True:
                 if process.poll() is not None or time.monotonic()>deadline:raise RuntimeError('Chrome remote debugging did not start')
+                try:lines=port_file.read_text().splitlines()
+                except FileNotFoundError:lines=[]
+                if len(lines)>=2 and lines[0].isdigit() and lines[1].startswith('/devtools/'):
+                    port=int(lines[0]);break
                 time.sleep(.05)
-            port=int(port_file.read_text().splitlines()[0]);base=f'http://127.0.0.1:{port}'
+            base=f'http://127.0.0.1:{port}'
             for width in widths:
                 host=root/f'host-{width}.html';host.write_text(f'''<!doctype html><html data-layout-status="pending"><head><meta charset="utf-8"><style>body{{margin:0}}iframe{{border:0;width:{width}px;height:1800px}}</style><script>addEventListener('message',event=>{{if(event.source!==document.querySelector('iframe')?.contentWindow)return;document.documentElement.dataset.layoutStatus=event.data.layoutStatus;document.documentElement.dataset.layoutMessage=event.data.message||'';}});</script></head><body><iframe src="fixture.html"></iframe></body></html>''')
                 request=urllib.request.Request(base+'/json/new?about:blank',method='PUT')

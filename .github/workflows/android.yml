@@ -86,7 +86,7 @@ jobs:
         run: python backend/tests/check_rail_network_apk.py --apk app/build/outputs/apk/debug/app-debug.apk
       - name: Verify bundled La PDF reader and licences
         run: python backend/tests/check_la_assets.py --apk app/build/outputs/apk/debug/app-debug.apk
-      - name: Verify report correction and GPS assets
+      - name: Verify report correction, GPS demo and localized page assets
         run: python backend/tests/check_report_rework_apk.py --apk app/build/outputs/apk/debug/app-debug.apk
       - name: Verify translations inside the built APK
         run: python backend/tests/check_android_translations.py --apk app/build/outputs/apk/debug/app-debug.apk
