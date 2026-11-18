@@ -66,6 +66,7 @@ def resubmit(db,user,data,row):
     from ..models import RailwayStation
     report=db.scalar(select(DutyReport).where(DutyReport.id==row.report_id,DutyReport.tf_user_id==user.id).with_for_update())
     incoming=data.model_dump_json()
+    if len(incoming.encode('utf-8'))>60000:raise HTTPException(422,source('server_work_reports_service.text_a14edc14d076'))
     if row.completed_at:
         if row.submitted_json!=incoming or active(db,report.id) or json.loads(report.payload_json)['client_id']!=str(data.client_id):raise HTTPException(409,text('conflict'))
         return report
