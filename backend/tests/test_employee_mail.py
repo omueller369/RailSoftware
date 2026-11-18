@@ -90,6 +90,7 @@ class EmployeeMailTest(unittest.TestCase):
             self.assertEqual(job.status,'pending')
             self.assertEqual(job.address,profile['email'])
 
-    def test_dashboard_admin_links(self):
+    def test_dashboard_omits_external_administrator_tools(self):
         modules=self.client.get('/api/v1/admin/start').json()['modules']
-        self.assertTrue({'/phpmyadmin','/webmailer'}<={r['url'] for r in modules})
+        self.assertFalse({'/phpmyadmin','/webmailer'} & {r['url'] for r in modules})
+        self.assertEqual(self.client.get('/api/v1/admin/start').json()['admin_tools'],[])
