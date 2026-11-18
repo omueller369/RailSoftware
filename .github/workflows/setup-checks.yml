@@ -34,6 +34,15 @@ jobs:
         run: |
           for test in backend/tests/*.cjs; do node "$test" || exit 1; done
           node backend/tests/test_brake_sheet_ui.cjs --overlay
+      - name: La PDF rendering, offline account isolation and publication form
+        run: |
+          python backend/tests/check_la_assets.py
+          python backend/tests/check_la_instructions_ui.py --output-dir "$RUNNER_TEMP/la-instructions-ui"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: la-instructions-ui
+          path: ${{ runner.temp }}/la-instructions-ui/
       - name: Private route knowledge CSV preview, import and offline cache
         run: python backend/tests/check_route_csv_ui.py --output-dir "$RUNNER_TEMP/route-csv-ui"
       - uses: actions/upload-artifact@v4

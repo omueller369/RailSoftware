@@ -782,3 +782,6 @@ app.include_router(admin_knowledge_router(require_admin))
 
 from .dispatch_tracking import create_router as dispatch_tracking_router
 app.include_router(dispatch_tracking_router(require_admin))
+
+from .la_instructions import create_router as la_instructions_router
+app.include_router(la_instructions_router(require_account,require_admin))

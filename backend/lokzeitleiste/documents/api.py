@@ -26,7 +26,7 @@ class DocumentUploadLimit:
         path=scope.get('path','')
         station_plan=scope.get('method')=='PUT' and re.fullmatch(r'/api/v1/tf/stations/[^/]+/plan',path)
         draft_receipt=scope.get('method')=='PUT' and re.fullmatch(r'/api/v1/tf/work-report-drafts/[^/]+/files/[^/]+',path)
-        if scope['type']!='http' or (path!='/api/v1/documents/upload' and not station_plan and not draft_receipt and not (scope.get('method')=='POST' and (path=='/api/v1/tf/messages' or (path.startswith('/api/v1/tf/messages/') and path.endswith('/reply'))))):
+        if scope['type']!='http' or (path not in ('/api/v1/documents/upload','/api/v1/admin/la-instructions') and not station_plan and not draft_receipt and not (scope.get('method')=='POST' and (path=='/api/v1/tf/messages' or (path.startswith('/api/v1/tf/messages/') and path.endswith('/reply'))))):
             return await self.app(scope,receive,send)
         limit=MAX_FILE+65536;headers=dict(scope.get('headers',[]));chunks=[];total=0
         async def reject():

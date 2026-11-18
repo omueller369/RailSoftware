@@ -12,6 +12,7 @@ from .models import StaffProfile
 def start_modules(user,p):
     employees=any(p.get(key,0) for key in ('employees','planning','worktime','reports','directory','shifts','email'))
     definitions=[
+        ('la',_text_source('la_instructions.text_aaf232064610'),'/admin/la-instructions',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('la',0)),
         ('dispatchers',_text_source('dispatch_tracking.text_640480716e00'),'/admin/dispatchers',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('dispatchers',0)),
         ('tracking',_text_source('dispatch_tracking.text_5a95db2aa8e5'),'/admin/tracking',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('tracking',0)),
         ('knowledge',_text_source('admin_knowledge.text_64d055aab207'),'/admin/knowledge',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('knowledge',0)),

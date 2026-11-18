@@ -209,6 +209,11 @@
     "en": "/locales/knowledge_tabs/en.json",
     "pl": "/locales/knowledge_tabs/pl.json"
   },
+  "la_instructions": {
+    "de": "/locales/la_instructions/de.json",
+    "en": "/locales/la_instructions/en.json",
+    "pl": "/locales/la_instructions/pl.json"
+  },
   "location_editor": {
     "de": "/locales/location_editor/de.json",
     "en": "/locales/location_editor/en.json",

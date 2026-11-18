@@ -1006,3 +1006,20 @@ class TfRollingStockKnowledge(Base):
     valid_until:Mapped[str]=mapped_column(String(10))
     content_sha256:Mapped[str]=mapped_column(String(64))
     imported_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)
+
+
+class LaInstruction(Base):
+    """Shared, explicitly published regional La PDF; no DB portal credentials."""
+    __tablename__='la_instructions'
+    __table_args__=(UniqueConstraint('region','content_sha256','valid_from','valid_until',name='uq_la_region_pdf_period'),)
+    id:Mapped[int]=mapped_column(primary_key=True)
+    region:Mapped[str]=mapped_column(String(12),nullable=False,index=True)
+    title:Mapped[str]=mapped_column(String(200),nullable=False)
+    edition:Mapped[str]=mapped_column(String(80),nullable=False)
+    valid_from:Mapped[date]=mapped_column(Date,nullable=False)
+    valid_until:Mapped[date]=mapped_column(Date,nullable=False)
+    filename:Mapped[str]=mapped_column(String(200),nullable=False)
+    content_sha256:Mapped[str]=mapped_column(String(64),nullable=False)
+    content:Mapped[bytes]=mapped_column(LargeBinary().with_variant(LONGBLOB(),'mysql'),nullable=False)
+    created_by:Mapped[int]=mapped_column(ForeignKey('users.id'),nullable=False)
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)

@@ -26,8 +26,11 @@ class PortalPolicy(base: String) {
         val zoom = z.toInt()
         zoom in 0..19 && x.toInt() < (1 shl zoom) && y.toInt() < (1 shl zoom)
     }.getOrDefault(false)
-    fun asset(path: String): String? = when(path) {
-        "/tf", "/tf/streckenkenntnisse", "/tf/updates", "/tf/gps-demo", "/tf/hilfe", "/tf/notizen", "/tf/arbeitsbericht", "/tf/arbeitsplan", "/tf/bahnhoefe", "/tf/leuna-uebergabeprotokoll" -> "tf-portal.html"
+    fun asset(path: String): String? {
+        val laVendor = Regex("^/tf/la-vendor/(pdf(?:[.]worker)?[.]mjs|(?:cmaps|standard_fonts|wasm)/[A-Za-z0-9][A-Za-z0-9_.-]*[.](?:bcmap|pfb|ttf|wasm))$")
+        if (laVendor.matches(path) && !path.contains("..")) return path.removePrefix("/tf/")
+        return when(path) {
+        "/tf", "/tf/la-anweisungen", "/tf/streckenkenntnisse", "/tf/updates", "/tf/gps-demo", "/tf/hilfe", "/tf/notizen", "/tf/arbeitsbericht", "/tf/arbeitsplan", "/tf/bahnhoefe", "/tf/leuna-uebergabeprotokoll" -> "tf-portal.html"
         "/tf/bremszettel" -> "brake-sheet.html"
         "/tf/bremszettel-de" -> "national-brake-sheet.html"
         "/tf/national-brake-sheet.js" -> "national-brake-sheet.js"
@@ -38,6 +41,8 @@ class PortalPolicy(base: String) {
         "/tf/me" -> "tf-profile.html"
         "/tf/notes.js" -> "tf-notes.js"
         "/tf/report-tabs.js" -> "report-tabs.js"
+        "/tf/la-instructions.js" -> "la-instructions.js"
+        "/tf/la-instructions.css" -> "la-instructions.css"
         "/tf/updates.js" -> "updates.js"
         "/tf/station-contributions.js" -> "station-contributions.js"
         "/tf/station-catalog-data.js" -> "station-catalog-data.js"
@@ -87,5 +92,6 @@ class PortalPolicy(base: String) {
         "/tf/portal.css" -> "tf-portal.css"
         "/tf/work-report-feedback.js", "/tf/work-report.js", "/tf/work-report.css", "/tf/train-journeys.js", "/tf/gps.js", "/tf/stations.js", "/tf/station-sharing.js", "/tf/return.js" -> if(path.endsWith("return.js")) "tf-return.js" else path.substringAfterLast('/')
         else -> null
+        }
     }
 }

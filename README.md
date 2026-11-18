@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.6
+# LokZeitleiste v0.27.7
+
+**0.27.7:** Neue TF-Kachel „La-Anweisungen“: PDF-Vorschau und bewusstes Offline-Speichern nach sieben DB-InfraGO-Regionen. Die Verwaltung stellt PDFs mit Ausgabestand und Gültigkeitszeitraum über das Modulrecht „La-Anweisungen“ bereit. Kein automatischer DB-Abruf; vorbereitete Loginfelder und Anmeldebutton sind deaktiviert. Offline-Bestand ist je Konto getrennt und deutlich gekennzeichnet. PDF.js 6.5.438 (Apache-2.0) ist lokal enthalten, damit die Vorschau auch im Android-WebView und ohne externen PDF-Dienst funktioniert.
 
 **0.27.6:** Disponentenverwaltung mit denselben Stammdaten- und Berechtigungsfunktionen wie Verwaltungsmitarbeiter, getrenntem Bestand und standardmäßigem Leserecht für Zugverfolgung. Die Deutschlandkarte zeigt das deutsche Streckennetz und aktiv geteilte GPS-Positionen mit freigegebener Zugnummer und TF-Vornamen; ohne Freigabe und nach zehn Minuten ohne Position bleiben keine Punkte sichtbar. Administratoren finden phpMyAdmin und WebMailer im Administrationsmenü statt als Kacheln. Das angekündigte eigene PNG kann später das vorläufige vorhandene GPS-Symbol ersetzen.
 

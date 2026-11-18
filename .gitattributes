@@ -1,0 +1,2 @@
+# Preserve the exact upstream PDF.js bytes and keep generated vendor code out of review diffs.
+backend/lokzeitleiste/static/la-vendor/** -text -whitespace linguist-vendored

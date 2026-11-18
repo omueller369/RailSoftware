@@ -3,6 +3,16 @@ import org.junit.Assert.*
 import org.junit.Test
 class PortalPolicyTest {
     private val policy=PortalPolicy("https://ctl-software.io-goerlitz.eu")
+    @Test fun laReaderAndOnlyPublicRendererAssetsArePackaged() {
+        assertEquals("tf-portal.html",policy.asset("/tf/la-anweisungen"))
+        assertEquals("la-instructions.js",policy.asset("/tf/la-instructions.js"))
+        assertEquals("la-instructions.css",policy.asset("/tf/la-instructions.css"))
+        assertEquals("la-vendor/pdf.mjs",policy.asset("/tf/la-vendor/pdf.mjs"))
+        assertEquals("la-vendor/pdf.worker.mjs",policy.asset("/tf/la-vendor/pdf.worker.mjs"))
+        assertNull(policy.asset("/tf/la-vendor/../account.js"))
+        assertNull(policy.asset("/tf/la-vendor/manifest.json"))
+        assertNull(policy.asset("/api/v1/tf/la-instructions/1/pdf"))
+    }
     @Test fun routeKnowledgeAndTrafficArePackaged() {
         val policy=PortalPolicy("https://example.test")
         assertEquals("tf-portal.html",policy.asset("/tf/streckenkenntnisse"))
