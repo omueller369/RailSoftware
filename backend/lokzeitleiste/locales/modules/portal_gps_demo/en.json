@@ -31,7 +31,7 @@
   "text_7b5fcfeda44b": "Back to start resets the demo.",
   "text_b2f44a46c65a": "Shared GPS demos",
   "text_d913c24d2ddc": "My recordings",
-  "text_7e7c9e351fc5": "Share selected completed recordings with other drivers and authorized administrative staff. Sharing includes the complete GPS track, train number and stops. Clear the checkbox to revoke access. Later changes to the original require sharing again.",
+  "text_7e7c9e351fc5": "Select completed recordings for other drivers and authorized administrative staff. Only Share selection publishes your choices. Sharing includes the complete GPS track, train number and stops. Clear a checkbox and confirm again to revoke access. Later changes to the original require sharing again.",
   "text_4f7bc261e46c": "Share as demo",
   "text_12dc7be1c855": "No shared demos available.",
   "text_693f21a2a504": "Hide GPS-DEMO tile",
@@ -50,5 +50,10 @@
   "text_a811f793d424": "This shared demo is no longer available. Reload the list.",
   "text_d3be483bccb7": "Refresh list",
   "text_7a3e2c82488c": "Share selected GPS demos with administration and other drivers, show stops with current DS100 suggestions, and hide the demo tile.",
-  "text_fdeb3c706255": "Below the demo, select completed recordings whose entire GPS track, train number and stops you want to share with other drivers and authorized administration. Clear a checkbox to revoke access. These recordings appear under Shared GPS demos. Stops are read-only. The demo suggests unambiguous current DS100 locations within 1,000 m without changing the original. Hide the demo tile using its button; restore it under My account."
+  "text_fdeb3c706255": "Completed recordings appear below the demo. Select their checkboxes and confirm with Share selection. Nothing is published beforehand. To revoke access, clear the checkbox and confirm again. Other drivers and authorized administration can replay shared GPS tracks, train numbers and stops. Stops are read-only, with times in a full-width table. Current unambiguous DS100 locations within 1,000 m enrich the demo as suggestions; the original remains unchanged. Hide the GPS-DEMO tile using its button and restore it under My account.",
+  "text_6a5482fbbecb": "Share selection",
+  "text_50a7abe26d0e": "Selection has not been applied. Confirm it with Share selection.",
+  "text_b66e8d1a8006": "Selection applied. Only checked recordings are shared.",
+  "text_3e7d17c329af": "The selection could not be applied and remains staged. Check your connection and try again.",
+  "text_f36ddd522a48": "This server does not yet support sharing. Ask administration to update the server. Your selection has not been published."
 }

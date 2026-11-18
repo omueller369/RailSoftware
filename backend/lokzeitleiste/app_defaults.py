@@ -1,3 +1,4 @@
+from .field_errors import FieldError
 """Versioned app vocabulary. Stable keys preserve historical report semantics."""
 from .localization import source as _text_source
 import json
@@ -56,11 +57,14 @@ def ensure_defaults(db):
         if not db.get(AppDefaultSeed,1):raise
 
 
-def use_value(db,category,value,previous=None):
+def use_value(db,category,value,previous=None,loc=None,context=None):
     # Match historical CTL DE to its current key without rewriting report snapshots.
     canonical='CTL' if category=='cause' and value==_text_source('server_app_defaults.text_2087c99eb939') else value
     row=db.scalar(select(Value).where(Value.category==category,Value.value==canonical).with_for_update())
-    if not row or (not row.active and value!=previous):raise HTTPException(422,_text_source('server_app_defaults.text_abc1be1d3849'))
+    if not row or (not row.active and value!=previous):
+        message=_text_source('server_app_defaults.text_abc1be1d3849')
+        if loc is not None:raise FieldError(message,loc,context)
+        raise HTTPException(422,message)
     row.ever_used=True
     return row
 
@@ -70,12 +74,12 @@ def use_journeys(db,journeys,previous=()):
     old={(str(train['id']),str(event['id'])):event for train in previous for event in train.get('events',[])}
     # A consistent order also serializes use/deletion of shared values.
     selections=[]
-    for train in journeys:
-        for event in train.events:
+    for ti,train in enumerate(journeys):
+        for ei,event in enumerate(train.events):
             prior=old.get((str(train.id),str(event.id)),{})
-            selections += [(category,getattr(event,category),prior.get(category)) for category in ('cause','reason')]
+            selections += [(category,getattr(event,category),prior.get(category),['train_journeys',ti,'events',ei,category],dict(journey_id=str(train.id),event_id=str(event.id))) for category in ('cause','reason')]
     labels={}
-    for category,value,previous_value in sorted(selections,key=lambda item:(item[0],item[1])):labels[category,value]=use_value(db,category,value,previous_value).label
+    for category,value,previous_value,loc,context in sorted(selections,key=lambda item:(item[0],item[1])):labels[category,value]=use_value(db,category,value,previous_value,loc,context).label
     for train in journeys:
         for event in train.events:
             prior=old.get((str(train.id),str(event.id)),{})

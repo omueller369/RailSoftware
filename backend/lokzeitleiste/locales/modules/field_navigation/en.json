@@ -1,0 +1,6 @@
+{
+  "text_560a8d1bc3b6": "Choose Okay to go to the row associated with an input error. The field is revealed and outlined in red.",
+  "text_ab0a303e2a2e": "Confirm an input error when sending with Okay. If the error identifies a field, the correct tab opens at the affected journey, stop or duty entry. The field receives focus and a red outline. Correct the value and save the row before sending again. If another row is being edited, its input is preserved and the affected table cell is highlighted. Delayed errors never reset corrected values. Connection and access errors do not identify an invalid input field.",
+  "text_6c83f129717f": "The Updates tile appears only in the Android app. The web version uses the current release after administration updates it.",
+  "text_39ddf1aab866": "Okay opens the affected row and outlines the invalid field in red, preserving pending edits and corrected values. Updates tile shown only on Android. GPS demo: checkboxes stage choices; Share selection publishes or revokes them. Stops show times in a responsive full-width table."
+}

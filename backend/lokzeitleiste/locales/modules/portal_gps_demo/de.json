@@ -31,7 +31,7 @@
   "text_7b5fcfeda44b": "Zum Anfang setzt die Demo zurück.",
   "text_b2f44a46c65a": "Freigegebene GPS-Demos",
   "text_d913c24d2ddc": "Eigene Aufzeichnungen",
-  "text_7e7c9e351fc5": "Gib einzelne abgeschlossene Aufzeichnungen für andere TF und berechtigte Verwaltungsmitarbeiter frei. Die Freigabe enthält die gesamte GPS-Spur, Zugnummer und Standzeiten. Entferne das Häkchen, um die Freigabe zurückzunehmen. Spätere Änderungen am Original werden erst nach erneuter Freigabe übernommen.",
+  "text_7e7c9e351fc5": "Markiere abgeschlossene Aufzeichnungen für andere TF und berechtigte Verwaltungsmitarbeiter. Erst Auswahl freigeben veröffentlicht Deine Auswahl. Eine Freigabe umfasst die gesamte GPS-Spur, Zugnummer und Standzeiten. Entferne ein Häkchen und bestätige erneut, um die Freigabe zurückzunehmen. Spätere Änderungen am Original werden erst nach erneuter Freigabe übernommen.",
   "text_4f7bc261e46c": "Als Demo freigeben",
   "text_12dc7be1c855": "Keine freigegebenen Demos vorhanden.",
   "text_693f21a2a504": "GPS-DEMO-Kachel ausblenden",
@@ -50,5 +50,10 @@
   "text_a811f793d424": "Diese Freigabe ist nicht mehr verfügbar. Lade die Liste erneut.",
   "text_d3be483bccb7": "Liste aktualisieren",
   "text_7a3e2c82488c": "GPS-Demos gezielt freigeben, in der Verwaltung und bei anderen TF abspielen; Standzeiten mit aktuellem DS100-Abgleich anzeigen und Demo-Kachel ausblenden.",
-  "text_fdeb3c706255": "Unter der Demo findest Du Deine abgeschlossenen Aufzeichnungen. Setze nur bei den Aufzeichnungen ein Häkchen, deren gesamte GPS-Spur, Zugnummer und Standzeiten Du für andere TF und berechtigte Verwaltungsmitarbeiter freigeben möchtest. Entferne das Häkchen zum Widerrufen. Andere TF und die Verwaltung sehen diese Aufzeichnungen unter Freigegebene GPS-Demos. Standzeiten werden ohne Bearbeitung angezeigt. Die Demo ergänzt eindeutige aktuelle DS100-Orte innerhalb von 1.000 m als Vorschläge, ohne das Original zu verändern. Über GPS-DEMO-Kachel ausblenden entfernst Du die Kachel; unter Mein Konto kannst Du sie wieder anzeigen lassen."
+  "text_fdeb3c706255": "Unter der Demo findest Du Deine abgeschlossenen Aufzeichnungen. Wähle sie über die Checkboxen aus und bestätige mit Auswahl freigeben. Vorher wird nichts veröffentlicht. Entferne zum Widerrufen das Häkchen und bestätige erneut. Andere TF und berechtigte Verwaltungsmitarbeiter können freigegebene GPS-Spuren, Zugnummern und Standzeiten abspielen. Standzeiten erscheinen ohne Bearbeitung mit Uhrzeiten in einer Tabelle über die volle Breite. Aktuelle eindeutige DS100-Orte innerhalb von 1.000 m ergänzen die Demo als Vorschläge; das Original bleibt unverändert. GPS-DEMO-Kachel ausblenden entfernt die Kachel; unter Mein Konto kannst Du sie wieder anzeigen lassen.",
+  "text_6a5482fbbecb": "Auswahl freigeben",
+  "text_50a7abe26d0e": "Auswahl noch nicht übernommen. Bestätige sie mit Auswahl freigeben.",
+  "text_b66e8d1a8006": "Auswahl übernommen. Nur angehakte Aufzeichnungen sind freigegeben.",
+  "text_3e7d17c329af": "Die Auswahl konnte nicht übernommen werden. Sie bleibt vorgemerkt. Prüfe die Verbindung und versuche es erneut.",
+  "text_f36ddd522a48": "Die Freigabe wird von diesem Server noch nicht unterstützt. Bitte die Verwaltung um ein Serverupdate bitten. Deine Auswahl wurde nicht veröffentlicht."
 }

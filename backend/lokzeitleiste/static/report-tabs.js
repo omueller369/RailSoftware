@@ -17,6 +17,6 @@
   tab.onclick=()=>api.activate(names[index]);
   tab.onkeydown=event=>{let next;if(event.key==='ArrowRight')next=(index+1)%names.length;else if(event.key==='ArrowLeft')next=(index+names.length-1)%names.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=names.length-1;else return;event.preventDefault();api.activate(names[next],true);};
  });
- root.addEventListener('invalid',event=>{const index=panels.findIndex(panel=>panel.contains(event.target));if(index>=0)api.activate(names[index]);},true);
+ for(const type of ['invalid','ctlrevealfield'])root.addEventListener(type,event=>{const index=panels.findIndex(panel=>panel.contains(event.target));if(index>=0)api.activate(names[index]);},true);
  api.activate(active,false,false);
 })();

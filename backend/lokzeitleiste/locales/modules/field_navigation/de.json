@@ -1,0 +1,6 @@
+{
+  "text_560a8d1bc3b6": "Mit Okay wechselst Du bei zugeordneten Eingabefehlern zur betroffenen Zeile. Das Feld wird eingeblendet und rot umrahmt.",
+  "text_ab0a303e2a2e": "Bestätige einen Eingabefehler beim Senden mit Okay. Bei einem zugeordneten Fehler öffnet sich der passende Reiter mit der betroffenen Zugfahrt, Standzeit oder Dienstangabe. Das fehlerhafte Feld wird rot umrahmt und erhält den Fokus. Korrigiere den Wert und speichere die Zeile, bevor Du erneut sendest. Ist eine andere Zeile noch in Bearbeitung, bleiben ihre Eingaben erhalten; die betroffene Tabellenzelle wird markiert. Bereits korrigierte Werte werden durch verspätete Fehlermeldungen nicht zurückgesetzt. Verbindungs- und Zugriffsfehler haben kein fehlerhaftes Eingabefeld.",
+  "text_6c83f129717f": "Die Kachel Updates wird nur in der Android-App angezeigt. Im Web nutzt Du nach der Aktualisierung durch die Verwaltung den aktuellen Stand.",
+  "text_39ddf1aab866": "Okay führt bei Eingabefehlern zur betroffenen Zeile und markiert das Feld rot; offene Bearbeitungen und bereits korrigierte Werte bleiben erhalten. Updates-Kachel nur in Android. GPS-Demo: Checkboxen merken die Auswahl nur vor; erst Auswahl freigeben veröffentlicht oder widerruft sie. Standzeiten zeigen Uhrzeiten in einer flexiblen Tabelle über die volle Breite."
+}

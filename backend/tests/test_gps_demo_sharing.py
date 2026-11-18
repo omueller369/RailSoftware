@@ -14,6 +14,23 @@ class DemoSharingTest(unittest.TestCase):
     def recording(self,ended=True):
         journey=str(uuid4());response=self.driver.put('/api/v1/tf/gps/'+journey,json=dict(train_number='DEMO',points=points(),ended=ended,expected_revision=0));self.assertEqual(response.status_code,200,response.text)
         with Session(self.engine) as db:row=db.scalar(select(TrainGpsRecording).where(TrainGpsRecording.journey_id==journey));return journey,row.id,row.payload_json
+    def test_confirmed_batch_is_atomic_and_owned(self):
+        first,first_id,_=self.recording();second,second_id,_=self.recording()
+        def change(journey,shared=True,revision=1):return dict(journey_id=journey,shared=shared,expected_revision=revision)
+        endpoint='/api/v1/tf/gps-demo/shares'
+        # A conflict in any selected recording must leave the whole selection unpublished.
+        failed=self.driver.post(endpoint,json={'changes':[change(first),change(second,revision=2)]})
+        self.assertEqual(failed.status_code,409,failed.text)
+        self.assertEqual(self.driver.get('/api/v1/tf/gps-demo/shared').json()['items'],[])
+        response=self.driver.post(endpoint,json={'changes':[change(first),change(second)]})
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertEqual(len(self.client.get('/api/v1/admin/gps-demo/shared').json()['items']),2)
+        self.assertEqual(self.driver.post(endpoint,json={'changes':[change(first,False),change(second,False)]}).status_code,200)
+        self.assertEqual(self.driver.get('/api/v1/tf/gps-demo/shared').json()['items'],[])
+        self.assertEqual(self.driver.post(endpoint,json={'changes':[change(first),change(first)]}).status_code,422)
+        self.assertEqual(self.driver.post(endpoint,json={'changes':[change(first),change(str(uuid4()))]}).status_code,404)
+        self.assertEqual(self.driver.get('/api/v1/tf/gps-demo/shared').json()['items'],[])
+        self.assertEqual(self.client.post(endpoint,json={'changes':[change(first)]}).status_code,403)
     def test_anonymous_and_original_preservation(self):
         anonymous=TestClient(app,base_url='https://testserver');self.staff_clients.append(anonymous)
         for prefix in ['tf','admin']:

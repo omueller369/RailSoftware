@@ -29,6 +29,7 @@ const api=window.CtlValidation;
  const current=api.capture({body:JSON.stringify({new_password:'newer'})});
  await api.response(new Response(JSON.stringify({detail:[{loc:['body','new_password'],msg:'Rejected'}]}),{status:422}),current);
  assert.equal(b.getAttribute('data-ctl-invalid'),'true');
+ const safe=api.capture({body:JSON.stringify({new_password:'newer'})});await api.response(new Response(JSON.stringify({detail:'Check input',fields:[{field:'body.new_password',type:'value_error'}]}),{status:422}),safe);assert.equal(api.takeIssues('Check input')[0].loc.at(-1),'new_password');
  events.reset({target:scope});assert.equal(b.getAttribute('data-ctl-invalid'),null);
  const css=fs.readFileSync('backend/lokzeitleiste/static/portal-theme.css','utf8');
  assert(css.includes(':invalid,[aria-invalid=true],[data-invalid=true],[data-ctl-invalid=true]'));

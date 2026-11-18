@@ -1,3 +1,4 @@
+from ..field_errors import FieldError
 from ..localization import source as _text_source
 import json
 from datetime import datetime,time,timedelta
@@ -74,10 +75,10 @@ def save_report(db,user,data,commit=True):
         if identity(json.loads(existing.payload_json))!=identity(json.loads(data.model_dump_json())):
             raise HTTPException(409,_text_source('server_work_reports_service.text_cb1a440244f4'))
         return existing
-    for trip in data.trips:
+    for ti,trip in enumerate(data.trips):
         for code,name_field in ((trip.start_station,'start_station_name'),(trip.end_station,'end_station_name')):
             station=db.get(RailwayStation,code)
-            if not station:raise HTTPException(422,_text_source('server_work_reports_service.text_b2e103a3cabe')+code)
+            if not station:raise FieldError(_text_source('server_work_reports_service.text_b2e103a3cabe')+code,['trips',ti,name_field.removesuffix('_name')])
             setattr(trip,name_field,station.name)
     from ..app_defaults import use_journeys
     use_journeys(db,data.train_journeys)
@@ -114,17 +115,17 @@ def save_report(db,user,data,commit=True):
 
 
 def resolve_train_stations(db,journeys):
-    for train in journeys:
+    for ti,train in enumerate(journeys):
         for code,attribute in ((train.start_station,'start_station_name'),(train.end_station,'end_station_name')):
             if not code:continue
             station=db.get(RailwayStation,code)
-            if not station:raise HTTPException(422,_text_source('server_work_reports_service.text_b2e103a3cabe')+code)
+            if not station:raise FieldError(_text_source('server_work_reports_service.text_b2e103a3cabe')+code,['train_journeys',ti,attribute.removesuffix('_name')],dict(journey_id=str(train.id)))
             setattr(train,attribute,station.name)
-        for event in train.events:
+        for ei,event in enumerate(train.events):
             if not event.station:
                 continue
             station=db.get(RailwayStation,event.station)
-            if not station:raise HTTPException(422,_text_source('server_work_reports_service.text_b2e103a3cabe')+event.station)
+            if not station:raise FieldError(_text_source('server_work_reports_service.text_b2e103a3cabe')+event.station,['train_journeys',ti,'events',ei,'station'],dict(journey_id=str(train.id),event_id=str(event.id)))
             event.station_name=station.name
 
 

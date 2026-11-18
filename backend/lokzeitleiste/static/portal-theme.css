@@ -96,3 +96,5 @@ html[data-theme=dark] .route-csv-table tr[data-location-state=expired]{backgroun
 html[data-theme=dark] [data-knowledge-inventory=places] .route-csv-table tr[data-location-state=expiring]>td{background:#4a3418;color:#ffdc9f}
 html[data-theme=dark] [data-knowledge-inventory=places] .route-csv-table tr[data-location-state=expired]>td{background:#4d2026;color:#ffd2d2}
 [data-knowledge-inventory=places] .route-csv-table tr[aria-selected=true]>td:first-child{box-shadow:inset 4px 0 #368bd2}
+
+html body td[data-ctl-invalid=true]{outline:2px solid #d71920;outline-offset:-2px}html[data-theme=dark] body td[data-ctl-invalid=true]{outline-color:#ff8585}

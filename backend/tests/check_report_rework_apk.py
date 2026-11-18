@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[2]
 def main():
     p=argparse.ArgumentParser();p.add_argument('--apk',type=Path,required=True);a=p.parse_args()
     with zipfile.ZipFile(a.apk) as z:
-        for name in ['gps-settings.js','gps-demo.js','gps-demo-visibility.js','tf-profile.html','tf-portal.html','work-report.js','work-report.css','train-journeys.js','gps.js','tf-help-content.js','auth-session.js','updates.js']:
+        for name in ['report-tabs.js','portal-theme.css','tf-portal.js','work-report-feedback.js','gps-settings.js','gps-demo.js','gps-demo-visibility.js','tf-profile.html','tf-portal.html','work-report.js','work-report.css','train-journeys.js','gps.js','tf-help-content.js','auth-session.js','updates.js']:
             actual=z.read('assets/tf-portal/'+name)
             expected=(ROOT/'backend/lokzeitleiste/static'/name).read_bytes()
             if name.endswith('.html'):

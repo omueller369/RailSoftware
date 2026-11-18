@@ -31,7 +31,7 @@
   "text_7b5fcfeda44b": "Do początku resetuje demonstrację.",
   "text_b2f44a46c65a": "Udostępnione demonstracje GPS",
   "text_d913c24d2ddc": "Własne nagrania",
-  "text_7e7c9e351fc5": "Udostępnij wybrane zakończone nagrania innym maszynistom i uprawnionym pracownikom administracji. Udostępnienie obejmuje cały ślad GPS, numer pociągu i postoje. Usuń zaznaczenie, aby je cofnąć. Późniejsze zmiany oryginału wymagają ponownego udostępnienia.",
+  "text_7e7c9e351fc5": "Zaznacz zakończone nagrania dla innych maszynistów i uprawnionej administracji. Dopiero Udostępnij wybór publikuje zaznaczenie. Udostępnienie obejmuje cały ślad GPS, numer pociągu i postoje. Usuń zaznaczenie i ponownie potwierdź, aby cofnąć dostęp. Późniejsze zmiany oryginału wymagają ponownego udostępnienia.",
   "text_4f7bc261e46c": "Udostępnij jako demonstrację",
   "text_12dc7be1c855": "Brak udostępnionych demonstracji.",
   "text_693f21a2a504": "Ukryj kafelek GPS-DEMO",
@@ -50,5 +50,10 @@
   "text_a811f793d424": "To udostępnienie nie jest już dostępne. Odśwież listę.",
   "text_d3be483bccb7": "Odśwież listę",
   "text_7a3e2c82488c": "Udostępnianie demonstracji GPS administracji i innym maszynistom, wyświetlanie postojów z aktualnym DS100 oraz ukrywanie kafelka.",
-  "text_fdeb3c706255": "Pod demonstracją znajdziesz zakończone nagrania. Zaznacz tylko te, których cały ślad GPS, numer pociągu i postoje chcesz udostępnić innym maszynistom oraz uprawnionej administracji. Usuń zaznaczenie, aby cofnąć dostęp. Nagrania pojawiają się w udostępnionych demonstracjach GPS. Postoje są tylko do odczytu. Demonstracja proponuje jednoznaczne aktualne miejsca DS100 w promieniu 1000 m bez zmiany oryginału. Ukryty kafelek możesz ponownie pokazać w Moim koncie."
+  "text_fdeb3c706255": "Pod demonstracją znajdziesz zakończone nagrania. Zaznacz je i potwierdź przyciskiem Udostępnij wybór. Wcześniej nic nie jest publikowane. Aby cofnąć dostęp, usuń zaznaczenie i ponownie potwierdź. Inni maszyniści oraz uprawniona administracja mogą odtwarzać udostępnione ślady GPS, numery pociągów i postoje. Postoje są tylko do odczytu, z godzinami w tabeli na pełną szerokość. Aktualne jednoznaczne miejsca DS100 w promieniu 1000 m uzupełniają demonstrację jako propozycje, bez zmiany oryginału. Ukryty kafelek GPS-DEMO możesz ponownie pokazać w Moim koncie.",
+  "text_6a5482fbbecb": "Udostępnij wybór",
+  "text_50a7abe26d0e": "Wybór nie został jeszcze zapisany. Potwierdź przyciskiem Udostępnij wybór.",
+  "text_b66e8d1a8006": "Wybór zapisany. Udostępnione są tylko zaznaczone nagrania.",
+  "text_3e7d17c329af": "Nie udało się zapisać wyboru. Pozostaje zaznaczony. Sprawdź połączenie i spróbuj ponownie.",
+  "text_f36ddd522a48": "Ten serwer nie obsługuje jeszcze udostępniania. Poproś administrację o aktualizację serwera. Wybór nie został opublikowany."
 }

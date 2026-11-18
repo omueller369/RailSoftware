@@ -91,6 +91,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{portal_updates.text_5e791fe0d244}}",
         "paragraphs": [
+          "{{field_navigation.text_6c83f129717f}}",
           "{{portal_updates.text_47c500af7794}}",
           "{{version_scheme.text_44b61532d8b9}}"
         ],
@@ -403,6 +404,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{portal_report_tabs.text_8f92cd7b253a}}",
         "paragraphs": [
+          "{{field_navigation.text_ab0a303e2a2e}}",
           "{{report_rework.text_106a5842fc5f}}",
           "{{portal_report_tabs.text_7aba019c05af}}"
         ],

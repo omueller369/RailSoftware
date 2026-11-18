@@ -584,7 +584,9 @@ async def localized_requests(request: Request, call_next):
 
 @app.exception_handler(StarletteHTTPException)
 async def localized_error(request: Request, exc):
-    return JSONResponse({'detail':translate(exc.detail)}, status_code=exc.status_code, headers=exc.headers)
+    payload={'detail':translate(exc.detail)}
+    if getattr(exc,'field_errors',None):payload['errors']=[dict(error,msg=translate(error['msg'])) for error in exc.field_errors]
+    return JSONResponse(payload, status_code=exc.status_code, headers=exc.headers)
 
 class LocaleInput(BaseModel):
     language: Literal['de','pl','en']
@@ -632,7 +634,8 @@ from fastapi.exceptions import RequestValidationError
 @app.exception_handler(RequestValidationError)
 async def localized_validation_error(request: Request, exc):
     # Never echo passwords, mailbox credentials or complete uploaded files in error responses.
-    fields=[{'field':'.'.join(str(part) for part in error['loc']), 'type':error['type']} for error in exc.errors()]
+    from .field_errors import validation_loc
+    fields=[{'field':'.'.join(str(part) for part in (validation_loc(error) if request.url.path.startswith('/api/v1/tf/work-report') else error['loc'])), 'type':error['type']} for error in exc.errors()]
     return JSONResponse({'detail':translate(_text_source('server_main.text_ee756c3e4909')),'fields':fields},status_code=422)
 
 

@@ -19,6 +19,11 @@ class ShareInput(BaseModel):
     model_config=ConfigDict(extra='forbid')
     shared:StrictBool
     expected_revision:int=Field(ge=1)
+class ShareChange(ShareInput):
+    journey_id:UUID
+class ShareBatch(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    changes:list[ShareChange]=Field(min_length=1,max_length=1000)
 class PreferenceInput(BaseModel):
     model_config=ConfigDict(extra='forbid')
     hidden:StrictBool
@@ -49,11 +54,7 @@ def create_router(require_account,require_admin):
         row=db.get(GpsDemoPreference,user.id)
         if not row:row=GpsDemoPreference(user_id=user.id);db.add(row)
         row.hidden=data.hidden;db.commit();return dict(owner_id=user.id,hidden=row.hidden)
-    @router.put('/api/v1/tf/gps-demo/recordings/{journey_id}/share')
-    def share(journey_id:UUID,data:ShareInput,user=Depends(driver),db:Session=Depends(database_session)):
-        db.scalar(select(User).where(User.id==user.id).with_for_update())
-        row=db.scalar(select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id,TrainGpsRecording.journey_id==str(journey_id)).with_for_update())
-        if not row:raise HTTPException(404)
+    def apply_share(db,row,user,data):
         if data.shared and row.revision!=data.expected_revision:raise HTTPException(409,source('portal_gps_demo.text_cb1011064bf5'))
         shared=db.get(GpsDemoShare,row.id)
         if data.shared and not shared:
@@ -61,6 +62,23 @@ def create_router(require_account,require_admin):
             if not payload.get('ended',True) or len(payload.get('points',[]))<2:raise HTTPException(422)
             db.add(GpsDemoShare(recording_id=row.id,owner_id=user.id,payload_json=json.dumps(payload,ensure_ascii=False),source_revision=row.revision))
         elif not data.shared and shared:db.delete(shared)
+
+    @router.post('/api/v1/tf/gps-demo/shares')
+    def share_selection(data:ShareBatch,user=Depends(driver),db:Session=Depends(database_session)):
+        db.scalar(select(User).where(User.id==user.id).with_for_update())
+        keys=[str(change.journey_id) for change in data.changes]
+        if len(set(keys))!=len(keys):raise HTTPException(422)
+        rows={row.journey_id:row for row in db.scalars(select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id,TrainGpsRecording.journey_id.in_(keys)).order_by(TrainGpsRecording.id).with_for_update())}
+        if len(rows)!=len(keys):raise HTTPException(404)
+        for change in data.changes:apply_share(db,rows[str(change.journey_id)],user,change)
+        db.commit();return dict(items=[dict(journey_id=str(change.journey_id),shared=change.shared) for change in data.changes])
+
+    @router.put('/api/v1/tf/gps-demo/recordings/{journey_id}/share')
+    def share(journey_id:UUID,data:ShareInput,user=Depends(driver),db:Session=Depends(database_session)):
+        db.scalar(select(User).where(User.id==user.id).with_for_update())
+        row=db.scalar(select(TrainGpsRecording).where(TrainGpsRecording.owner_id==user.id,TrainGpsRecording.journey_id==str(journey_id)).with_for_update())
+        if not row:raise HTTPException(404)
+        apply_share(db,row,user,data)
         db.commit();return dict(shared=data.shared)
     def available(db,entry_id):
         row=db.get(GpsDemoShare,entry_id)

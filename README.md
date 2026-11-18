@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.9
+# LokZeitleiste v0.27.10
+
+**0.27.10:** Eingabefehler beim Senden mit Okay gezielt öffnen: Reiter, Zugfahrt und Datenzeile werden eingeblendet, das betroffene Feld wird rot markiert. Veraltete Auswahlwerte und unbekannte DS100-Orte erhalten eindeutige Feldpfade. Offene Bearbeitungen und bereits korrigierte Eingaben bleiben erhalten. Die Updates-Kachel erscheint nur in der Android-App. GPS-Demo-Freigaben werden per Checkbox vorgemerkt und erst mit Auswahl freigeben gemeinsam übernommen. Demo-Standzeiten zeigen nur Uhrzeiten in einer flexiblen Tabelle über die volle Breite.
 
 **0.27.9:** Einzelne abgeschlossene GPS-Aufzeichnungen per Checkbox für andere TF und berechtigte Verwaltungsmitarbeiter freigeben und widerrufen. Gemeinsame GPS-DEMO mit schreibgeschützten Standzeiten und aktuellen DS100-Ortsvorschlägen; Originaldaten bleiben unverändert. TF können die Kachel ausblenden und unter Mein Konto wieder einschalten. Verwaltungszugriff über das Modulrecht GPS-DEMO.
 
