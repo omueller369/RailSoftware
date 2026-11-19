@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.18
+# LokZeitleiste v0.27.19
+
+**0.27.19:** Quellen- und Datenstandhinweise unter der Kenntniskarte sind standardmäßig eingeklappt und lassen sich über ein kleines i-Symbol öffnen und schließen. Die ausführliche CSV-Importanleitung steht ausschließlich in der Hilfe.
 
 **0.27.18:** Die ausführliche Anleitung zur manuellen Streckenkenntnis steht ausschließlich in der Hilfe unter „Streckenkenntnis anlegen“. Der lange Erklärungstext wird auf der Eingabeseite nicht mehr angezeigt.
 

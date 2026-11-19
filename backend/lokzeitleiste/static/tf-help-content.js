@@ -2,7 +2,7 @@
 /* GPS-Kartenzeiten in Aufzeichnung und Demo: HH:MM / HH:MM ohne Labels. */
 /* Arbeitsbericht: drei gleich gestaltete Reiter, ohne Verlust von Eingaben oder GPS. */
 /* Updates-Modul, kurze Kacheln und DB Digi-Bef. mit eigener Standzeit-Art. */
-/* Gespeicherte manuelle Verläufe mit Punkt-/Kilometerliste und Weiterbearbeitung, 0.27.17. */
+/* Quellenhinweis per i-Symbol und Importanleitung ausschließlich in der Hilfe, 0.27.19. */
 /* Android-Login: Rail Software, Gleisrahmen und Admin-Hilfe nach drei Fehlversuchen. */
 /* GPS-Spur: fließende Skala 0 blau / 50 grün / 100 gelb / 140 rot. */
 /* Footer: Rail Software, jeweilige Web-/Android-Version, Copyright 2026 IO-Software-Görlitz. */
@@ -76,7 +76,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
       {
         "title": "{{route_csv.text_954717c83530}}",
         "paragraphs": [
-          "{{route_csv.text_daad55ef168f}}",
+          "{{knowledge_inventory.text_0881d489914e}}",
           "{{route_csv_map.text_249137f0f4eb}}",
           "{{knowledge_performance.text_14b95bd159e1}}",
           "{{m1_operating_points.text_22acba6180a3}}",
