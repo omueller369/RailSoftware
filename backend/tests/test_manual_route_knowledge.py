@@ -72,3 +72,33 @@ class ManualRouteTest(unittest.TestCase):
             schema.return_value.get_columns.return_value=[dict(name='payload_json',type=mysql.MEDIUMTEXT())]
             ensure_storage(connection);connection.execute.assert_not_called()
         connection.dialect.name='sqlite';ensure_storage(connection);connection.execute.assert_not_called()
+
+    def test_saved_route_listing_and_owned_edit_with_stale_revision(self):
+        response=self.save();self.assertEqual(response.status_code,201,response.text)
+        rows=self.client.get('/api/v1/tf/route-knowledge/manual',headers=self.headers).json()['items']
+        self.assertEqual(len(rows),1);record=rows[0]
+        self.assertEqual(record['waypoints'],['AFW','AFR']);self.assertEqual(record['from_code'],'AFW');self.assertEqual(record['to_code'],'AFR')
+        path='/api/v1/tf/route-knowledge/manual/'+str(record['id'])
+        updated={**self.payload,'waypoints':['AFW','AFR','AFW'],'routes':['1000','1000'],'expected_sha256':record['revision']}
+        result=self.client.put(path,json=updated,headers=self.headers);self.assertEqual(result.status_code,200,result.text)
+        saved=result.json()['saved_routes'];self.assertEqual(len(saved),1);self.assertEqual(saved[0]['id'],record['id']);self.assertEqual(saved[0]['waypoints'],updated['waypoints']);self.assertNotEqual(saved[0]['revision'],record['revision'])
+        self.assertEqual(self.client.put(path,json=updated,headers=self.headers).status_code,409)
+        self.assertEqual(self.client.put(path,json={**updated,'expected_sha256':saved[0]['revision'],'valid_until':(maximum(today())+timedelta(days=1)).isoformat()},headers=self.headers).status_code,422)
+        self.assertEqual(self.client.get('/api/v1/tf/route-knowledge/manual',headers=self.headers).json()['items'][0]['waypoints'],updated['waypoints'])
+        other=test_api.ApiFlowTest.create_tf(self,'787120','EDIT-OTHER').json()['id']
+        token=self.client.post('/api/v1/account/login',json={'username':'787120','password':'tf-secret-12345'}).json()['access_token']
+        outsider={'Authorization':'Bearer '+token}
+        self.assertEqual(self.client.get('/api/v1/tf/route-knowledge/manual',headers=outsider).json()['items'],[])
+        self.assertEqual(self.client.put(path,json={**updated,'expected_sha256':saved[0]['revision']},headers=outsider).status_code,404)
+        with Session(self.engine) as db:self.assertEqual(db.scalar(select(func.count()).select_from(ManualRouteKnowledge)),1)
+
+    def test_edit_cannot_overwrite_a_different_saved_route(self):
+        self.assertEqual(self.save().status_code,201)
+        self.assertEqual(self.save(waypoints=['AFR','AFW']).status_code,201)
+        rows=self.client.get('/api/v1/tf/route-knowledge/manual',headers=self.headers).json()['items']
+        original=next(row for row in rows if row['from_code']=='AFW')
+        changed={**self.payload,'waypoints':['AFR','AFW'],'expected_sha256':original['revision']}
+        result=self.client.put('/api/v1/tf/route-knowledge/manual/'+str(original['id']),json=changed,headers=self.headers)
+        self.assertEqual(result.status_code,409,result.text)
+        after=self.client.get('/api/v1/tf/route-knowledge/manual',headers=self.headers).json()['items']
+        self.assertEqual(after,rows)

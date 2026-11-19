@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.16
+# LokZeitleiste v0.27.17
+
+**0.27.17:** Unter der manuellen Karte steht die aktuelle Punktliste mit DS100, Bahnhof/Meldestelle, Streckennummer und M1-Kilometerangabe. Speichern leert diese Auswahl und übernimmt den Verlauf in eine separate Liste mit Von, Bis und Gültig bis (DD.MM.YYYY). Ein Klick lädt den gespeicherten Verlauf wieder in Karte und Punktliste. Änderungen speichern aktualisiert ihn mit Prüfung auf zwischenzeitliche Änderungen; fremde TF-Bestände bleiben unzugänglich.
 
 **0.27.16:** Rückgängig-Symbol direkt auf der manuellen Karte; dedizierte S-Bahn-Referenzstrecken in Berlin und Hamburg ausgeblendet, parallele Fern-/Güterstrecken bleiben sichtbar. M1-Karten zeigen ab Zoomstufe 11 VzG-Streckennummern in Rot mit schwarzer Kontur auf hellem Hintergrund. Beschriftungen werden je sichtbarer Strecke zusammengefasst und bei Überlappungen oder Platzmangel ausgelassen. Die Betriebsstellen bleiben anklickbar. Gilt für Streckenkenntnisse, manuelle Eingabe, GPS-Aufzeichnung und GPS-Demo.
 

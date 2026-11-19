@@ -194,3 +194,7 @@ Das reguläre Update legt die Tabelle `manual_route_knowledge` automatisch an. S
 ### Fortlaufende Streckenwahl ab 0.27.15
 
 Der manuelle Karteneditor zeigt denselben TF-bezogenen Kenntnisbestand wie die Anzeige und legt die neue hellgrüne Linie darüber. Bis zu 1.001 Betriebsstellen je Auswahl werden unterstützt. Das reguläre Serverupdate erweitert dafür ausschließlich die bestehende MySQL-Spalte `manual_route_knowledge.payload_json` von TEXT auf MEDIUMTEXT, sofern nötig. Vorhandene Datensätze bleiben erhalten; es ist keine Neuinstallation oder Konfigurationsänderung erforderlich. Zuerst den Server aktualisieren, danach die Android-App über die vorhandene Installation installieren.
+
+### Gespeicherte manuelle Verläufe ab 0.27.17
+
+Das reguläre Update ergänzt die TF-eigene Verlaufsliste und das Weiterbearbeiten über die bestehende Tabelle `manual_route_knowledge`; weitere Schemaänderungen sind dafür nicht nötig. Ein gespeicherter Verlauf wird per Zeilenauswahl in Karte und Punktliste geladen. Änderungen werden unter derselben ID mit Prüfung der zuletzt geladenen Revision gespeichert. Die aktuelle Auswahlliste wird erst nach erfolgreichem Speichern geleert. Die gespeicherte Liste bleibt erhalten. Zuerst Server, danach Android über die vorhandene App aktualisieren.
