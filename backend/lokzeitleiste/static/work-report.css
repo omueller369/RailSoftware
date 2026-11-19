@@ -242,3 +242,5 @@ html[data-theme="dark"] #reportSendCancel {
 #reportErrorText{white-space:pre-line;overflow-wrap:anywhere}
 
 .route-editor-controls{display:flex;flex-wrap:wrap;gap:.75rem;align-items:end}.route-editor-controls label{display:flex;flex-direction:column;gap:.3rem;flex:1 1 14rem;min-width:0}.route-editor-controls input{width:100%;box-sizing:border-box}#manualRouteWorkspace svg{touch-action:none}#manualRouteWorkspace li{padding:.4rem 0}#manualRouteWorkspace li select{max-width:100%;display:block}.route-knowledge-map [data-manual-route-line]{pointer-events:none}
+
+.manual-route-map{position:relative}.manual-route-map .route-map-undo{position:absolute;top:10px;left:10px;z-index:2;display:grid;place-items:center;width:40px;min-height:40px;padding:8px;border-radius:6px;background:var(--surface,#fff);color:var(--text,#172338);box-shadow:0 1px 5px #0003}.manual-route-map .route-map-undo svg{width:20px;height:20px;pointer-events:none}.manual-route-map .route-map-undo:disabled{opacity:.45}

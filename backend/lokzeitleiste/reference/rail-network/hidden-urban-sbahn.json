@@ -1,0 +1,217 @@
+{
+  "source": "Infrastrukturdaten.gpkg / M1 Streckennetz",
+  "source_sha256": "79f8227e889769d87dcc77301f58adbc93a31839febb0cd1bdb16679e25453fe",
+  "rule": "Dedicated Berlin/Hamburg S-Bahn route identities identified by Stromschiene in the supplied M1 data; 6044 additionally carries S-B in its M1 route name. Routes with mixed electrification belonging to the same dedicated S-Bahn identity are hidden in full. Parallel mainline/freight routes stay visible. Reference filtering only; source data and personal knowledge are retained.",
+  "routes": [
+    {
+      "route": "1224",
+      "name": "Hamburg-Altona - HH-Blankenese",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1225",
+      "name": "HH Holstenstr. D - Pinneberg",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1226",
+      "name": "Blankenese - Wedel",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1239",
+      "name": "HH-Ohlsdorf - Hamburg Airport",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1240",
+      "name": "Hamburg Hbf SB - Hmb-Altona",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1241",
+      "name": "Hmb Hbf SB - Hmb-Poppenbüttel",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1244",
+      "name": "Hamburg Hbf(S-Bahn) - Aumühle",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1270",
+      "name": "Hmb Hbf SB - Hmb Diebsteich",
+      "region": "Hamburg",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "1271",
+      "name": "Hamburg Hbf SB - Hmb-Neugraben",
+      "region": "Hamburg",
+      "evidence": "Stromschiene,Oberleitung"
+    },
+    {
+      "route": "6002",
+      "name": "Berlin Nordbf Strw - Bernau",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6004",
+      "name": "Berlin Ostbf - Erkner",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6005",
+      "name": "Bln-Blankenb. - Bln Bucher Str",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6006",
+      "name": "Bln Ostbahnhof - Strausberg",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6007",
+      "name": "Warschauer Str - Königs Wuster",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6008",
+      "name": "Grünauer Kr - Bln Flughafen",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6009",
+      "name": "Bln Bucher Str - Bergfelde",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6010",
+      "name": "Hohen Neuendorf - Bergfelde",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6011",
+      "name": "Biesdorfer Kreuz - Ahrensfelde",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6012",
+      "name": "Bln Springpfuhl - Karow West",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6017",
+      "name": "Bln Westhafen - Potsd. Platz",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6018",
+      "name": "Bln Bornholmer - Schönh. Allee",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6019",
+      "name": "Bln-Wedding - Bln Lehrter Bf",
+      "region": "Berlin",
+      "evidence": "Stromschiene,Lücke am Anfang oder Ende der Strecke"
+    },
+    {
+      "route": "6020",
+      "name": "Bln-Moa - Bln-Moa, Ring S-Bahn",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6021",
+      "name": "Bln-Neukölln - Baumschulenweg",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6023",
+      "name": "Bln-Charlottenb - Bln-Halensee",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6024",
+      "name": "Berlin Ostbf - Potsdam Hbf",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6025",
+      "name": "Bln Westkreuz - Bln-Spandau",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6030",
+      "name": "Bln-Gesundbrunnen - Oranienbg.",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6032",
+      "name": "Berlin Nordbf - Bln-Schöneberg",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6033",
+      "name": "Bln-Schöneberg - Bln-Wannsee",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6034",
+      "name": "Bln Anhalter Bf - Yorckstraße",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6035",
+      "name": "Bln Yorckstraße - Blankenfelde",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6036",
+      "name": "Priesterweg - Lichterfelde Süd",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6039",
+      "name": "Lichterfelde - Teltow Stadt",
+      "region": "Berlin",
+      "evidence": "Stromschiene"
+    },
+    {
+      "route": "6044",
+      "name": "Bln-Halensee, W 82 - W 709 S-B",
+      "region": "Berlin",
+      "evidence": "nicht elektrifiziert"
+    }
+  ]
+}

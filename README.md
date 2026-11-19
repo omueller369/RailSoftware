@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.15
+# LokZeitleiste v0.27.16
+
+**0.27.16:** Rückgängig-Symbol direkt auf der manuellen Karte; dedizierte S-Bahn-Referenzstrecken in Berlin und Hamburg ausgeblendet, parallele Fern-/Güterstrecken bleiben sichtbar. M1-Karten zeigen ab Zoomstufe 11 VzG-Streckennummern in Rot mit schwarzer Kontur auf hellem Hintergrund. Beschriftungen werden je sichtbarer Strecke zusammengefasst und bei Überlappungen oder Platzmangel ausgelassen. Die Betriebsstellen bleiben anklickbar. Gilt für Streckenkenntnisse, manuelle Eingabe, GPS-Aufzeichnung und GPS-Demo.
 
 **0.27.15:** Manuelle Streckenkenntnis fortlaufend über bis zu 1.001 angeklickte Betriebsstellen zeichnen. Der Kartenausschnitt bleibt beim Weiterklicken stehen. Alle vorhandenen importierten, manuellen und GPS-basierten Kenntnisse werden im Editor mit angezeigt; die neue hellgrüne Linie mit heller Kontur liegt darüber.
 

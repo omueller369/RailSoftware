@@ -6,7 +6,7 @@
   "text_c6647df04fbb": "Zapisz",
   "text_3727c732d5d8": "Usuń ostatni punkt",
   "text_e87fcb0a884a": "Wyczyść wybór",
-  "text_60ee27e69534": "Wybierz punkt początkowy według DS100 lub nazwy. Klikaj punkty na mapie M1 w kolejności trasy. Jeśli dostępnych jest kilka linii VzG, wybierz właściwy odcinek. Powiększaj przyciskami + i −, przesuwaj mapę przeciąganiem. Dopiero Zapisz dodaje wybór jako znajomość trasy. Potwierdzone importy zachowują pierwszeństwo. Klikaj kolejne punkty eksploatacyjne (do 1001 punktów na wybór). Mapa pozostaje w miejscu podczas kolejnych kliknięć; w razie potrzeby przesuń ją przeciąganiem. Dotychczasowa znajomość tras z importów, wpisów ręcznych i GPS jest widoczna w dotychczasowych kolorach. Nowy wybór jest ciągłą jasnozieloną linią z jasnym obrysem ponad nimi. Dopiero Zapisz dodaje nową trasę.",
+  "text_60ee27e69534": "Wybierz punkt początkowy według DS100 lub nazwy. Klikaj punkty na mapie M1 w kolejności trasy. Jeśli dostępnych jest kilka linii VzG, wybierz właściwy odcinek. Powiększaj przyciskami + i −, przesuwaj mapę przeciąganiem. Dopiero Zapisz dodaje wybór jako znajomość trasy. Potwierdzone importy zachowują pierwszeństwo. Klikaj kolejne punkty eksploatacyjne (do 1001 punktów na wybór). Mapa pozostaje w miejscu podczas kolejnych kliknięć; w razie potrzeby przesuń ją przeciąganiem. Dotychczasowa znajomość tras z importów, wpisów ręcznych i GPS jest widoczna w dotychczasowych kolorach. Nowy wybór jest ciągłą jasnozieloną linią z jasnym obrysem ponad nimi. Dopiero Zapisz dodaje nową trasę. Od poziomu powiększenia 11 numery linii VzG są czerwone z cienkim czarnym obrysem na jasnym tle. Etykiety unikają nakładania się i nie zasłaniają klikalnych punktów. Na widoku całych Niemiec pozostają ukryte. Referencyjne linie S-Bahn w Berlinie i Hamburgu oraz punkty wyłącznie S-Bahn są ukryte. Równoległe linie dalekobieżne i towarowe pozostają widoczne. Twoje zapisane dane i nagrania GPS nie są usuwane. Ikona Cofnij w lewym górnym rogu mapy ręcznej usuwa przy każdym kliknięciu ostatni punkt i odcinek.",
   "text_6882a967cd71": "Wybierz linię VzG",
   "text_3152f57cf1a9": "Punktów nie można jednoznacznie połączyć ciągłą linią M1. Wybierz punkt pośredni lub inną linię VzG.",
   "text_f8bd4777a8f6": "Wybierz datę od dzisiaj do maksymalnie roku od dzisiaj.",
@@ -18,5 +18,6 @@
   "text_698b8320d21b": "Nie udało się wczytać mapy M1.",
   "text_7ba4e05ed470": "Mapa kolejowa pokazuje lokalną sieć M1 i punkty M1 zamiast OpenRailwayMap. Te dane działają także offline. Podkład uliczny nadal wymaga internetu.",
   "text_149a6628d3f0": "Wczytaj mapę M1 ponownie",
-  "text_83ff404239be": "Wybór zawiera już 1001 punktów. Zapisz tę trasę i utwórz kolejny odcinek."
+  "text_83ff404239be": "Wybór zawiera już 1001 punktów. Zapisz tę trasę i utwórz kolejny odcinek.",
+  "text_381c38293e84": "Cofnij"
 }
