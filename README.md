@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.19
+# LokZeitleiste v0.28.0
+
+**0.28.0:** Neue Versionsreihe gemäß Vorgabe: Web 0.28.0 und Android 0.28.0.1. Die vierte Android-Stelle zählt in dieser Reihe ab 1 weiter; der interne Android-versionCode steigt unverändert mit den Workflowläufen.
 
 **0.27.19:** Quellen- und Datenstandhinweise unter der Kenntniskarte sind standardmäßig eingeklappt und lassen sich über ein kleines i-Symbol öffnen und schließen. Die ausführliche CSV-Importanleitung steht ausschließlich in der Hilfe.
 
