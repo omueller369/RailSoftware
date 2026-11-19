@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.17
+# LokZeitleiste v0.27.18
+
+**0.27.18:** Die ausführliche Anleitung zur manuellen Streckenkenntnis steht ausschließlich in der Hilfe unter „Streckenkenntnis anlegen“. Der lange Erklärungstext wird auf der Eingabeseite nicht mehr angezeigt.
 
 **0.27.17:** Unter der manuellen Karte steht die aktuelle Punktliste mit DS100, Bahnhof/Meldestelle, Streckennummer und M1-Kilometerangabe. Speichern leert diese Auswahl und übernimmt den Verlauf in eine separate Liste mit Von, Bis und Gültig bis (DD.MM.YYYY). Ein Klick lädt den gespeicherten Verlauf wieder in Karte und Punktliste. Änderungen speichern aktualisiert ihn mit Prüfung auf zwischenzeitliche Änderungen; fremde TF-Bestände bleiben unzugänglich.
 
