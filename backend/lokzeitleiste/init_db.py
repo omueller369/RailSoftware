@@ -11,7 +11,10 @@ from .security import hash_password
 
 
 def main():
-    Base.metadata.create_all(engine())
+    database_engine=engine()
+    Base.metadata.create_all(database_engine)
+    from .manual_route_knowledge import ensure_storage
+    with database_engine.begin() as connection:ensure_storage(connection)
     from .accounts.tf_profiles import migrate_existing, seed_stations, migrate_legacy_gender, ensure_gender_column
     with Session(engine()) as db:
         from .app_defaults import ensure_defaults

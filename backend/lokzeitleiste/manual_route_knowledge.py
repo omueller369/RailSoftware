@@ -4,7 +4,7 @@ from datetime import datetime,date
 from zoneinfo import ZoneInfo
 from fastapi import APIRouter,Depends,HTTPException
 from pydantic import BaseModel,Field
-from sqlalchemy import select
+from sqlalchemy import select,inspect,text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from .db import database_session
@@ -23,8 +23,8 @@ def maximum(day):
     except ValueError:return day.replace(year=day.year+1,day=28)
 
 class RouteInput(BaseModel):
-    waypoints:list[str]=Field(min_length=2,max_length=101)
-    routes:list[str]=Field(min_length=1,max_length=100)
+    waypoints:list[str]=Field(min_length=2,max_length=1001)
+    routes:list[str]=Field(min_length=1,max_length=1000)
     valid_until:date
 
 
@@ -63,3 +63,11 @@ def create_router(require_account):
         except IntegrityError:db.rollback();raise HTTPException(409,message('duplicate')) from None
         return dict(id=item.id,owner_id=user.id,items=entries(db,user.id))
     return router
+
+
+def ensure_storage(connection):
+    """Widen the existing MySQL column without rewriting or deleting route records."""
+    if connection.dialect.name not in ('mysql','mariadb'):return
+    column=next(c for c in inspect(connection).get_columns('manual_route_knowledge') if c['name']=='payload_json')
+    if type(column['type']).__name__.upper()=='TEXT':
+        connection.execute(text('ALTER TABLE manual_route_knowledge MODIFY COLUMN payload_json MEDIUMTEXT NOT NULL'))

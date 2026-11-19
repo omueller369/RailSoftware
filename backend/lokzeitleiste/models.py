@@ -1081,5 +1081,5 @@ class ManualRouteKnowledge(Base):
     id:Mapped[int]=mapped_column(Integer,primary_key=True)
     owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),index=True)
     path_key:Mapped[str]=mapped_column(String(64))
-    payload_json:Mapped[str]=mapped_column(Text)
+    payload_json:Mapped[str]=mapped_column(Text().with_variant(MEDIUMTEXT(),'mysql'))
     created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)

@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.14
+# LokZeitleiste v0.27.15
+
+**0.27.15:** Manuelle Streckenkenntnis fortlaufend über bis zu 1.001 angeklickte Betriebsstellen zeichnen. Der Kartenausschnitt bleibt beim Weiterklicken stehen. Alle vorhandenen importierten, manuellen und GPS-basierten Kenntnisse werden im Editor mit angezeigt; die neue hellgrüne Linie mit heller Kontur liegt darüber.
 
 **0.27.14:** Bahnkarte in GPS-Aufzeichnung und Demo zeigt das offline verfügbare M1-Streckennetz und die M1-Betriebsstellen. Der Reiter Strecken bietet Anzeigen und manuelles Anlegen. Startort per DS100/Name auswählen, automatisch hinzoomen, Betriebsstellen anklicken, VzG-Verbindung prüfen und die hellgrüne Vorschau mit Gültig bis (maximal ein Jahr ab heute) speichern. Manuell bestätigte Strecken gelten als Streckenkundig, ohne GPS-Fahrten zu erfinden. Bestätigte CSV-Importe bleiben führend. Eine lokale Deutschlandkarte bleibt auch ohne Internet im Hintergrund.
 

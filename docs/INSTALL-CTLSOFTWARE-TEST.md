@@ -190,3 +190,7 @@ Die neue Verwaltungskachel **TF-Portal-Aufrufe (Test)** zeigt erfolgreiche Anmel
 ### M1-Bahnkarte und manuelle Streckenkenntnis ab 0.27.14
 
 Das reguläre Update legt die Tabelle `manual_route_knowledge` automatisch an. Sie enthält TF-bezogene, ausdrücklich gespeicherte M1-Strecken mit Gültigkeitsdatum. CSV-Originale und GPS-Aufzeichnungen bleiben unverändert. Die Verwaltung kann den ergänzten Bestand in ihrer vorhandenen Kenntniskarte sehen. Keine Neuinstallation und keine Konfigurationsänderung durchführen. Zuerst den Server mit dem oben dokumentierten `install-ctlsoftware-test.sh --update --source /opt/ctlsoftware-test-source` aktualisieren, danach Android über die bestehende App installieren. Die öffentlichen M1-Daten und der Natural-Earth-Hintergrund werden als lokale Dateien ausgeliefert; zum endgültigen Speichern benötigt der TF eine Verbindung.
+
+### Fortlaufende Streckenwahl ab 0.27.15
+
+Der manuelle Karteneditor zeigt denselben TF-bezogenen Kenntnisbestand wie die Anzeige und legt die neue hellgrüne Linie darüber. Bis zu 1.001 Betriebsstellen je Auswahl werden unterstützt. Das reguläre Serverupdate erweitert dafür ausschließlich die bestehende MySQL-Spalte `manual_route_knowledge.payload_json` von TEXT auf MEDIUMTEXT, sofern nötig. Vorhandene Datensätze bleiben erhalten; es ist keine Neuinstallation oder Konfigurationsänderung erforderlich. Zuerst den Server aktualisieren, danach die Android-App über die vorhandene Installation installieren.

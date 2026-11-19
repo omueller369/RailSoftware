@@ -44,3 +44,31 @@ class ManualRouteTest(unittest.TestCase):
     def test_calendar_year_leap_date(self):
         from datetime import date
         self.assertEqual(maximum(date(2028,2,29)),date(2029,2,28))
+
+    def test_long_point_sequence_is_preserved_without_gps(self):
+        codes=['AFW' if i%2==0 else 'AFR' for i in range(1001)]
+        result=self.save(waypoints=codes,routes=['1000']*1000)
+        self.assertEqual(result.status_code,201,result.text)
+        with Session(self.engine) as db:
+            row=db.scalar(select(ManualRouteKnowledge).where(ManualRouteKnowledge.owner_id==self.uid))
+            self.assertEqual(json.loads(row.payload_json)['waypoints'],codes)
+            self.assertEqual(len(json.loads(row.payload_json)['legs']),1000)
+            self.assertGreater(len(row.payload_json.encode()),65535)
+            self.assertEqual(db.scalar(select(func.count()).select_from(TrainGpsRecording)),0)
+        self.assertEqual(self.save(waypoints=['AFW']*1002,routes=['1000']*1001).status_code,422)
+
+    def test_mysql_storage_supports_long_routes_and_widens_old_text_once(self):
+        from sqlalchemy.dialects import mysql
+        from sqlalchemy import Text
+        from unittest.mock import Mock,patch
+        from lokzeitleiste.manual_route_knowledge import ensure_storage
+        self.assertEqual(ManualRouteKnowledge.__table__.c.payload_json.type.compile(dialect=mysql.dialect()),'MEDIUMTEXT')
+        connection=Mock();connection.dialect.name='mysql'
+        with patch('lokzeitleiste.manual_route_knowledge.inspect') as schema:
+            schema.return_value.get_columns.return_value=[dict(name='payload_json',type=mysql.TEXT(collation='utf8mb4_unicode_ci'))]
+            ensure_storage(connection)
+            self.assertIn('MEDIUMTEXT NOT NULL',str(connection.execute.call_args.args[0]))
+            connection.execute.reset_mock()
+            schema.return_value.get_columns.return_value=[dict(name='payload_json',type=mysql.MEDIUMTEXT())]
+            ensure_storage(connection);connection.execute.assert_not_called()
+        connection.dialect.name='sqlite';ensure_storage(connection);connection.execute.assert_not_called()

@@ -1,6 +1,6 @@
 /* Zoom-aware rendering of imported knowledge; original reference/data stay intact. */
 (()=>{
-const indexes=new WeakMap(),imports=new WeakMap(),formatter=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'});let cachedMinute,cachedToday;
+const indexes=new WeakMap(),imports=new WeakMap(),formatter=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'});let cachedMinute,cachedToday,maskSerial=0;
 function today(now){const minute=Math.floor(now/60000);if(minute!==cachedMinute){const parts=Object.fromEntries(formatter.formatToParts(new Date(now)).map(p=>[p.type,p.value]));cachedToday=[parts.year,parts.month,parts.day].join('-');cachedMinute=minute;}return cachedToday;}
 function merge(ranges){const out=[];for(const [a,b]of ranges.sort((x,y)=>x[0]-y[0])){const last=out.at(-1);if(last&&a<=last[1])last[1]=Math.max(last[1],b);else out.push([a,b]);}return out;}
 function contains(ranges,value){let a=0,b=ranges.length;while(a<b){const m=(a+b)>>1;if(ranges[m][0]<=value)a=m+1;else b=m;}return a>0&&value<ranges[a-1][1];}
@@ -24,7 +24,7 @@ function draw(svg,make,data,items,view,revision,now){const palette={learning:'#4
 function priority(svg,make,data,items,view,revision,now){
  const rendered=render(data,items,view,revision,now),d=rendered.groups.qualified+rendered.priorityExpired;if(!d)return;
  const targets=[...svg.querySelectorAll('[data-route-track],[data-rail-coverage]')];if(!targets.length)return;
- const defs=make('defs'),mask=make('mask'),rect=make('rect'),path=make('path'),group=make('g');mask.setAttribute('id','route-confirmed-priority');mask.setAttribute('maskUnits','userSpaceOnUse');mask.setAttribute('x','0');mask.setAttribute('y','0');mask.setAttribute('width','600');mask.setAttribute('height','650');for(const [k,v]of Object.entries({x:0,y:0,width:600,height:650,fill:'white'}))rect.setAttribute(k,v);for(const [k,v]of Object.entries({d,fill:'none',stroke:'black','stroke-width':'10'}))path.setAttribute(k,v);mask.append(rect,path);defs.append(mask);svg.append(defs);group.setAttribute('mask','url(#route-confirmed-priority)');group.setAttribute('data-confirmed-priority','');for(const target of targets)group.append(target);svg.append(group);
+ const defs=make('defs'),mask=make('mask'),rect=make('rect'),path=make('path'),group=make('g');const maskId='route-confirmed-priority-'+(++maskSerial);mask.setAttribute('id',maskId);mask.setAttribute('maskUnits','userSpaceOnUse');mask.setAttribute('x','0');mask.setAttribute('y','0');mask.setAttribute('width','600');mask.setAttribute('height','650');for(const [k,v]of Object.entries({x:0,y:0,width:600,height:650,fill:'white'}))rect.setAttribute(k,v);for(const [k,v]of Object.entries({d,fill:'none',stroke:'black','stroke-width':'10'}))path.setAttribute(k,v);mask.append(rect,path);defs.append(mask);svg.append(defs);group.setAttribute('mask','url(#'+maskId+')');group.setAttribute('data-confirmed-priority','');for(const target of targets)group.append(target);svg.append(group);
 }
 
 function priorityState(items,revision,now=Date.now()){return compile(items,revision,now).override;}

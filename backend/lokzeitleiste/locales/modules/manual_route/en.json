@@ -6,7 +6,7 @@
   "text_c6647df04fbb": "Save",
   "text_3727c732d5d8": "Remove last point",
   "text_e87fcb0a884a": "Clear selection",
-  "text_60ee27e69534": "Choose the starting point by DS100 or name. Click M1 operating points in route order. Where several VzG lines are possible, choose the correct section. Zoom with + and − and drag to pan. Only Save records your selection as qualified route knowledge. Confirmed imports retain priority.",
+  "text_60ee27e69534": "Choose the starting point by DS100 or name. Click M1 operating points in route order. Where several VzG lines are possible, choose the correct section. Zoom with + and − and drag to pan. Only Save records your selection as qualified route knowledge. Confirmed imports retain priority. Click consecutive operating points (up to 1,001 per selection). The map stays in place as you continue clicking; drag it when needed. Your existing imported, manual and GPS route knowledge appears in its existing colours. Your new selection is a continuous light-green line with a light outline above that inventory. Only Save records the new route.",
   "text_6882a967cd71": "Choose VzG line",
   "text_3152f57cf1a9": "These points cannot be linked unambiguously by a continuous M1 line. Choose an intermediate operating point or another VzG line.",
   "text_f8bd4777a8f6": "Choose a date between today and at most one year from today.",
@@ -17,5 +17,6 @@
   "text_0569e84397dc": "Loading M1 map …",
   "text_698b8320d21b": "Could not load the M1 map.",
   "text_7ba4e05ed470": "Railway map shows the local M1 network and operating points instead of OpenRailwayMap. This data also works offline. Street basemaps still require internet.",
-  "text_149a6628d3f0": "Reload M1 map"
+  "text_149a6628d3f0": "Reload M1 map",
+  "text_83ff404239be": "The selection already contains 1,001 points. Save this route and create another section."
 }
