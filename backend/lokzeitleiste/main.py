@@ -270,12 +270,14 @@ def my_month_summary(year: int, month: int, user: User = Depends(require_tf),
 
 
 @app.post("/api/v1/tf/login")
-def tf_login(credentials: Credentials, db: Session = Depends(database_session)):
+def tf_login(credentials: Credentials, request: Request, db: Session = Depends(database_session)):
     user = db.scalar(select(User).where(User.username == credentials.username.lower(), User.role == "tf"))
     if not user or not account_active(db,user) or not verify_password(credentials.password, user.password_hash):
         raise HTTPException(401, _text_source('server_main.text_1c983667bad8'))
     from .models import TfNumberMigration
     migration=db.get(TfNumberMigration,user.id)
+    from .portal_access import record
+    record(db,user,request.headers.get('x-rail-android-version',''))
     return {"previous_username":migration.previous_username if migration else None,"access_token": issue_token(db, user), "token_type": "bearer", "username": user.username, "password_change_required":password_required(db,user)}
 
 
@@ -791,3 +793,6 @@ app.include_router(la_instructions_router(require_account,require_admin))
 
 from .gps_demo import create_router as gps_demo_router
 app.include_router(gps_demo_router(require_account,require_admin))
+
+from .portal_access import create_router as portal_access_router
+app.include_router(portal_access_router(require_account,require_admin))

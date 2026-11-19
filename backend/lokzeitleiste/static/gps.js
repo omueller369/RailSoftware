@@ -410,11 +410,7 @@ class Recorder{
  label(durationLabel(totals.elapsed),-7,-25,12,'#146c34','end');
  label('/',0,-25);
  label(durationLabel(totals.stopped),7,-25,12,'#b42318','start');
- append('path',{d:'M -12 -9 L -5 -16 L 5 -12 L 12 -19 M 4 -19 H 17',fill:'none',stroke:'#172338','stroke-width':2.5,'stroke-linecap':'round'});
- append('path',{d:'M -19 6 V -3 L -15 -10 H 13 L 19 -3 V 6 L 15 10 H -15 Z',fill:'#1565c0',stroke:'#fff','stroke-width':2});
- append('path',{d:'M -14 -5 H -8 V 0 H -17 Z M 9 -5 H 13 L 17 0 H 9 Z',fill:'#fff'});
- append('path',{d:'M 2 -7 L -4 1 H 0 L -2 7 L 5 -2 H 1 Z',fill:'#ffe26d'});
- for(const cx of [-11,11])append('circle',{cx,cy:11,r:4,fill:'#172338',stroke:'#fff','stroke-width':1.5});
+ append('image',{href:'/tf/gps-marker-electric.png',x:-12,y:-12,width:24,height:24,'data-gps-marker-icon':'electric'});
  label(this.record.train_number||this.o.trainNumber().trim(),0,26,10);
  svg.append(marker);
  }
@@ -427,7 +423,7 @@ class Recorder{
   if(last){
    if(point.break_before||interrupted||point.t-last.t>30000)bridges.push([last,next]);
    else if(last.x!==next.x||last.y!==next.y){
-    const color=this.o.demo?'#16465b':speedColor(point.mapSpeed);
+    const color=speedColor(point.mapSpeed);
     const segment='M'+last.x.toFixed(1)+' '+last.y.toFixed(1)+'L'+next.x.toFixed(1)+' '+next.y.toFixed(1);
     if(!paths.has(color))paths.set(color,[]);
     paths.get(color).push(segment);
@@ -450,14 +446,14 @@ class Recorder{
  }
  trailLegend(){
  const legend=node('div');legend.className='gps-trail-legend';legend.setAttribute('data-i18n-ignore','');
- if(!this.o.demo){legend.append(node('span',t(globalThis.CtlText.source("portal_gps.text_8af2c376113e"))));
+ legend.append(node('span',t(globalThis.CtlText.source("portal_gps.text_8af2c376113e"))));
  const scale=node('div');scale.className='gps-trail-scale';scale.setAttribute('style','--gps-trail-gradient:linear-gradient(90deg,'+
   trailScale.map(([speed,color])=>trailColor(color)+' '+speed/trailMaxSpeed*100+'%').join(',')+')');
  for(const [speed] of trailScale){
   const tick=node('span',String(speed));
   tick.setAttribute('style','left:'+speed/trailMaxSpeed*100+'%');scale.append(tick);
  }
- legend.append(scale);}
+ legend.append(scale);
  const gap=node('span',t(globalThis.CtlText.source("portal_gps.text_8067c798e3d6")));gap.className='gps-gap-legend';
  const manual=node('span',t(globalThis.CtlText.source("portal_gps.text_863943169fc2")));manual.className='gps-manual-gap-legend';legend.append(gap,manual);
  return legend;

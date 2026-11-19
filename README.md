@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.12
+# LokZeitleiste v0.27.13
+
+**0.27.13:** GPS-Symbole ohne Rahmen in halber Größe; Demo mit Geschwindigkeitsspur und Skala, ohne Geschwindigkeitszahl am Symbol. Neue Verwaltungskachel für TF-Portal-Aufrufe und geprüfte automatische Mitarbeiterpostfächer.
 
 **0.27.12:** Einheitliche Art DB-InfraGo. Das Serverupdate führt bestehende Schreibweisen und doppelte Auswahlwerte in Arbeitsberichten, Entwürfen, Korrekturdaten, GPS-Aufzeichnungen und Demo-Freigaben zusammen. Alte App-Werte bleiben beim Speichern kompatibel. Die Android-App gleicht lokale Berichte und alte GPS-Daten beim Öffnen an. Zeiten, Koordinaten und Revisionsstände bleiben erhalten; PDF-Originale werden nicht neu geschrieben. Zuerst Server, danach App aktualisieren. GPS-Demos zeigen grundsätzlich keine tatsächlichen Geschwindigkeiten oder km/h-Legenden; die Spur wird neutral gefärbt. Freigaben und Kontoeinstellungen können dies nicht einschalten.
 
@@ -334,3 +336,11 @@ Sämtliche zentralen Hilfetexte und die Bedienhinweise im Hilfeleser verwenden d
 Ein Sonne-/Mond-Symbol im Kopf schaltet die Darstellung für Startseite, TF-Module, gemeinsame Seiten, Verwaltung und Dialoge um. Die Browser-/Geräteauswahl bleibt über Seitenwechsel und Neuladen erhalten; andere Tabs übernehmen Änderungen. Ohne Speicherzugriff funktioniert die aktuelle Seite weiterhin. Der Standard bleibt der Tagmodus. Warnungen, Plan- und Berichtsstatus erhalten eigene dunkle Farben. Originalbilder, Dokumentvorschauen, Unterschriften und Druckausgaben werden nicht invertiert. Die Android-App bündelt dieselben Darstellungsdateien. Die zentrale Du-Hilfe erklärt den Umschalter.
 
 Offline-DS100-Daten werden aus `accounts/stations.json` und `accounts/station_coordinates.json` mit `python tools/build-station-catalog.py` erzeugt; `--check` prüft die Reproduzierbarkeit. Die APK enthält die erzeugte Datei `station-catalog-data.js`.
+
+### TF-Portal-Test und Mitarbeiterpostfächer (0.27.13)
+
+Die Verwaltungskachel **TF-Portal-Aufrufe (Test)** zeigt die letzten 500 erfolgreichen TF-Anmeldungen und Seitenaufrufe mit TF-Nummer, Namen, Datum, Berliner Uhrzeit und Android-Version. Sie ist zunächst nur für Administratoren freigeschaltet; weitere Mitarbeiter benötigen das entsprechende Leserecht. Webaufrufe haben keine Android-Version. Passwörter und Sitzungsschlüssel werden nicht protokolliert. Alte App-Versionen ohne Versionsmeldung können eine leere Versionsspalte haben.
+
+Bei der Neuanlage von TF, Wagenmeistern und Verwaltungsmitarbeitern wird für eine Adresse in einer **verwalteten Maildomain** automatisch ein verschlüsselter Postfachauftrag mit dem Initialpasswort erstellt. Der vorhandene `ctl-mailboxes.timer` verarbeitet ihn auf dem Mailserver. Der Status steht in der Mitarbeiter-E-Mail-Verwaltung. Eine externe Kontaktadresse wird nicht auf diesem Server angelegt. Fehlt die eingerichtete Provisionierung, wird die Neuanlage für verwaltete Adressen mit einer Fehlermeldung abgebrochen. Bestehende Postfächer werden durch normale Stammdatenänderungen nicht zurückgesetzt. App-Passwortänderungen ändern das Mailpasswort nicht automatisch. Keine Neuinstallation und keinen neuen Signierschlüssel erstellen.
+
+GPS-Positionssymbole sind ohne Rahmen und halb so groß. Die Demo zeigt wieder die farbige Geschwindigkeitsspur samt Legende, aber keine Geschwindigkeit am Symbol.

@@ -239,6 +239,11 @@
     "en": "/locales/offline_station_catalog/en.json",
     "pl": "/locales/offline_station_catalog/pl.json"
   },
+  "portal_access": {
+    "de": "/locales/portal_access/de.json",
+    "en": "/locales/portal_access/en.json",
+    "pl": "/locales/portal_access/pl.json"
+  },
   "portal_beta60": {
     "de": "/locales/portal_beta60/de.json",
     "en": "/locales/portal_beta60/en.json",

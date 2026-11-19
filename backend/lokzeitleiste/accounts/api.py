@@ -44,6 +44,8 @@ def create_router(admin_dependency, origin, cookie_secure, dependency=None):
         user = db.scalar(select(User).where(User.username == data.username.strip().lower(),User.active == True))
         if not user or not account_active(db,user) or not verify_password(data.password,user.password_hash):
             raise HTTPException(401,_text_source('server_accounts_api.text_1c983667bad8'))
+        from ..portal_access import record
+        record(db,user,request.headers.get('x-rail-android-version',''))
         token = issue_token(db,user)
         response.set_cookie('tf_session' if user.role=='tf' else 'admin_session',token,httponly=True,secure=cookie_secure,samesite='strict',path='/',max_age=365*24*3600)
         return {'access_token':token,'username':user.username,'role':user.role,'password_change_required':password_required(db,user)}

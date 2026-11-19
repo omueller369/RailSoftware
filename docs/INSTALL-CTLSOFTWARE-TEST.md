@@ -170,3 +170,19 @@ Bei älteren Ubuntu-Roundcube-Paketen kann `Cannot redeclare function array_firs
 ## Mitarbeiterpostfächer und Update
 
 Die neuen persönlichen Demo-Postfächer, die Domainliste und das Update des bestehenden Testservers mit `--update` sind in [EMPLOYEE-MAIL-UPDATE.md](EMPLOYEE-MAIL-UPDATE.md) beschrieben. Persönliche Postfächer werden nicht an Gmail weitergeleitet. Die oben genannten vier Funktionskonten bleiben unverändert.
+
+### Automatische Mitarbeiterpostfächer und Testübersicht ab 0.27.13
+
+Bei der Neuanlage eines TF, Wagenmeisters oder Verwaltungsmitarbeiters wird die eingegebene Adresse bei einer verwalteten Maildomain zusammen mit dem Initialpasswort in die verschlüsselte Postfachwarteschlange übernommen. Der bereits eingerichtete `ctl-mailboxes.timer` legt das Postfach über den lokalen Postfix-/Dovecot-Provisionierer an. Den Status in der Mitarbeiter-E-Mail-Verwaltung prüfen. Externe Kontaktadressen werden nicht als lokale Postfächer angelegt. Normale Stammdatenänderungen setzen vorhandene Mailpasswörter nicht zurück.
+
+Für die bestehende Installation ausschließlich aktualisieren:
+
+```bash
+cd /opt/ctlsoftware-test-source &&
+git pull --ff-only origin setup/debian-testumgebung &&
+sudo bash install-ctlsoftware-test.sh --update --source /opt/ctlsoftware-test-source
+```
+
+Dabei die bestehende Konfiguration und den vorhandenen Mailserver beibehalten. Bei fehlender Provisionierung meldet die Mitarbeiteranlage einen Fehler; keine Neuinstallation ausführen. Der Status des vorhandenen Dienstes lässt sich lesend mit `systemctl status ctl-mailboxes.timer ctl-mailboxes.service` prüfen.
+
+Die neue Verwaltungskachel **TF-Portal-Aufrufe (Test)** zeigt erfolgreiche Anmeldungen und Seitenaufrufe mit Datum und Uhrzeit in Europe/Berlin. Sie ist zunächst für Administratoren verfügbar; weitere Verwaltungsmitarbeiter benötigen das Leserecht für dieses Modul. Nach dem Update werden neue Aufrufe erfasst. Webzugriffe und alte Android-Apps ohne Versionsmeldung haben eine leere Android-Versionsspalte.

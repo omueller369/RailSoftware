@@ -13,7 +13,7 @@ window.loadTfHelp=()=>{
  helpTask=new Promise((resolve,reject)=>{
   if(!document.getElementById('tfHelpStyles')){const css=document.createElement('link');css.id='tfHelpStyles';css.rel='stylesheet';css.href='/tf/help.css?v=20261108-validation-02619';document.head.append(css);}
   const load=path=>new Promise((done,fail)=>{const script=document.createElement('script');script.src=path;script.onload=done;script.onerror=()=>{script.remove();fail(Error(globalThis.CtlText.source("backend_auth_session.text_6227b32686e3")));};document.head.append(script);});
-  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261118-infra-go-02712')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
+  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261119-gps-access-02713')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
  }).catch(error=>{helpTask=null;throw error;});return helpTask;
 };
 // Downloads need the same tab identity as API requests, rather than shared cookies.
@@ -158,3 +158,13 @@ for(const type of ['click','submit'])document.addEventListener(type,event=>{
 },true);
 window.CtlValidation={issuesFromResponse,mark,clear,validate,fields,capture,response,report,takeIssues,resolveIssues,reveal,rememberIssue,registerResolver:(owner,resolver)=>resolvers.set(owner,resolver)};
 })();
+
+// One authenticated page visit per top-level TF document; telemetry never blocks the portal.
+if(typeof location!=='undefined'&&location.pathname.startsWith('/tf')&&window.top===window)document.addEventListener('DOMContentLoaded',async()=>{
+ try {
+  const account=await fetch('/api/v1/account/me',{credentials:'same-origin',cache:'no-store'});
+  if(!account.ok||(await account.json()).role!=='tf')return;
+  const android_version=window.AndroidPortal?await window.AndroidPortal.version:'';
+  await fetch('/api/v1/tf/portal-access',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:location.pathname,android_version})});
+ }catch(_){}
+},{once:true});

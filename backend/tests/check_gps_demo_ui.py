@@ -32,10 +32,10 @@ def fixture():
  seek.value='9000000';seek.dispatchEvent(new Event('input'));assert(output.textContent.startsWith('02:30:00'),'Time slider seeks');
  const position=workspace.querySelector('[data-gps-position]');assert(position,'Playback shows current train position');
  assert(!position.querySelector('path')&&position.querySelector('circle'),'Saved circle icon applied in demo');
- assert(position.textContent.includes('DemoName')&&!position.textContent.includes('DEMO123')&&!position.textContent.includes('km/h'),'Saved visible fields applied in demo');
+ assert(position.querySelector('circle').getAttribute('r')==='5'&&!position.querySelector('rect'),'Marker half size without frame');assert(position.textContent.includes('DemoName')&&!position.textContent.includes('DEMO123')&&!position.textContent.includes('km/h'),'Saved visible fields applied in demo');
  assert(/^\d{2}:\d{2}$/.test(position.querySelector('text').textContent),'Demo time without labels or dangling slash');
  assert(!workspace.querySelector('[data-gps-stop]'),'Saved 15-minute threshold suppresses recorded five-minute stand');
- assert(!workspace.querySelector('.gps-map').textContent.includes('km/h')&&!workspace.querySelector('.gps-trail-scale'),'Demo never displays speeds or speed legend even when enabled in preferences');assert([...workspace.querySelectorAll('[data-gps-trail]')].every(path=>path.getAttribute('stroke')==='#16465b'),'Demo trail never encodes actual speeds');
+ assert(!workspace.querySelector('[data-gps-position]').textContent.includes('km/h')&&workspace.querySelector('.gps-trail-scale'),'Demo has a speed scale but no speed at the marker');assert([...workspace.querySelectorAll('[data-gps-trail]')].some(path=>path.getAttribute('stroke')!=='#16465b'),'Demo trail has speed colours');
  assert(!workspace.querySelector('[data-gps-peer]'),'Demo excludes real live positions');
  reset.click();assert(output.textContent.startsWith('00:00:00'),'Reset returns to beginning');
  assert(!window.GpsRecorder.isActive()&&nativeCalls===0,'Demo never starts a recording');assert(JSON.stringify(record)===original,'Original recording unchanged');

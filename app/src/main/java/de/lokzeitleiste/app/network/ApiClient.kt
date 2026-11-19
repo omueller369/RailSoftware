@@ -28,6 +28,7 @@ object ApiClient {
         connection.connectTimeout = 15000
         connection.readTimeout = 30000
         connection.doOutput = method != "GET"
+        connection.setRequestProperty("X-Rail-Android-Version", de.lokzeitleiste.app.BuildConfig.VERSION_NAME)
         connection.setRequestProperty("Accept-Language", de.lokzeitleiste.app.LanguageRuntime.code)
         connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
         if (token != null) connection.setRequestProperty("Authorization", "Bearer $token")

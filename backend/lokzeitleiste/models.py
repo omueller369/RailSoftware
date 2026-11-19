@@ -1063,3 +1063,13 @@ class GpsDemoPreference(Base):
     __tablename__='gps_demo_preferences'
     user_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),primary_key=True)
     hidden:Mapped[bool]=mapped_column(Boolean,default=False,nullable=False)
+
+
+class TfPortalAccess(Base):
+    __tablename__ = 'tf_portal_accesses'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), index=True)
+    occurred_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc, index=True)
+    android_version: Mapped[str] = mapped_column(String(32), default='')
+    event: Mapped[str] = mapped_column(String(8))
+    path: Mapped[str] = mapped_column(String(160), default='')

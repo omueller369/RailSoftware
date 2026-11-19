@@ -94,3 +94,33 @@ class EmployeeMailTest(unittest.TestCase):
         modules=self.client.get('/api/v1/admin/start').json()['modules']
         self.assertFalse({'/phpmyadmin','/webmailer'} & {r['url'] for r in modules})
         self.assertEqual(self.client.get('/api/v1/admin/start').json()['admin_tools'],[])
+
+    def test_tf_and_wgm_creation_queue_entered_address_and_initial_password(self):
+        # TF input mirrors the regular creation form, using a managed address.
+        from unittest.mock import patch as mock_patch
+        original=self.client.post
+        def post(url,**kwargs):
+            if url=='/api/v1/admin/tf':kwargs['json']['email']='mira.tf@ctl-software.io-goerlitz.eu'
+            return original(url,**kwargs)
+        with mock_patch.object(self.client,'post',side_effect=post):
+            result=self.create_tf('787119','MAIL-TF')
+        self.assertEqual(result.status_code,201,result.text)
+        tf_id=result.json()['id']
+        payload=dict(username='wgm.mail',password='wgm-secret-12345',first_name='Anna',last_name='Wagen',personnel_number='W-MAIL',birth_date='1990-05-12',vacation_days=30,email='anna.wgm@ctl-software.io-goerlitz.eu',gender='female',nationality='DE',weekly_minutes=2400,entry_date='2020-01-01',addresses=[dict(street='Hauptstraße',house_number='1',postal_code='01234',city='Berlin',federal_state='BE',is_postal=True)])
+        result=self.client.post('/api/v1/admin/wgm',json=payload)
+        self.assertEqual(result.status_code,201,result.text)
+        with Session(self.engine) as db:
+            for uid,address,password in [(tf_id,'mira.tf@ctl-software.io-goerlitz.eu','tf-secret-12345'),(result.json()['id'],payload['email'],payload['password'])]:
+                job=db.get(MailboxProvision,uid)
+                self.assertEqual(job.address,address);self.assertEqual(job.status,'pending')
+                self.assertEqual(service.cipher().decrypt(job.password_encrypted.encode()).decode(),password)
+                before=job.password_encrypted
+                save_email(db,db.get(User,uid),address)
+                self.assertEqual(job.password_encrypted,before,'Profile edits must not reset mail passwords')
+
+    def test_unconfigured_managed_mailbox_rolls_back_employee_creation(self):
+        with patch.dict(os.environ,{'CTL_MAIL_PROVISIONING':''}):
+            result=self.client.post('/api/v1/admin/staff',json=dict(username='missing-mail',initial_password='initial123',first_name='No',last_name='Mail',nationality='DE',birth_date='1985-04-03',cost_center='A',addresses=[dict(street='Weg',house_number='1',postal_code='12345',city='Berlin')],permissions={},email='no.mail@ctl-software.io-goerlitz.eu'))
+            self.assertEqual(result.status_code,503,result.text)
+        with Session(self.engine) as db:
+            self.assertIsNone(db.scalar(select(User).where(User.username=='missing-mail')))
