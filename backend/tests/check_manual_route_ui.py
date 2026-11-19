@@ -11,7 +11,7 @@ def fixture():
     checks=r'''
 (async()=>{
  const assert=(v,m)=>{if(!v)throw Error(m);},wait=(ms=25)=>new Promise(r=>setTimeout(r,ms));
- const root=document.getElementById('root'),editor=ManualRouteEditor.mount({id:1},root,async()=>{saved++;});await wait();
+ const originalLoad=M1Map.load;let release;M1Map.load=()=>new Promise(resolve=>{release=()=>originalLoad().then(resolve);});const root=document.getElementById('root'),editor=ManualRouteEditor.mount({id:1},root,async()=>{saved++;});assert(root.querySelector('[data-route-start]').disabled,'Start selection waits for reference geometry');release();await wait();M1Map.load=originalLoad;
  assert(root.querySelector('[data-m1-country=DEU]'),'Local Germany background before any selection');
  const input=root.querySelector('[data-route-start]');input.focus();input.value='AFW';input.dispatchEvent(new Event('input',{bubbles:true}));await wait(250);
  const option=[...document.querySelectorAll('.station-picker button')].find(button=>button.textContent.startsWith('AFW ·'));assert(option,'DS100 start found');option.click();
