@@ -105,7 +105,12 @@ def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/t
     def listing(user:User=Depends(driver),db:Session=Depends(database_session)):
         target=identity(db,user)
         rows=list(db.scalars(select(RouteKnowledgeEntry).where(RouteKnowledgeEntry.owner_id==user.id).order_by(RouteKnowledgeEntry.id)))
-        return dict(identity=target,items=[dict(id=row.id,**json.loads(row.source_json),map_match=map_match(json.loads(row.source_json))) for row in rows])
+        items=[dict(id=row.id,**json.loads(row.source_json),map_match=map_match(json.loads(row.source_json))) for row in rows]
+        from .manual_route_knowledge import entries
+        def key(row):return (str(int(row['route_number'])),*sorted(' '.join(row[field].upper().split()) for field in ('from_code','to_code')))
+        protected={key(row) for row in items if row['status']=='streckenkundig'}
+        items.extend(row for row in entries(db,user.id) if key(row) not in protected)
+        return dict(identity=target,items=items)
     def read(file):
         raw=file.file.read(MAX_BYTES+1)
         try:return parse_csv(raw)

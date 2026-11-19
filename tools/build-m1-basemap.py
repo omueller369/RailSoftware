@@ -1,0 +1,12 @@
+"""Build the public-domain offline background from the checked-in reference."""
+import argparse,gzip,hashlib,json
+from pathlib import Path
+root=Path(__file__).resolve().parents[1]/'backend/lokzeitleiste';reference=root/'reference/basemap'
+parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
+raw=(reference/'central-europe.geojson.gz').read_bytes();manifest=json.loads((reference/'manifest.json').read_text())
+assert hashlib.sha256(raw).hexdigest()==manifest['canonical_sha256']
+data=json.loads(gzip.decompress(raw));content='/* Natural Earth 1:50m countries, public domain. See reference/basemap/manifest.json. */\nwindow.M1BasemapSeed='+json.dumps(data,ensure_ascii=False,separators=(',',':'))+';\n'
+p=root/'static/m1-basemap-data.js'
+if args.check:assert p.read_text()==content
+else:p.write_text(content)
+print('Offline background:',len(data['features']),'countries verified')

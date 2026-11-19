@@ -1,0 +1,21 @@
+{
+  "text_b7f9ac3a3f45": "Show route knowledge",
+  "text_2e35159db647": "Add route knowledge",
+  "text_c9fa26ef1765": "Start station / reporting point (DS100 or name)",
+  "text_47e8bd8d5b40": "Valid until (maximum 1 year)",
+  "text_c6647df04fbb": "Save",
+  "text_3727c732d5d8": "Remove last point",
+  "text_e87fcb0a884a": "Clear selection",
+  "text_60ee27e69534": "Choose the starting point by DS100 or name. Click M1 operating points in route order. Where several VzG lines are possible, choose the correct section. Zoom with + and − and drag to pan. Only Save records your selection as qualified route knowledge. Confirmed imports retain priority.",
+  "text_6882a967cd71": "Choose VzG line",
+  "text_3152f57cf1a9": "These points cannot be linked unambiguously by a continuous M1 line. Choose an intermediate operating point or another VzG line.",
+  "text_f8bd4777a8f6": "Choose a date between today and at most one year from today.",
+  "text_a5638474e6bc": "Route saved as qualified knowledge.",
+  "text_2754b9f01859": "Could not save. Check your connection and selection. Your selection is retained.",
+  "text_d39b25fbacf6": "This route is already saved.",
+  "text_43066bcd226f": "M1 railway network and operating points · DB InfraGO",
+  "text_0569e84397dc": "Loading M1 map …",
+  "text_698b8320d21b": "Could not load the M1 map.",
+  "text_7ba4e05ed470": "Railway map shows the local M1 network and operating points instead of OpenRailwayMap. This data also works offline. Street basemaps still require internet.",
+  "text_149a6628d3f0": "Reload M1 map"
+}

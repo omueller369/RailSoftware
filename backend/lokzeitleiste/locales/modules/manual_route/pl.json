@@ -1,0 +1,21 @@
+{
+  "text_b7f9ac3a3f45": "Wyświetl znajomość tras",
+  "text_2e35159db647": "Dodaj znajomość trasy",
+  "text_c9fa26ef1765": "Stacja początkowa / punkt (DS100 lub nazwa)",
+  "text_47e8bd8d5b40": "Ważne do (maks. 1 rok)",
+  "text_c6647df04fbb": "Zapisz",
+  "text_3727c732d5d8": "Usuń ostatni punkt",
+  "text_e87fcb0a884a": "Wyczyść wybór",
+  "text_60ee27e69534": "Wybierz punkt początkowy według DS100 lub nazwy. Klikaj punkty na mapie M1 w kolejności trasy. Jeśli dostępnych jest kilka linii VzG, wybierz właściwy odcinek. Powiększaj przyciskami + i −, przesuwaj mapę przeciąganiem. Dopiero Zapisz dodaje wybór jako znajomość trasy. Potwierdzone importy zachowują pierwszeństwo.",
+  "text_6882a967cd71": "Wybierz linię VzG",
+  "text_3152f57cf1a9": "Punktów nie można jednoznacznie połączyć ciągłą linią M1. Wybierz punkt pośredni lub inną linię VzG.",
+  "text_f8bd4777a8f6": "Wybierz datę od dzisiaj do maksymalnie roku od dzisiaj.",
+  "text_a5638474e6bc": "Trasa została zapisana jako znana.",
+  "text_2754b9f01859": "Nie można zapisać. Sprawdź połączenie i wybór. Wybór zostaje zachowany.",
+  "text_d39b25fbacf6": "Ta trasa jest już zapisana.",
+  "text_43066bcd226f": "Sieć kolejowa M1 i punkty eksploatacyjne M1 · DB InfraGO",
+  "text_0569e84397dc": "Wczytywanie mapy M1 …",
+  "text_698b8320d21b": "Nie udało się wczytać mapy M1.",
+  "text_7ba4e05ed470": "Mapa kolejowa pokazuje lokalną sieć M1 i punkty M1 zamiast OpenRailwayMap. Te dane działają także offline. Podkład uliczny nadal wymaga internetu.",
+  "text_149a6628d3f0": "Wczytaj mapę M1 ponownie"
+}

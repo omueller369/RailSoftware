@@ -1,0 +1,21 @@
+{
+  "text_b7f9ac3a3f45": "Streckenkenntnis anzeigen",
+  "text_2e35159db647": "Streckenkenntnis anlegen",
+  "text_c9fa26ef1765": "Startbahnhof / Meldestelle (DS100 oder Name)",
+  "text_47e8bd8d5b40": "Gültig bis (max. 1 Jahr)",
+  "text_c6647df04fbb": "Speichern",
+  "text_3727c732d5d8": "Letzten Ort entfernen",
+  "text_e87fcb0a884a": "Auswahl leeren",
+  "text_60ee27e69534": "Wähle den Startort über DS100 oder Namen. Klicke dann auf die Betriebsstellen der M1-Karte in der Reihenfolge Deiner Strecke. Bei mehreren VzG-Strecken wählst Du den passenden Abschnitt aus. Zoome mit + und −; verschiebe die Karte durch Ziehen. Erst Speichern übernimmt Deine Auswahl als Streckenkundig. Bestehende bestätigte Importe bleiben führend.",
+  "text_6882a967cd71": "VzG-Strecke auswählen",
+  "text_3152f57cf1a9": "Die Orte lassen sich nicht eindeutig über eine durchgehende M1-Strecke verbinden. Wähle eine Zwischenbetriebsstelle oder eine andere VzG-Strecke.",
+  "text_f8bd4777a8f6": "Wähle ein Datum zwischen heute und höchstens einem Jahr ab heute.",
+  "text_a5638474e6bc": "Die Strecke wurde als Streckenkundig gespeichert.",
+  "text_2754b9f01859": "Speichern nicht möglich. Prüfe die Verbindung und Deine Auswahl. Deine Auswahl bleibt erhalten.",
+  "text_d39b25fbacf6": "Diese Strecke ist bereits gespeichert.",
+  "text_43066bcd226f": "M1 Streckennetz und M1 Betriebsstellen · DB InfraGO",
+  "text_0569e84397dc": "M1-Karte wird geladen …",
+  "text_698b8320d21b": "M1-Karte konnte nicht geladen werden.",
+  "text_7ba4e05ed470": "Bahnkarte zeigt das lokale M1-Streckennetz und M1-Betriebsstellen anstelle von OpenRailwayMap. Diese Daten funktionieren auch offline. Straßengrundkarten benötigen weiterhin Internet.",
+  "text_149a6628d3f0": "M1-Karte neu laden"
+}

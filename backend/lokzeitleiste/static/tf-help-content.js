@@ -2,6 +2,7 @@
 /* GPS-Kartenzeiten in Aufzeichnung und Demo: HH:MM / HH:MM ohne Labels. */
 /* Arbeitsbericht: drei gleich gestaltete Reiter, ohne Verlust von Eingaben oder GPS. */
 /* Updates-Modul, kurze Kacheln und DB Digi-Bef. mit eigener Standzeit-Art. */
+/* M1-Bahnkarte und manuelles Anlegen von Streckenkenntnis, 0.27.14. */
 /* Android-Login: Rail Software, Gleisrahmen und Admin-Hilfe nach drei Fehlversuchen. */
 /* GPS-Spur: fließende Skala 0 blau / 50 grün / 100 gelb / 140 rot. */
 /* Footer: Rail Software, jeweilige Web-/Android-Version, Copyright 2026 IO-Software-Görlitz. */

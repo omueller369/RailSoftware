@@ -796,3 +796,6 @@ app.include_router(gps_demo_router(require_account,require_admin))
 
 from .portal_access import create_router as portal_access_router
 app.include_router(portal_access_router(require_account,require_admin))
+
+from .manual_route_knowledge import create_router as manual_route_router
+app.include_router(manual_route_router(require_account))

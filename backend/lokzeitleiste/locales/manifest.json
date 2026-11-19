@@ -234,6 +234,11 @@
     "en": "/locales/m1_operating_points/en.json",
     "pl": "/locales/m1_operating_points/pl.json"
   },
+  "manual_route": {
+    "de": "/locales/manual_route/de.json",
+    "en": "/locales/manual_route/en.json",
+    "pl": "/locales/manual_route/pl.json"
+  },
   "offline_station_catalog": {
     "de": "/locales/offline_station_catalog/de.json",
     "en": "/locales/offline_station_catalog/en.json",

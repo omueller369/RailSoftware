@@ -1,12 +1,12 @@
 {
   "text_ffad8a8eb545": "Route, class and location knowledge",
-  "text_681c646b05be": "Route knowledge",
+  "text_681c646b05be": "Routes",
   "text_4aa4e3a2fe55": "Location knowledge",
   "text_be3484f014fc": "Vehicle classes",
   "text_1308485034f1": "Your route, location and rolling-stock knowledge with separate inventories and CSV imports for your TF account.",
   "text_24780c3c9616": "Add location knowledge via DS100 above the list, or select a row to renew it. Valid until is limited to one year. Search, sort arrows and validity colours help you review the inventory; CSV import is below it.",
   "text_376cf04ec77f": "Import your rolling-stock inventory with the columns Baureihe and Gültig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
   "text_45663fd76979": "Knowledge and tabs",
-  "text_8562cceb9457": "Your route, location and rolling-stock knowledge with separate inventories and CSV imports for your TF account. The import is below the map. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check your account, data and map. Only Confirm import permanently saves the knowledge to your TF account. The file selection and import list then clear; saved knowledge remains on the map. Cancel removes only the preview. Add location knowledge via DS100 above the list, or select a row to renew it. Valid until is limited to one year. Search, sort arrows and validity colours help you review the inventory; CSV import is below it.",
-  "text_8f6a274eb4f8": "Route, class and location knowledge module with three tabs. The map is retained; additional features will follow later."
+  "text_8562cceb9457": "Your route, location and rolling-stock knowledge with separate inventories and CSV imports for your TF account. The import is below the map. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check your account, data and map. Only Confirm import permanently saves the knowledge to your TF account. The file selection and import list then clear; saved knowledge remains on the map. Cancel removes only the preview. Add location knowledge via DS100 above the list, or select a row to renew it. Valid until is limited to one year. Search, sort arrows and validity colours help you review the inventory; CSV import is below it. In Routes choose Show route knowledge or Add route knowledge. Select the start by DS100 or name; the map zooms there. Click operating points in sequence. The light-green preview follows the M1 network. Choose a VzG line where several connections exist. Set an expiry date no more than a year from today. Only Save confirms qualified knowledge. Saving requires a connection. GPS rides and confirmed CSV imports remain unchanged. The local Germany basemap remains in the background offline.",
+  "text_8f6a274eb4f8": "The module has Routes, Local knowledge and Vehicle classes tabs. In Routes you can display your knowledge or add a route manually using the M1 map."
 }

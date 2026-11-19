@@ -20,13 +20,14 @@ const database={transaction(){const tx={};tx.objectStore=()=>({get(key){const re
 let count=0,remote=null,body=null;
 const response=(data,status=200)=>({status,ok:status<400,json:async()=>structuredClone(data)});
 const context={console,Intl,Date,Number,Math,Promise,setTimeout,clearTimeout,setInterval:()=>1,clearInterval(){},URL,Blob,confirm:()=>true,indexedDB:{open(){const request={result:database};queueMicrotask(()=>request.onsuccess());return request;}},document:{body:new Element('body'),visibilityState:'visible',createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),addEventListener(){}},navigator:{onLine:true,geolocation:{getCurrentPosition(resolve){resolve({timestamp:1792627200000+(count++)*5000,coords:{latitude:52,longitude:13,accuracy:5,speed:0}});}}},window:{isSecureContext:true,addEventListener(){}},fetch:async(path,options={})=>{if(path.startsWith('/api/v1/tf/gps/nearby?'))return response({stations:[{code:'BBB',name:'Berlin Beispiel',distance_m:100}],radius_m:5000});if(options.method==='PUT'){body=JSON.parse(options.body);if(path.endsWith('/stations')){remote.revision++;remote.reasons=body.reasons;return response(remote);}remote={...body,revision:(remote?.revision||0)+1,analysis:{rows:[{key:'start',kind:'Start',start:body.points[0].t,end:body.points[0].t,lat:52,lon:13,direction:null}],gaps:[]}};return response(remote);}if(options.method==='POST')return response(remote);if(options.method==='DELETE'){remote=null;return response({ok:true});}return remote?response(remote):response({},404);}};
+context.window.M1Map={load:async()=>({}),background(svg,make){const bg=make('rect');bg.setAttribute('data-m1-background','');svg.append(bg);},draw(svg,make){const network=make('g');network.setAttribute('data-m1-test','');svg.append(network);}};
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/train-journeys.js','utf8'),context);
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8'),context);
 
 (async()=>{
  const r=context.window.GpsRecorder.mount({userId:5,journeyId:'map',container:new Element('div'),trainNumber:()=> '123',readonly:()=>false,stations(){}});await r.readyPromise;r.setExpanded(true);
- const point=(lat,lon,t)=>({lat,lon,t,accuracy:5,speed:10});r.record={train_number:'123',points:[point(52,13,1),point(52.1,13.1,5001)],ended:false};r.drawMap();
- assert.equal(r.mapState.mode,'follow');assert(Math.abs(r.mapView.center.x-(193.1/360))<1e-12);assert(r.mapSvg.children.some(n=>String(n.attributes.href).includes('tiles.openrailwaymap.org')));
+ const point=(lat,lon,t)=>({lat,lon,t,accuracy:5,speed:10});r.record={train_number:'123',points:[point(52,13,1),point(52.1,13.1,5001)],ended:false};r.drawMap();await new Promise(resolve=>setTimeout(resolve,0));
+ assert.equal(r.mapState.mode,'follow');assert(Math.abs(r.mapView.center.x-(193.1/360))<1e-12);assert(r.mapSvg.children.some(n=>'data-m1-test' in n.attributes));
  const position=()=>r.mapSvg.children.find(n=>n.attributes['data-gps-position']);
  const labels=()=>position().children.filter(n=>n.tag==='text');
  assert.equal(position().attributes.transform,'translate(300 150)');
@@ -58,7 +59,7 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  r.mapOverview.onclick();assert.equal(r.mapState.mode,'overview');assert.notEqual(r.mapView.center.x,(193.3/360));r.mapFollow.onclick();assert.equal(r.mapState.mode,'follow');
  const e=(pointerId,x,y)=>({pointerId,clientX:x,clientY:y,pointerType:'touch',target:r.mapSvg,preventDefault(){}});r.map.events.pointerdown(e(1,200,150));r.map.events.pointerdown(e(2,400,150));const zoom=r.mapView.zoom;r.map.events.pointermove(e(2,600,150));assert.equal(r.mapView.zoom,zoom+1);assert.equal(r.mapState.mode,'free');r.map.events.pointerup(e(1,200,150));r.map.events.pointerup(e(2,600,150));
  r.mapFollow.onclick();assert.equal(r.mapState.mode,'follow');r.mapState.zoom=19;r.drawMap();r.mapZoomIn.onclick();assert.equal(r.mapView.zoom,19);assert.equal(r.mapZoomIn.disabled,true);
- const layer=r.mapSvg.children.find(n=>String(n.attributes.href).includes('tiles.openrailwaymap.org'));layer.events.error();assert.equal(r.railFailed,true);assert(!r.mapSvg.children.some(n=>String(n.attributes.href).includes('tiles.openrailwaymap.org')));assert(r.mapSvg.children.some(n=>String(n.attributes.href).includes('tile.openstreetmap.org')));
+ r.mapRail.onclick();assert.equal(r.railEnabled,false);assert(!r.mapSvg.children.some(n=>'data-m1-test' in n.attributes));r.mapRail.onclick();assert(r.mapSvg.children.some(n=>'data-m1-test' in n.attributes));assert(!r.mapSvg.children.some(n=>String(n.attributes.href).includes('tiles.openrailwaymap.org')));
  context.document.visibilityState='hidden';r.drawMap();assert(!r.mapSvg.children.some(n=>n.tag==='image'));assert(r.mapSvg.children.some(n=>'data-gps-trail' in n.attributes));
  // Old recordings need no migration: markers are derived from original fixes.
  r.record={ended:true,points:Array.from({length:63},(_,i)=>({...point(52,13,100000+i*5000),speed:0}))};r.draw();
@@ -136,5 +137,5 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  r.fail('GPS konnte nicht lokal gespeichert werden. Bitte GPX herunterladen.');assert.equal(notices.at(-1).options.autoCloseMs,undefined);
  console.log('Rail stop fixtures, two-minute threshold, 100m jitter, >10kmh departure and transient GPS/HTTPS warnings: PASS');
  console.log('GPS stop markers: legacy fixes, two colors, click/keyboard focus, imported details and gap exclusion: PASS');
- console.log('GPS map: live follow, preserved zoom, pinch, overview, zoom limits, ORM fallback and visible-only tiles: PASS');
+ console.log('GPS map: live follow, preserved zoom, pinch, overview, zoom limits, offline M1 layer toggle and visible-only tiles: PASS');
 })().catch(e=>{console.error(e);process.exitCode=1;});

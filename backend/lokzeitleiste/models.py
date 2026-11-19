@@ -1073,3 +1073,13 @@ class TfPortalAccess(Base):
     android_version: Mapped[str] = mapped_column(String(32), default='')
     event: Mapped[str] = mapped_column(String(8))
     path: Mapped[str] = mapped_column(String(160), default='')
+
+
+class ManualRouteKnowledge(Base):
+    __tablename__='manual_route_knowledge'
+    __table_args__=(UniqueConstraint('owner_id','path_key'),)
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),index=True)
+    path_key:Mapped[str]=mapped_column(String(64))
+    payload_json:Mapped[str]=mapped_column(Text)
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)

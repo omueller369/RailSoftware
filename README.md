@@ -1,4 +1,6 @@
-# LokZeitleiste v0.27.13
+# LokZeitleiste v0.27.14
+
+**0.27.14:** Bahnkarte in GPS-Aufzeichnung und Demo zeigt das offline verfügbare M1-Streckennetz und die M1-Betriebsstellen. Der Reiter Strecken bietet Anzeigen und manuelles Anlegen. Startort per DS100/Name auswählen, automatisch hinzoomen, Betriebsstellen anklicken, VzG-Verbindung prüfen und die hellgrüne Vorschau mit Gültig bis (maximal ein Jahr ab heute) speichern. Manuell bestätigte Strecken gelten als Streckenkundig, ohne GPS-Fahrten zu erfinden. Bestätigte CSV-Importe bleiben führend. Eine lokale Deutschlandkarte bleibt auch ohne Internet im Hintergrund.
 
 **0.27.13:** GPS-Symbole ohne Rahmen in halber Größe; Demo mit Geschwindigkeitsspur und Skala, ohne Geschwindigkeitszahl am Symbol. Neue Verwaltungskachel für TF-Portal-Aufrufe und geprüfte automatische Mitarbeiterpostfächer.
 
@@ -344,3 +346,11 @@ Die Verwaltungskachel **TF-Portal-Aufrufe (Test)** zeigt die letzten 500 erfolgr
 Bei der Neuanlage von TF, Wagenmeistern und Verwaltungsmitarbeitern wird für eine Adresse in einer **verwalteten Maildomain** automatisch ein verschlüsselter Postfachauftrag mit dem Initialpasswort erstellt. Der vorhandene `ctl-mailboxes.timer` verarbeitet ihn auf dem Mailserver. Der Status steht in der Mitarbeiter-E-Mail-Verwaltung. Eine externe Kontaktadresse wird nicht auf diesem Server angelegt. Fehlt die eingerichtete Provisionierung, wird die Neuanlage für verwaltete Adressen mit einer Fehlermeldung abgebrochen. Bestehende Postfächer werden durch normale Stammdatenänderungen nicht zurückgesetzt. App-Passwortänderungen ändern das Mailpasswort nicht automatisch. Keine Neuinstallation und keinen neuen Signierschlüssel erstellen.
 
 GPS-Positionssymbole sind ohne Rahmen und halb so groß. Die Demo zeigt wieder die farbige Geschwindigkeitsspur samt Legende, aber keine Geschwindigkeit am Symbol.
+
+### Manuelle M1-Streckenkenntnis (0.27.14)
+
+Unter **Stecken-, BR- und Ortskenntnisse → Strecken** gibt es **Streckenkenntnis anzeigen** und **Streckenkenntnis anlegen**. Wähle den Startbahnhof oder die Meldestelle per DS100 oder Name. Die Karte zoomt dorthin, sodass Strecke und Betriebsstellen sichtbar sind. Klicke die nächsten Betriebsstellen in der gewünschten Reihenfolge an. Die durchgehende hellgrüne Vorschau folgt der M1-Geometrie. Für mehrere passende VzG-Strecken ist eine ausdrückliche Auswahl erforderlich. Nicht durchgehend oder nicht eindeutig zuordenbare Verbindungen werden nicht gespeichert; ergänze Zwischenpunkte.
+
+Wähle ein Gültigkeitsdatum zwischen heute und höchstens einem Kalenderjahr ab heute und klicke **Speichern**. Erst dann entsteht ein eigener TF-bezogener Kenntnisbestand mit Status **Streckenkundig**. Die Auswahl wird anschließend geleert; die Strecke erscheint in der Anzeige. Es werden keine GPS-Punkte oder fiktiven Erwerbsfahrten erzeugt. Bestehende bestätigte CSV-Kenntnisse werden nicht überschrieben. Zum Speichern ist eine Verbindung erforderlich; bei einem Fehler bleibt die Auswahl erhalten. Die öffentlichen M1-Daten und die Hintergrundkarte sind in der Android-App enthalten.
+
+Die geografische Hintergrundkarte stammt von Natural Earth (1:50m, Public domain): https://www.naturalearthdata.com/about/terms-of-use/ . Quelle und Prüfsummen stehen unter `backend/lokzeitleiste/reference/basemap/`. `python tools/build-m1-basemap.py --check` prüft die erzeugte Browserdatei. Online liegt die OpenStreetMap-Straßenkarte zusätzlich darunter; ohne Internet bleiben Länderumrisse, M1-Netz und Betriebsstellen nutzbar. Der Button **Bahnkarte** behält seinen Namen und schaltet die lokalen M1-Daten statt OpenRailwayMap.
