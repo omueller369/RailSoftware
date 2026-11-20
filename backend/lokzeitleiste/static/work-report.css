@@ -253,3 +253,5 @@ html[data-theme="dark"] #reportSendCancel {
 
 .manual-route-map .route-map-nodes{position:absolute;top:10px;right:10px;z-index:2;display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:4px;background:#ffffffd9;color:#172338;font-size:.8rem}.manual-route-map .route-map-nodes input{width:18px;height:18px;margin:0}.manual-route-map .route-map-undo:hover{background:#ffffff55}
 .route-knowledge-map.manual-route-map>svg{box-sizing:border-box;width:100%;max-width:none;border:0;outline:0;box-shadow:none}
+
+.route-editor-actions{display:flex;flex-wrap:wrap;gap:6px}.route-editor-actions button{font-size:.85rem;min-width:0;white-space:normal;padding:6px;max-width:100%}.manual-route-map .route-map-gps-only{position:absolute;top:43px;right:10px;z-index:2;display:flex;align-items:center;gap:5px;padding:4px 6px;background:#ffffffdf;border-radius:4px;color:#172338;font-size:.8rem}.route-map-gps-only input{width:18px;height:18px;margin:0}[data-gps-route-tools] select{box-sizing:border-box;max-width:100%;margin-right:8px}

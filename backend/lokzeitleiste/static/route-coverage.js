@@ -40,5 +40,5 @@ function createAsync(data,records,now=Date.now()){
  const promise=new Promise((resolve,reject)=>{rejectJob=reject;try{url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));worker=new Worker(url);worker.onmessage=e=>{settled=true;cleanup();e.data.ok?resolve(e.data.result):reject(Error(e.data.error));};worker.onerror=e=>{settled=true;cleanup();reject(Error(e.message||'Worker failed'));};worker.postMessage({data:{scale:data.scale,routes:data.routes,lines:data.lines.map(row=>[row[0],null,row[2],row[3],null,row[5]])},records:[...records],now});}catch(error){settled=true;cleanup();reject(error);}});
  return {promise,cancel(){if(settled)return;settled=true;cleanup();rejectJob(Object.assign(Error('Cancelled'),{name:'AbortError'}));}};
 }
-window.RouteCoverage={calculate,createAsync,gps,reference,qualified,ageState,day,palette};
+window.RouteCoverage={calculate,createAsync,viewportPath,gps,reference,qualified,ageState,day,palette};
 })();

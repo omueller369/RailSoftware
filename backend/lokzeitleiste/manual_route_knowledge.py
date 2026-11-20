@@ -24,10 +24,13 @@ def maximum(day):
     try:return day.replace(year=day.year+1)
     except ValueError:return day.replace(year=day.year+1,day=28)
 
+from .manual_route_gps import GpsLink,link_payload
+
 class RouteInput(BaseModel):
     waypoints:list[str]=Field(min_length=2,max_length=1001)
     routes:list[str|list[str]]=Field(min_length=1,max_length=1000)
     valid_until:date
+    source_gps:GpsLink|None=None
 
 
 class RouteEdit(RouteInput):
@@ -36,7 +39,7 @@ class RouteEdit(RouteInput):
 
 def saved_route(item):
     payload=json.loads(item.payload_json)
-    return dict(id=item.id,from_code=payload['waypoints'][0],to_code=payload['waypoints'][-1],valid_until=payload['valid_until'],waypoints=payload['waypoints'],routes=payload['routes'],revision=digest(item.payload_json))
+    return dict(source_gps=payload.get('source_gps'),id=item.id,from_code=payload['waypoints'][0],to_code=payload['waypoints'][-1],valid_until=payload['valid_until'],waypoints=payload['waypoints'],routes=payload['routes'],revision=digest(item.payload_json))
 
 
 def saved_routes(db,owner_id):
@@ -88,7 +91,7 @@ def create_router(require_account):
     @router.post('/api/v1/tf/route-knowledge/manual',status_code=201)
     def save(data:RouteInput,user:User=Depends(driver),db:Session=Depends(database_session)):
         identity(db,user,lock=True)
-        payload=validate(data);key=digest(packed([payload['waypoints'],payload['routes']]))
+        payload=validate(data);link_payload(db,user,data.source_gps,payload);key=digest(packed([payload['waypoints'],payload['routes']]))
         if db.scalar(select(ManualRouteKnowledge.id).where(ManualRouteKnowledge.owner_id==user.id,ManualRouteKnowledge.path_key==key)):raise HTTPException(409,message('duplicate'))
         item=ManualRouteKnowledge(owner_id=user.id,path_key=key,payload_json=packed(payload));db.add(item)
         try:db.commit()
@@ -100,12 +103,14 @@ def create_router(require_account):
         item=db.scalar(select(ManualRouteKnowledge).where(ManualRouteKnowledge.id==route_id,ManualRouteKnowledge.owner_id==user.id).with_for_update())
         if item is None:raise HTTPException(404,message('not_found'))
         if digest(item.payload_json)!=data.expected_sha256:raise HTTPException(409,message('conflict'))
-        payload=validate(data);key=digest(packed([payload['waypoints'],payload['routes']]))
+        payload=validate(data);link_payload(db,user,data.source_gps,payload,json.loads(item.payload_json));key=digest(packed([payload['waypoints'],payload['routes']]))
         if db.scalar(select(ManualRouteKnowledge.id).where(ManualRouteKnowledge.owner_id==user.id,ManualRouteKnowledge.path_key==key,ManualRouteKnowledge.id!=item.id)):raise HTTPException(409,message('duplicate'))
         item.path_key=key;item.payload_json=packed(payload)
         try:db.commit()
         except IntegrityError:db.rollback();raise HTTPException(409,message('duplicate')) from None
         return dict(id=item.id,owner_id=user.id,items=entries(db,user.id),saved_routes=saved_routes(db,user.id))
+    from .manual_route_gps import create_router as gps_routes
+    router.include_router(gps_routes(require_account))
     return router
 
 

@@ -3,7 +3,7 @@ import argparse
 from browser_realtime import check_pages
 from check_work_report_layout import STATIC
 from check_manual_route_ui import ASSETS as BASE
-ASSETS=['map-gestures.js',*BASE]
+ASSETS=['gps-route-tools.js','map-gestures.js',*BASE]
 def fixture():
     css='\n'.join((STATIC/name).read_text() for name in ['tf-portal.css','work-report.css','responsive.css','portal-theme.css'])
     setup="""window.I18n={t:s=>s};window.AndroidPortal={};Object.defineProperty(navigator,'onLine',{get:()=>false});window.fetch=async()=>new Response(JSON.stringify({owner_id:1,items:[],next_offset:null}),{headers:{'Content-Type':'application/json'}});"""

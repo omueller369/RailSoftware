@@ -14,13 +14,24 @@ class GpsTrackStore(context: Context) {
         val hash = MessageDigest.getInstance("SHA-256").digest(key.toByteArray()).joinToString("") { "%02x".format(it) }
         return File(directory, "$hash.jsonl")
     }
-    fun begin(key: String, reset: Boolean) = synchronized(lock) { val f=file(key); if(reset) f.writeText(""); Unit }
-    fun append(key: String, point: JSONObject) = synchronized(lock) { file(key).appendText(point.toString()+"\n") }
-    fun read(key: String): JSONArray = synchronized(lock) {
+    fun begin(key: String, reset: Boolean) = synchronized(lockFor(key)) { val f=file(key); if(reset) f.writeText(""); Unit }
+    fun append(key: String, point: JSONObject) = synchronized(lockFor(key)) { file(key).appendText(point.toString()+"\n") }
+    fun read(key: String): JSONArray = synchronized(lockFor(key)) {
         val result=JSONArray();val f=file(key)
         if(f.exists()) f.forEachLine { line -> if(line.isNotBlank()) runCatching { result.put(JSONObject(line)) } }
         result
     }
-    fun erase(key: String) = synchronized(lock) { file(key).delete(); Unit }
-    companion object { private val lock=Any() }
+    fun summary(key: String): JSONObject = synchronized(lockFor(key)) {
+        var count=0;var last=0L;val f=file(key)
+        if(f.exists()) f.forEachLine { line -> if(line.isNotBlank()) runCatching {
+            val stamp=JSONObject(line).getLong("t")
+            if(stamp>last){count++;last=stamp}
+        } }
+        JSONObject().put("count",count).put("last",last)
+    }
+    fun erase(key: String) = synchronized(lockFor(key)) { file(key).delete(); Unit }
+    companion object {
+        private val locks=java.util.concurrent.ConcurrentHashMap<String,Any>()
+        private fun lockFor(key:String):Any=locks.getOrPut(key){Any()}
+    }
 }

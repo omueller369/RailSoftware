@@ -22,8 +22,8 @@ android {
         applicationId = "de.lokzeitleiste.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("116").get().toInt()
-        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.6").get()
+        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("117").get().toInt()
+        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.7").get()
         buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl}\"")
     }
     val signingPath = providers.gradleProperty("lokzeitleisteSigningStoreFile").orElse(providers.environmentVariable("ANDROID_KEYSTORE_PATH")).orNull
@@ -64,7 +64,7 @@ val prepareTfPortal by tasks.registering(Sync::class) {
     inputs.file(portalMessageFile)
     filteringCharset = "UTF-8"
     from(rootProject.file("backend/lokzeitleiste/static")) {
-        include("map-gestures.js", "android-offline.js", "m1-basemap-data.js", "m1-map.js", "route-editor.js", "la-instructions.js", "la-instructions.css", "la-vendor/**", "location-editor.js", "knowledge-inventory.js", "route-imports.js", "route-csv.js", "route-coverage.js", "rail-network*.js", "route-knowledge.js", "beta-traffic.js", "station-contributions.js", "gps-marker-*.png", "station-catalog-data.js", "station-catalog.js", "station-picker.js", "train-workspace.js", "messages.js", "national-brake-sheet.*", "brake-sheet.*", "tf-shell.*", "portal-theme.*", "plan-colors.js", "auth-session.js", "tf-help*", "tf-notes.*", "tf-messages.*", "tf-profile.*", "tf-signature.*", "ctl-logistics-logo.jpg", "rail-software-*.png", "handover-protocols.js", "loco-handover.*", "tf-portal.*", "work-report.*", "work-report-feedback.js", "train-journeys.js", "report-tabs.js", "gps.js", "infra-go.js", "gps-settings.js", "gps-demo.js", "gps-demo-visibility.js", "updates.js", "stations.js",
+        include("gps-route-tools.js", "map-gestures.js", "android-offline.js", "m1-basemap-data.js", "m1-map.js", "route-editor.js", "la-instructions.js", "la-instructions.css", "la-vendor/**", "location-editor.js", "knowledge-inventory.js", "route-imports.js", "route-csv.js", "route-coverage.js", "rail-network*.js", "route-knowledge.js", "beta-traffic.js", "station-contributions.js", "gps-marker-*.png", "station-catalog-data.js", "station-catalog.js", "station-picker.js", "train-workspace.js", "messages.js", "national-brake-sheet.*", "brake-sheet.*", "tf-shell.*", "portal-theme.*", "plan-colors.js", "auth-session.js", "tf-help*", "tf-notes.*", "tf-messages.*", "tf-profile.*", "tf-signature.*", "ctl-logistics-logo.jpg", "rail-software-*.png", "handover-protocols.js", "loco-handover.*", "tf-portal.*", "work-report.*", "work-report-feedback.js", "train-journeys.js", "report-tabs.js", "gps.js", "infra-go.js", "gps-settings.js", "gps-demo.js", "gps-demo-visibility.js", "updates.js", "stations.js",
             "station-sharing.js", "tf-return.js", "documents.*", "account.*", "my-worktime.*",
             "entry-form.js", "portal.css", "responsive.css", "i18n.js", "android-portal.js")
     }

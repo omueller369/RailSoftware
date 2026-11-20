@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.4
+# LokZeitleiste v0.28.5
+
+**0.28.5 / Android 0.28.5.7:** Eigene manuelle Verläufe löschen sowie abgeschlossene eigene GPS-Aufzeichnungen auswählen, isoliert anzeigen und als Von-bis-Verlauf manuell bestätigen. Erst eine separate Online-Prüfung und Bestätigung entfernt das GPS-Original auf Server und diesem Gerät; laufende/geänderte Aufzeichnungen, ungesendete Änderungen und unvollständige Abdeckung verhindern die Bereinigung. Kompakte Kenntnisse und bereits in Berichte übernommene Dienst-/Zugdetails bleiben erhalten; betroffene GPS-Demos werden widerrufen. Die Stabilitätskorrekturen aus 0.28.4 bleiben enthalten.
 
 **0.28.4 / Android 0.28.4.6:** Stabilitätskorrektur für die Android-STK-Karte: GPS-Netzzuordnung in einem abbrechbaren Hintergrundprozess, zusammengefasste Kartenaktualisierungen und Darstellung von GPS-Linien nur im sichtbaren Ausschnitt. Die große animierte Grafikvorschau wurde entfernt; Zwei-Finger-Zoom bleibt mit kleiner Zoomanzeige erhalten. GPS-Originale und bestätigte Kenntnisse bleiben unverändert.
 

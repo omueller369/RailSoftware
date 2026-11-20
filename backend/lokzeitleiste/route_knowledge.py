@@ -53,6 +53,8 @@ def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/t
     def basemap_script():return FileResponse(Path(__file__).parent/'static'/'m1-basemap-data.js',media_type='text/javascript',headers={'Cache-Control':'public, max-age=86400'})
     @router.get('/tf/m1-map.js')
     def m1_script():return FileResponse(Path(__file__).parent/'static'/'m1-map.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/tf/gps-route-tools.js')
+    def gps_tools_script():return FileResponse(Path(__file__).parent/'static'/'gps-route-tools.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/route-editor.js')
     def editor_script():return FileResponse(Path(__file__).parent/'static'/'route-editor.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/rail-network.js')
@@ -66,7 +68,8 @@ def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/t
         for row in rows[:20]:
             payload=json.loads(row.payload_json)
             field='timed_segments' if dates else 'segments'
-            items.append({'journey_id':row.journey_id,field:route_segments(payload.get('points',[]),timed=dates)})
+            from .manual_route_gps import gps_metadata
+            items.append({**gps_metadata(row,payload),field:route_segments(payload.get('points',[]),timed=dates)})
         return dict(owner_id=user.id,items=items,next_offset=offset+20 if len(rows)>20 else None)
     if target_dependency is not None:router.routes[:]=[route for route in router.routes if not getattr(route,'path',None) or route.path.startswith(api_prefix)]
     return router

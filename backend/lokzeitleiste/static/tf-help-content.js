@@ -21,6 +21,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "short": "{{knowledge_tabs.text_1308485034f1}}",
     "sections": [
+      {"title":"{{manual_route_ops.text_a2fc398091be}}","paragraphs":["{{manual_route_ops.text_566c957cf572}}"],"steps":[]},
       {"title":"{{map_gestures.text_f6fd4ff9c63f}}","paragraphs":["{{map_recovery.text_71d3687660fc}}"],"steps":[]},
       {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
       {

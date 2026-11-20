@@ -64,6 +64,7 @@ class PortalPolicy(base: String) {
         "/tf/m1-basemap-data.js" -> "m1-basemap-data.js"
         "/tf/m1-map.js" -> "m1-map.js"
         "/tf/route-editor.js" -> "route-editor.js"
+        "/tf/gps-route-tools.js" -> "gps-route-tools.js"
         "/tf/rail-network.js" -> "rail-network.js"
         "/tf/route-knowledge.js" -> "route-knowledge.js"
         "/tf/beta-traffic.js" -> "beta-traffic.js"

@@ -269,6 +269,20 @@ class TfPortalActivity : ComponentActivity() {
                         locationPermission.launch(permissions.toTypedArray())
                     } else startGps(request,proxy)
                 }
+                "gps.archiveInfo" -> {
+                    val key=trackKey(request)
+                    if(GpsRecordingService.currentKey==key){
+                        reply(proxy,request,true,JSONObject().put("running",true).put("count",0).put("last",0))
+                    } else lifecycleScope.launch {
+                        try {
+                            val info=withContext(Dispatchers.IO){store.summary(key)}
+                            info.put("running",GpsRecordingService.currentKey==key)
+                            if(!leaving&&!isFinishing&&!isDestroyed)runCatching { reply(proxy,request,true,info) }
+                        } catch(error:Exception) {
+                            if(!leaving&&!isFinishing&&!isDestroyed)runCatching { reply(proxy,request,false,error.message?:"GPS archive unavailable") }
+                        }
+                    }
+                }
                 "gps.snapshot" -> {
                     val key=trackKey(request);val after=request.optLong("after",0);val points=store.read(key);val result=JSONArray()
                     for(i in 0 until points.length()) if(points.getJSONObject(i).getLong("t")>after && result.length()<1000)result.put(points.getJSONObject(i))

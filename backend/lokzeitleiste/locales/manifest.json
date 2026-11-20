@@ -244,6 +244,11 @@
     "en": "/locales/manual_route/en.json",
     "pl": "/locales/manual_route/pl.json"
   },
+  "manual_route_ops": {
+    "de": "/locales/manual_route_ops/de.json",
+    "en": "/locales/manual_route_ops/en.json",
+    "pl": "/locales/manual_route_ops/pl.json"
+  },
   "map_gestures": {
     "de": "/locales/map_gestures/de.json",
     "en": "/locales/map_gestures/en.json",
