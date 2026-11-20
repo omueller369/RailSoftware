@@ -1,0 +1,5 @@
+{
+  "text_8731e89aa7b7": "GPS-Verläufe werden im Hintergrund zugeordnet. Gespeicherte Kenntnisse bleiben auf der Karte bedienbar.",
+  "text_2466b868d699": "Die GPS-Zuordnung konnte nicht abgeschlossen werden. Gespeicherte Kenntnisse bleiben erhalten. Lade das Modul bei Bedarf erneut.",
+  "text_71d3687660fc": "Beim Öffnen der Android-Streckenkarte werden GPS-Verläufe im Hintergrund dem Netz zugeordnet. Gespeicherte und importierte Kenntnisse bleiben währenddessen nutzbar. Neue GPS-Farben erscheinen nach Abschluss. Beim Verlassen des Moduls endet die laufende Zuordnung. Originale GPS-Punkte werden dafür nicht verändert."
+}

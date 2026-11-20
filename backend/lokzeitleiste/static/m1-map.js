@@ -14,7 +14,7 @@ function network(data){
  let saved=networks.get(data);if(saved&&saved.source===points())return saved;
  saved={source:points(),ranges:new Map(),lines:new Map(),ordered:new Map(),neighbors:new Map(),parallel:new Map()};networks.set(data,saved);
  for(const row of data.lines){if(!row[5])continue;const code=String(Number(data.routes[row[0]][0]));if(!saved.ranges.has(code)){saved.ranges.set(code,[]);saved.lines.set(code,[]);}saved.ranges.get(code).push([Math.min(...row[5]),Math.max(...row[5])]);saved.lines.get(code).push(row);}
- for(const values of saved.ranges.values())values.sort((a,b)=>a[0]-b[0]);
+ for(const [code,values]of saved.ranges){values.sort((a,b)=>a[0]-b[0]);const merged=[];for(const range of values){const last=merged.at(-1);if(last&&range[0]<=last[1]+.5)last[1]=Math.max(last[1],range[1]);else merged.push([...range]);}saved.ranges.set(code,merged);}
  return saved;
 }
 function topology(data){
@@ -28,7 +28,7 @@ function topology(data){
 function isJunction(code,data){return (topology(data).neighbors.get(code)?.size||0)>2;}
 function suggestions(from,data,{nodesOnly=false,selected=[]}={}){
  if(!from)return [];const graph=topology(data),result=new Map();
- for(const [route,rows]of graph.ordered){const at=rows.findIndex(p=>p.code===from);if(at<0)continue;for(const direction of [-1,1])for(let i=at+direction;i>=0&&i<rows.length;i+=direction){const code=rows[i].code,prev=rows[i-direction].code;if(!graph.neighbors.get(prev)?.has(code)||selected.includes(code))break;if(nodesOnly&&!isJunction(code,data))continue;const options=candidates(from,code,data);if(options.length)result.set(code,options);break;}}
+ for(const route of new Set((points().byCode.get(from)||[]).map(p=>String(Number(p.route))))){const rows=graph.ordered.get(route);if(!rows)continue;const at=rows.findIndex(p=>p.code===from);if(at<0)continue;for(const direction of [-1,1])for(let i=at+direction;i>=0&&i<rows.length;i+=direction){const code=rows[i].code,prev=rows[i-direction].code;if(!graph.neighbors.get(prev)?.has(code)||selected.includes(code))break;if(nodesOnly&&!isJunction(code,data))continue;const options=candidates(from,code,data);if(options.length)result.set(code,options);break;}}
  return [...result].map(([code,options])=>({code,options}));
 }
 // Clip measured M1 geometry to the explicitly selected kilometre interval.

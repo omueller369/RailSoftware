@@ -41,6 +41,8 @@ jobs:
         run: python backend/tests/check_manual_navigation_ui.py --output-dir "$RUNNER_TEMP/manual-navigation-ui"
       - name: Android two-finger maps, fullscreen and redraw budget
         run: python backend/tests/check_android_map_gestures_ui.py --output-dir "$RUNNER_TEMP/android-map-gestures"
+      - name: Android STK real GPS history responsiveness and worker parity
+        run: python backend/tests/check_android_map_recovery_ui.py --output-dir "$RUNNER_TEMP/android-map-recovery"
       - name: TF portal access test overview
         run: python backend/tests/check_portal_access_ui.py --output-dir "$RUNNER_TEMP/portal-access-ui"
       - name: La PDF rendering, offline account isolation and publication form

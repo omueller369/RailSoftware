@@ -1,16 +1,15 @@
-/* Android map interaction: compositor preview, one committed redraw, no data edits. */
+/* Android map interaction: no GPU transform/clip surface; commit only after release. */
 (()=>{
 const controllers=new WeakMap(),engaged=new Set();
 function mount(element,options){
  if(controllers.has(element))return controllers.get(element);
- const pointers=new Map();let base=null,anchor=null,current=null,svg=null,inverse=null,matrix=null,bounds=null,active=false,frame=0,pending=null,suppressUntil=0;
- element.style.touchAction='none';
+ const pointers=new Map();let base=null,anchor=null,current=null,svg=null,inverse=null,matrix=null,bounds=null,active=false,frame=0,pending=null,suppressUntil=0,badge=null;
+ element.style.touchAction='none';element.style.position='relative';
  const point=e=>{if(inverse){const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(inverse);return {x:p.x,y:p.y};}return {x:(e.clientX-bounds.left)*base.width/bounds.width,y:(e.clientY-bounds.top)*base.height/bounds.height};};
  const begin=()=>{anchor={view:{...current,center:{...current.center}},points:[...pointers.values()].slice(0,2).map(p=>({...p}))};};
- function capture(){active=true;svg.style.willChange='transform';svg.style.transformOrigin='0 0';for(const id of pointers.keys())try{element.setPointerCapture(id);}catch{}}
- function paint(){frame=0;if(!active||!svg||!current)return;const scale=2**(current.zoom-base.zoom),size=256*2**current.zoom,tx=base.width/2*(1-scale)+(base.center.x-current.center.x)*size,ty=base.height/2*(1-scale)+(base.center.y-current.center.y)*size;
- const a=matrix?.a||bounds.width/base.width,d=matrix?.d||bounds.height/base.height,x=tx*a+((matrix?.e??bounds.left)-bounds.left)*(1-scale),y=ty*d+((matrix?.f??bounds.top)-bounds.top)*(1-scale);svg.style.transform=`matrix(${scale},0,0,${scale},${x},${y})`;svg.style.clipPath=`inset(${Math.max(0,-y/scale)}px ${Math.max(0,bounds.width-(bounds.width-x)/scale)}px ${Math.max(0,bounds.height-(bounds.height-y)/scale)}px ${Math.max(0,-x/scale)}px)`;}
- function reset(cancel=false){if(frame)cancelAnimationFrame(frame);frame=0;if(svg){svg.style.transform='';svg.style.clipPath='';svg.style.transformOrigin='';svg.style.willChange='';}const changed=active,view=current,deferred=pending;active=false;base=anchor=current=svg=inverse=matrix=bounds=null;pending=null;const ids=[...pointers.keys()];pointers.clear();for(const id of ids)try{element.releasePointerCapture(id);}catch{}if(changed)suppressUntil=Date.now()+600;engaged.delete(api);if(changed&&!cancel)options.change(view,!!deferred);else if(deferred)requestAnimationFrame(deferred);}
+ function capture(){active=true;if(!badge){badge=document.createElement('span');badge.setAttribute('data-map-gesture-status','');badge.setAttribute('role','status');badge.style.cssText='position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:3;padding:4px 8px;border-radius:4px;background:#fff;color:#172338;pointer-events:none;font-size:13px';element.append(badge);}for(const id of pointers.keys())try{element.setPointerCapture(id);}catch{}}
+ function paint(){frame=0;if(!active||!current||!badge)return;const label=globalThis.CtlText?.source('portal_gps.text_7afb2d86cd0c')||'Zoom';badge.textContent=(window.I18n?.t(label)||label)+' '+Math.round(current.zoom*10)/10;}
+ function reset(cancel=false){if(frame)cancelAnimationFrame(frame);frame=0;badge?.remove();badge=null;if(svg){svg.style.transform='';svg.style.clipPath='';svg.style.transformOrigin='';svg.style.willChange='';}const changed=active,view=current,deferred=pending;active=false;base=anchor=current=svg=inverse=matrix=bounds=null;pending=null;const ids=[...pointers.keys()];pointers.clear();for(const id of ids)try{element.releasePointerCapture(id);}catch{}if(changed)suppressUntil=Date.now()+600;engaged.delete(api);if(changed&&!cancel)options.change(view,!!deferred);else if(deferred)requestAnimationFrame(deferred);}
  const down=e=>{if(e.pointerType!=='touch'||options.disabled?.()||e.target.closest?.('button,a,input,select,textarea,label'))return;const target=options.svg();if(!target||!target.contains(e.target))return;const view=options.view();if(!view)return;
  if(!pointers.size){svg=target;bounds=svg.getBoundingClientRect();if(!bounds.width||!bounds.height)return;matrix=svg.getScreenCTM?.();inverse=matrix?.inverse();base={width:600,height:650,minZoom:5,maxZoom:18,...view,center:{...view.center}};current={...base,center:{...base.center}};}
  e.stopPropagation();engaged.add(api);pointers.set(e.pointerId,point(e));begin();if(pointers.size>=2){e.preventDefault();capture();}};

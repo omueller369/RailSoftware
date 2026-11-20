@@ -1,0 +1,5 @@
+{
+  "text_8731e89aa7b7": "GPS tracks are being matched in the background. Saved knowledge remains usable on the map.",
+  "text_2466b868d699": "GPS matching could not be completed. Saved knowledge is retained. Reload the module if needed.",
+  "text_71d3687660fc": "When opening the Android route map, GPS tracks are matched to the network in the background. Saved and imported knowledge remains usable. New GPS colours appear when matching finishes. Leaving the module ends the running analysis. Original GPS points are not changed."
+}

@@ -40,9 +40,11 @@ def interact(client,width):
         for distance in range(150,261,10):touch('touchMove',distance)
         client.evaluate(prefix+'.GestureHarness.backgroundUpdate()')
         during=state();assert during['active'] and during['draws']==0,(name,'No full redraw during finger movement',during)
-        touch('touchEnd',0);after=state();assert after['view']['zoom']>zoom+.5,(name,'Pinch out zooms in',after)
+        touch('touchEnd',0);deadline=time.monotonic()+3
+        while state()['draws']==0 and time.monotonic()<deadline:time.sleep(.02)
+        after=state();assert after['view']['zoom']>zoom+.5,(name,'Pinch out zooms in',after)
         assert after['draws']==1 and after['pageScale']==1,(name,'One map commit, no page zoom',after)
-        touch('touchStart',260);touch('touchMove',130);touch('touchEnd',0);back=state();assert back['view']['zoom']<after['view']['zoom']-.5,(name,'Pinch inward zooms out')
+        touch('touchStart',260);touch('touchMove',130);touch('touchEnd',0);time.sleep(.04);back=state();assert back['view']['zoom']<after['view']['zoom']-.5,(name,'Pinch inward zooms out')
         assert back['waypoints']=='AFW,AFR' and back['rawUnchanged'],(name,'Neither route selection nor 10,800 original GPS fixes changes')
         if name=='manual':assert back['rowRetained'],'Zoom does not rebuild the route table'
         before=back['view'];touch('touchStart',200);touch('touchMove',240);touch('touchCancel',0);assert state()['view']==before,(name,'Cancellation keeps last committed view')
