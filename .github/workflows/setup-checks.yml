@@ -39,6 +39,8 @@ jobs:
         run: python backend/tests/check_manual_route_ui.py --output-dir "$RUNNER_TEMP/manual-m1-ui"
       - name: Manual M1 junctions, parallel selection and map controls
         run: python backend/tests/check_manual_navigation_ui.py --output-dir "$RUNNER_TEMP/manual-navigation-ui"
+      - name: Android two-finger maps, fullscreen and redraw budget
+        run: python backend/tests/check_android_map_gestures_ui.py --output-dir "$RUNNER_TEMP/android-map-gestures"
       - name: TF portal access test overview
         run: python backend/tests/check_portal_access_ui.py --output-dir "$RUNNER_TEMP/portal-access-ui"
       - name: La PDF rendering, offline account isolation and publication form

@@ -21,6 +21,7 @@ class PortalPolicyTest {
         assertEquals("m1-basemap-data.js",policy.asset("/tf/m1-basemap-data.js"))
         assertEquals("m1-map.js",policy.asset("/tf/m1-map.js"))
         assertEquals("route-editor.js",policy.asset("/tf/route-editor.js"))
+        assertEquals("map-gestures.js", policy.asset("/map-gestures.js"))
         assertEquals("android-offline.js",policy.asset("/android-offline.js"))
         assertEquals("rail-network.js",policy.asset("/tf/rail-network.js"))
         assertEquals("route-coverage.js",policy.asset("/tf/route-coverage.js"))

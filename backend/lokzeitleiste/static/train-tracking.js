@@ -5,7 +5,8 @@ if(!map)return;
 const project=([lat,lon])=>({x:(lon+180)/360,y:(1-Math.asinh(Math.tan(lat*Math.PI/180))/Math.PI)/2});
 let center=project([51.15,10.4]),zoom=6,network=null,positions=[],busy=false,stopped=false,error=false,controller=null;
 function live(){return positions.filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon)&&Math.abs(p.lat)<85&&Number.isFinite(p.t)&&p.t>Date.now()-600000);}
-function draw(){
+const gestures=window.AndroidPortal&&window.MapGestures?.mount(map,{svg:()=>map.querySelector('svg'),view:()=>({center,zoom,width:600,height:650}),change:view=>{center=view.center;zoom=view.zoom;draw();}});
+function draw(){if(gestures?.defer(draw))return;
  const ns='http://www.w3.org/2000/svg',make=tag=>document.createElementNS(ns,tag),svg=make('svg'),size=256*2**zoom,left=center.x*size-300,top=center.y*size-325;svg.setAttribute('viewBox','0 0 600 650');svg.setAttribute('role','img');svg.setAttribute('aria-label',t('tracking'));
  if(network)window.RailNetwork.draw(svg,make,network,{zoom,size,left,top});
  for(const p of live()){const at=project([p.lat,p.lon]),x=at.x*size-left,y=at.y*size-top;if(x<0||x>600||y<0||y>650)continue;const group=make('g');group.setAttribute('data-tracking-position',String(p.id));const image=make('image');for(const [key,value]of Object.entries({href:'/tf/gps-marker-electric.png',x:x-16,y:y-16,width:32,height:32}))image.setAttribute(key,value);group.append(image);

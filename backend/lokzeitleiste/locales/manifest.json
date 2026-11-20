@@ -244,6 +244,11 @@
     "en": "/locales/manual_route/en.json",
     "pl": "/locales/manual_route/pl.json"
   },
+  "map_gestures": {
+    "de": "/locales/map_gestures/de.json",
+    "en": "/locales/map_gestures/en.json",
+    "pl": "/locales/map_gestures/pl.json"
+  },
   "offline_station_catalog": {
     "de": "/locales/offline_station_catalog/de.json",
     "en": "/locales/offline_station_catalog/en.json",

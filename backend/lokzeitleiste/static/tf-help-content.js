@@ -21,6 +21,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "short": "{{knowledge_tabs.text_1308485034f1}}",
     "sections": [
+      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
       {
         "title": "{{knowledge_tabs.text_45663fd76979}}",
         "paragraphs": [
@@ -120,6 +121,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/gps-demo",
     "aliases": [],
     "sections": [
+      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
       {
         "title": "{{portal_gps_demo.text_d2a6f5151788}}",
         "paragraphs": [
@@ -153,6 +155,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf",
     "aliases": [],
     "sections": [
+      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
       {"title":"{{android_offline.text_74ae3d734d6c}}","paragraphs":["{{android_offline.text_5f7b6eed320f}}"],"steps":[]},
       {
         "title": "{{portal_tf_help_content.text_ef3f57d0a165}}",
@@ -601,6 +604,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": null,
     "aliases": [],
     "sections": [
+      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
       {
         "title": "{{portal_tf_help_content.text_39c45f294312}}",
         "paragraphs": [

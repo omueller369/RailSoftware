@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.2
+# LokZeitleiste v0.28.3
+
+**0.28.3 / Android 0.28.3.5:** Zwei-Finger-Zoom und Verschieben auf den Android-Karten einschließlich GPS, Demo und Vollbild. Während der Geste erfolgt eine Vorschau, erst beim Loslassen die vollständige Neuzeichnung. Die zweite Streckenkarte wird erst beim Öffnen ihres Reiters aufgebaut; Kartenbewegungen bauen Auswahl- und Bestandslisten nicht erneut auf. Ohne geänderte abgeschlossene Aufzeichnungen wird das vollständige lokale GPS-Archiv nicht bei jedem Wiederholungsversuch erneut eingelesen. Originale GPS-Daten, gespeicherte Kenntnisse und Zoomtasten bleiben erhalten.
 
 **0.28.2 / Android 0.28.2.4:** Die manuelle Streckenkarte nutzt durchgehend 98 % der verfügbaren Breite ohne Rahmen und ohne feste Maximalbreite. Kartenbedienelemente bleiben innerhalb der Karte.
 

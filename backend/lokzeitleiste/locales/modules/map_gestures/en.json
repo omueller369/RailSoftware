@@ -1,0 +1,4 @@
+{
+  "text_f6fd4ff9c63f": "Android: use maps with two fingers",
+  "text_6ee2039d039a": "Place two fingers on the map. Spread them apart to zoom in or pinch them together to zoom out. Drag with one finger to move the map. This works in GPS recording, GPS-DEMO, fullscreen and the route knowledge display and editor. Plus and minus buttons remain available. The existing map follows your fingers during a gesture; the new view is drawn after you release them. Briefly tap an operating point to select it. Zooming does not select or delete route points. GPS recording and original data remain unchanged. The second route map loads only when you open its tab."
+}

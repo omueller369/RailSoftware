@@ -1,8 +1,10 @@
 (()=>{
 const t=s=>window.I18n?.t(s)||s,node=(tag,text)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;return e;};
-let active=null,manualActive=null,dbPromise,androidFlushing=false;const mounted=new Set();
+let active=null,manualActive=null,dbPromise,androidFlushing=false;const mounted=new Set();let androidChanges=0,androidScanned=-1,androidOwner=null,androidPending=[];
+function changedAndroidTrack(key,value){if(!window.AndroidPortal||value!==null&&!value?.ended)return;androidChanges++;try{localStorage.setItem('railsoftware.gps-ended-change.'+key.split('.')[0],Date.now()+':'+Math.random());}catch{}}
+window.addEventListener('storage',event=>{if(event.key?.startsWith('railsoftware.gps-ended-change.'))androidChanges++;});
 function db(){if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open('lokzeitleiste.gps',1);r.onupgradeneeded=()=>r.result.createObjectStore('tracks',{keyPath:'key'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});return dbPromise;}
-async function local(key,value){if(value!=null)value=window.InfraGo?.normalize(value)||value;const database=await db();return new Promise((resolve,reject)=>{const transaction=database.transaction('tracks',value===undefined?'readonly':'readwrite'),store=transaction.objectStore('tracks'),request=value===undefined?store.get(key):value===null?store.delete(key):store.put({key,value});transaction.oncomplete=()=>resolve(value===undefined?(window.InfraGo?.normalize(request.result?.value)||request.result?.value):value);transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error);});}
+async function local(key,value){if(value!=null)value=window.InfraGo?.normalize(value)||value;const database=await db();return new Promise((resolve,reject)=>{const transaction=database.transaction('tracks',value===undefined?'readonly':'readwrite'),store=transaction.objectStore('tracks'),request=value===undefined?store.get(key):value===null?store.delete(key):store.put({key,value});transaction.oncomplete=()=>{if(value!==undefined)changedAndroidTrack(key,value);resolve(value===undefined?(window.InfraGo?.normalize(request.result?.value)||request.result?.value):value);};transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error);});}
 async function api(path,options={}){const r=await fetch(path,{credentials:'same-origin',cache:'no-store',...options});if(r.status===404)return null;const data=await r.json().catch(()=>({}));if(!r.ok){const error=Error(typeof data.detail==='string'?data.detail:t(globalThis.CtlText.source("portal_gps.text_03169f7c2fb3")));error.status=r.status;throw error;}return window.InfraGo?.normalize(data)||data;}
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const berlinDate=ms=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(ms));
@@ -381,6 +383,7 @@ class Recorder{
  this.mapFollow=control(t(globalThis.CtlText.source("portal_gps.text_33ee562dc3d3")),globalThis.CtlText.source("portal_gps.text_e945e3bd7919"),()=>{this.mapState={mode:'follow',zoom:this.mapState?.zoom||defaultMapZoom};this.drawMap();});
  this.mapOverview=control(t(globalThis.CtlText.source("portal_gps.text_b2dc8ee2fa59")),globalThis.CtlText.source("portal_gps.text_bc631a1b8308"),()=>{this.mapState={mode:'overview',zoom:this.mapState?.zoom||defaultMapZoom};this.drawMap();});
  this.railEnabled=true;this.mapRail=control(t(globalThis.CtlText.source("portal_gps.text_da54ccd0ee5a")),globalThis.CtlText.source("portal_gps.text_272f99c19dbe"),()=>{this.railEnabled=this.railFailed?true:!this.railEnabled;this.railFailed=false;this.drawMap();});
+ if(window.AndroidPortal&&window.MapGestures){this.mapGestures=window.MapGestures.mount(this.map,{svg:()=>this.mapSvg,view:()=>this.mapView?{...this.mapView,width:600,height:300,minZoom:2,maxZoom:19}:null,change:view=>{this.mapState={mode:'free',zoom:view.zoom,center:view.center};this.drawMap();}});return;}
  this.mapPointers=new Map();const xy=e=>{const matrix=this.mapSvg?.getScreenCTM?.();if(matrix){const point=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix.inverse());return{x:point.x,y:point.y};}const r=this.mapSvg?.getBoundingClientRect?.();return r?{x:(e.clientX-r.left)/r.width*600,y:(e.clientY-r.top)/r.height*300}:null;};
  const begin=()=>{if(!this.mapView)return;const ps=[...this.mapPointers.values()],v=this.mapView;this.mapGesture={points:ps.map(p=>({...p})),zoom:v.zoom,center:{...v.center},size:v.size};};
  this.map.addEventListener('pointerdown',e=>{if(e.target?.closest?.('button,a,[data-gps-stop]')||!this.mapView||e.pointerType==='mouse'&&e.button!==0)return;const p=xy(e);if(!p)return;e.preventDefault();this.map.setPointerCapture?.(e.pointerId);this.mapPointers.set(e.pointerId,p);begin();});
@@ -462,6 +465,7 @@ class Recorder{
  liveManualStops(){return (this.record?.manual_stops||[]).filter(row=>!this.record.stop_edits?.[row.key]?.deleted).map(row=>({start:row.start,end:this.record.stop_edits?.[row.key]?.end??row.end??null}));}
  liveMetrics(){const totals={moving:0,stopped:0,intervals:[]};liveStops(this.record?.points||[],!!this.record?.ended,{},false,false,false,false,null,totals,this.record?.stop_minutes??null);for(const row of this.liveManualStops())totals.intervals.push([row.start,row.end??Date.now()]);totals.stopped=intervalDuration(totals.intervals);const departure=firstDeparture(this.record?.points||[]);totals.elapsed=departure==null?0:Math.max(0,Date.now()-departure);return totals;}
  drawMap(){
+ if(this.mapGestures?.defer(()=>this.drawMap()))return;
  this.map.replaceChildren();this.map.append(this.mapTools);const display=[],totals={moving:0,stopped:0,intervals:[]};liveStops(this.record?.points||[],!!this.record?.ended,{},false,false,false,false,display,totals,this.record?.stop_minutes??null);const departure=firstDeparture(this.record?.points||[]),arrival=this.record?.ended?(this.record.arrival_at??lastMovement(this.record.points||[])):(active===this?Date.now():this.o.demo?this.o.now():this.record?.points?.at(-1)?.t);
  for(const row of this.record?.manual_stops||[]){if(!this.record.stop_edits?.[row.key]?.deleted)totals.intervals.push([row.start,this.record.stop_edits?.[row.key]?.end??row.end??this.o.now?.()??Date.now()]);}
  totals.stopped=intervalDuration(totals.intervals);
@@ -469,16 +473,17 @@ class Recorder{
  const points=display.filter(p=>p.accuracy<=50);const mapPoints=[...(!this.o.demo?window.GpsPreferences?.peerPoints()||[]:[]),...points];if(!mapPoints.length){this.mapSvg=null;this.mapView=null;this.mapZoomLevel.hidden=true;this.mapZoomIn.disabled=this.mapZoomOut.disabled=true;return;}
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),make=tag=>document.createElementNS(ns,tag);this.mapSvg=svg;svg.setAttribute('viewBox','0 0 600 300');svg.setAttribute('role','group');svg.setAttribute('aria-label',t(globalThis.CtlText.source("portal_gps.text_f5976363df27")));
  const project=projectPoint;
- const coords=mapPoints.map(project),minX=Math.min(...coords.map(p=>p.x)),maxX=Math.max(...coords.map(p=>p.x)),minY=Math.min(...coords.map(p=>p.y)),maxY=Math.max(...coords.map(p=>p.y));
+ const coords=mapPoints.map(project);let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;for(const p of coords){minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);maxY=Math.max(maxY,p.y);}
  if(!this.mapState)this.mapState={mode:this.record?.ended||!points.length?'overview':'follow',zoom:defaultMapZoom};let zoom=this.mapState.zoom,center=this.mapState.center||coords.at(-1);
  if(this.mapState.mode==='overview'){zoom=15;while(zoom>2&&((maxX-minX)*256*2**zoom>540||(maxY-minY)*256*2**zoom>240))zoom--;center={x:(minX+maxX)/2,y:(minY+maxY)/2};}else if(this.mapState.mode==='follow')center=coords.at(-1);
  this.mapZoomLevel.hidden=false;
- this.mapZoomLevel.textContent=t(globalThis.CtlText.source("portal_gps.text_7afb2d86cd0c"))+' '+zoom;
+ this.mapZoomLevel.textContent=t(globalThis.CtlText.source("portal_gps.text_7afb2d86cd0c"))+' '+Math.round(zoom*10)/10;
  this.mapZoomLevel.setAttribute('data-i18n-ignore','');
  this.mapView={zoom,center,size:256*2**zoom};this.mapFollow.setAttribute('aria-pressed',String(this.mapState.mode==='follow'));this.mapOverview.setAttribute('aria-pressed',String(this.mapState.mode==='overview'));this.mapRail.setAttribute('aria-pressed',String(this.railEnabled&&!this.railFailed));this.mapZoomIn.disabled=zoom>=19;this.mapZoomOut.disabled=zoom<=2;
  const size=256*2**zoom,left=center.x*size-300,top=center.y*size-150,visible=!this.content.hidden&&document.visibilityState!=='hidden'&&!this.box.closest?.('[hidden]');
  const m1View={zoom,size,left,top,height:300};window.M1Map?.background(svg,make,m1View);
- if(visible&&navigator.onLine){const tiles=[];for(let x=Math.floor(left/256);x<=Math.floor((left+600)/256);x++)for(let y=Math.floor(top/256);y<=Math.floor((top+300)/256);y++){if(y<0||y>=2**zoom)continue;tiles.push({x,y});}
+ if(visible&&navigator.onLine&&window.AndroidPortal&&window.MapGestures)window.MapGestures.tiles(svg,make,{zoom,left,top,height:300},window.GpsTileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png');
+ else if(visible&&navigator.onLine){const tiles=[];for(let x=Math.floor(left/256);x<=Math.floor((left+600)/256);x++)for(let y=Math.floor(top/256);y<=Math.floor((top+300)/256);y++){if(y<0||y>=2**zoom)continue;tiles.push({x,y});}
  const layer=(template,rail=false)=>{for(const {x,y}of tiles){const image=make('image');image.setAttribute('x',x*256-left);image.setAttribute('y',y*256-top);image.setAttribute('width',256);image.setAttribute('height',256);image.setAttribute('href',template.replace('{z}',zoom).replace('{x}',((x%2**zoom)+2**zoom)%2**zoom).replace('{y}',y));image.setAttribute('referrerpolicy','origin');if(rail)image.setAttribute('data-gps-rail','true');if(rail)image.addEventListener('error',()=>{if(this.railFailed)return;this.railFailed=true;this.drawMap();});svg.append(image);}};
  layer(window.GpsTileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png');}
  if(this.railEnabled&&window.M1Map){if(this.m1Data)window.M1Map.draw(svg,make,this.m1Data,m1View);else if(!this.m1Loading&&!this.railFailed){this.m1Loading=true;window.M1Map.load().then(data=>{this.m1Data=data;this.m1Loading=false;if(this.mapView)this.drawMap();}).catch(()=>{this.m1Loading=false;this.railFailed=true;if(this.mapView)this.drawMap();});}}
@@ -674,15 +679,40 @@ class Recorder{
 
 }
 async function flushAndroid(userId){
- if(!window.AndroidPortal||navigator.onLine===false||androidFlushing)return;androidFlushing=true;
+ if(!window.AndroidPortal||navigator.onLine===false||androidFlushing)return;
+ androidFlushing=true;
+ if(androidOwner!==userId){androidOwner=userId;androidScanned=-1;androidPending=[];}
+ const generation=androidChanges;
  const payload=record=>({train_number:record.train_number,stop_minutes:record.stop_minutes??null,start_station:record.start_station||null,start_station_name:record.start_station_name||'',end_station_name:record.end_station_name||'',points:record.points||[],departure_applied:!!record.departure_applied,arrival_at:record.arrival_at||null,end_station:record.end_station||null,stop_edits:record.stop_edits||{},manual_stops:record.manual_stops||[],ended:!!record.ended,expected_revision:record.revision||0});
- try{if(active?.o.userId===userId)await active.checkpoint();for(const record of await window.GpsRecorder.localRecords(userId)){
-  if(record.android_sync_blocked){window.dispatchEvent(new Event('android-offline-error'));continue;}if(!record.dirty||!record.ended)continue;
-  const key=userId+'.'+record.journey_id,before=JSON.stringify(payload(record));
-  try{const reply=await api('/api/v1/tf/gps/'+record.journey_id,{method:'PUT',headers:{'Content-Type':'application/json'},body:before});if(!reply)continue;const current=await local(key);if(!current||(current.revision||0)>(reply.revision||0))continue;const same=JSON.stringify(payload(current))===before;const value=same?{...reply,dirty:false,reason_drafts:current.reason_drafts||{},station_drafts:current.station_drafts||{},selection:current.selection??reply.selection??[]}:{...current,revision:reply.revision,dirty:true};await local(key,value);for(const recorder of mounted){if(recorder.box.isConnected===false){mounted.delete(recorder);continue;}if(recorder.key===key&&recorder!==active){recorder.record=value;recorder.analysis=value.analysis||null;recorder.draw();}}}
-  catch(error){if(error.status===409||error.status===422){const current=await local(key);if(current){current.android_sync_blocked=true;await local(key,current);}window.dispatchEvent(new Event('android-offline-error'));}else break;}
- }}finally{androidFlushing=false;}
+ try{
+  if(active?.o.userId===userId)await active.checkpoint();
+  const cached=!!window.MapGestures&&androidScanned===generation;
+  if(cached&&!androidPending.length)return;
+  const records=cached?(await Promise.all(androidPending.map(async key=>{const value=await local(key);return value?{journey_id:key.slice(String(userId).length+1),...value}:null;}))).filter(Boolean):await window.GpsRecorder.localRecords(userId);
+  const pending=new Set(records.filter(record=>record.dirty&&record.ended&&!record.android_sync_blocked).map(record=>userId+'.'+record.journey_id));
+  for(const record of records){
+   if(record.android_sync_blocked){window.dispatchEvent(new Event('android-offline-error'));continue;}
+   if(!record.dirty||!record.ended)continue;
+   const key=userId+'.'+record.journey_id,before=JSON.stringify(payload(record));
+   try{
+    const reply=await api('/api/v1/tf/gps/'+record.journey_id,{method:'PUT',headers:{'Content-Type':'application/json'},body:before});
+    if(!reply)continue;
+    const current=await local(key);
+    if(!current){pending.delete(key);continue;}
+    if((current.revision||0)>(reply.revision||0))continue;
+    const same=JSON.stringify(payload(current))===before;
+    const value=same?{...reply,dirty:false,reason_drafts:current.reason_drafts||{},station_drafts:current.station_drafts||{},selection:current.selection??reply.selection??[]}:{...current,revision:reply.revision,dirty:true};
+    await local(key,value);if(!value.dirty)pending.delete(key);
+    for(const recorder of mounted){if(recorder.box.isConnected===false){mounted.delete(recorder);continue;}if(recorder.key===key&&recorder!==active){recorder.record=value;recorder.analysis=value.analysis||null;recorder.draw();}}
+   }catch(error){
+    if(error.status===409||error.status===422){const current=await local(key);if(current){current.android_sync_blocked=true;await local(key,current);}pending.delete(key);window.dispatchEvent(new Event('android-offline-error'));}
+    else break;
+   }
+  }
+  androidPending=[...pending];androidScanned=generation;
+ }finally{androidFlushing=false;}
 }
+
 window.GpsRecorder={flushAndroid,async normalizeVocabulary(userId){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('tracks','readwrite'),request=tx.objectStore('tracks').openCursor();request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;const row=cursor.value;if(row.key.startsWith(userId+'.')){const normalized=window.InfraGo?.normalize(row.value)||row.value;if(normalized!==row.value)cursor.update({...row,value:normalized});}cursor.continue();};tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);});},async localRecords(userId){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('tracks','readonly'),request=tx.objectStore('tracks').getAll();tx.oncomplete=()=>resolve(request.result.filter(row=>row.key.startsWith(userId+'.')).map(row=>({journey_id:row.key.slice(String(userId).length+1),...row.value})));tx.onerror=()=>reject(tx.error);});},liveStops,firstDeparture,berlinTime,berlinInput,removeLocal:(userId,journeyId)=>local(userId+'.'+journeyId,null),mount:options=>new Recorder(options),isActive:()=>!!(active||manualActive),activeFor:id=>active?.o.journeyId===id||manualActive?.o.journeyId===id};
 window.addEventListener('pagehide',()=>{active?.persist().catch(()=>{});manualActive?.persist().catch(()=>{});});
 })();
