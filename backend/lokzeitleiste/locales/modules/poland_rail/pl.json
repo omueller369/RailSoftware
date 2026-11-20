@@ -1,0 +1,7 @@
+{
+  "text_60596798b343": "Polska sieć kolejowa (OSM)",
+  "text_a56b4ee54145": "Wczytywanie polskiej sieci kolejowej…",
+  "text_e086d1ab18d0": "Polska sieć kolejowa jest niedostępna; otwórz ponownie, aby ją wczytać.",
+  "text_537ac0519da6": "Polska",
+  "text_56a8f681287c": "Przy języku Polski pojawia się dodatkowo polska sieć kolejowa z OpenStreetMap/Geofabrik. W języku niemieckim i angielskim ta warstwa jest ukryta. W znajomości szlaków przycisk Polska otwiera przegląd kraju. Android zawiera przegląd i kafelki szczegółowe w aplikacji, dostępne bez internetu. Przeglądarka wczytuje tylko potrzebne pliki. Mapa kolejowa lub Sieć kolejowa przełącza warstwę odniesienia. Zmiana języka zachowuje Twój widok mapy, wybór i zapisane dane. Warstwa OSM może zawierać bocznice i koleje przemysłowe. Nie jest oficjalną mapą eksploatacyjną PKP PLK. Polskie linie nie są niemieckimi numerami VzG i nie tworzą znajomości szlaków. Ręczne dodawanie nadal korzysta z dotychczasowych punktów M1/DS100. Źródła: © OpenStreetMap contributors, Geofabrik, ODbL 1.0."
+}

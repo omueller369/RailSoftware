@@ -11,6 +11,10 @@ def main():
             data=archive.read('assets/tf-portal/'+name)
             if data!=(ROOT/'backend/lokzeitleiste/static'/name).read_bytes():raise SystemExit('Stale or missing offline asset: '+name)
             if name=='rail-network-data.js' and hashlib.sha256(data).hexdigest()!=manifest['bundle_sha256']:raise SystemExit('Offline network checksum mismatch')
+        poland=json.loads((ROOT/'backend/lokzeitleiste/reference/poland-rail/manifest.json').read_text())
+        assert archive.read('assets/tf-portal/poland-rail.js')==(ROOT/'backend/lokzeitleiste/static/poland-rail.js').read_bytes()
+        for name,checksum in poland['bundles'].items():
+            assert hashlib.sha256(archive.read('assets/tf-portal/poland-rail-data/'+name)).hexdigest()==checksum,name
         html=archive.read('assets/tf-portal/tf-portal.html').decode()
         if not html.index('/tf/m1-basemap-data.js')<html.index('/tf/m1-map.js')<html.index('/tf/gps.js'):raise SystemExit('M1 layers must load before GPS')
         if not html.index('/tf/route-editor.js')<html.index('/tf/route-knowledge.js'):raise SystemExit('Manual editor must load before knowledge tabs')

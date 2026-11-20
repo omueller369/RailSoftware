@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.6
+# LokZeitleiste v0.28.7
+
+**0.28.7 / Android 0.28.7.9:** Zusätzliches polnisches OSM-/Geofabrik-Streckennetz, ausschließlich bei Sprache Polski sichtbar. Offline-Übersicht und räumlich getrennte Detailkacheln schonen Tablet-Speicher und Darstellung. Deutscher M1-Bestand und Kenntnisse bleiben getrennt.
 
 **0.28.6 / Android 0.28.6.8:** Schlichter gemeinsamer Offline-Hintergrund mit Ortsnamen für GPS, Demo und Streckenkenntnisse. Keine Online-Hintergrundkacheln; Ortsnamen werden nach Zoom und Sichtbarkeit begrenzt. Quellen: Natural Earth (Public domain) und GeoNames (CC BY 4.0).
 

@@ -1,0 +1,7 @@
+{
+  "text_60596798b343": "Polish railway network (OSM)",
+  "text_a56b4ee54145": "Loading Polish railway network…",
+  "text_e086d1ab18d0": "Polish railway network unavailable; reopen to load it again.",
+  "text_537ac0519da6": "Poland",
+  "text_56a8f681287c": "The Polski language additionally displays the Polish railway network from OpenStreetMap/Geofabrik. This layer is hidden in German and English. Under route knowledge, choose Poland to open the country overview. Android bundles the overview and detail tiles for use without internet. The browser loads only the required files. Railway map or Railway network toggles the reference layer. Switching languages preserves your map view, selection and stored data. OSM may include service and industrial tracks. It is not an official PKP PLK operating map. Polish lines are not German VzG numbers and do not create route knowledge. Manual creation still uses the existing M1/DS100 operating points. Sources: © OpenStreetMap contributors, Geofabrik, ODbL 1.0."
+}

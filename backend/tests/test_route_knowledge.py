@@ -30,6 +30,14 @@ class RouteKnowledgeTest(unittest.TestCase):
         self.assertNotIn('segments',item,'Timed requests avoid downloading duplicate coordinate arrays')
         self.assertEqual(route_segments(test_gps.points(15),timed=True),[],'Stationary points do not invent a travelled line')
 
+    def test_poland_reference_assets_and_invalid_paths(self):
+        for path in ['/tf/poland-rail.js','/tf/poland-rail-data/overview.js']:
+            response=self.driver.get(path)
+            self.assertEqual(response.status_code,200,path)
+            self.assertIn('javascript',response.headers['content-type'])
+        self.assertEqual(self.driver.get('/tf/poland-rail-data/tile-999-999.js').status_code,404)
+        self.assertEqual(self.driver.get('/tf/poland-rail-data/not-a-tile.js').status_code,404)
+
     def test_public_network_assets_and_gzip(self):
         plain=self.driver.get('/tf/rail-network-data.js?v=0.26.61',headers={'Accept-Encoding':'identity'})
         compressed=self.driver.get('/tf/rail-network-data.js?v=0.26.61',headers={'Accept-Encoding':'gzip'})

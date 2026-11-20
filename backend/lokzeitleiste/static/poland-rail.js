@@ -1,0 +1,24 @@
+/* ODbL reference only. Polish language controls visibility; no qualification writes. */
+(()=>{
+const pending=new Map(),loaded=new Map(),cache=new Map();let overview=null,failed=false,eventFrame=0;
+const enabled=()=>String(window.I18n?.language||document.documentElement.lang||'de').split('-')[0]==='pl';
+const text=key=>{const source=globalThis.CtlText.source('poland_rail.'+({title:'text_60596798b343',loading:'text_a56b4ee54145',failed:'text_e086d1ab18d0',home:'text_537ac0519da6'})[key]);return window.I18n?.t(source)||source;};
+function notify(){if(!eventFrame)eventFrame=requestAnimationFrame(()=>{eventFrame=0;window.dispatchEvent(new Event('polandrailchange'));});}
+function receive(key,data){if(data?.schema!==1||data.scale!==10000000||!Array.isArray(data.lines))throw Error('Invalid Polish rail reference');if(key==='overview')overview=data;else{loaded.delete(key);loaded.set(key,data);while(loaded.size>12)loaded.delete(loaded.keys().next().value);}failed=false;cache.clear();notify();}
+function load(key='overview'){if(!enabled())return Promise.resolve(null);if(key==='overview'&&overview)return Promise.resolve(overview);if(loaded.has(key))return Promise.resolve(loaded.get(key));if(pending.has(key))return pending.get(key);if(!/^(overview|tile-\d{1,3}-\d{1,3})$/.test(key))return Promise.reject(Error('Invalid rail tile'));
+ const script=document.createElement('script');const job=new Promise((resolve,reject)=>{script.src='/tf/poland-rail-data/'+key+'.js?v=0.28.7';script.onload=()=>{script.remove();pending.delete(key);const data=key==='overview'?overview:loaded.get(key);if(data)resolve(data);else reject(Error('Missing rail tile'));};script.onerror=()=>{script.remove();pending.delete(key);failed=true;notify();reject(Error('Polish railway reference unavailable'));};});pending.set(key,job);document.head.append(script);return job;}
+function clip(a,b,c,d,width,height){const dx=c-a,dy=d-b;let lo=0,hi=1;for(const [p,q]of [[-dx,a+8],[dx,width+8-a],[-dy,b+8],[dy,height+8-b]]){if(!p){if(q<0)return null;continue;}const t=q/p;if(p<0)lo=Math.max(lo,t);else hi=Math.min(hi,t);if(lo>hi)return null;}return [a+lo*dx,b+lo*dy,a+hi*dx,b+hi*dy];}
+function draw(svg,make,view){if(!enabled())return 0;if(!overview){if(!failed)load().catch(()=>{});return 0;}
+ const width=view.width||600,height=view.height||650,scale=view.size/overview.scale,left=view.left,top=view.top,key=[view.zoom,view.size,left,top,width,height].join(':'),known=cache.get(key);let path=known?.path,count=known?.count;
+ if(path===undefined){const boxes=[left/scale,top/scale,(left+width)/scale,(top+height)/scale],rows=[];let missing=false;
+ if(view.zoom>=10){const grid=overview.grid,keys=new Set(overview.tiles);for(let x=Math.floor(boxes[0]/overview.scale*grid);x<=Math.floor(boxes[2]/overview.scale*grid);x++)for(let y=Math.floor(boxes[1]/overview.scale*grid);y<=Math.floor(boxes[3]/overview.scale*grid);y++){const tile='tile-'+x+'-'+y;if(!keys.has(tile))continue;if(loaded.has(tile)){const value=loaded.get(tile);loaded.delete(tile);loaded.set(tile,value);rows.push(...value.lines);}else{missing=true;if(!failed)load(tile).catch(()=>{});}}}
+ const detail=view.zoom>=10&&!missing,source=detail?rows:overview.lines,seen=new Set();path='';count=0;
+ for(const row of source){const box=detail?row[1]:row[0],coords=detail?row[2]:row[1];if(box[2]<boxes[0]||box[0]>boxes[2]||box[3]<boxes[1]||box[1]>boxes[3])continue;const identity=detail?row[0]+':'+coords[0]+':'+coords[1]:null;if(identity&&seen.has(identity))continue;if(identity)seen.add(identity);let visible=false;for(let i=2;i<coords.length;i+=2){const p=clip(coords[i-2]*scale-left,coords[i-1]*scale-top,coords[i]*scale-left,coords[i+1]*scale-top,width,height);if(!p)continue;path+='M'+p[0].toFixed(1)+' '+p[1].toFixed(1)+'L'+p[2].toFixed(1)+' '+p[3].toFixed(1);visible=true;}if(visible)count++;}
+ cache.set(key,{path,count});if(cache.size>8)cache.delete(cache.keys().next().value);
+ }
+ if(path){const p=make('path');for(const [k,v]of Object.entries({d:path,fill:'none',stroke:'#4A4A4A','stroke-width':2.2,'stroke-linecap':'round','stroke-linejoin':'round','pointer-events':'none','aria-hidden':'true','data-poland-rail-network':''}))p.setAttribute(k,v);svg.append(p);}return count;
+}
+function credit(root){if(!enabled())return;const a=document.createElement('a');a.href='https://www.openstreetmap.org/copyright';a.target='_blank';a.rel='noopener';a.textContent=(failed?text('failed'):!overview?text('loading'):text('title'))+' · © OpenStreetMap contributors / Geofabrik · ODbL 1.0';a.setAttribute('data-poland-rail-credit','');a.style.display='block';root.append(a);}
+window.PolandRailNetwork={enabled,load,receive,draw,credit,text,home:[52.1,19.2]};
+window.addEventListener('languagechange',()=>{if(enabled()&&!overview)load().catch(()=>{});notify();});
+})();

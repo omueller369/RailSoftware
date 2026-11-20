@@ -10,13 +10,14 @@
     "licence_url": "https://creativecommons.org/licenses/by/4.0/",
     "attribution": "GeoNames",
     "source_sha256": "0770230481be281550b5dbea5da5bb1d090e56320eceef3643ea047f7cadf62f",
-    "canonical_sha256": "319b9fe88e092e48d1bbfda78a5eb4e4c47aae72994e79500b18ef12ad98f31d",
-    "count": 11902,
-    "selection": "45–56.5 N, 4–19 E; Germany, plus neighbouring places with population >= 5000",
+    "canonical_sha256": "2b27c42c2f12048db8d111967f83e18865f02f106bda24543b2ab8441a168bc8",
+    "count": 14506,
+    "selection": "45–56.5 N, 4–19 E; Germany, plus neighbouring places with population >= 5000; plus all Polish cities1000 entries",
     "retrieved_on": "2026-11-20",
     "preferred_aliases": {
       "Munich": "München",
-      "Nuremberg": "Nürnberg"
+      "Nuremberg": "Nürnberg",
+      "Warsaw": "Warszawa"
     }
   }
 }

@@ -1,7 +1,7 @@
 """Private, paginated map geometry derived only from the driver's measured fixes."""
 import json
 from pathlib import Path
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, Query, Request, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -45,6 +45,15 @@ def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/t
         if compressed:headers['Content-Encoding']='gzip'
         name='rail-network-data.js'+('.gz' if compressed else '')
         return FileResponse(Path(__file__).parent/'static'/name,media_type='text/javascript',headers=headers)
+    @router.get('/tf/poland-rail.js')
+    def poland_script():return FileResponse(Path(__file__).parent/'static'/'poland-rail.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/tf/poland-rail-data/{tile}.js')
+    def poland_tile(tile:str):
+        import re
+        if not re.fullmatch(r'(overview|tile-\d{1,3}-\d{1,3})',tile):raise HTTPException(404)
+        path=Path(__file__).parent/'static'/'poland-rail-data'/(tile+'.js')
+        if not path.is_file():raise HTTPException(404)
+        return FileResponse(path,media_type='text/javascript',headers={'Cache-Control':'public, max-age=86400'})
     @router.get('/tf/route-imports.js')
     def import_script():return FileResponse(Path(__file__).parent/'static'/'route-imports.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/route-coverage.js')

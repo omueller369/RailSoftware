@@ -269,6 +269,11 @@
     "en": "/locales/offline_station_catalog/en.json",
     "pl": "/locales/offline_station_catalog/pl.json"
   },
+  "poland_rail": {
+    "de": "/locales/poland_rail/de.json",
+    "en": "/locales/poland_rail/en.json",
+    "pl": "/locales/poland_rail/pl.json"
+  },
   "portal_access": {
     "de": "/locales/portal_access/de.json",
     "en": "/locales/portal_access/en.json",

@@ -1,0 +1,355 @@
+{
+  "source": "OpenStreetMap via Geofabrik Poland regional free shapefiles",
+  "licence": "ODbL 1.0",
+  "licence_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "attribution": "© OpenStreetMap contributors, Geofabrik",
+  "sources": [
+    {
+      "region": "dolnoslaskie",
+      "url": "https://download.geofabrik.de/europe/poland/dolnoslaskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 01:37:39 GMT",
+      "etag": "\"12a6764c-660ab4a1ad85d\"",
+      "extracted_sha256": {
+        "shp": "0bc985b77ac3d8326e65f3fe97e72170ef23d5ea82b340673d5f94d01dcdadba",
+        "dbf": "69c1caf8f9d48983cbb5691709265ed9d06431714356b0e76dc553d489097100"
+      },
+      "rail_parts": 7576
+    },
+    {
+      "region": "kujawsko-pomorskie",
+      "url": "https://download.geofabrik.de/europe/poland/kujawsko-pomorskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 02:49:50 GMT",
+      "etag": "\"c680041-660ac4c49c9ee\"",
+      "extracted_sha256": {
+        "shp": "ce9435b1b7dc7a5100d22a916999f76c4ee72931974b061223ad40228b434832",
+        "dbf": "284fd626282b660552aa3050029627bf038b498a2c049633e196ec70b3d81ff3"
+      },
+      "rail_parts": 3999
+    },
+    {
+      "region": "lodzkie",
+      "url": "https://download.geofabrik.de/europe/poland/lodzkie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 03:44:14 GMT",
+      "etag": "\"10352233-660ad0ed3db7d\"",
+      "extracted_sha256": {
+        "shp": "935e3f2ee8d14c2c2432ee402b7bd00a531cc6bcc07a6499ac5563ca4f7bc6ba",
+        "dbf": "7a2304f4f4da7dbf0d020dd42e0e3183fce0c8e0ce5df802c5b7f7553dfb8544"
+      },
+      "rail_parts": 4234
+    },
+    {
+      "region": "lubelskie",
+      "url": "https://download.geofabrik.de/europe/poland/lubelskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 01:46:29 GMT",
+      "etag": "\"f5f4080-660ab69bb9e77\"",
+      "extracted_sha256": {
+        "shp": "b153c09a302d2b582c5b0c5ef7a6f193a72696db3955b079d09ed042c3860395",
+        "dbf": "516fdf5f54a0e2167a73009288f4ec44d861a34e32f1d99b0a72944dd78cabd0"
+      },
+      "rail_parts": 3941
+    },
+    {
+      "region": "lubuskie",
+      "url": "https://download.geofabrik.de/europe/poland/lubuskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 03:53:33 GMT",
+      "etag": "\"7179225-660ad3024a14b\"",
+      "extracted_sha256": {
+        "shp": "90602e8ad9e8f649a6b23cb5a72990d8e0aa52022d6d77db7376ef4012a70e6d",
+        "dbf": "3f64436d76f49ca3046d3855d8949c6e132844961b92dbd7c7447159d4886666"
+      },
+      "rail_parts": 3113
+    },
+    {
+      "region": "malopolskie",
+      "url": "https://download.geofabrik.de/europe/poland/malopolskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 02:15:48 GMT",
+      "etag": "\"1724b70c-660abd292a228\"",
+      "extracted_sha256": {
+        "shp": "101f094a19c04c7f8f600d1b7465ff94eb386a81a0ff89ba842713e5fb893896",
+        "dbf": "ae055714f865027e3007a7c1b667f20cecc99d99ce17e0d5f2dfb30af73c13f1"
+      },
+      "rail_parts": 6754
+    },
+    {
+      "region": "mazowieckie",
+      "url": "https://download.geofabrik.de/europe/poland/mazowieckie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 02:45:32 GMT",
+      "etag": "\"21bef691-660ac3ce2dca5\"",
+      "extracted_sha256": {
+        "shp": "a0a7ff8be1afe5ff3042012f156aa9db775fb38c992c1fb627621c4e1c2ca168",
+        "dbf": "8a54f220ee07c2f78886cd377f6719a6e54335d36134662b13afd44928b07254"
+      },
+      "rail_parts": 7555
+    },
+    {
+      "region": "opolskie",
+      "url": "https://download.geofabrik.de/europe/poland/opolskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 03:16:12 GMT",
+      "etag": "\"61ff14f-660acaa92ec96\"",
+      "extracted_sha256": {
+        "shp": "80ea21e9add136d84f7714f6c57905c0accdded6f5dd72463fdb73a900b6949b",
+        "dbf": "c0d2e506cebd87dbf0662a026d30f6e58a2a7a760fd4cafbc161ed787843c162"
+      },
+      "rail_parts": 3229
+    },
+    {
+      "region": "podkarpackie",
+      "url": "https://download.geofabrik.de/europe/poland/podkarpackie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 01:15:43 GMT",
+      "etag": "\"132f1aeb-660aafbaba936\"",
+      "extracted_sha256": {
+        "shp": "9803d7e26df215ba10a4fa0ff208f6df5794911110a1a228320c4f3d260389cd",
+        "dbf": "5033d9e910c02aba1b3925015f109e879b901503587401f03e706e6cccc1c7d6"
+      },
+      "rail_parts": 3487
+    },
+    {
+      "region": "podlaskie",
+      "url": "https://download.geofabrik.de/europe/poland/podlaskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 01:48:27 GMT",
+      "etag": "\"9889e58-660ab70c41ae2\"",
+      "extracted_sha256": {
+        "shp": "5c654130da651ffd800e8a4d2fb7a3574abc3c3fbf7c74fff25d24b30e067d9c",
+        "dbf": "3192152ad003961b3b774c72eac5b5361139d88a2298a3aaba82ed848a74609a"
+      },
+      "rail_parts": 1813
+    },
+    {
+      "region": "pomorskie",
+      "url": "https://download.geofabrik.de/europe/poland/pomorskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 00:30:38 GMT",
+      "etag": "\"c689132-660aa5a7043b3\"",
+      "extracted_sha256": {
+        "shp": "292d1c73b768d61c39a3cb707d42d7c59ee5eebb30e66ba65f6204da68b55231",
+        "dbf": "e32eb3bf88c65cb807ab44d35fdaec26883bee88396b1757325b76be055c4701"
+      },
+      "rail_parts": 5122
+    },
+    {
+      "region": "slaskie",
+      "url": "https://download.geofabrik.de/europe/poland/slaskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 01:50:46 GMT",
+      "etag": "\"13e43f41-660ab790a4410\"",
+      "extracted_sha256": {
+        "shp": "db6d375b9a2ad0833603142527d9333603657fda3e1383872d44a4ff30a77a1a",
+        "dbf": "be4f0a1a013c751d9833d8e171b5679bd2a14500a5b626f14905b192da9253e1"
+      },
+      "rail_parts": 13264
+    },
+    {
+      "region": "swietokrzyskie",
+      "url": "https://download.geofabrik.de/europe/poland/swietokrzyskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 03:41:07 GMT",
+      "etag": "\"a518c6a-660ad03b213a7\"",
+      "extracted_sha256": {
+        "shp": "91b6a0e043f976004e251a57554f978da98a4b2ac3abf40b987dffd873213ab2",
+        "dbf": "d743ee5ca4fc82f53b7fafdc31ba329f3c550ec9831d410a340c4172e2cf62ba"
+      },
+      "rail_parts": 2701
+    },
+    {
+      "region": "warminsko-mazurskie",
+      "url": "https://download.geofabrik.de/europe/poland/warminsko-mazurskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 00:25:05 GMT",
+      "etag": "\"9dc1f9d-660aa469e0ee7\"",
+      "extracted_sha256": {
+        "shp": "de6da69e86c4e6f97ca1f059d7a6c5cf9a9e7acc613c2fd06b395cf2d5741b6c",
+        "dbf": "1c8cae08fbefdd7eb4ad5a938f23435b40d8298b05ac0b891300f0a79358b58c"
+      },
+      "rail_parts": 2958
+    },
+    {
+      "region": "wielkopolskie",
+      "url": "https://download.geofabrik.de/europe/poland/wielkopolskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 01:18:48 GMT",
+      "etag": "\"1201cdcf-660ab06b996ce\"",
+      "extracted_sha256": {
+        "shp": "e9730e16bd3cc3c58074a80adfbaffeba27a9b4c202c8975132e4819e1e5234c",
+        "dbf": "6e0a9bb9b674728a2f351b595641bcfb150c15c4f94700a77d33e6761efb4d49"
+      },
+      "rail_parts": 6524
+    },
+    {
+      "region": "zachodniopomorskie",
+      "url": "https://download.geofabrik.de/europe/poland/zachodniopomorskie-261119-free.shp.zip",
+      "last_modified": "Fri, 20 Nov 2026 02:24:32 GMT",
+      "etag": "\"aab3c48-660abf1c34e85\"",
+      "extracted_sha256": {
+        "shp": "da7b2e2eac468794b947681d7ae435c9d5d0f983ee84954014f37930d7b973ff",
+        "dbf": "a4ab2bf8b975dc51107f499bb486cfcd43c64f308dff90915d9fe542d9a71c8d"
+      },
+      "rail_parts": 3864
+    }
+  ],
+  "retrieved_on": "2026-11-20",
+  "selection": "fclass=rail; all 16 Polish regions; duplicate OSM geometry parts removed. May include service and industrial tracks; not official PKP PLK operational data.",
+  "canonical_sha256": "fe024190e5d3e006b6dda60551b0a3bb5156892bcccd110645a07e453b90887f",
+  "source_parts": 78521,
+  "bundles": {
+    "overview.js": "4800ffed588fd155ad12b810cf96e219b47784d250da6bc8aeac82520e848f45",
+    "tile-283-169.js": "27ad29a6c1e7851cab0bc76e4f8bbf71faa37d8b2cbedb08a6ebf22bb596f52d",
+    "tile-283-168.js": "8f6378541342cb3afc196ccbf452eebb1fef4fbd202bab998fe9471529e2c639",
+    "tile-282-168.js": "6fefdb0a92f5a1c6b90a03648806964218472c9f3c27ce4127b0ea6b1a532460",
+    "tile-281-168.js": "25ff49330daab9e4b9b751274bca1613fd65c64681be22bfce11065138c6228d",
+    "tile-280-168.js": "7ba2650c6c00d27dc01482b8462f904d996772438f87b83886bd1c266022310b",
+    "tile-280-165.js": "22cecd7b574e74c5999e5925e4ae6623668f983bffaba3f538311a8334ddaf17",
+    "tile-281-165.js": "c191f1b37034646ead35757d421d530b7e8051163ee328bab876721399d548b6",
+    "tile-279-168.js": "63d4c14ac9eb8dd45326c49715aff043482c128d7b025eb1a273be9f79d6b4b4",
+    "tile-284-173.js": "030c29c1fc923356cdb23d9505d27ddff380cdd31297f23094af8d67db0236c4",
+    "tile-285-168.js": "920e5d01d43bb00b47d1a6af5b319f1d02a96b52dcef45287f03aa23d46f3dae",
+    "tile-285-169.js": "a1571761d5aa99ab82659e0c5e1c7cad5eb7d543c7d90cb17c0e84c348fad370",
+    "tile-282-163.js": "3e95a521b2a4d7007bd67bea36855925158d3ed9d52e8bee06e866a79ff2b585",
+    "tile-286-169.js": "7a4a9c3b269a6ca38bde40811d2ef7a348283e24c0b505fd7c0c98ca1e8c9f13",
+    "tile-283-170.js": "07b463012698db402646b9c5a4da329b60bcae40a969cac954d046139433de45",
+    "tile-281-167.js": "aead79972570be87d2f2a13e3c8b9495c6240da500a4e7dd6979a0e15bdb8b7f",
+    "tile-281-166.js": "c5ecf7c4b145d793c460240aff6ba05cb69d5e3a608b670ff8941a394271f056",
+    "tile-286-168.js": "a94f70611482fad037939eed4287e50047ed304083a8cd501b6ce6980d3df4dd",
+    "tile-276-167.js": "8206cc70873156a82c70f9946689375a90a618618a10f55acae343d52f8ef5bb",
+    "tile-285-173.js": "1dd35d63809b09d31510b5457bbe941c16a00d8a3d8bac31ed461d26a539c8f9",
+    "tile-286-173.js": "451119cf4e5b210a9328b8ecaaf9f3284143d82b4d87ef6ede7344591ac4b98c",
+    "tile-287-173.js": "7dd57519f316168dd46b57f117a977d3a2ec0a5cbda21b024dc92f76c5a8e512",
+    "tile-288-173.js": "6ae862e9580da5e3bd5ef55b65ea3df58684737fad8312e0e672e5b32a3460c0",
+    "tile-288-174.js": "56cab47e5d21b5485587f35f48f37ecdbf2a1d62cc35ae913d060843a48450a2",
+    "tile-284-172.js": "ec7aea1c5d7ef24653cc4840ea5936fe7ee419d85fbbd176876c55799e6ad03e",
+    "tile-282-165.js": "c6502d5cb81085501b9c5fcbd012b855c7f0a661fde5a70dc4b66830c2a95e99",
+    "tile-284-168.js": "a59960dcf52e05d8a564ff6c52297c5582f35bb91e7cef224618bf0dba8dca4a",
+    "tile-287-167.js": "a84629aedd724e77684c20c459808d33870ff145773f08d7733747e010625aaf",
+    "tile-288-167.js": "35cfd0f1d038bf09846cd5ca4fc4a824c820c93bd6d62eb9ad293970246ded62",
+    "tile-288-166.js": "0027a6205b779a71a25e2546291ca8bf025cae90eb7ce0d7856f5b3458efd34f",
+    "tile-284-169.js": "9024c6d737a49c6531c26eb5075cbc2fa407eec2c5a182e872c2fa531e99a188",
+    "tile-284-170.js": "efe1f6d441d0b8c838e5169784aceebcb086544431c828d622cf76698dbab4c8",
+    "tile-283-171.js": "e9f3e46f366823693edd9a4fc39b3dcce6947b229b3299b6b657438698b237b0",
+    "tile-285-170.js": "7c5d9438e2278b9f8f201d847e12268070b46a02e7e9a4c2bca11dd08245be08",
+    "tile-277-171.js": "8fab8f935cd3878d6792fbca3918fc377bc8d885e5841af6e315aa386ded5733",
+    "tile-288-164.js": "dc049e8d0286a0b3957c7626a064565dd00bc0b2fc4c75edadd9904cb9fd5605",
+    "tile-280-171.js": "81611bec74cff4c2fa25bb4e1481f6288a1688d4d7a33947092af53564950766",
+    "tile-279-169.js": "29145b98642cc3e09096e39b297213d9a2894239a79f48a64fdabb68792871f9",
+    "tile-279-170.js": "7e6b3791c9abbca14329dda29b314f452f49df85cf16c05908ebbbcd1d8fb85f",
+    "tile-280-170.js": "324db55ede537f0ae1c52dcc4af790ed6d0346ed593ab87a7225822e64cafe46",
+    "tile-281-164.js": "2e9ef53a3d05f9e9e4f439700588e81187deed5cb4befcbf59f321da5d9b2169",
+    "tile-280-169.js": "87ac523bd9b91d29f13cda8a63e3e00e215f5fc440fc51f21ca1420bbefe1989",
+    "tile-281-169.js": "d1e047390defb869d58fba42e4e6484d9024cbc4137eab9f7e02260f31c152c0",
+    "tile-282-167.js": "ce0024306d601388d6391d5ce2329a63dccc092f6f01c9ccda6b9e2483db0be2",
+    "tile-281-170.js": "65eaf1ca57aeedd2cc912083f1f43d529b5794d10c24bff31cd8e48ca204fffd",
+    "tile-282-169.js": "dc35a3bb2c344586f09cd9763feb480a69506d25e787b6486a7459a63e460510",
+    "tile-282-171.js": "8b35d00dc95fcbaf9204fd0da6069238e80ffd026f98e7903966e8457de5c56c",
+    "tile-282-172.js": "26a1c283e7f1dd4731929f1c6ed69522890513cfdd571901bcee7b200b5a4bf3",
+    "tile-281-172.js": "30461b63c846ce46bc47c9ee987a176c0650d6149ec46ca50296fc59699a07d6",
+    "tile-281-171.js": "e53688fa1d1b98abb0df0bbc08cebad14d2e61b34277081f06bed0280b903c9f",
+    "tile-278-163.js": "2e9fbac4c059c4ef6e5b125bbfcb374ab66b163e6181f84721b62480cb3cc8d9",
+    "tile-279-171.js": "719653db329ce2250801c1f615fbddb93f9949c27b72d18e8a3192b56f71902a",
+    "tile-279-172.js": "5461840101fb59a9875ed15443405943c46f161375c4aa0364d6ff13b7f4917a",
+    "tile-280-172.js": "ed9039b625626dd24e9a9a3084df1300d42cdd638c0ec3eef3645f38b1d75dec",
+    "tile-279-173.js": "170f10e45f32c3e2083d6d72323306e9661233507b0ab50a5eb8af81b0037b23",
+    "tile-286-166.js": "d15f72c41fd3e588b5f3c5f1cf14c34dfba22cb069e70b9d33e332a0ec24207f",
+    "tile-285-174.js": "1b06901e982370a1fb06d58dbb92785d4cb04437c099c9c71cbd976240797b7b",
+    "tile-287-164.js": "3894041af6d151ef8354219cfef79815798e84929a8902c4fd5e05dae5a4ea98",
+    "tile-282-166.js": "2eab1e91f64b3513a5eec13256c62ca1f06d83fd09b0aa275c9913275c2ad082",
+    "tile-283-165.js": "4d4091fc89ed3a1c5a55b47878d017f20d571cf52e341d394163c87a6a753ff7",
+    "tile-282-170.js": "5c1072936ed6cb3c7c9fe188b893de4c6631732b16b73b884b260432dff65256",
+    "tile-285-164.js": "75af0c2e2b0dbe86311e6345d9d8369e3484fd9f53d8dae1f828e2b7c7b76035",
+    "tile-287-170.js": "f99fabe6bfb5a356a290370db6e4dc8b592c63282a2f50551011e8ad72dc7bcb",
+    "tile-288-170.js": "a6d3ab821a4e6bf8c989b95ebc6682e97aa4f89c9403fcdc05ad647e8c48299e",
+    "tile-282-164.js": "f595b813440c229e77a8c6959fe770fcf1c6e96c4189fdcfa776dec78d0277cc",
+    "tile-283-164.js": "2ecc97b5713b369f9baf55751f697550485fbfe125a7d33b49f4a1bcf1a91675",
+    "tile-280-166.js": "f12df86a424675a1c20a29eb0784ad6d589d57898c6da0bcf4ae0bcacaf31084",
+    "tile-280-167.js": "f2f1bd41c0181abc7fdeed341cc2cffd5e8e0aae4eae07da7524bdbbe28dcb09",
+    "tile-279-167.js": "0d2869933fd2083fe3f8e073638303a5a6f7bbc10c415cd555cde47a938b4e98",
+    "tile-277-167.js": "e74b6b93de9f41209ed45e6fbb5c10a92f6aadc9eb83bdbfd211ac8d9832ddb3",
+    "tile-278-166.js": "0fb8b2ec90dd7027609644c7de748c3697d1697158a9258004ce32173c78a5c0",
+    "tile-278-169.js": "cb6f5f84172f38cdacb4413ae51b9310c92dcb9f4121c7052c7ab21529e35703",
+    "tile-282-173.js": "ca3526c0bb8e7cf3f6d4a3d1bd43ce08b318785c8de263bcf3d3e732409c396b",
+    "tile-278-167.js": "c5d1142454bc2220b0c7561107c6154e0d0ccdab3254728b1b4c1d5a58f8c3a1",
+    "tile-277-168.js": "cc42619f86d33b3f6727d985e4ef6845b1ea06b38b2cb535ccd0ac6b5c8d0b3c",
+    "tile-276-165.js": "24d9359ea2074fc66be7e68c90f1cb75cf575d755bec64960a1cd8cea9c9cb8b",
+    "tile-276-168.js": "510f5cf9878242ba23e6d3c72cf69560229f3f5af870ac568768e208a405184f",
+    "tile-287-171.js": "8d80888731547d561765231f092caf14348e6323bbc280a6302eb60d826d64ef",
+    "tile-276-164.js": "a5c9a4984cf2ccc44b8430b0bb538b64367b03d5121593a3deef7452e4070245",
+    "tile-282-174.js": "641adbbd03103698a7a63f2b4072467d7d6c8d9ec95730f2dc5a8a98a5e3abec",
+    "tile-287-174.js": "8cb850524226b334ec8bb3586f8fb66e63ce6bfa73791e1a2b9976860a10a55f",
+    "tile-281-173.js": "1885497f052e231c7f626b229a525a7f29fb7b9a5dc8df7e5205eeaf1c7ea3c4",
+    "tile-278-171.js": "ef7e11486c5e414b3e71688512208cb2c1b4ddf3ec13629dcbc5ba4df2d57f07",
+    "tile-289-168.js": "4fde55f22f6ee71a61bec22513940a70d460fe3b0b18524991b3680dc1fffd24",
+    "tile-283-173.js": "5bf6720481afc89fc05497b38eba78067e9941af5d378cbb6ce1d1aace5167c5",
+    "tile-288-163.js": "e84e408bfd121bd2041eaaa11f2aaacf2c8778da99fccd403fe0d25eff3ca103",
+    "tile-278-168.js": "2fdd5b27709210422682c7f9720f107e9d85fcd0924b58808ad133a4280bd414",
+    "tile-286-172.js": "003c91d377ce54a1e251eb3b5ca31553dcab70d750b284de3bbf16166316b251",
+    "tile-278-170.js": "6ecafa41aaa3938373dc1ee46e6f2266e234ad732baab197e56d1561e817259f",
+    "tile-277-170.js": "0c7ddb0d089207fc0396ffadfd3a5f97c47f01b88c43670dc7153c2330b2258a",
+    "tile-278-172.js": "9b5447eb0d831b9d3ab98c91929363a4e2ab2e2c1447fa8aea35cb19e1cdad00",
+    "tile-283-166.js": "00af2919fee53594cdd8aab930b5dbdb56bab929da29107526ff66a7f8bcfd36",
+    "tile-279-166.js": "4e92f2f5d1593ee03610adfb55bb6fad2c4eaa6fab6567221e8776e214e7df72",
+    "tile-284-166.js": "23b83af52d9177e499ca55564b0d51acb6dd88052d95ebcb3e5b5f30fb8b98c3",
+    "tile-276-166.js": "51d73f3bb4ad93ae12c097440fc3e2c65b6e943ad444a524b7843403dbd19536",
+    "tile-285-167.js": "834aed2f9fbaaba48bbacbbf653ba40a76c069e01f02abe4e95cb88d6f36fc80",
+    "tile-285-172.js": "e2a2f07375e8d6ac6a59de2440d9f2fa2c6e897ccf2116acef1604b7ee5dbc6e",
+    "tile-282-162.js": "eae99eb0686208c1d7860cd7a41bd5141b83cc3e8e5976ad24ccc6ed13076d58",
+    "tile-283-174.js": "936b65fcf43d45f372d80640b392226965a42db2bf505a1655dd5e99f5ff54a6",
+    "tile-284-174.js": "645e6c176e95aea3f76f6a9849732dfce4eda25c41ca4755d0c6a963379db0e8",
+    "tile-284-175.js": "38c7517041dbaa296fcbfe1765e5adf794978270d0019b119332853b44f5db93",
+    "tile-277-165.js": "00c11b3be651addee80e3f1611a35f959bf373ef4727e7f9cd081600b4031c07",
+    "tile-278-164.js": "3ff6da87775906f386941eca0ea19c9a690fbcf94c745acf219c0ac3b636f54d",
+    "tile-279-163.js": "a38adeb4027ed4c44d1dae6bbc6266ed5b242683ab83c80084b8ceae92a50db3",
+    "tile-280-163.js": "9675925ed010e9d14f9848218df895345fdf824ad68a3a5f509262817ed7da82",
+    "tile-281-162.js": "acedda2d8092c360d6a83fac63c0316cc65406dd53d932f95315074bdf749af4",
+    "tile-281-163.js": "878c4d1fa00d5ff1f5964c4130279b42396c91b0f9c16db7a7c4698e8648e023",
+    "tile-289-165.js": "cd21bb62f9b8378889d6bff1a31cda281c2a0847d33fa7a20b4b0322af086f4a",
+    "tile-283-172.js": "3148975f3076b8a14aefbaefe2db5bd69012c345a3040c2e18e49dc86220d6cc",
+    "tile-278-165.js": "5fa19d7788f3e86efd3acb556a6b66b04f26002aac2854bca438838cb7e97d76",
+    "tile-277-169.js": "4ec2f43f00671a163c8e911f356bce87e20800e9aa90ebafeb57cce245e51c97",
+    "tile-280-173.js": "b21ae813979a5a758d485f8e17a1bc67295bc69c592d58084f11db86f6c82b10",
+    "tile-286-167.js": "3cbf3842c8d90763255038456fd36d02f90c44f2700fda0bf353a9d854f2af39",
+    "tile-277-166.js": "d7f03f2839921fb1f28e3bffa31e14a8336937411473017b31f9e47d754fd778",
+    "tile-287-166.js": "6fbdd15558df2153b0df6195bb86236d72f593a07d29edfe8d433822692ba103",
+    "tile-288-168.js": "a4095bd8f7590dc3eaf31504b8fde183d91b0e3a2b318d50fb712044f349df8c",
+    "tile-287-172.js": "8755db2a664d3046bd9a0e7030f2b35ecc301f07d464039689a96d4fb6beb454",
+    "tile-285-171.js": "b4eeb2f9c1d69fe66a6fee6321f950a6aa8092fd378da612de8e3fdca2f83433",
+    "tile-287-169.js": "88cd2ca52078a590f43621eb0b296f74e0a67487e1b80d331aff7c8087d76929",
+    "tile-289-169.js": "40ae517e845beebe81968478d78a0652ef88f7890cba5f75ba73ab5fcb5b69ea",
+    "tile-288-169.js": "ab95e77f3f3f2952a011cd28f27ddcf3d00ca1be68d42cf39db88c987b3a3d9d",
+    "tile-286-170.js": "7a1b7d9d55ed02bc57e56c1445e6365605f3979c12b591001ae9a3fb94139e4a",
+    "tile-289-171.js": "ca7797830e82fc3ea477b42280838e0de3fd623d28f48ae6d8ab0947a7fcb49b",
+    "tile-288-172.js": "44d96e149927e45d73e79d0ff1f04957294198568dbee99789028a08ad2349b6",
+    "tile-289-172.js": "0198bc8e1784bbf387f341c74b0ad84b7c8f5de409d9ebd1c496a7336a45c426",
+    "tile-289-173.js": "4104c9af611da5a35292aa3108a621198cfa7226192e84c2aee0fec19943916e",
+    "tile-288-171.js": "9ae20b78b029b1fbb974a9b2e09e28391186ac1ff975c8e5df0563dbcd523fb8",
+    "tile-289-166.js": "2a916838fa2e4d04227ef4bd6973a6623edb6ac11e1d051146264778f619665b",
+    "tile-284-171.js": "03436e3123fbc45418ce682efed6f1a0108296323044745705795eb798ba8b45",
+    "tile-276-169.js": "f11d45b1da7c02ef40c073afadda03d210a45e374c28717a990dd28bf3c36c9e",
+    "tile-286-171.js": "5ae994d83971828ac2539f3c5be4dbe94518ca2708ca97e34d975b37ccf15d12",
+    "tile-288-175.js": "e73b5ac8a48a873072669456d51ca133b99e04fb6302eba92992be0ab57aac8a",
+    "tile-285-166.js": "bd83d99899e60b77a96a780e939a44846ca2102efeadf7452a6b9b4ab9df1673",
+    "tile-283-167.js": "9aef83c50b7d6ab4bce018c7ea8716f9b9951276eeac15019b2f85b828a22069",
+    "tile-289-167.js": "9a29e5e187957e6ee74864a52847dd7ac5ecf39e44dc8426a175bdcee392906e",
+    "tile-284-167.js": "0448b8d0c16955524606c132ae57bd4604ac882208a5f1e73db5aabfd771937b",
+    "tile-284-164.js": "7f05292d9e8c57367dbaec562ab639f6929d3de93b7f2f4c08d7a1331e4b68e0",
+    "tile-279-164.js": "71c9b5b1b64fcb5251bca11ca08d55c2fafaea199cd254430319c8cd818511de",
+    "tile-280-164.js": "eeda72adf63d6ec6a3766ca1d1bf4d799dc0eb52c25715241ee893e5ac8e6e5b",
+    "tile-290-172.js": "14e12f2bee888cc5e3c30b52d7657d3747d927bf4181bdba8ce5dda7cef07686",
+    "tile-279-162.js": "9b897ce05e6da57b3ac0b9fab5e6c8e6b0329df32794bcb157431cd841100729",
+    "tile-283-163.js": "33d5350f98a1a461ff5f69c11a934ce7a4c55340bede61c8234988f670b185ef",
+    "tile-284-163.js": "38b77a2a6e411938a64bf3e1e47eeec217ff3a3dbd1d5abec109a3883b2a35d6",
+    "tile-286-163.js": "8154b6645976c9b6d1d0c11e5362c43f1cb49029dae13ad4efb96b47efad9c5e",
+    "tile-287-168.js": "9ec319d48e9af8684fb069a093ef9c4429713068858787d2fa03d5291e93b03e",
+    "tile-277-164.js": "34d4bc1038433b303c057d8520ba25a945904037a32106195da3b2f8b6203cbb",
+    "tile-290-171.js": "03ac870da074217d4ab9f61b55784a69a33c887161d175578ea5f9b82035a9a9",
+    "tile-289-170.js": "eeb97686eb05e83d67238d3f120aa25b741365c75c20b1a23eb0c995d8dbe655",
+    "tile-277-163.js": "c6ab0328629753359d9e5425bb6b31c59e25914c63e85589184d3e706beb8bf0",
+    "tile-279-165.js": "72ae096aa83e94ebb7d7c0409c7a19bd8307bd8d7768f2df4072eae426ca8b42",
+    "tile-288-165.js": "7ecd555c0b68cd3d21ef200dc1e1aff3797a9fac43beebee448c8a4aba9dd5ca",
+    "tile-285-165.js": "7b79b48270a0258e1e3ef63617e2cd6b82e278d8f4eded50237bae73ec5a2572",
+    "tile-284-165.js": "c326d5123158304a7108efac80e2bb844ab3b2fff8d9edaa4a980de0ae84bdf6",
+    "tile-289-163.js": "b4cc5fea4215827d8e93230df0a0957312da44dccb56049e82058d69dcd484da",
+    "tile-287-165.js": "76b64a1120579ab1869531b34e686da260bd659d807eba41be01a5bde45a2b05",
+    "tile-286-164.js": "37b822ad0bddd3e5109e2a76c70adc6ad4144d74c3b6b34b1d55092eb838831f",
+    "tile-287-175.js": "768db8bec6d3b3b6f8d465bc1cc0a8cf70c880954179ab2c911710ec3d2bf429",
+    "tile-286-174.js": "159b3c3edc24df40dbb91ece404b48348c377bf3a841e2eb5d9fac41b15ce478",
+    "tile-286-165.js": "7444c0474328a7424118c10fe838f06fc666413c7dbc1009a1e51ba0e2d0603b",
+    "tile-285-175.js": "d6531a8728988351deef5e6a8f4222d3216ac5eee3fcc76616774fab294e8102",
+    "tile-285-163.js": "4cda84b886adfdedd6d12b297caa816d4bc3c501a90876ddc40bbadeda2be8d0",
+    "tile-290-166.js": "ef39f3ed6542375f25a9194e28f0f9ce180127152cdc71f9c802cbf725f8bebf"
+  },
+  "overview_segments": 12613,
+  "detail_tiles": 161,
+  "scale": 10000000
+}

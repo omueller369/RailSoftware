@@ -29,12 +29,15 @@ jobs:
         run: |
           python tools/build-translations.py --check
           python tools/build-m1-basemap.py --check
+          python tools/build-poland-rail.py --check
           python tools/build-station-catalog.py --check
           python tools/build-rail-network.py --check
       - name: JavaScript regression tests
         run: |
           for test in backend/tests/*.cjs; do node "$test" || exit 1; done
           node backend/tests/test_brake_sheet_ui.cjs --overlay
+      - name: Polish-only offline railway layer and lazy tiles
+        run: python backend/tests/check_poland_rail_ui.py --output-dir "$RUNNER_TEMP/poland-rail-ui"
       - name: Manual M1 route knowledge and offline Germany background
         run: python backend/tests/check_manual_route_ui.py --output-dir "$RUNNER_TEMP/manual-m1-ui"
       - name: Manual M1 junctions, parallel selection and map controls

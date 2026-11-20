@@ -27,6 +27,7 @@ class PortalPolicy(base: String) {
         zoom in 0..19 && x.toInt() < (1 shl zoom) && y.toInt() < (1 shl zoom)
     }.getOrDefault(false)
     fun asset(path: String): String? {
+        if(Regex("^/tf/poland-rail-data/(overview|tile-[0-9]{1,3}-[0-9]{1,3})[.]js$").matches(path))return path.removePrefix("/tf/")
         val laVendor = Regex("^/tf/la-vendor/(pdf(?:[.]worker)?[.]mjs|(?:cmaps|standard_fonts|wasm)/[A-Za-z0-9][A-Za-z0-9_.-]*[.](?:bcmap|pfb|ttf|wasm))$")
         if (laVendor.matches(path) && !path.contains("..")) return path.removePrefix("/tf/")
         return when(path) {
@@ -65,6 +66,7 @@ class PortalPolicy(base: String) {
         "/tf/m1-map.js" -> "m1-map.js"
         "/tf/route-editor.js" -> "route-editor.js"
         "/tf/gps-route-tools.js" -> "gps-route-tools.js"
+        "/tf/poland-rail.js" -> "poland-rail.js"
         "/tf/rail-network.js" -> "rail-network.js"
         "/tf/route-knowledge.js" -> "route-knowledge.js"
         "/tf/beta-traffic.js" -> "beta-traffic.js"

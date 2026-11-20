@@ -33,6 +33,6 @@ function labels(svg,make,data,view){
  }
  return count;
 }
-function draw(svg,make,data,view){const result=paths(data,view);for(const [state,d] of result.paths.entries()){if(!d)continue;const path=make('path');path.setAttribute('d',d);path.setAttribute('fill','none');path.setAttribute('stroke',['#4A4A4A','#8b8378','#ffff00'][state]);path.setAttribute('stroke-width',state===0?'2.7':'3.2');path.setAttribute('stroke-linecap','round');path.setAttribute('stroke-linejoin','round');if(state)path.setAttribute('stroke-dasharray',state===1?'10 6':'4 6');path.setAttribute('data-rail-network',String(state));path.setAttribute('aria-hidden','true');svg.append(path);}labels(svg,make,data,view);return result.visible;}
+function draw(svg,make,data,view){if(data.lines.length)window.PolandRailNetwork?.draw(svg,make,view);const result=paths(data,view);for(const [state,d] of result.paths.entries()){if(!d)continue;const path=make('path');path.setAttribute('d',d);path.setAttribute('fill','none');path.setAttribute('stroke',['#4A4A4A','#8b8378','#ffff00'][state]);path.setAttribute('stroke-width',state===0?'2.7':'3.2');path.setAttribute('stroke-linecap','round');path.setAttribute('stroke-linejoin','round');if(state)path.setAttribute('stroke-dasharray',state===1?'10 6':'4 6');path.setAttribute('data-rail-network',String(state));path.setAttribute('aria-hidden','true');svg.append(path);}labels(svg,make,data,view);return result.visible;}
 window.RailNetwork={load,paths,draw,labels,visible:routeVisible,revision:REVISION};
 })();

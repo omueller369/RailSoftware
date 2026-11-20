@@ -13,6 +13,13 @@ class PortalPolicyTest {
         assertNull(policy.asset("/tf/la-vendor/manifest.json"))
         assertNull(policy.asset("/api/v1/tf/la-instructions/1/pdf"))
     }
+    @Test fun polandRailTilesAreOfflineAssetsWithStrictPaths() {
+        assertEquals("poland-rail.js",policy.asset("/tf/poland-rail.js"))
+        assertEquals("poland-rail-data/overview.js",policy.asset("/tf/poland-rail-data/overview.js"))
+        assertEquals("poland-rail-data/tile-275-172.js",policy.asset("/tf/poland-rail-data/tile-275-172.js"))
+        assertNull(policy.asset("/tf/poland-rail-data/../account.js"))
+        assertNull(policy.asset("/tf/poland-rail-data/manifest.json"))
+    }
     @Test fun routeKnowledgeAndTrafficArePackaged() {
         val policy=PortalPolicy("https://example.test")
         assertEquals("tf-portal.html",policy.asset("/tf/streckenkenntnisse"))
