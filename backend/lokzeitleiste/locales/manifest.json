@@ -259,6 +259,11 @@
     "en": "/locales/map_recovery/en.json",
     "pl": "/locales/map_recovery/pl.json"
   },
+  "offline_basemap": {
+    "de": "/locales/offline_basemap/de.json",
+    "en": "/locales/offline_basemap/en.json",
+    "pl": "/locales/offline_basemap/pl.json"
+  },
   "offline_station_catalog": {
     "de": "/locales/offline_station_catalog/de.json",
     "en": "/locales/offline_station_catalog/en.json",

@@ -480,12 +480,9 @@ class Recorder{
  this.mapZoomLevel.textContent=t(globalThis.CtlText.source("portal_gps.text_7afb2d86cd0c"))+' '+Math.round(zoom*10)/10;
  this.mapZoomLevel.setAttribute('data-i18n-ignore','');
  this.mapView={zoom,center,size:256*2**zoom};this.mapFollow.setAttribute('aria-pressed',String(this.mapState.mode==='follow'));this.mapOverview.setAttribute('aria-pressed',String(this.mapState.mode==='overview'));this.mapRail.setAttribute('aria-pressed',String(this.railEnabled&&!this.railFailed));this.mapZoomIn.disabled=zoom>=19;this.mapZoomOut.disabled=zoom<=2;
- const size=256*2**zoom,left=center.x*size-300,top=center.y*size-150,visible=!this.content.hidden&&document.visibilityState!=='hidden'&&!this.box.closest?.('[hidden]');
+ const size=256*2**zoom,left=center.x*size-300,top=center.y*size-150;
  const m1View={zoom,size,left,top,height:300};window.M1Map?.background(svg,make,m1View);
- if(visible&&navigator.onLine&&window.AndroidPortal&&window.MapGestures)window.MapGestures.tiles(svg,make,{zoom,left,top,height:300},window.GpsTileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png');
- else if(visible&&navigator.onLine){const tiles=[];for(let x=Math.floor(left/256);x<=Math.floor((left+600)/256);x++)for(let y=Math.floor(top/256);y<=Math.floor((top+300)/256);y++){if(y<0||y>=2**zoom)continue;tiles.push({x,y});}
- const layer=(template,rail=false)=>{for(const {x,y}of tiles){const image=make('image');image.setAttribute('x',x*256-left);image.setAttribute('y',y*256-top);image.setAttribute('width',256);image.setAttribute('height',256);image.setAttribute('href',template.replace('{z}',zoom).replace('{x}',((x%2**zoom)+2**zoom)%2**zoom).replace('{y}',y));image.setAttribute('referrerpolicy','origin');if(rail)image.setAttribute('data-gps-rail','true');if(rail)image.addEventListener('error',()=>{if(this.railFailed)return;this.railFailed=true;this.drawMap();});svg.append(image);}};
- layer(window.GpsTileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png');}
+
  if(this.railEnabled&&window.M1Map){if(this.m1Data)window.M1Map.draw(svg,make,this.m1Data,m1View);else if(!this.m1Loading&&!this.railFailed){this.m1Loading=true;window.M1Map.load().then(data=>{this.m1Data=data;this.m1Loading=false;if(this.mapView)this.drawMap();}).catch(()=>{this.m1Loading=false;this.railFailed=true;if(this.mapView)this.drawMap();});}}
  this.drawTrail(svg,make,display,p=>{const c=project(p);return {x:c.x*size-left,y:c.y*size-top};});
  const endpoints=[[0,'#008000']];if(this.record.ended)endpoints.push([coords.length-1,'#c40000']);
@@ -497,7 +494,7 @@ class Recorder{
  if(!this.o.demo)window.GpsPreferences?.drawPeers(svg,make,project,size,left,top);
  if(this.record&&!this.record.ended&&points.length){const position=coords.at(-1);this.drawPositionMarker(svg,make,position.x*size-left,position.y*size-top,points.at(-1),totals);}
  this.map.append(svg,this.trailLegend());
- const link=(label,url)=>{const a=node('a',label);a.href=url;a.target='_blank';a.rel='noopener';return a;};this.map.append(link(globalThis.CtlText.source("portal_gps.text_f834e3bb911e"),'https://www.openstreetmap.org/copyright'));if(this.railEnabled)this.map.append(node('small',globalThis.CtlText.source('manual_route.text_43066bcd226f')));this.map.append(link('Natural Earth (Public domain)','https://www.naturalearthdata.com/about/terms-of-use/'));
+ const link=(label,url)=>{const a=node('a',label);a.href=url;a.target='_blank';a.rel='noopener';return a;};this.map.append(link('GeoNames (CC BY 4.0)','https://www.geonames.org/')); if(this.railEnabled)this.map.append(node('small',globalThis.CtlText.source('manual_route.text_43066bcd226f')));this.map.append(link('Natural Earth (Public domain)','https://www.naturalearthdata.com/about/terms-of-use/'));
  this.map.append(node('small',t(this.mapState.mode==='follow'?globalThis.CtlText.source("portal_gps.text_b2b3a3f2bec3"):globalThis.CtlText.source("portal_gps.text_8e02679954f1"))));if(this.railFailed)this.map.append(node('small',t(globalThis.CtlText.source('manual_route.text_698b8320d21b'))));
  }
 

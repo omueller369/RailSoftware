@@ -1,0 +1,4 @@
+{
+  "text_f161640f5d6f": "Simple offline map",
+  "text_a3bd7b7f70ba": "GPS recording, GPS demo and route knowledge use the same simple background with country shapes and place names. Android includes this data in the app. No background map tiles are downloaded, even while online. Zooming in reveals smaller places; each view shows a limited selection of non-overlapping names. The M1 network, operating points, your GPS trace and knowledge appear above the background. Place names provide orientation and do not replace DS100 selection. The Railway map button still toggles the M1 network. On the web, internet is needed for the initial load; keep the page open for offline work. Sources: Natural Earth (Public domain) and GeoNames (CC BY 4.0)."
+}

@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.5
+# LokZeitleiste v0.28.6
+
+**0.28.6 / Android 0.28.6.8:** Schlichter gemeinsamer Offline-Hintergrund mit Ortsnamen für GPS, Demo und Streckenkenntnisse. Keine Online-Hintergrundkacheln; Ortsnamen werden nach Zoom und Sichtbarkeit begrenzt. Quellen: Natural Earth (Public domain) und GeoNames (CC BY 4.0).
 
 **0.28.5 / Android 0.28.5.7:** Eigene manuelle Verläufe löschen sowie abgeschlossene eigene GPS-Aufzeichnungen auswählen, isoliert anzeigen und als Von-bis-Verlauf manuell bestätigen. Erst eine separate Online-Prüfung und Bestätigung entfernt das GPS-Original auf Server und diesem Gerät; laufende/geänderte Aufzeichnungen, ungesendete Änderungen und unvollständige Abdeckung verhindern die Bereinigung. Kompakte Kenntnisse und bereits in Berichte übernommene Dienst-/Zugdetails bleiben erhalten; betroffene GPS-Demos werden widerrufen. Die Stabilitätskorrekturen aus 0.28.4 bleiben enthalten.
 

@@ -1,0 +1,4 @@
+{
+  "text_f161640f5d6f": "Prosta mapa offline",
+  "text_a3bd7b7f70ba": "Zapis GPS, demo GPS i znajomość szlaków korzystają z tego samego prostego tła z zarysami krajów i nazwami miejscowości. Android zawiera te dane w aplikacji. Kafelki tła nie są pobierane, również przy połączeniu z internetem. Po powiększeniu pojawiają się mniejsze miejscowości; widok pokazuje ograniczony wybór nazw bez nakładania. Sieć M1, punkty eksploatacyjne, Twój ślad GPS i znajomość szlaków są powyżej. Nazwy służą orientacji i nie zastępują wyboru DS100. Przycisk Mapa kolejowa nadal przełącza sieć M1. W przeglądarce pierwsze wczytanie wymaga internetu; pozostaw stronę otwartą do pracy offline. Źródła: Natural Earth (Public domain) i GeoNames (CC BY 4.0)."
+}

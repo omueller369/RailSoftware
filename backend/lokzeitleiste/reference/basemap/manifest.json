@@ -3,5 +3,20 @@
   "licence": "Public domain",
   "licence_url": "https://www.naturalearthdata.com/about/terms-of-use/",
   "source_sha256": "3e458fc036ad0a66411f2c1e6cac49c5d7bfb81cb1123bc513b22511a2b7fdeb",
-  "canonical_sha256": "027ea21cbc54893065f6764235812c07d8f823805da17fdd8f1a385fb81389b3"
+  "canonical_sha256": "027ea21cbc54893065f6764235812c07d8f823805da17fdd8f1a385fb81389b3",
+  "places": {
+    "source_url": "https://download.geonames.org/export/dump/cities1000.zip",
+    "licence": "CC BY 4.0",
+    "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "GeoNames",
+    "source_sha256": "0770230481be281550b5dbea5da5bb1d090e56320eceef3643ea047f7cadf62f",
+    "canonical_sha256": "319b9fe88e092e48d1bbfda78a5eb4e4c47aae72994e79500b18ef12ad98f31d",
+    "count": 11902,
+    "selection": "45–56.5 N, 4–19 E; Germany, plus neighbouring places with population >= 5000",
+    "retrieved_on": "2026-11-20",
+    "preferred_aliases": {
+      "Munich": "München",
+      "Nuremberg": "Nürnberg"
+    }
+  }
 }

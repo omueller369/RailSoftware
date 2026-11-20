@@ -21,6 +21,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "short": "{{knowledge_tabs.text_1308485034f1}}",
     "sections": [
+      {"title": "{{offline_basemap.text_f161640f5d6f}}", "paragraphs": ["{{offline_basemap.text_a3bd7b7f70ba}}"], "steps": []},
       {"title":"{{manual_route_ops.text_a2fc398091be}}","paragraphs":["{{manual_route_ops.text_566c957cf572}}"],"steps":[]},
       {"title":"{{map_gestures.text_f6fd4ff9c63f}}","paragraphs":["{{map_recovery.text_71d3687660fc}}"],"steps":[]},
       {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
@@ -123,6 +124,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/gps-demo",
     "aliases": [],
     "sections": [
+      {"title": "{{offline_basemap.text_f161640f5d6f}}", "paragraphs": ["{{offline_basemap.text_a3bd7b7f70ba}}"], "steps": []},
       {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
       {
         "title": "{{portal_gps_demo.text_d2a6f5151788}}",
@@ -606,6 +608,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": null,
     "aliases": [],
     "sections": [
+      {"title": "{{offline_basemap.text_f161640f5d6f}}", "paragraphs": ["{{offline_basemap.text_a3bd7b7f70ba}}"], "steps": []},
       {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
       {
         "title": "{{portal_tf_help_content.text_39c45f294312}}",

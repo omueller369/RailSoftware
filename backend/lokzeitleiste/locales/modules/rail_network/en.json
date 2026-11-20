@@ -8,7 +8,7 @@
   "text_5d886f48ce74": "The rail network could not be loaded. Switch the layer off and on to retry.",
   "text_592542a01569": "Source: supplied M1 Streckennetz.csv · 33,425 records · 1,549 route numbers. The CSV does not specify its data date.",
   "text_fc9ba5dcd225": "Toggle the reference lines with Railway network. Unknown is grey (#4A4A4A), DB InfaGo construction grey-brown (#8b8378) and dashed, outside the DB InfaGo network yellow (#ffff00) and dotted. Personal knowledge and GPS colours appear above it. Reference geometry alone never counts as a trip. The small i below the map opens source and data-version information. Click it again to hide the information.",
-  "text_0fb9b3b16771": "On Android the rail network is packaged with the app and remains visible without internet. On the web the network file loads on first opening; later offline use requires it to remain in the browser cache. OpenStreetMap background tiles still require internet.",
+  "text_0fb9b3b16771": "Android bundles the railway network and simple background with place names for use without internet. On the web, files are loaded when first opened. Keep the page open for offline work. No background map tiles are downloaded.",
   "text_0d83493024ae": "M1 rail network as a toggleable offline reference layer. Travelled sections remain blue; two passes in each direction turn them green.",
   "text_4417896332fb": "Acquiring",
   "text_6c30e00fbe9a": "Route qualified",

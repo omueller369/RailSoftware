@@ -1,0 +1,4 @@
+{
+  "text_f161640f5d6f": "Schlichte Offline-Karte",
+  "text_a3bd7b7f70ba": "GPS-Aufzeichnung, GPS-Demo und Streckenkenntnisse verwenden denselben schlichten Hintergrund mit Länderflächen und Ortsnamen. In Android sind diese Daten in der App enthalten. Es werden auch mit Internet keine Hintergrund-Kartenkacheln nachgeladen. Beim Vergrößern erscheinen kleinere Orte; pro Ausschnitt wird nur eine begrenzte Auswahl ohne überlappende Ortsnamen gezeigt. Das M1-Netz, Betriebsstellen, Deine GPS-Spur und Kenntnisse liegen darüber. Ortsnamen dienen der Orientierung und ersetzen keine DS100-Auswahl. Die Schaltfläche Bahnkarte schaltet weiterhin das M1-Netz. Im Web benötigst Du Internet zum ersten Laden; halte die Seite für Offlinearbeit geöffnet. Quellen: Natural Earth (Public domain) und GeoNames (CC BY 4.0)."
+}
