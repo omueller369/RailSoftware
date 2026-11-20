@@ -8,7 +8,7 @@ ASSETS=['map-gestures.js','gps-route-tools.js',*BASE]
 def fixture():
     source=localize_html((STATIC/'tf-portal.html').read_text())
     assert 'href="/tf/stk-anlegen"' in source and 'id="routeTab-create"' not in source
-    assert 'Streckenkenntnis</button>' in source and 'id="routeTab-view"' in source
+    assert 'Streckenkenntnis</button>' in source and 'id="routeTab-view"' not in source and 'id="routePanel-view"' not in source
     module=re.search(r'<section id="manualRouteModule" hidden>(.*?)</section>',source,re.S)[1]
     css='\n'.join((STATIC/n).read_text() for n in ['tf-portal.css','work-report.css','responsive.css','portal-theme.css'])
     setup=r'''window.I18n={t:s=>s,locale:'de-DE'};window.AndroidPortal={};Object.defineProperty(navigator,'onLine',{get:()=>true});window.confirm=()=>true;'''

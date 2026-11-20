@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.8
+# LokZeitleiste v0.28.9
+
+**0.28.9 / Android 0.28.9.11:** Überflüssigen Unterreiter Streckenkenntnis anzeigen entfernt. Karte, Bestandsanzeige und Import stehen direkt im Reiter Streckenkenntnis; das eigene STK-Modul bleibt erhalten.
 
 **0.28.8 / Android 0.28.8.10:** STK-anlegen o. bearbeiten als eigenes TF-Modul mit Kachel. Tabellen für Auswahl und gespeicherte Verläufe mit Sortierung, 10/25/50/100/alle Zeilen, Seitennavigation und Direktsprung. Die Kenntnisansicht behält Streckenkenntnis anzeigen unter Streckenkenntnis.
 

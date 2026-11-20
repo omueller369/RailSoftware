@@ -25,7 +25,10 @@ class TfPortalTest(unittest.TestCase):
         self.assertIn('href="/tf/stk-anlegen"',page.text)
         self.assertIn('id="manualRouteModule"',page.text)
         self.assertNotIn('id="routeTab-create"',page.text)
-        self.assertIn('id="routeTab-view"',page.text)
+        self.assertNotIn('id="routeTab-view"',page.text)
+        self.assertNotIn('id="routePanel-view"',page.text)
+        self.assertIn('id="knowledgePanel-routes"',page.text)
+        self.assertIn('id="routeKnowledgeWorkspace"',page.text)
         self.assertIn('/tf/route-table.js',page.text)
         self.assertEqual(self.driver.get('/tf/route-table.js').status_code,200)
 
