@@ -38,6 +38,8 @@ jobs:
           node backend/tests/test_brake_sheet_ui.cjs --overlay
       - name: Polish-only offline railway layer and lazy tiles
         run: python backend/tests/check_poland_rail_ui.py --output-dir "$RUNNER_TEMP/poland-rail-ui"
+      - name: STK CSV placement, folding and preserved preview
+        run: python backend/tests/check_stk_csv_fold_ui.py --output-dir "$RUNNER_TEMP/stk-csv-fold-ui"
       - name: Standalone STK module and sortable paged tables
         run: python backend/tests/check_stk_module_ui.py --output-dir "$RUNNER_TEMP/stk-module-ui"
       - name: Manual M1 route knowledge and offline Germany background

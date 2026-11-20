@@ -1,6 +1,6 @@
 {
   "text_3799c6d7af84": "Confirm import",
-  "text_0881d489914e": "The import is below the map. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check your account, data and map. Only Confirm import permanently saves the knowledge to your TF account. The file selection and import list then clear; saved knowledge remains on the map. Cancel removes only the preview.",
+  "text_0881d489914e": "The route import is at the bottom of Create or edit route knowledge. Open Imported route knowledge (CSV) with +; − collapses the block again. Choose your route CSV. The preview immediately shows matched sections on the map and in the import list without saving. Check the account, data and map. Only Confirm import saves knowledge permanently for your TF account. The file selection and import list then clear; stored knowledge stays on the map. Cancel removes only the preview. Collapsing never clears or confirms a selection.",
   "text_90678014927b": "Import your location knowledge inventory with the columns Bahnhof, DS100 and Kundig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
   "text_7804e252711e": "Import your rolling-stock inventory with the columns Baureihe and Gültig bis. Check the preview and confirm the import. Your saved inventory is shown below. Existing conflicting entries are retained; editing will follow later.",
   "text_0ccc8fa79afa": "Station",

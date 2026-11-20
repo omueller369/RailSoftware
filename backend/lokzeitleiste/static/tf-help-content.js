@@ -111,17 +111,6 @@ window.TfHelpPages=globalThis.CtlText.restore([
           "{{route_age.text_57cc4a68827f}}"
         ],
         "steps": []
-      },
-      {
-        "title": "{{route_csv.text_954717c83530}}",
-        "paragraphs": [
-          "{{knowledge_inventory.text_0881d489914e}}",
-          "{{route_csv_map.text_249137f0f4eb}}",
-          "{{knowledge_performance.text_14b95bd159e1}}",
-          "{{m1_operating_points.text_22acba6180a3}}",
-          "{{m1_operating_points.text_dd84d6c388d3}}"
-        ],
-        "steps": []
       }
     ]
   },
@@ -181,6 +170,17 @@ window.TfHelpPages=globalThis.CtlText.restore([
         "title": "{{map_gestures.text_f6fd4ff9c63f}}",
         "paragraphs": [
           "{{map_gestures.text_6ee2039d039a}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{route_csv.text_954717c83530}}",
+        "paragraphs": [
+          "{{knowledge_inventory.text_0881d489914e}}",
+          "{{route_csv_map.text_249137f0f4eb}}",
+          "{{knowledge_performance.text_14b95bd159e1}}",
+          "{{m1_operating_points.text_22acba6180a3}}",
+          "{{m1_operating_points.text_dd84d6c388d3}}"
         ],
         "steps": []
       }
