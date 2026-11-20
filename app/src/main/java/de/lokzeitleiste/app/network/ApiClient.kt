@@ -13,6 +13,8 @@ import java.time.YearMonth
 
 class AuthenticationRequired : IllegalStateException("Anmeldung abgelaufen. Bitte erneut anmelden.")
 
+class ServerRejected(val status:Int,message:String):IllegalStateException(message)
+
 object ApiClient {
     fun base(): String = BuildConfig.API_BASE_URL.trimEnd('/').also {
         val uri = runCatching { URI(it) }.getOrNull()
@@ -37,7 +39,7 @@ object ApiClient {
             val stream = if (connection.responseCode in 200..299) connection.inputStream else connection.errorStream
             val content = stream?.bufferedReader()?.use { it.readText() } ?: ""
             if (connection.responseCode == 401) throw AuthenticationRequired()
-            if (connection.responseCode !in 200..299) error("Serverfehler ${connection.responseCode}: $content")
+            if (connection.responseCode !in 200..299) throw ServerRejected(connection.responseCode,"Serverfehler ${connection.responseCode}: $content")
             return JSONObject(content)
         } finally { connection.disconnect() }
     }

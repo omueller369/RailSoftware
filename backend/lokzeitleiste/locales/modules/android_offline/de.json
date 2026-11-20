@@ -1,0 +1,9 @@
+{
+  "text_f369665d1fe6": "Offline: Deine Daten bleiben auf diesem Gerät gespeichert.",
+  "text_c716170bde7f": "Zur Übertragung vorgemerkt:",
+  "text_dc2c9ec1d998": "Auf diesem Gerät zur Übertragung vorgemerkt. Bei wiederhergestellter Verbindung wird die Übertragung versucht.",
+  "text_2a72fffcafe3": "Eine Übertragung benötigt Deine Prüfung. Öffne den betroffenen Bereich und prüfe den gespeicherten Stand. Deine lokalen Daten bleiben erhalten.",
+  "text_424502524c32": "Automatische Übertragung noch nicht abgeschlossen. Die Daten bleiben auf dem Gerät. Prüfe bei einer Fehlermeldung den Bericht und bestätige das Synchronisieren erneut.",
+  "text_5f7b6eed320f": "Android kann nach einer zuvor abgeschlossenen Online-Anmeldung mit gespeichertem TF-Konto ohne Internet starten. DS100- und Ortsnamen-Suche, lokale Arbeitsbericht-Entwürfe, Belege sowie die GPS-Aufzeichnung bleiben auf dem Gerät verfügbar. GPS benötigt Standortberechtigung und Satellitenempfang. Die M1-Karte ist lokal enthalten; neue Straßenkartenbilder, fremde Freigaben, externe Dienste und bisher nicht geladene Serverdaten benötigen weiterhin Internet. Zwischenspeichern ist keine endgültige Abgabe. Erst Dein Klick auf Synchronisieren merkt einen geprüften Bericht zum Senden vor. Bei Wiederverbindung versucht die geöffnete App die vorgemerkten Übertragungen automatisch erneut; beim nächsten Öffnen wird fortgesetzt. Bearbeitete oder widersprüchliche Berichte und Serverfehler bleiben zur Prüfung erhalten. Auf diesem Gerät vorgemerkte Änderungen gehören zum angemeldeten TF; ein anderer TF erhält keinen Zugriff darauf. Verlasse Dich vor dem Löschen der App-Daten oder einer Deinstallation auf eine erfolgreich bestätigte Synchronisation.",
+  "text_74ae3d734d6c": "Android ohne Internet"
+}

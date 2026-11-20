@@ -48,6 +48,41 @@ class TfPortalActivity : ComponentActivity() {
     private var exportId: String?=null
     private var exportBytes=0L
     private var leaving=false
+    private var networkCallback:android.net.ConnectivityManager.NetworkCallback?=null
+    private var identityRefresh:Job?=null
+    private fun connected():Boolean=runCatching {
+        val manager=getSystemService(android.net.ConnectivityManager::class.java)
+        val capabilities=manager.getNetworkCapabilities(manager.activeNetwork)
+        capabilities?.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED)==true
+    }.getOrDefault(false)
+    private fun watchNetwork() {
+        val manager=getSystemService(android.net.ConnectivityManager::class.java)
+        val callback=object:android.net.ConnectivityManager.NetworkCallback(){
+            override fun onCapabilitiesChanged(network:android.net.Network,capabilities:android.net.NetworkCapabilities){networkChanged()}
+            override fun onLost(network:android.net.Network){networkChanged()}
+        }
+        networkCallback=callback;manager.registerDefaultNetworkCallback(callback)
+    }
+    private fun networkChanged(){runOnUiThread {
+        if(leaving||!::web.isInitialized)return@runOnUiThread
+        web.evaluateJavascript("window.AndroidPortal?.setOnline?.(${connected()})",null)
+        if(connected()&&session.has("account"))refreshIdentity()
+    }}
+    private fun refreshIdentity(){
+        if(identityRefresh?.isActive==true||leaving)return
+        identityRefresh=lifecycleScope.launch {
+            val token=TokenVault.token(this@TfPortalActivity)?:return@launch
+            try{
+                val account=ApiClient.identity(token)
+                if(account.optString("role")!="tf"){logout(true);return@launch}
+                if(account.optBoolean("password_change_required")){logout(true);return@launch}
+                val profile=ApiClient.portalIdentity(token)
+                require(profile.getInt("id")==session.getJSONObject("account").getInt("id"))
+                session=JSONObject().put("account",account).put("profile",profile).put("username",TokenVault.username(this@TfPortalActivity))
+                OfflineSession(this@TfPortalActivity,policy.origin,TokenVault.username(this@TfPortalActivity)).save(session)
+            }catch(_:AuthenticationRequired){logout(true)}catch(error:ServerRejected){if(error.status in listOf(401,403))logout(true)}catch(_:Exception){/* Offline work remains local; no transport error invalidates the saved identity. */}
+        }
+    }
     private val filePicker=registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val callback=fileCallback;fileCallback=null
         val uris=runCatching { WebChromeClient.FileChooserParams.parseResult(result.resultCode,result.data)?.filter { it.scheme=="content" }?.toTypedArray() }.getOrNull()
@@ -82,6 +117,7 @@ class TfPortalActivity : ComponentActivity() {
         web=WebView(this).apply { fitsSystemWindows=true };setContentView(web)
         updater=PortalUpdater(this,autoOffer=false)
         configureWebView()
+        watchNetwork()
         onBackPressedDispatcher.addCallback(this,object:OnBackPressedCallback(true) { override fun handleOnBackPressed() {
             web.evaluateJavascript("Boolean(window.TrainWorkspace?.back?.())") { handled ->
                 if(handled!="true") {
@@ -114,22 +150,19 @@ class TfPortalActivity : ComponentActivity() {
     private suspend fun initialize() {
         val token=TokenVault.token(this) ?: return login()
         val username=TokenVault.username(this)
-        val prefs=getSharedPreferences("portal_identity",MODE_PRIVATE)
-        val cacheKey=policy.origin+"|"+username
+        val saved=OfflineSession(this,policy.origin,username)
+        val cached=saved.read()
+        if(cached!=null){session=cached;openSession(token);if(connected())refreshIdentity();return}
         try {
             val account=ApiClient.identity(token)
             require(account.optString("role")=="tf") { "TF Portal ist nur für Triebfahrzeugführer verfügbar." }
             val profile=if(account.optBoolean("password_change_required")) JSONObject() else ApiClient.portalIdentity(token)
             session=JSONObject().put("account",account).put("profile",profile).put("username",username)
-            prefs.edit().putString(cacheKey,session.toString()).apply()
-        } catch(_:AuthenticationRequired) { logout(true);return }
-        catch(error:Exception) {
-            val cached=prefs.getString(cacheKey,null)
-            if(cached==null) { toast(error.message?:"Server nicht erreichbar. Bitte zunächst online anmelden.");finish();return }
-            // Only transport failures permit offline access; server rejections remain authoritative.
-            if(error !is java.io.IOException) { toast(error.message?:"Zugriff verweigert.");finish();return }
-            session=JSONObject(cached)
-        }
+            saved.save(session);openSession(token)
+        } catch(_:AuthenticationRequired) { logout(true) }
+        catch(error:Exception) { toast(error.message?:"Server nicht erreichbar. Bitte zunächst online anmelden.");finish() }
+    }
+    private fun openSession(token:String) {
         val secure=if(policy.origin.startsWith("https:")) "; Secure" else ""
         CookieManager.getInstance().setAcceptCookie(true)
         CookieManager.getInstance().setCookie(policy.origin,"tf_session=$token; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000$secure") {
@@ -168,9 +201,9 @@ class TfPortalActivity : ComponentActivity() {
                 val name=policy.asset(request.url.path.orEmpty()) ?: return null
                 return try {
                     var bytes=assets.open("tf-portal/$name").use { it.readBytes() }
-                    if(name.endsWith(".html")) bytes=String(bytes,Charsets.UTF_8).replace("<head>","<head><script src=\"/android-portal.js\"></script>").toByteArray(Charsets.UTF_8)
+                    if(name.endsWith(".html")) bytes=String(bytes,Charsets.UTF_8).replace("<head>","<head><script src=\"/android-offline.js\"></script><script src=\"/android-portal.js\"></script>").toByteArray(Charsets.UTF_8)
                     val mime=when { name.endsWith(".html")->"text/html";name.endsWith(".css")->"text/css";name.endsWith(".png")->"image/png";name.endsWith(".wasm")->"application/wasm";name.endsWith(".bcmap")||name.endsWith(".pfb")||name.endsWith(".ttf")->"application/octet-stream";else->"text/javascript" }
-                    WebResourceResponse(mime,"UTF-8",200,"OK",mapOf("Cache-Control" to "no-store","Content-Security-Policy" to (if(name=="tf-portal.html") "frame-src ${policy.origin}/tf/bremszettel; object-src 'none'" else "frame-src 'none'; object-src 'none'")),ByteArrayInputStream(bytes))
+                    WebResourceResponse(mime,"UTF-8",200,"OK",mapOf("Cache-Control" to "no-store","Content-Security-Policy" to (if(name=="tf-portal.html") "frame-src ${policy.origin}/tf/bremszettel ${policy.origin}/tf/arbeitsbericht; object-src 'none'" else "frame-src ${policy.origin}/tf/arbeitsbericht; object-src 'none'")),ByteArrayInputStream(bytes))
                 } catch(_:Exception) { WebResourceResponse("text/plain","UTF-8",500,"Missing portal asset",emptyMap(),ByteArrayInputStream(byteArrayOf())) }
             }
             override fun onReceivedSslError(view:WebView,handler:SslErrorHandler,error:android.net.http.SslError) { handler.cancel();toast("Das HTTPS-Zertifikat des Servers ist ungültig.") }
@@ -202,7 +235,8 @@ class TfPortalActivity : ComponentActivity() {
             when(request.getString("method")) {
                 "help.print" -> startHelpPrint(request,proxy)
                 "traffic.status" -> reply(proxy,request,true,JSONObject().put("upload",android.net.TrafficStats.getUidTxBytes(android.os.Process.myUid())).put("download",android.net.TrafficStats.getUidRxBytes(android.os.Process.myUid())))
-                "session" -> reply(proxy,request,true,JSONObject(session.toString()).put("app_version",BuildConfig.VERSION_NAME))
+                "session" -> reply(proxy,request,true,JSONObject(session.toString()).put("app_version",BuildConfig.VERSION_NAME).put("online",connected()))
+                "network.status" -> reply(proxy,request,true,JSONObject().put("online",connected()))
                 "language" -> {
                     val language=request.getString("language");require(language in LanguageRuntime.codes);LanguageRuntime.code=language
                     getSharedPreferences("lokzeitleiste_language",MODE_PRIVATE).edit().putString("language",language).apply()
@@ -333,5 +367,5 @@ class TfPortalActivity : ComponentActivity() {
         }
     }
     override fun onResume() { super.onResume();if(::updater.isInitialized)updater.resume() }
-    override fun onDestroy() { helpPrintView?.destroy();helpPrintView=null;val callback=fileCallback;fileCallback=null;runCatching { callback?.onReceiveValue(null) };exportStream?.close();if(::web.isInitialized){web.stopLoading();web.destroy()};super.onDestroy() }
+    override fun onDestroy() { networkCallback?.let { runCatching { getSystemService(android.net.ConnectivityManager::class.java).unregisterNetworkCallback(it) } };networkCallback=null;identityRefresh?.cancel();helpPrintView?.destroy();helpPrintView=null;val callback=fileCallback;fileCallback=null;runCatching { callback?.onReceiveValue(null) };exportStream?.close();if(::web.isInitialized){web.stopLoading();web.destroy()};super.onDestroy() }
 }

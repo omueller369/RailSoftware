@@ -1,0 +1,34 @@
+"""Real IndexedDB and Android adapter: immediate cached boot, DS100, queued writes and GPS."""
+from pathlib import Path
+import argparse
+from browser_realtime import check_pages
+from check_work_report_layout import STATIC
+ASSETS=['messages.js','station-catalog-data.js','station-catalog.js','android-offline.js','android-portal.js','gps.js']
+def fixture():
+    setup=r'''
+const owner=10000+innerWidth;let serverOnline=false,writes=0,gpsWrites=0,notes=0,serverRequests=[],rejectNext=false,nativeCalls=[];
+window.NativePortal={postMessage(raw){const request=JSON.parse(raw);nativeCalls.push(request);const value=request.method==='session'?{online:false,app_version:'0.28.0.2',username:'synthetic',account:{id:owner,role:'tf'},profile:{id:owner,first_name:'Test',last_name:'Offline'}}:{};queueMicrotask(()=>NativePortal.onmessage({data:JSON.stringify({id:request.id,ok:true,value})}));}};
+window.fetch=async(input,options={})=>{if(!serverOnline)throw TypeError('Network offline');const url=String(input),method=options.method||'GET';serverRequests.push(method+' '+url);if(rejectNext&&method==='PUT'&&url.endsWith('/notes/1')){rejectNext=false;return new Response(JSON.stringify({detail:'Conflict for test'}),{status:409});}if(method!=='GET')writes++;let value={owner_id:owner,revision:1,stop_minutes:2};if(url.includes('/gps/')&&method==='PUT'){gpsWrites++;value={...JSON.parse(options.body),revision:1,analysis:{rows:[],gaps:[]}};}else if(url.includes('/notes')&&method==='POST'){notes++;value={id:notes,...JSON.parse(options.body)};}return new Response(JSON.stringify(value),{status:200,headers:{'Content-Type':'application/json'}});};
+'''
+    checks=r'''
+(async()=>{
+ const assert=(value,message)=>{if(!value)throw Error(message);},wait=()=>new Promise(resolve=>setTimeout(resolve,30));
+ await wait();const api=AndroidPortal.offline;assert(api&&!navigator.onLine,'Native disconnected state reaches the adapter');
+ const account=await(await fetch('/api/v1/account/me')).json(),profile=await(await fetch('/api/v1/tf/portal')).json();assert(account.id===owner&&profile.id===owner&&writes===0,'Stored TF identity opens without a network request');
+ const before=performance.now(),stations=await StationCatalog.search('AFW',null,owner);assert(stations.some(p=>p.code==='AFW')&&performance.now()-before<1500,'Bundled DS100 search works offline');const names=await StationCatalog.search('Flensburg',null,owner);assert(names.length>0,'Station-name search works offline');
+ serverOnline=true;AndroidPortal.setOnline(true);await fetch('/api/v1/tf/gps-settings');await wait();await wait();serverOnline=false;AndroidPortal.setOnline(false);
+ const fresh=AndroidOffline.create({session:{account:{id:owner},profile:{id:owner}},send:async()=>{throw Error('No network');},network:()=>false});assert((await fresh.cached('/api/v1/tf/gps-settings')).includes('stop_minutes'),'Cache survives a fresh adapter instance');
+ const foreign=AndroidOffline.create({session:{account:{id:owner+1},profile:{id:owner+1}},send:async()=>{throw Error('No network');},network:()=>false});assert(await foreign.cached('/api/v1/tf/gps-settings')===undefined||await foreign.cached('/api/v1/tf/gps-settings')===null,'Another TF cannot read private cache');
+ let response=await fetch('/api/v1/tf/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:'Stored offline note'})});assert(response.status===503&&response.headers.get('X-Rail-Offline-Queued')==='1'&&notes===0,'Offline request is durable and never pretends to be server-accepted');
+ await foreign.flush();assert(notes===0,'Another TF cannot drain the queue');serverOnline=true;AndroidPortal.setOnline(true);await api.flush();await wait();assert(notes===1,'Connectivity restores exactly one queued note');
+ response=await fetch('/api/v1/tf/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:'Stored offline note'})});assert(response.ok&&notes===1,'Form acknowledgement consumes stored server result without sending twice');
+ const key=owner+'.offline-track',record={train_number:'123',ended:true,dirty:true,revision:0,points:[{t:1000,lat:52,lon:13,accuracy:5,speed:10},{t:6000,lat:52.001,lon:13.001,accuracy:5,speed:10}],manual_stops:[],stop_edits:{}};
+ await new Promise((resolve,reject)=>{const request=indexedDB.open('lokzeitleiste.gps',1);request.onupgradeneeded=()=>request.result.createObjectStore('tracks',{keyPath:'key'});request.onsuccess=()=>{const tx=request.result.transaction('tracks','readwrite');tx.objectStore('tracks').put({key,value:record});tx.oncomplete=resolve;tx.onerror=reject;};});
+ serverOnline=false;AndroidPortal.setOnline(false);await GpsRecorder.flushAndroid(owner);assert(gpsWrites===0&&(await GpsRecorder.localRecords(owner))[0].dirty,'Offline GPS fixes stay durable and unsent');serverOnline=true;AndroidPortal.setOnline(true);for(let i=0;i<100&&(await GpsRecorder.localRecords(owner))[0].dirty;i++)await wait();assert(gpsWrites===1&&!(await GpsRecorder.localRecords(owner))[0].dirty,'Queued GPS uploads on reconnection');assert(JSON.stringify((await GpsRecorder.localRecords(owner))[0].points)===JSON.stringify(record.points),'Raw GPS fixes are unchanged');
+ serverOnline=false;AndroidPortal.setOnline(false);await fetch('/api/v1/tf/notes/1',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:'conflicting edit'})});rejectNext=true;serverOnline=true;AndroidPortal.setOnline(true);await api.flush();for(let i=0;i<100&&!document.getElementById('androidOfflineStatus').textContent.includes('Prüfung');i++)await wait();assert(document.getElementById('androidOfflineStatus').textContent.includes('Prüfung'),'Conflict is retained and visible: '+document.getElementById('androidOfflineStatus').textContent+' / writes='+writes+' / rejectNext='+rejectNext);
+ window.parent.postMessage({layoutStatus:'pass'},'*');
+})().catch(error=>window.parent.postMessage({layoutStatus:'fail',message:error.stack},'*'));
+'''
+    return '<!doctype html><html><head><meta charset="utf-8"></head><body><script>'+setup+'</script>'+''.join('<script src="/tf/'+name+'"></script>' for name in ASSETS)+'<script>'+checks+'</script></body></html>'
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--output-dir',required=True);args=p.parse_args();check_pages(fixture,args.output_dir,widths=(800,375),assets={'/tf/'+name:STATIC/name for name in ASSETS},label='Android offline',timeout=30)

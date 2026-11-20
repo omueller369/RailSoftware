@@ -82,6 +82,10 @@ jobs:
         run: python backend/tests/check_infra_go_ui.py --output-dir "$RUNNER_TEMP/infra-go-ui"
       - name: Android monthly report synchronization error navigation
         run: python backend/tests/check_android_report_navigation_ui.py --output-dir "$RUNNER_TEMP/android-report-navigation"
+      - name: Android offline startup, DS100, GPS and explicit report outbox
+        run: |
+          python backend/tests/check_android_offline_ui.py --output-dir "$RUNNER_TEMP/android-offline-ui"
+          python backend/tests/check_android_offline_reports_ui.py --output-dir "$RUNNER_TEMP/android-offline-reports-ui"
       - name: Field error navigation and Android-only update tile
         run: python backend/tests/check_field_error_navigation_ui.py --output-dir "$RUNNER_TEMP/field-error-navigation"
       - name: Check shared GPS demo and read-only stops

@@ -14,6 +14,11 @@
     "en": "/locales/android_login/en.json",
     "pl": "/locales/android_login/pl.json"
   },
+  "android_offline": {
+    "de": "/locales/android_offline/de.json",
+    "en": "/locales/android_offline/en.json",
+    "pl": "/locales/android_offline/pl.json"
+  },
   "android_updates": {
     "de": "/locales/android_updates/de.json",
     "en": "/locales/android_updates/en.json",

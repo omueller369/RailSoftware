@@ -153,6 +153,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf",
     "aliases": [],
     "sections": [
+      {"title":"{{android_offline.text_74ae3d734d6c}}","paragraphs":["{{android_offline.text_5f7b6eed320f}}"],"steps":[]},
       {
         "title": "{{portal_tf_help_content.text_ef3f57d0a165}}",
         "paragraphs": [
