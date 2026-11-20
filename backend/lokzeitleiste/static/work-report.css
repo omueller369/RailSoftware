@@ -243,7 +243,7 @@ html[data-theme="dark"] #reportSendCancel {
 
 .route-editor-controls{display:flex;flex-wrap:wrap;gap:.75rem;align-items:end}.route-editor-controls label{display:flex;flex-direction:column;gap:.3rem;flex:1 1 14rem;min-width:0}.route-editor-controls input{width:100%;box-sizing:border-box}#manualRouteWorkspace svg{touch-action:none}#manualRouteWorkspace li{padding:.4rem 0}#manualRouteWorkspace li select{max-width:100%;display:block}.route-knowledge-map [data-manual-route-line]{pointer-events:none}
 
-.manual-route-map{position:relative;width:100%;max-width:700px;margin-inline:auto;box-sizing:border-box}.manual-route-map .route-map-undo{position:absolute;top:10px;left:10px;z-index:2;display:grid;place-items:center;width:40px;min-height:40px;padding:8px;border-radius:6px;background:transparent;color:#172338;border:0;box-shadow:none}.manual-route-map .route-map-undo svg{width:20px;height:20px;pointer-events:none}.manual-route-map .route-map-undo:disabled{opacity:.45}
+.manual-route-map{position:relative;width:98%;max-width:none;margin-inline:auto;box-sizing:border-box;border:0;box-shadow:none}.manual-route-map .route-map-undo{position:absolute;top:10px;left:10px;z-index:2;display:grid;place-items:center;width:40px;min-height:40px;padding:8px;border-radius:6px;background:transparent;color:#172338;border:0;box-shadow:none}.manual-route-map .route-map-undo svg{width:20px;height:20px;pointer-events:none}.manual-route-map .route-map-undo:disabled{opacity:.45}
 
 .route-editor-table{width:100%;overflow:auto}.route-editor-table table{width:100%;border-collapse:collapse}.route-editor-table th,.route-editor-table td{padding:.4rem;text-align:left;vertical-align:top}.route-editor-table select{max-width:18rem}.route-editor-table small{display:block}[data-saved-route]{cursor:pointer}[data-saved-route]:hover,[data-saved-route][aria-selected=true]{background:#fff2ba}[data-saved-route]:focus-visible{outline:2px solid #1565c0}
 
@@ -252,4 +252,4 @@ html[data-theme="dark"] #reportSendCancel {
 .route-source-info:not([open])>small{display:none}
 
 .manual-route-map .route-map-nodes{position:absolute;top:10px;right:10px;z-index:2;display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:4px;background:#ffffffd9;color:#172338;font-size:.8rem}.manual-route-map .route-map-nodes input{width:18px;height:18px;margin:0}.manual-route-map .route-map-undo:hover{background:#ffffff55}
-.manual-route-map>svg{box-sizing:border-box}
+.route-knowledge-map.manual-route-map>svg{box-sizing:border-box;width:100%;max-width:none;border:0;outline:0;box-shadow:none}

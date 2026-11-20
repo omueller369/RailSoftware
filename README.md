@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.1
+# LokZeitleiste v0.28.2
+
+**0.28.2 / Android 0.28.2.4:** Die manuelle Streckenkarte nutzt durchgehend 98 % der verfügbaren Breite ohne Rahmen und ohne feste Maximalbreite. Kartenbedienelemente bleiben innerhalb der Karte.
 
 **0.28.1 / Android 0.28.1.3:** „STK-anlegen o. bearbeiten“ mit Knotenauswahl, hellgrünen Standortmarkierungen, hellblauen Vorschlägen verbundener Abschnitte und transparentem Rückgängig-Symbol direkt auf der Karte. Parallele VzG-Abschnitte können gemeinsam ausgewählt, gespeichert und erneut bearbeitet werden; gemeinsame Endpunkte allein reichen nicht aus. Bestehende Auswahlen und Kenntnisse bleiben erhalten.
 
