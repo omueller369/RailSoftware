@@ -1,0 +1,15 @@
+{
+  "text_a8e535e7a6ec": "Create routes on the M1 map, edit saved paths and verify transfers from GPS traces.",
+  "text_478a57b978d0": "Rows per page",
+  "text_0f99809346ee": "all",
+  "text_6da204d6ce9f": "Page",
+  "text_b318fdec2abb": "of",
+  "text_e5414b7a08ec": "Show",
+  "text_4d74d39dc01d": "First page",
+  "text_35a1f687569e": "Previous page",
+  "text_fb9cf3d48159": "Next page",
+  "text_644b1c01028a": "Last page",
+  "text_363ebe2d71dc": "Sort ascending",
+  "text_cbea2a926376": "Sort descending",
+  "text_15fda18789a7": "Open the separate Create or edit route knowledge tile. Find the starting point by DS100 or name and draw the route through the operating points on the map. Choose Valid until and confirm Save. Saved paths appear below the current selection. Select a saved path to edit it again in the map and list. GPS selection, undo, parallel routes, Junctions only, deletion and the separate confirmation for removing GPS originals remain available. Both tables initially show ten rows per page. Choose 10, 25, 50, 100 or all. Data column arrows sort ascending or descending; this changes only the table, never the order of the drawn route. Use First/Previous/Next/Last page, or enter a page number and choose Show. Dates are sorted by their actual date. Sorting, paging and changing row counts never change or save route data."
+}

@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.7
+# LokZeitleiste v0.28.8
+
+**0.28.8 / Android 0.28.8.10:** STK-anlegen o. bearbeiten als eigenes TF-Modul mit Kachel. Tabellen für Auswahl und gespeicherte Verläufe mit Sortierung, 10/25/50/100/alle Zeilen, Seitennavigation und Direktsprung. Die Kenntnisansicht behält Streckenkenntnis anzeigen unter Streckenkenntnis.
 
 **0.28.7 / Android 0.28.7.9:** Zusätzliches polnisches OSM-/Geofabrik-Streckennetz, ausschließlich bei Sprache Polski sichtbar. Offline-Übersicht und räumlich getrennte Detailkacheln schonen Tablet-Speicher und Darstellung. Deutscher M1-Bestand und Kenntnisse bleiben getrennt.
 

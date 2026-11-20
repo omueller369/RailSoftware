@@ -1,0 +1,15 @@
+{
+  "text_a8e535e7a6ec": "Strecken über die M1-Karte anlegen, gespeicherte Verläufe bearbeiten und GPS-Spuren geprüft übernehmen.",
+  "text_478a57b978d0": "Zeilen pro Seite",
+  "text_0f99809346ee": "alle",
+  "text_6da204d6ce9f": "Seite",
+  "text_b318fdec2abb": "von",
+  "text_e5414b7a08ec": "Anzeigen",
+  "text_4d74d39dc01d": "Erste Seite",
+  "text_35a1f687569e": "Vorherige Seite",
+  "text_fb9cf3d48159": "Nächste Seite",
+  "text_644b1c01028a": "Letzte Seite",
+  "text_363ebe2d71dc": "Aufsteigend sortieren",
+  "text_cbea2a926376": "Absteigend sortieren",
+  "text_15fda18789a7": "Öffne die eigene Kachel STK-anlegen o. bearbeiten. Suche den Startort über DS100 oder Namen und zeichne die Strecke über die Betriebsstellen auf der Karte. Wähle Gültig bis und bestätige Speichern. Deine gespeicherten Verläufe stehen unter der aktuellen Auswahl. Klicke einen Verlauf an, um ihn in Karte und Liste weiterzubearbeiten. GPS-Auswahl, Rückgängig, parallele Strecken, Nur Knotenpunkte, Löschen und die getrennte Bestätigung zum Entfernen von GPS-Originalen bleiben verfügbar. Beide Tabellen zeigen zunächst zehn Zeilen je Seite. Wähle 10, 25, 50, 100 oder alle. Die Pfeile in den Datenspalten sortieren auf- oder absteigend; das ändert nur die Tabelle, nie die Reihenfolge der gezeichneten Strecke. Blättere mit Erste/Vorherige/Nächste/Letzte Seite oder trage die Seitennummer ein und wähle Anzeigen. Datumsspalten werden nach dem tatsächlichen Datum sortiert. Sortieren, Blättern und Zeilenzahl ändern oder speichern keine Streckendaten."
+}

@@ -434,6 +434,11 @@
     "en": "/locales/route_csv_map/en.json",
     "pl": "/locales/route_csv_map/pl.json"
   },
+  "route_module": {
+    "de": "/locales/route_module/de.json",
+    "en": "/locales/route_module/en.json",
+    "pl": "/locales/route_module/pl.json"
+  },
   "server_accounts_access": {
     "de": "/locales/server_accounts_access/de.json",
     "en": "/locales/server_accounts_access/en.json",

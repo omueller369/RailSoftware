@@ -64,6 +64,8 @@ def create_router(require_account,*,target_dependency=None,api_prefix='/api/v1/t
     def m1_script():return FileResponse(Path(__file__).parent/'static'/'m1-map.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/gps-route-tools.js')
     def gps_tools_script():return FileResponse(Path(__file__).parent/'static'/'gps-route-tools.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+    @router.get('/tf/route-table.js')
+    def route_table_script():return FileResponse(Path(__file__).parent/'static'/'route-table.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/route-editor.js')
     def editor_script():return FileResponse(Path(__file__).parent/'static'/'route-editor.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/tf/rail-network.js')

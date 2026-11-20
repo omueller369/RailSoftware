@@ -20,6 +20,10 @@ class PortalPolicyTest {
         assertNull(policy.asset("/tf/poland-rail-data/../account.js"))
         assertNull(policy.asset("/tf/poland-rail-data/manifest.json"))
     }
+    @Test fun standaloneStkModuleUsesBundledEditorAndTables() {
+        assertEquals("tf-portal.html",policy.asset("/tf/stk-anlegen"))
+        assertEquals("route-table.js",policy.asset("/tf/route-table.js"))
+    }
     @Test fun routeKnowledgeAndTrafficArePackaged() {
         val policy=PortalPolicy("https://example.test")
         assertEquals("tf-portal.html",policy.asset("/tf/streckenkenntnisse"))

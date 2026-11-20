@@ -35,6 +35,7 @@ def create_router(require_account):
     @router.get('/tf')
     @router.get('/tf/hilfe')
     @router.get('/tf/gps-demo')
+    @router.get('/tf/stk-anlegen')
     @router.get('/tf/streckenkenntnisse')
     @router.get('/tf/la-anweisungen')
     @router.get('/tf/updates')

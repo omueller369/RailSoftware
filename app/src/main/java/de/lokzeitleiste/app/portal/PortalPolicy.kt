@@ -31,7 +31,7 @@ class PortalPolicy(base: String) {
         val laVendor = Regex("^/tf/la-vendor/(pdf(?:[.]worker)?[.]mjs|(?:cmaps|standard_fonts|wasm)/[A-Za-z0-9][A-Za-z0-9_.-]*[.](?:bcmap|pfb|ttf|wasm))$")
         if (laVendor.matches(path) && !path.contains("..")) return path.removePrefix("/tf/")
         return when(path) {
-        "/tf", "/tf/la-anweisungen", "/tf/streckenkenntnisse", "/tf/updates", "/tf/gps-demo", "/tf/hilfe", "/tf/notizen", "/tf/arbeitsbericht", "/tf/arbeitsplan", "/tf/bahnhoefe", "/tf/leuna-uebergabeprotokoll" -> "tf-portal.html"
+        "/tf", "/tf/stk-anlegen", "/tf/la-anweisungen", "/tf/streckenkenntnisse", "/tf/updates", "/tf/gps-demo", "/tf/hilfe", "/tf/notizen", "/tf/arbeitsbericht", "/tf/arbeitsplan", "/tf/bahnhoefe", "/tf/leuna-uebergabeprotokoll" -> "tf-portal.html"
         "/tf/bremszettel" -> "brake-sheet.html"
         "/tf/bremszettel-de" -> "national-brake-sheet.html"
         "/tf/national-brake-sheet.js" -> "national-brake-sheet.js"
@@ -64,6 +64,7 @@ class PortalPolicy(base: String) {
         "/tf/route-coverage.js" -> "route-coverage.js"
         "/tf/m1-basemap-data.js" -> "m1-basemap-data.js"
         "/tf/m1-map.js" -> "m1-map.js"
+        "/tf/route-table.js" -> "route-table.js"
         "/tf/route-editor.js" -> "route-editor.js"
         "/tf/gps-route-tools.js" -> "gps-route-tools.js"
         "/tf/poland-rail.js" -> "poland-rail.js"

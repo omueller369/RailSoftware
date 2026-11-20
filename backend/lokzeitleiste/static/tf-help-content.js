@@ -12,7 +12,23 @@
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
 window.TfHelpRevision="2026-11-20";
 window.TfHelpPages=globalThis.CtlText.restore([
-{"id": "la-anweisungen", "path": "/tf/la-anweisungen", "aliases": [], "group": "{{la_instructions.text_aaf232064610}}", "title": "{{la_instructions.text_aaf232064610}}", "short": "{{la_instructions.text_c432b372e0e3}}", "sections": [{"title": "{{la_instructions.text_aaf232064610}}", "paragraphs": ["{{la_instructions.text_106a5842fc5f}}"], "steps": []}]},
+  {
+    "id": "la-anweisungen",
+    "path": "/tf/la-anweisungen",
+    "aliases": [],
+    "group": "{{la_instructions.text_aaf232064610}}",
+    "title": "{{la_instructions.text_aaf232064610}}",
+    "short": "{{la_instructions.text_c432b372e0e3}}",
+    "sections": [
+      {
+        "title": "{{la_instructions.text_aaf232064610}}",
+        "paragraphs": [
+          "{{la_instructions.text_106a5842fc5f}}"
+        ],
+        "steps": []
+      }
+    ]
+  },
   {
     "id": "route-knowledge",
     "path": "/tf/streckenkenntnisse",
@@ -21,21 +37,39 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "short": "{{knowledge_tabs.text_1308485034f1}}",
     "sections": [
-      {"title": "{{poland_rail.text_60596798b343}}", "paragraphs": ["{{poland_rail.text_56a8f681287c}}"], "steps": []},
-      {"title": "{{offline_basemap.text_f161640f5d6f}}", "paragraphs": ["{{offline_basemap.text_a3bd7b7f70ba}}"], "steps": []},
-      {"title":"{{manual_route_ops.text_a2fc398091be}}","paragraphs":["{{manual_route_ops.text_566c957cf572}}"],"steps":[]},
-      {"title":"{{map_gestures.text_f6fd4ff9c63f}}","paragraphs":["{{map_recovery.text_71d3687660fc}}"],"steps":[]},
-      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
+      {
+        "title": "{{poland_rail.text_60596798b343}}",
+        "paragraphs": [
+          "{{poland_rail.text_56a8f681287c}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{offline_basemap.text_f161640f5d6f}}",
+        "paragraphs": [
+          "{{offline_basemap.text_a3bd7b7f70ba}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{map_gestures.text_f6fd4ff9c63f}}",
+        "paragraphs": [
+          "{{map_recovery.text_71d3687660fc}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{map_gestures.text_f6fd4ff9c63f}}",
+        "paragraphs": [
+          "{{map_gestures.text_6ee2039d039a}}"
+        ],
+        "steps": []
+      },
       {
         "title": "{{knowledge_tabs.text_45663fd76979}}",
         "paragraphs": [
           "{{knowledge_tabs.text_8562cceb9457}}"
         ],
-        "steps": []
-      },
-      {
-        "title": "{{manual_route.text_2e35159db647}}",
-        "paragraphs": ["{{manual_route.text_76a1540f4ca6}}", "{{manual_route.text_60ee27e69534}}", "{{manual_route.text_e9adb0ccdb32}}"],
         "steps": []
       },
       {
@@ -92,6 +126,67 @@ window.TfHelpPages=globalThis.CtlText.restore([
     ]
   },
   {
+    "id": "manual-route",
+    "path": "/tf/stk-anlegen",
+    "aliases": [],
+    "group": "{{knowledge_tabs.text_ffad8a8eb545}}",
+    "title": "{{manual_route.text_2e35159db647}}",
+    "short": "{{route_module.text_a8e535e7a6ec}}",
+    "sections": [
+      {
+        "title": "{{manual_route.text_2e35159db647}}",
+        "paragraphs": [
+          "{{route_module.text_15fda18789a7}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{manual_route_ops.text_a2fc398091be}}",
+        "paragraphs": [
+          "{{manual_route_ops.text_566c957cf572}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{manual_route.text_2e35159db647}}",
+        "paragraphs": [
+          "{{manual_route.text_76a1540f4ca6}}",
+          "{{manual_route.text_60ee27e69534}}",
+          "{{manual_route.text_e9adb0ccdb32}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{poland_rail.text_60596798b343}}",
+        "paragraphs": [
+          "{{poland_rail.text_56a8f681287c}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{offline_basemap.text_f161640f5d6f}}",
+        "paragraphs": [
+          "{{offline_basemap.text_a3bd7b7f70ba}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{map_gestures.text_f6fd4ff9c63f}}",
+        "paragraphs": [
+          "{{map_recovery.text_71d3687660fc}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{map_gestures.text_f6fd4ff9c63f}}",
+        "paragraphs": [
+          "{{map_gestures.text_6ee2039d039a}}"
+        ],
+        "steps": []
+      }
+    ]
+  },
+  {
     "id": "updates",
     "path": "/tf/updates",
     "aliases": [],
@@ -125,9 +220,27 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/gps-demo",
     "aliases": [],
     "sections": [
-      {"title": "{{poland_rail.text_60596798b343}}", "paragraphs": ["{{poland_rail.text_56a8f681287c}}"], "steps": []},
-      {"title": "{{offline_basemap.text_f161640f5d6f}}", "paragraphs": ["{{offline_basemap.text_a3bd7b7f70ba}}"], "steps": []},
-      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
+      {
+        "title": "{{poland_rail.text_60596798b343}}",
+        "paragraphs": [
+          "{{poland_rail.text_56a8f681287c}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{offline_basemap.text_f161640f5d6f}}",
+        "paragraphs": [
+          "{{offline_basemap.text_a3bd7b7f70ba}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{map_gestures.text_f6fd4ff9c63f}}",
+        "paragraphs": [
+          "{{map_gestures.text_6ee2039d039a}}"
+        ],
+        "steps": []
+      },
       {
         "title": "{{portal_gps_demo.text_d2a6f5151788}}",
         "paragraphs": [
@@ -161,8 +274,20 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf",
     "aliases": [],
     "sections": [
-      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
-      {"title":"{{android_offline.text_74ae3d734d6c}}","paragraphs":["{{android_offline.text_5f7b6eed320f}}"],"steps":[]},
+      {
+        "title": "{{map_gestures.text_f6fd4ff9c63f}}",
+        "paragraphs": [
+          "{{map_gestures.text_6ee2039d039a}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{android_offline.text_74ae3d734d6c}}",
+        "paragraphs": [
+          "{{android_offline.text_5f7b6eed320f}}"
+        ],
+        "steps": []
+      },
       {
         "title": "{{portal_tf_help_content.text_ef3f57d0a165}}",
         "paragraphs": [
@@ -610,9 +735,27 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": null,
     "aliases": [],
     "sections": [
-      {"title": "{{poland_rail.text_60596798b343}}", "paragraphs": ["{{poland_rail.text_56a8f681287c}}"], "steps": []},
-      {"title": "{{offline_basemap.text_f161640f5d6f}}", "paragraphs": ["{{offline_basemap.text_a3bd7b7f70ba}}"], "steps": []},
-      {"title": "{{map_gestures.text_f6fd4ff9c63f}}", "paragraphs": ["{{map_gestures.text_6ee2039d039a}}"], "steps": []},
+      {
+        "title": "{{poland_rail.text_60596798b343}}",
+        "paragraphs": [
+          "{{poland_rail.text_56a8f681287c}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{offline_basemap.text_f161640f5d6f}}",
+        "paragraphs": [
+          "{{offline_basemap.text_a3bd7b7f70ba}}"
+        ],
+        "steps": []
+      },
+      {
+        "title": "{{map_gestures.text_f6fd4ff9c63f}}",
+        "paragraphs": [
+          "{{map_gestures.text_6ee2039d039a}}"
+        ],
+        "steps": []
+      },
       {
         "title": "{{portal_tf_help_content.text_39c45f294312}}",
         "paragraphs": [
@@ -1139,7 +1282,13 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/me",
     "aliases": [],
     "sections": [
-      {"title":"{{portal_gps_demo.text_d2b780035db6}}","paragraphs":["{{portal_gps_demo.text_fdeb3c706255}}"],"steps":[]},
+      {
+        "title": "{{portal_gps_demo.text_d2b780035db6}}",
+        "paragraphs": [
+          "{{portal_gps_demo.text_fdeb3c706255}}"
+        ],
+        "steps": []
+      },
       {
         "title": "{{portal_tf_help_content.text_12c2b302b860}}",
         "paragraphs": [

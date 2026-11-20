@@ -2,7 +2,7 @@
 import argparse,json,time
 from browser_realtime import check_pages
 from check_work_report_layout import STATIC
-ASSETS=['messages.js','map-gestures.js','station-catalog-data.js','m1-basemap-data.js','rail-network-data.js','rail-network.js','m1-map.js','station-picker.js','route-imports.js','route-coverage.js','route-editor.js','route-knowledge.js','gps.js','train-workspace.js']
+ASSETS=['messages.js','map-gestures.js','station-catalog-data.js','m1-basemap-data.js','rail-network-data.js','rail-network.js','m1-map.js','station-picker.js','route-imports.js','route-coverage.js','route-table.js','route-editor.js','route-knowledge.js','gps.js','train-workspace.js']
 def fixture():
     css='\n'.join((STATIC/name).read_text() for name in ['tf-portal.css','work-report.css','responsive.css','portal-theme.css'])
     setup=r'''

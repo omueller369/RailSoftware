@@ -4,7 +4,7 @@ import argparse
 from browser_realtime import check_pages
 from check_work_report_layout import STATIC
 
-ASSETS=['messages.js','station-catalog-data.js','m1-basemap-data.js','rail-network-data.js','rail-network.js','m1-map.js','station-picker.js','route-imports.js','route-editor.js','route-coverage.js','route-knowledge.js']
+ASSETS=['messages.js','station-catalog-data.js','m1-basemap-data.js','rail-network-data.js','rail-network.js','m1-map.js','station-picker.js','route-imports.js','route-table.js','route-editor.js','route-coverage.js','route-knowledge.js']
 def fixture():
     css='\n'.join((STATIC/name).read_text() for name in ['tf-portal.css','work-report.css','responsive.css'])
     setup="""window.I18n={t:s=>s};Object.defineProperty(navigator,'onLine',{get:()=>false});let requests=[],fail=true,saved=0,stored=[],deferRead=false,pendingRead;window.confirm=()=>true;window.fetch=async(url,options={})=>{requests.push([url,options]);if(fail)throw Error('offline');if(!options.method){if(deferRead){const snapshot=structuredClone(stored);return new Promise(resolve=>{pendingRead=()=>resolve({ok:true,json:async()=>({owner_id:1,items:snapshot})});});}return {ok:true,json:async()=>({owner_id:1,items:stored})};}const body=JSON.parse(options.body),row={id:1,from_code:body.waypoints[0],to_code:body.waypoints.at(-1),valid_until:body.valid_until,waypoints:body.waypoints,routes:body.routes,revision:(options.method==='PUT'?'b':'a').repeat(64)};stored=[row];return {ok:true,json:async()=>({owner_id:1,items:[],saved_routes:stored})};};"""

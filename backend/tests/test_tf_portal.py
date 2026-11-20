@@ -19,6 +19,16 @@ class TfPortalTest(unittest.TestCase):
         self.staff_clients.append(self.driver)
         self.driver.post('/api/v1/account/login',json={'username':'787100','password':'tf-secret-12345'})
 
+    def test_standalone_route_editor_and_view_tabs(self):
+        page=self.driver.get('/tf/stk-anlegen')
+        self.assertEqual(page.status_code,200)
+        self.assertIn('href="/tf/stk-anlegen"',page.text)
+        self.assertIn('id="manualRouteModule"',page.text)
+        self.assertNotIn('id="routeTab-create"',page.text)
+        self.assertIn('id="routeTab-view"',page.text)
+        self.assertIn('/tf/route-table.js',page.text)
+        self.assertEqual(self.driver.get('/tf/route-table.js').status_code,200)
+
     def test_six_character_creation_change_login_and_reset(self):
         profile=self.client.get('/api/v1/admin/tf').json()[0]
         profile.update(username='787123',personnel_number='00123',password='abc123',email='787123@example.com')
