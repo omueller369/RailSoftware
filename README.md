@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.0
+# LokZeitleiste v0.28.1
+
+**0.28.1 / Android 0.28.1.3:** „STK-anlegen o. bearbeiten“ mit Knotenauswahl, hellgrünen Standortmarkierungen, hellblauen Vorschlägen verbundener Abschnitte und transparentem Rückgängig-Symbol direkt auf der Karte. Parallele VzG-Abschnitte können gemeinsam ausgewählt, gespeichert und erneut bearbeitet werden; gemeinsame Endpunkte allein reichen nicht aus. Bestehende Auswahlen und Kenntnisse bleiben erhalten.
 
 **Android 0.28.0.2 (Sammelversion):** Android startet mit zuletzt online bestätigtem TF-Konto unmittelbar aus dem lokalen Sitzungsspeicher. DS100/M1 und GPS sind lokal verfügbar; Netzwerkwechsel lösen die erneute Übertragung bestätigter Berichte und vorgemerkter Änderungen aus. Entwürfe werden nicht allein durch eine Wiederverbindung endgültig abgegeben. Die Webversion bleibt 0.28.0.
 

@@ -102,3 +102,21 @@ class ManualRouteTest(unittest.TestCase):
         self.assertEqual(result.status_code,409,result.text)
         after=self.client.get('/api/v1/tf/route-knowledge/manual',headers=self.headers).json()['items']
         self.assertEqual(after,rows)
+
+    def test_parallel_selection_is_saved_listed_edited_and_never_gps(self):
+        selected=dict(waypoints=['ALD','ALD A'],routes=[['1115','1113']])
+        result=self.save(**selected);self.assertEqual(result.status_code,201,result.text)
+        row=result.json()['saved_routes'][0]
+        self.assertEqual(row['routes'],[['1113','1115']])
+        self.assertEqual({r['route_number'] for r in result.json()['items']},{'1113','1115'})
+        self.assertEqual(self.save(waypoints=selected['waypoints'],routes=[['1113','1115']]).status_code,409)
+        path='/api/v1/tf/route-knowledge/manual/'+str(row['id'])
+        response=self.client.put(path,json={**self.payload,**selected,'expected_sha256':row['revision']},headers=self.headers)
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertEqual(self.client.get('/api/v1/tf/route-knowledge/manual',headers=self.headers).json()['items'][0]['routes'],[['1113','1115']])
+        with Session(self.engine) as db:self.assertEqual(db.scalar(select(func.count()).select_from(TrainGpsRecording)),0)
+
+    def test_parallel_selection_rejects_divergent_sections_and_repeated_routes(self):
+        for changes in [dict(waypoints=['ABLZ','AHAR'],routes=[['1280','2200']]),dict(waypoints=['ALD','ALD A'],routes=[['1113','01113']]),dict(routes=[[]]),dict(routes=[['1000']*17])]:
+            response=self.save(**changes);self.assertEqual(response.status_code,422,(changes,response.text))
+        self.assertEqual(self.listing(),[])

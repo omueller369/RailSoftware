@@ -26,7 +26,7 @@ def maximum(day):
 
 class RouteInput(BaseModel):
     waypoints:list[str]=Field(min_length=2,max_length=1001)
-    routes:list[str]=Field(min_length=1,max_length=1000)
+    routes:list[str|list[str]]=Field(min_length=1,max_length=1000)
     valid_until:date
 
 
@@ -51,12 +51,26 @@ def validate(data):
     refs={}
     for point in load_points()['points']:refs.setdefault(point['code'],point)
     legs=[]
-    for start,end,route in zip(codes,codes[1:],data.routes):
-        if start==end or start not in refs or end not in refs or not route.isascii() or not route.isdigit() or len(route)>6:raise HTTPException(422,message('invalid'))
-        row=dict(section=refs[start]['name']+' – '+refs[end]['name'],route_number=str(int(route)),status='streckenkundig',valid_until=data.valid_until.isoformat(),acquired_since='',acquisition_trips='',from_code=start,to_code=end)
-        if match(row)['status']!='mapped':raise HTTPException(422,message('invalid'))
-        legs.append(row)
-    return dict(waypoints=codes,routes=[r['route_number'] for r in legs],valid_until=data.valid_until.isoformat(),legs=legs)
+    routes=[]
+    for start,end,selection in zip(codes,codes[1:],data.routes):
+        selected=selection if isinstance(selection,list) else [selection]
+        if not 1<=len(selected)<=16 or start==end or start not in refs or end not in refs:raise HTTPException(422,message('invalid'))
+        group=[];matches=[]
+        for route in selected:
+            if not route.isascii() or not route.isdigit() or len(route)>6:raise HTTPException(422,message('invalid'))
+            code=str(int(route))
+            if code in group:raise HTTPException(422,message('invalid'))
+            group.append(code)
+            row=dict(section=refs[start]['name']+' – '+refs[end]['name'],route_number=code,status='streckenkundig',valid_until=data.valid_until.isoformat(),acquired_since='',acquisition_trips='',from_code=start,to_code=end)
+            mapped=match(row)
+            if mapped['status']!='mapped':raise HTTPException(422,message('invalid'))
+            matches.append(mapped);legs.append(row)
+        if len(group)>1:
+            from .manual_route_parallel import parallel
+            if not parallel(matches):raise HTTPException(422,message('invalid'))
+        routes.append(sorted(group,key=int) if len(group)>1 else group[0])
+    return dict(waypoints=codes,routes=routes,valid_until=data.valid_until.isoformat(),legs=legs)
+
 
 
 def entries(db,owner_id):

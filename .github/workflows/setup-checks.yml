@@ -37,6 +37,8 @@ jobs:
           node backend/tests/test_brake_sheet_ui.cjs --overlay
       - name: Manual M1 route knowledge and offline Germany background
         run: python backend/tests/check_manual_route_ui.py --output-dir "$RUNNER_TEMP/manual-m1-ui"
+      - name: Manual M1 junctions, parallel selection and map controls
+        run: python backend/tests/check_manual_navigation_ui.py --output-dir "$RUNNER_TEMP/manual-navigation-ui"
       - name: TF portal access test overview
         run: python backend/tests/check_portal_access_ui.py --output-dir "$RUNNER_TEMP/portal-access-ui"
       - name: La PDF rendering, offline account isolation and publication form

@@ -30,7 +30,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
       },
       {
         "title": "{{manual_route.text_2e35159db647}}",
-        "paragraphs": ["{{manual_route.text_60ee27e69534}}"],
+        "paragraphs": ["{{manual_route.text_60ee27e69534}}", "{{manual_route.text_e9adb0ccdb32}}"],
         "steps": []
       },
       {

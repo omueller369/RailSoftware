@@ -1,6 +1,6 @@
 {
   "text_b7f9ac3a3f45": "Show route knowledge",
-  "text_2e35159db647": "Add route knowledge",
+  "text_2e35159db647": "Route knowledge: add / edit",
   "text_c9fa26ef1765": "Start station / reporting point (DS100 or name)",
   "text_47e8bd8d5b40": "Valid until (maximum 1 year)",
   "text_c6647df04fbb": "Save",
@@ -39,5 +39,8 @@
   "text_0336e2a4df6f": "This saved route is not available.",
   "text_4b6c686e1fb1": "Edit saved route",
   "text_99d0336a2152": "Discard your current unsaved selection and load this route?",
-  "text_fa11466ba826": "Cancel editing"
+  "text_fa11466ba826": "Cancel editing",
+  "text_3ec85e7cebcd": "All lines at once",
+  "text_f83e817232f4": "Junctions only",
+  "text_e9adb0ccdb32": "Junctions only hides intermediate points without removing your selected points or drawn sections. Junctions are derived from connected M1 operating points. Turn the filter off to select intermediate or end points. Light-green location pins mark your selection; light-blue pins and lines suggest the next connected points and sections. Suggestions are not selected yet. All lines at once is offered only when every candidate VzG section runs parallel between the selected points according to M1 geometry (at most 200 metres apart, checked along the sections as well as at endpoints). Saving includes every selected parallel section; editing preserves the multiple selection. Undo sits on a transparent background at the top left of the map."
 }

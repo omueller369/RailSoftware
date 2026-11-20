@@ -1,6 +1,6 @@
 {
   "text_b7f9ac3a3f45": "Streckenkenntnis anzeigen",
-  "text_2e35159db647": "Streckenkenntnis anlegen",
+  "text_2e35159db647": "STK-anlegen o. bearbeiten",
   "text_c9fa26ef1765": "Startbahnhof / Meldestelle (DS100 oder Name)",
   "text_47e8bd8d5b40": "Gültig bis (max. 1 Jahr)",
   "text_c6647df04fbb": "Speichern",
@@ -39,5 +39,8 @@
   "text_0336e2a4df6f": "Dieser gespeicherte Verlauf ist nicht verfügbar.",
   "text_4b6c686e1fb1": "Gespeicherten Verlauf bearbeiten",
   "text_99d0336a2152": "Deine aktuelle, noch nicht gespeicherte Auswahl verwerfen und diesen Verlauf laden?",
-  "text_fa11466ba826": "Bearbeitung abbrechen"
+  "text_fa11466ba826": "Bearbeitung abbrechen",
+  "text_3ec85e7cebcd": "Alle Strecken zugleich",
+  "text_f83e817232f4": "Nur Knotenpunkte",
+  "text_e9adb0ccdb32": "Mit „Nur Knotenpunkte“ blendest Du einfache Zwischenpunkte aus. Deine markierten Punkte und gezeichneten Abschnitte bleiben erhalten. Knoten werden aus den verbundenen M1-Betriebsstellen ermittelt. Wähle den Filter ab, um Zwischen- oder Endpunkte zu wählen. Hellgrüne Standortmarkierungen zeigen Deine Auswahl; hellblaue Markierungen und Linien schlagen die nächsten verbundenen Punkte und Abschnitte vor. Vorschläge sind noch keine Auswahl. „Alle Strecken zugleich“ wird nur angeboten, wenn alle angebotenen VzG-Abschnitte zwischen den gewählten Punkten nach den M1-Geometrien parallel verlaufen (höchstens 200 Meter Abstand, auch zwischen den Endpunkten geprüft). Beim Speichern werden alle gewählten parallelen Abschnitte übernommen; beim erneuten Bearbeiten bleibt die Mehrfachauswahl erhalten. Das Rückgängig-Symbol liegt mit transparentem Hintergrund oben links auf der Karte."
 }
