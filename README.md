@@ -1,6 +1,6 @@
 # LokZeitleiste v0.28.10
 
-**0.28.10 / Android 0.28.10.12:** Strecken-CSV-Import ganz unten im eigenen STK-Modul, standardmäßig eingeklappt und über +/− einblendbar. Vorschau, Datei und Filter bleiben beim Zuklappen erhalten. Die Kenntnisansicht lädt den bestätigten Bestand weiterhin für die Karte.
+**0.28.10 / Android 0.28.10.13:** Strecken-CSV-Import ganz unten im eigenen STK-Modul, standardmäßig eingeklappt und über +/− einblendbar. Vorschau, Datei und Filter bleiben beim Zuklappen erhalten. Die Kenntnisansicht lädt den bestätigten Bestand weiterhin für die Karte.
 
 **0.28.9 / Android 0.28.9.11:** Überflüssigen Unterreiter Streckenkenntnis anzeigen entfernt. Karte, Bestandsanzeige und Import stehen direkt im Reiter Streckenkenntnis; das eigene STK-Modul bleibt erhalten.
 
