@@ -1,8 +1,14 @@
-/* Die polnische Referenz wird kachelweise geladen und nur bei gewählter polnischer Sprache angezeigt. */
-/* Öffentliche ODbL-Referenz. Die Sprachwahl steuert die Anzeige; diese Ebene schreibt keine Kenntnisse. */
+/* Die polnische Referenz wird kachelweise und unabhängig von der Sprache per Schalter eingeblendet. */
+/* Öffentliche ODbL-Referenz. Die Netzwahl bleibt lokal gespeichert; diese Ebene schreibt keine Kenntnisse. */
 (()=>{
 const pending=new Map(),loaded=new Map(),cache=new Map();let overview=null,failed=false,eventFrame=0;
-const enabled=()=>String(window.I18n?.language||document.documentElement.lang||'de').split('-')[0]==='pl';
+const preference='railsoftware.poland-network.enabled';let selected=false;try{selected=localStorage.getItem(preference)==='true';}catch{}
+const enabled=()=>selected;
+function setEnabled(value){const next=!!value;if(next===selected)return;selected=next;try{localStorage.setItem(preference,String(next));}catch{}if(next&&!overview)load().catch(()=>{});notify();}
+function mountToggle(host,{signal}={}){
+ const label=document.createElement('label'),input=document.createElement('input'),caption=document.createElement('span');label.className='rail-network-switch';input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('data-poland-network-switch','');label.append(input,caption);host.append(label);
+ const refresh=()=>{input.checked=enabled();const source=globalThis.CtlText.source('report_network_controls.text_539ad79b30b1');caption.textContent=window.I18n?.t(source)||source;};input.onchange=()=>setEnabled(input.checked);for(const event of ['polandrailchange','languagechange'])window.addEventListener(event,refresh,signal?{signal}:undefined);refresh();return {label,input};
+}
 const text=key=>{const source=globalThis.CtlText.source('poland_rail.'+({title:'text_60596798b343',loading:'text_a56b4ee54145',failed:'text_e086d1ab18d0',home:'text_537ac0519da6'})[key]);return window.I18n?.t(source)||source;};
 function notify(){if(!eventFrame)eventFrame=requestAnimationFrame(()=>{eventFrame=0;window.dispatchEvent(new Event('polandrailchange'));});}
 function receive(key,data){if(data?.schema!==1||data.scale!==10000000||!Array.isArray(data.lines))throw Error('Invalid Polish rail reference');if(key==='overview')overview=data;else{loaded.delete(key);loaded.set(key,data);while(loaded.size>12)loaded.delete(loaded.keys().next().value);}failed=false;cache.clear();notify();}
@@ -32,6 +38,6 @@ function drawPoints(svg,make,view,{choose,selected=[],suggested=[],nodesOnly=fal
  if(choose){group.setAttribute('role','button');group.setAttribute('tabindex','0');group.setAttribute('aria-label',label);group.style.cursor='pointer';group.onpointerdown=e=>e.stopPropagation();group.onclick=e=>{e.stopPropagation();choose(p[0]);};group.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(p[0]);}};}svg.append(group);}
 }
 function credit(root){if(!enabled())return;const a=document.createElement('a');a.href='https://www.openstreetmap.org/copyright';a.target='_blank';a.rel='noopener';a.textContent=(failed?text('failed'):!overview?text('loading'):text('title'))+' · © OpenStreetMap contributors / Geofabrik · ODbL 1.0';a.setAttribute('data-poland-rail-credit','');a.style.display='block';root.append(a);}
-window.PolandRailNetwork={enabled,load,receive,draw,drawPoints,credit,text,home:[52.1,19.2]};
-window.addEventListener('languagechange',()=>{if(enabled()&&!overview)load().catch(()=>{});notify();});
+window.PolandRailNetwork={enabled,setEnabled,mountToggle,load,receive,draw,drawPoints,credit,text,home:[52.1,19.2]};
+window.addEventListener('languagechange',notify);
 })();

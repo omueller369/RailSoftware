@@ -49,7 +49,8 @@ def fixture():
  window.LayoutReport.fill(editor,day);window.ReportTabs.activate('duty');
  const outerTabs=[...document.querySelectorAll('#workReport .report-tabs [role=tab]')];
  assert(outerTabs.length===3,'Three report tabs');
- assert(outerTabs[0].getAttribute('aria-selected')==='true','Duty tab selected');
+ assert(outerTabs.map(tab=>tab.id).join(',')==='reportTab-month,reportTab-duty,reportTab-train','Monthly reports are the first tab');assert(outerTabs[1].getAttribute('aria-selected')==='true','Duty tab selected');
+ assert(document.getElementById('trainDutySummary').textContent==='DB: 08:00 / DE: 16:00 / P: 0:30','Compact duty times and recorded break visible at journeys');
  const dutyValue=document.getElementById('dutyStart').value;
  // Bounding-rectangle reads below force synchronous layout; no animation-frame race in headless mode.
  const kinds=[...document.querySelectorAll('#dutyKinds label span')].map(el=>el.textContent);
@@ -143,8 +144,8 @@ def fixture():
  // Invalid duty input brings the correct pane back before browser focus handling.
  document.getElementById('dutyStart').dispatchEvent(new Event('invalid',{cancelable:true}));
  assert(window.ReportTabs.active==='duty'&&!document.getElementById('reportPanel-duty').hidden,'Validation selects duty tab');
- outerTabs[0].dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true}));
- assert(window.ReportTabs.active==='train'&&document.activeElement===outerTabs[1],'Keyboard selects and focuses next tab');
+ outerTabs[1].dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true}));
+ assert(window.ReportTabs.active==='train'&&document.activeElement===outerTabs[2],'Keyboard selects and focuses next tab');
  window.ReportTabs.activate('month');
  window.parent.postMessage({layoutStatus:'pending',message:'Station picker timer'},'*');
  const station=document.createElement('input');document.body.append(station);window.StationPicker.mount(station,{frequent:async()=>Array.from({length:7},(_,i)=>({code:'A'+i,name:'Ort '+i})),search:async q=>[{code:q,name:'Treffer'}]});

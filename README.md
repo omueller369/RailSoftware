@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.14
+# LokZeitleiste v0.28.15
+
+**0.28.15 / Android 0.28.15.20:** Monatsberichte als erster Reiter, kompakter Dienstbeginn-/Dienstende-/Pausenhinweis bei Zugfahrten und 8h-Ausbleibe als DS-Vorauswahl. Polnisches Streckennetz unabhängig von der Sprache per Schalter anzeigen; polnische Startorte suchen, dorthin zoomen und Verläufe punktweise zeichnen, speichern und bearbeiten.
 
 **0.28.14 / Android 0.28.14.19:** Pflichtfelder werden mit kleinem Stern am Label und der Erklärung „* Pflichtfeld“ gekennzeichnet, einschließlich dynamischer Formulare und nativer Android-Eingaben. Rote Rahmen erscheinen bei festgestellten Eingabefehlern statt bereits beim Öffnen leerer Pflichtfelder. GPS-Zielbahnhöfe verlängern die Ortskenntnis erst nach einer ausdrücklichen Ja/Nein-Abfrage; die Entscheidung bleibt offline erhalten.
 

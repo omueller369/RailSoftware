@@ -1,0 +1,6 @@
+{
+  "text_539ad79b30b1": "Polnisches Streckennetz",
+  "text_cc804c6de6a0": "DB = Dienstbeginn / DE = Dienstende / P = bisherige Pausenzeit",
+  "text_30d3bf3d7fb2": "Im Arbeitsbericht stehen zuerst Arbeitsberichte des Monats, danach Dienstzeit und Gastfahrt und zuletzt Zugfahrten und Details (GPS). Hinter Zugfahrten siehst Du klein DB für Dienstbeginn, DE für Dienstende und P für die bisher erfasste Pausenzeit. Bei einem neuen DS-Eintrag ist Ausbleibe 8h vorausgewählt. Du kannst die Auswahl ändern. Gespeicherte Berichte behalten ihre bisherigen Angaben.",
+  "text_aa7aba73e8af": "Schalte Polnisches Streckennetz in Streckenkenntnis oder STK-anlegen o. bearbeiten ein. Die Sprachwahl ändert die Netzauswahl nicht. In der STK-Erfassung wählt der Schalter das polnische Netz und seine Ortssuche. Suche den Startbahnhof oder die Meldestelle über Namen oder PL-Kennung und wähle einen Treffer; die Karte zoomt dorthin. Zeichne durch aufeinanderfolgende Punkte weiter, wähle bei Bedarf die passende Variante und speichere mit Gültig bis. Ausschalten kehrt zur deutschen Erfassung zurück. Beide Auswahlen bleiben beim Umschalten erhalten."
+}

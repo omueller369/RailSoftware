@@ -1,10 +1,10 @@
 /* Gemeinsame Verarbeitung für Berichte und die zugehörigen Prüf- und Versandabläufe. */
 /* Reiter ändern nur die Sichtbarkeit. Bearbeitung, Entwürfe und GPS-Dienste bleiben bestehen. */
 (()=>{
- const names=['duty','train','month'],root=document.getElementById('workReport'),details=document.getElementById('reportDetails');
+ const names=['month','duty','train'],root=document.getElementById('workReport'),details=document.getElementById('reportDetails');
  const tabs=names.map(name=>document.getElementById('reportTab-'+name)),panels=names.map(name=>document.getElementById('reportPanel-'+name));
  if(!root||!details||tabs.some(tab=>!tab)||panels.some(panel=>!panel))return;
- let active='duty';
+ let active='month';
  const api=window.ReportTabs={get active(){return active;},onchange:null,activate(name,focus=false,reveal=true){
   if(!names.includes(name))return;
   active=name;

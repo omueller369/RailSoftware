@@ -1,0 +1,6 @@
+{
+  "text_539ad79b30b1": "Polish railway network",
+  "text_cc804c6de6a0": "DB = duty start / DE = duty end / P = breaks recorded so far",
+  "text_30d3bf3d7fb2": "The work report shows monthly reports first, duty time and passenger journeys second, then train journeys and details (GPS). A small hint next to train journeys shows DB for duty start, DE for duty end and P for recorded breaks. New DS entries default to the 8h absence allowance. You can change this selection. Saved reports keep their existing values.",
+  "text_aa7aba73e8af": "Enable Polish railway network in route knowledge or the STK editor. Changing language does not change the network selection. In the editor, the switch selects the Polish network and place search. Search for the starting station or reporting point by name or PL identifier and select a result; the map zooms there. Continue through successive points, select a route variant when needed and save with a validity date. Switching off returns to the German editor. Both selections are preserved when switching."
+}

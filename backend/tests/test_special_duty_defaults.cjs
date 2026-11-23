@@ -10,9 +10,12 @@ for(const kind of ['Sonstige Erfassung','Krank','Rufbereitschaft','Bereitschaft'
  assert.equal(api.state().kind,kind);assert.equal(el('dutyStart').value,'2026-10-24T08:00');assert.equal(el('dutyEnd').value,'2026-10-24T16:00');
  assert.equal(api.keepDefaultDutyDate('2026-10-24T08:00','2026-10-25T08:00'),true);assert.equal(el('dutyEnd').value,'2026-10-25T16:00');el('dutyStart').value='2026-10-25T08:00';api.realTotals();assert.equal(el('dutyDuration').textContent,'8:00');assert.equal(el('documentedPauseTotal').textContent,'0:00');
 }
+api.setup({kind:'Bereitschaft',ausbleibe:[]});api.changeDutyKind('Sonstige Erfassung');assert.equal(api.state().ausbleibe.join(','),'8h');api.state().ausbleibe=[];api.changeDutyKind('Sonstige Erfassung');assert.equal(api.state().ausbleibe.length,0,'Explicit uncheck survives recalculation and repeated selection');
 api.setup();el('dutyStart').value='2026-10-24T21:00';el('dutyEnd').value='2026-10-25T05:00';api.changeDutyKind('Urlaub');assert.equal(el('dutyEnd').value,'2026-10-25T05:00');
 api.setup({saved_id:17});api.changeDutyKind('Bereitschaft');assert.equal(api.state().kind,'Sonstige Erfassung');assert.equal(el('dutyStart').value,'2026-10-24T21:00');
 api.setup({kind:'Krank'});el('dutyStart').value='2026-10-24T08:00';el('dutyEnd').value='2026-10-24T16:00';assert.doesNotThrow(()=>api.validateKind());
 api.setPending([{client_id:'sick',kind:'Krank',start_at:'2026-10-24T08:00',end_at:'2026-10-24T16:00',actual_pause:0,trips:[],train_journeys:[]}]);
 const month=api.mergeLocal({reports:[],days:[],work_minutes:0,pause_minutes:0,guest_minutes:0},'2026-10');assert.equal(month.work_minutes,480);assert.equal(month.reports[0].credited_minutes,480);
 console.log('Special duties: explicit selection presets 08:00–16:00 on selected date, 8:00 credit, saved reports protected, sick credit without plan and local month totals passed.');
+
+api.setup();el('dutyStart').value='2026-11-10T23:45';el('dutyEnd').value='2026-11-11T08:00';api.realTotals();assert.equal(el('trainDutySummary').textContent,'DB: 10.11. 23:45 / DE: 11.11. 08:00 / P: 0:00','Overnight summary retains capture dates and pause total');

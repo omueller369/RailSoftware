@@ -40,6 +40,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "short": "{{knowledge_tabs.text_1308485034f1}}",
     "sections": [
+      {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_aa7aba73e8af}}"],"steps":[]},
       {"title":"{{location_arrival.text_b2723732fa72}}","paragraphs":["{{location_arrival.text_f644177310eb}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
  {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},
@@ -128,6 +129,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "title": "{{manual_route.text_2e35159db647}}",
     "short": "{{route_module.text_a8e535e7a6ec}}",
     "sections": [
+      {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_aa7aba73e8af}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
       {"title":"{{poland_stk.text_18c24e681e53}}","paragraphs":["{{poland_stk.text_0b4e24dce2c7}}"],"steps":[]},
       {
@@ -561,6 +563,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/arbeitsbericht",
     "aliases": [],
     "sections": [
+      {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_30d3bf3d7fb2}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
  {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},
       {

@@ -1,0 +1,6 @@
+{
+  "text_539ad79b30b1": "Polska sieć kolejowa",
+  "text_cc804c6de6a0": "DB = początek służby / DE = koniec służby / P = dotychczasowe przerwy",
+  "text_30d3bf3d7fb2": "W raporcie pracy najpierw widzisz raporty miesiąca, następnie czas służby i przejazdy pasażerskie, a na końcu jazdy pociągów i szczegóły (GPS). Obok jazd widzisz DB: początek służby, DE: koniec służby oraz P: dotychczasowe przerwy. Nowy wpis DS ma domyślnie zaznaczoną nieobecność 8h. Możesz zmienić wybór. Zapisane raporty zachowują dotychczasowe dane.",
+  "text_aa7aba73e8af": "Włącz Polska sieć kolejowa w znajomości szlaków lub w edytorze STK. Zmiana języka nie zmienia wyboru sieci. W edytorze przełącznik wybiera polską sieć i wyszukiwanie miejsc. Wyszukaj stację początkową lub posterunek po nazwie lub identyfikatorze PL i wybierz wynik; mapa przybliży to miejsce. Rysuj trasę kolejnymi punktami, w razie potrzeby wybierz wariant i zapisz z datą ważności. Wyłączenie przywraca edytor niemiecki. Oba wybory pozostają zachowane przy przełączaniu."
+}
