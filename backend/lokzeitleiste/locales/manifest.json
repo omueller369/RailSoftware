@@ -184,6 +184,11 @@
     "en": "/locales/field_navigation/en.json",
     "pl": "/locales/field_navigation/pl.json"
   },
+  "form_fields": {
+    "de": "/locales/form_fields/de.json",
+    "en": "/locales/form_fields/en.json",
+    "pl": "/locales/form_fields/pl.json"
+  },
   "gpkg_station_catalog": {
     "de": "/locales/gpkg_station_catalog/de.json",
     "en": "/locales/gpkg_station_catalog/en.json",
@@ -228,6 +233,11 @@
     "de": "/locales/la_instructions/de.json",
     "en": "/locales/la_instructions/en.json",
     "pl": "/locales/la_instructions/pl.json"
+  },
+  "location_arrival": {
+    "de": "/locales/location_arrival/de.json",
+    "en": "/locales/location_arrival/en.json",
+    "pl": "/locales/location_arrival/pl.json"
   },
   "location_editor": {
     "de": "/locales/location_editor/de.json",

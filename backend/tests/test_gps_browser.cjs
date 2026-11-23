@@ -4,7 +4,8 @@ const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert')
 class Element{
  constructor(tag){this.tag=tag;this.children=[];this.attributes={};this.value='';this.events={};}
  addEventListener(k,f){this.events[k]=f;}
- showModal(){this.open=true;}
+ showModal(){this.open=true;if(this.attributes['data-location-renewal']!==undefined)queueMicrotask(()=>this.children.find(c=>c.attributes?.['data-location-renewal-no']!==undefined)?.onclick());}
+ focus(){}
  close(){this.open=false;}
  remove(){this.removed=true;}
  append(...items){this.children.push(...items);}

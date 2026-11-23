@@ -43,7 +43,9 @@ def renew_from_gps(db,owner_id,payload):
     fixes=[p for p in payload.get('points',[]) if usable(p)]
     if not fixes:return 0
     events=[('start',fixes[0])]
-    if payload.get('ended') and len(fixes)>1 and fixes[-1]['t']>fixes[0]['t']:events.append(('end',fixes[-1]))
+    # Eine Zielverlängerung braucht die ausdrückliche, an den Bahnhof gebundene Zustimmung.
+    consent=payload.get('renew_end_location') is True and normalize_code(payload.get('renew_end_station') or '')==normalize_code(payload.get('end_station') or '')
+    if consent and payload.get('ended') and len(fixes)>1 and fixes[-1]['t']>fixes[0]['t']:events.append(('end',fixes[-1]))
     changed=0
     for kind,point in events:
         code=(payload.get(kind+'_station') or '').strip().upper()

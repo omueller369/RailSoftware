@@ -159,12 +159,13 @@ fun LoginScreen(
                 Text(text(LoginText.title), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = Color(0xFF002B4C), textAlign = TextAlign.Center)
                 Text(text(LoginText.intro), style = MaterialTheme.typography.bodyMedium, color = Color(0xFF002B4C), textAlign = TextAlign.Center)
                 Text(text(LoginText.initial), style = MaterialTheme.typography.bodySmall, color = Color(0xFF495E6E), textAlign = TextAlign.Center)
+                RequiredFieldsHint()
                 OutlinedTextField(username, { credentialsRejected = false; message = ""; username = it.filter(Char::isDigit).take(6) },
-                    modifier = Modifier.fillMaxWidth(), enabled = !busy, label = { Text(text(LoginText.number)) },
+                    modifier = Modifier.fillMaxWidth(), enabled = !busy, label = { RequiredFieldLabel(text(LoginText.number)) },
                     isError = credentialsRejected, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next))
                 OutlinedTextField(password, { credentialsRejected = false; message = ""; password = it },
-                    modifier = Modifier.fillMaxWidth(), enabled = !busy, label = { Text(text(LoginText.password)) },
+                    modifier = Modifier.fillMaxWidth(), enabled = !busy, label = { RequiredFieldLabel(text(LoginText.password)) },
                     isError = credentialsRejected, singleLine = true, visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { submit() }))

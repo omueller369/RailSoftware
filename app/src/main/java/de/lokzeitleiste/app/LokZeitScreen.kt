@@ -212,7 +212,7 @@ fun LokZeitApp(username: String) {
             }
             item {
                 LocalizedText("Aktueller Aufenthalt", style = MaterialTheme.typography.titleLarge)
-                OutlinedTextField(station, { station = it; source = "Manuell korrigiert" }, label = { LocalizedText("Betriebsstelle (editierbar)") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(station, { station = it; source = "Manuell korrigiert" }, label = { RequiredFieldLabel("Betriebsstelle (editierbar)") }, modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(ds100, { ds100 = it.uppercase().trim() }, label = { LocalizedText("DS100-Kürzel") }, modifier = Modifier.fillMaxWidth())
                 Button(enabled = Regex("[A-Z0-9]{2,7}").matches(ds100), onClick = {
                     val code = ds100
@@ -241,6 +241,7 @@ fun LokZeitApp(username: String) {
                 LocalizedText("Erkannte Zeiten können nach dem Speichern bearbeitet werden.")
             }
             item {
+                RequiredFieldsHint()
                 StopReasonDropdown(reason, elapsed, onSelect = { reason = it })
                 OutlinedTextField(note, { note = it }, label = { LocalizedText("Notiz (optional)") }, modifier = Modifier.fillMaxWidth())
                 Button(enabled = arrival != null && departure != null && station.isNotBlank() && validReason(reason, elapsed), onClick = {
@@ -275,15 +276,19 @@ private fun EditStopDialog(entry: StopEntry, onDismiss: () -> Unit, onSave: (Sto
     var departure by remember(entry) { mutableStateOf(stamp(entry.departure)) }
     var reason by remember(entry) { mutableStateOf(entry.reason) }
     var note by remember(entry) { mutableStateOf(entry.note) }
+    var editedName by remember(entry) { mutableStateOf(false) }
+    var editedArrival by remember(entry) { mutableStateOf(false) }
+    var editedDeparture by remember(entry) { mutableStateOf(false) }
     val start = runCatching { java.time.LocalDateTime.parse(arrival, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() }.getOrNull()
     val end = runCatching { java.time.LocalDateTime.parse(departure, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() }.getOrNull()
     val seconds = if (start != null && end != null && end >= start) duration(start, end) else 0L
     AlertDialog(onDismissRequest = onDismiss, title = { LocalizedText("Standzeit korrigieren") }, text = {
         Column(Modifier.heightIn(max = 510.dp).verticalScroll(rememberScrollState())) {
-            OutlinedTextField(name, { name = it }, isError = name.isBlank(), label = { LocalizedText("Betriebsstelle") })
+            RequiredFieldsHint()
+            OutlinedTextField(name, { name = it; editedName = true }, isError = editedName && name.isBlank(), label = { RequiredFieldLabel("Betriebsstelle") })
             OutlinedTextField(code, { code = it.uppercase().trim() }, label = { LocalizedText("DS100-Kürzel (optional)") })
-            OutlinedTextField(arrival, { arrival = it }, isError = start == null, label = { LocalizedText("Ankunft: TT.MM.JJJJ HH:mm:ss") })
-            OutlinedTextField(departure, { departure = it }, isError = end == null || start != null && end < start, label = { LocalizedText("Abfahrt: TT.MM.JJJJ HH:mm:ss") })
+            OutlinedTextField(arrival, { arrival = it; editedArrival = true }, isError = editedArrival && start == null, label = { RequiredFieldLabel("Ankunft: TT.MM.JJJJ HH:mm:ss") })
+            OutlinedTextField(departure, { departure = it; editedDeparture = true }, isError = editedDeparture && (end == null || start != null && end < start), label = { RequiredFieldLabel("Abfahrt: TT.MM.JJJJ HH:mm:ss") })
             LocalizedText("Dauer: ${seconds.clock()}")
             StopReasonDropdown(reason, seconds, onSelect = { reason = it })
             OutlinedTextField(note, { note = it }, label = { LocalizedText("Notiz (optional)") })
@@ -300,13 +305,14 @@ private fun EditStopDialog(entry: StopEntry, onDismiss: () -> Unit, onSave: (Sto
 @Composable
 private fun StopReasonDropdown(value: String, seconds: Long, onSelect: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
+    var selected by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
         OutlinedTextField(
             value = value,
-            isError = !validReason(value, seconds),
+            isError = selected && !validReason(value, seconds),
             onValueChange = {},
             readOnly = true,
-            label = { LocalizedText("Grund der Standzeit") },
+            label = { RequiredFieldLabel("Grund der Standzeit") },
             placeholder = { LocalizedText("Bitte auswählen") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor().fillMaxWidth()
@@ -317,7 +323,7 @@ private fun StopReasonDropdown(value: String, seconds: Long, onSelect: (String) 
                 DropdownMenuItem(
                     text = { LocalizedText(if (option == "Pause" && !available) "Pause (ab 15:00 min)" else option) },
                     enabled = available,
-                    onClick = { onSelect(option); expanded = false }
+                    onClick = { selected = true; onSelect(option); expanded = false }
                 )
             }
         }

@@ -20,20 +20,26 @@ fun PasswordChangeScreen(username: String, token: String, mandatory: Boolean = f
     var confirm by remember { mutableStateOf("") }
     var error by remember { mutableStateOf("") }
     var busy by remember { mutableStateOf(false) }
+    var checked by remember { mutableStateOf(false) }
+    var currentEdited by remember { mutableStateOf(false) }
+    var newEdited by remember { mutableStateOf(false) }
+    var confirmEdited by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.Center) {
         LocalizedText("Passwort ändern", style = MaterialTheme.typography.headlineMedium)
         LocalizedText("Konto: $username")
         if (mandatory) LocalizedText("Vor der Nutzung müssen Sie Ihr Initialpasswort ändern.")
-        OutlinedTextField(current, { current = it }, enabled = !busy, label = { LocalizedText("Aktuelles Passwort") }, isError = current.isBlank(),
+        RequiredFieldsHint()
+        OutlinedTextField(current, { current = it; currentEdited = true }, enabled = !busy, label = { RequiredFieldLabel("Aktuelles Passwort") }, isError = (checked || currentEdited) && current.isBlank(),
             visualTransformation = PasswordVisualTransformation())
-        OutlinedTextField(new, { new = it }, enabled = !busy, label = { LocalizedText("Neues Passwort (mindestens 6 Zeichen)") }, isError = new.length < 6 || new == current,
+        OutlinedTextField(new, { new = it; newEdited = true }, enabled = !busy, label = { RequiredFieldLabel("Neues Passwort (mindestens 6 Zeichen)") }, isError = (checked || newEdited) && (new.length < 6 || new == current),
             visualTransformation = PasswordVisualTransformation())
-        OutlinedTextField(confirm, { confirm = it }, enabled = !busy, label = { LocalizedText("Passwort wiederholen") }, isError = confirm.isBlank() || confirm != new,
+        OutlinedTextField(confirm, { confirm = it; confirmEdited = true }, enabled = !busy, label = { RequiredFieldLabel("Passwort wiederholen") }, isError = (checked || confirmEdited) && (confirm.isBlank() || confirm != new),
             visualTransformation = PasswordVisualTransformation())
         if (error.isNotBlank()) LocalizedText(error, color = MaterialTheme.colorScheme.error)
         Button(enabled = !busy, onClick = {
-            if (new.length < 6 || new != confirm || new == current) {
+            checked = true
+            if (current.isBlank() || new.length < 6 || new != confirm || new == current) {
                 error = "Mindestens sechs Zeichen, gleiche Bestätigung und ein anderes Passwort erforderlich."
             } else {
                 busy = true; error = ""

@@ -1,0 +1,5 @@
+{
+  "text_4dbbb6857adb": "* Pflichtfeld",
+  "text_8b04cac930aa": "Pflichtfelder und Eingabeprüfung",
+  "text_3c2d4d94680c": "Ein kleiner Stern (*) hinter einem Label kennzeichnet ein Pflichtfeld. Fülle diese Felder aus, bevor Du den Eintrag abschließt. Ein roter Rahmen erscheint erst nach einer fehlerhaften Eingabe oder einer Prüfung, wenn ein Wert fehlt, ungültig ist oder nicht zu anderen Angaben passt. Berichtsentwürfe kannst Du weiterhin unvollständig zwischenspeichern. Bedingt notwendige Felder bekommen den Stern, sobald ihre Angabe erforderlich wird."
+}

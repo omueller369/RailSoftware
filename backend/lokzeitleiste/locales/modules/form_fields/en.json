@@ -1,0 +1,5 @@
+{
+  "text_4dbbb6857adb": "* Required field",
+  "text_8b04cac930aa": "Required fields and input checks",
+  "text_3c2d4d94680c": "A small asterisk (*) after a label marks a required field. Complete these fields before finishing the entry. A red border appears only after invalid input or a check finds a missing, invalid or inconsistent value. You can still save incomplete report drafts locally. Conditional fields receive an asterisk when they become required."
+}

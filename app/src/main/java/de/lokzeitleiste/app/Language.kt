@@ -56,6 +56,20 @@ fun LocalizedText(text: String, modifier: Modifier = Modifier, color: Color = Co
          modifier = modifier, color = color, style = style)
 }
 
+/** Pflichtsterne bleiben klein; die Erklärung wird aus dem gemeinsamen Katalog übersetzt. */
+@Composable
+fun RequiredFieldLabel(caption: String) {
+    Row {
+        LocalizedText(caption)
+        Text(" *", style = MaterialTheme.typography.labelSmall)
+    }
+}
+
+@Composable
+fun RequiredFieldsHint() {
+    LocalizedText("* Pflichtfeld", style = MaterialTheme.typography.bodySmall)
+}
+
 @Composable
 fun LanguageShell(content: @Composable () -> Unit) {
     val context = LocalContext.current

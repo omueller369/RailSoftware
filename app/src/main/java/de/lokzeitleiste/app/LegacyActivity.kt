@@ -157,9 +157,10 @@ private fun MonthScreen(username: String, onTrain: () -> Unit, onPassword: () ->
                             kinds.forEach { option -> DropdownMenuItem(text = { LocalizedText(option) }, onClick = { kind = option; expanded = false; if (option in listOf("Krank", "Rufbereitschaft", "Bereitschaft", "Ausfallschicht")) { start = "08:00"; end = "16:00"; endDate = date } }) }
                         }
                     }
-                    OutlinedTextField(date, { if (endDate == date) endDate = it; date = it }, label = { LocalizedText("Datum (JJJJ-MM-TT)") })
-                    OutlinedTextField(start, { start = it }, label = { LocalizedText("Beginn (HH:MM)") })
-                    OutlinedTextField(endDate, {}, readOnly = true, label = { LocalizedText("Datum Arbeitsende") }, trailingIcon = {
+                    RequiredFieldsHint()
+                    OutlinedTextField(date, { if (endDate == date) endDate = it; date = it }, label = { RequiredFieldLabel("Datum (JJJJ-MM-TT)") })
+                    OutlinedTextField(start, { start = it }, label = { RequiredFieldLabel("Beginn (HH:MM)") })
+                    OutlinedTextField(endDate, {}, readOnly = true, label = { RequiredFieldLabel("Datum Arbeitsende") }, trailingIcon = {
                         TextButton(onClick = {
                             val chosen = runCatching { LocalDate.parse(endDate) }.getOrDefault(LocalDate.now())
                             val picker = DatePickerDialog(context, { _, y, m, d -> endDate = LocalDate.of(y, m + 1, d).toString() }, chosen.year, chosen.monthValue - 1, chosen.dayOfMonth)
@@ -167,7 +168,7 @@ private fun MonthScreen(username: String, onTrain: () -> Unit, onPassword: () ->
                             picker.show()
                         }) { LocalizedText("Datum") }
                     })
-                    OutlinedTextField(end, { end = it }, label = { LocalizedText("Ende (HH:MM)") })
+                    OutlinedTextField(end, { end = it }, label = { RequiredFieldLabel("Ende (HH:MM)") })
                     if (kind == "Rufbereitschaft" || kind == "Bereitschaft") {
                         LocalizedText(if (kind == "Rufbereitschaft")
                             "Tarifgrenze: nur 08:00–20:00 Uhr, höchstens 8 Stunden."
@@ -190,7 +191,7 @@ private fun MonthScreen(username: String, onTrain: () -> Unit, onPassword: () ->
                                 }
                             }
                             if (accommodation == "Hotel") OutlinedTextField(hotelName, { hotelName = it },
-                                label = { LocalizedText("Name des Hotels") })
+                                label = { RequiredFieldLabel("Name des Hotels") })
                         }
                         LocalizedText("Ausbleibe wird später berechnet: voller Kalendertag oder sonstiger Zeitraum.",
                             style = MaterialTheme.typography.bodySmall)
@@ -280,9 +281,10 @@ private fun MonthScreen(username: String, onTrain: () -> Unit, onPassword: () ->
             title = { LocalizedText("In Zugfahrt übergehen") },
             text = { Column {
                 LocalizedText("${original.kind}: ${original.date}, ${original.start}–${original.end}. Die Bereitschaft endet am Übergangszeitpunkt.")
-                OutlinedTextField(transitionDate, { transitionDate = it }, label = { LocalizedText("Übergangsdatum (JJJJ-MM-TT)") })
-                OutlinedTextField(transitionTime, { transitionTime = it }, label = { LocalizedText("Beginn Zugfahrt (HH:MM)") })
-                OutlinedTextField(trainEnd, { trainEnd = it }, label = { LocalizedText("Ende Zugfahrt (HH:MM)") })
+                RequiredFieldsHint()
+                OutlinedTextField(transitionDate, { transitionDate = it }, label = { RequiredFieldLabel("Übergangsdatum (JJJJ-MM-TT)") })
+                OutlinedTextField(transitionTime, { transitionTime = it }, label = { RequiredFieldLabel("Beginn Zugfahrt (HH:MM)") })
+                OutlinedTextField(trainEnd, { trainEnd = it }, label = { RequiredFieldLabel("Ende Zugfahrt (HH:MM)") })
                 if (transitionError.isNotBlank()) LocalizedText(transitionError, color = MaterialTheme.colorScheme.error)
             } },
             confirmButton = { Button(onClick = {

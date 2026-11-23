@@ -1,7 +1,7 @@
 /* Gemeinsame Verarbeitung für getrennte Anmeldung der Portale. */
 /* Das gespeicherte Erscheinungsbild schon im Seitenkopf anwenden, bevor der Inhalt gezeichnet wird. */
 (()=>{const root=document.documentElement;if(!root)return;let mode='light';try{if(localStorage.getItem('ctl.portal.theme')==='dark')mode='dark';}catch{}root.dataset.theme=mode;root.style.colorScheme=mode;
-const css=document.createElement('link');css.id='portalThemeStyles';css.rel='stylesheet';css.href='/theme.css?v=20261118-infra-go-02712';document.head.append(css);
+const css=document.createElement('link');css.id='portalThemeStyles';css.rel='stylesheet';css.href='/theme.css?v=20261123-required-02814';document.head.append(css);
 const script=document.createElement('script');script.src='/theme.js?v=20261108-validation-02619';document.head.append(script);})();
 /* Getrennte Tab-Anmeldung hält TF- und Verwaltungszugänge unabhängig voneinander. */
 (()=>{const native=window.fetch.bind(window);let area=location.pathname.startsWith('/tf')?'tf':location.pathname.startsWith('/admin')?'backend':new URLSearchParams(location.search).get('area')||sessionStorage.getItem('ctl.area')||'backend';sessionStorage.setItem('ctl.area',area);const key=a=>'ctl.session.'+a;
@@ -14,7 +14,7 @@ window.loadTfHelp=()=>{
  helpTask=new Promise((resolve,reject)=>{
   if(!document.getElementById('tfHelpStyles')){const css=document.createElement('link');css.id='tfHelpStyles';css.rel='stylesheet';css.href='/tf/help.css?v=20261108-validation-02619';document.head.append(css);}
   const load=path=>new Promise((done,fail)=>{const script=document.createElement('script');script.src=path;script.onload=done;script.onerror=()=>{script.remove();fail(Error(globalThis.CtlText.source("backend_auth_session.text_6227b32686e3")));};document.head.append(script);});
-  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261123-gestures-02813')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
+  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261123-required-02814')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
  }).catch(error=>{helpTask=null;throw error;});return helpTask;
 };
 // Downloads brauchen dieselbe Tab-Anmeldung wie API-Aufrufe.
@@ -169,3 +169,49 @@ if(typeof location!=='undefined'&&location.pathname.startsWith('/tf')&&window.to
   await fetch('/api/v1/tf/portal-access',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:location.pathname,android_version})});
  }catch(_){}
 },{once:true});
+
+/* Pflichtfeldhinweise folgen den tatsächlichen Feldregeln, auch in nachgeladenen Formularen. */
+(()=>{
+ if(typeof MutationObserver==='undefined'||!document.querySelectorAll)return;
+ const fields='input:not([type="hidden"]),select,textarea',marks=new WeakMap(),hints=new Set();let serial=0;
+ const required=field=>field.required||field.getAttribute('aria-required')==='true'||field.hasAttribute('data-required-field');
+ const explanation=()=>{const source=globalThis.CtlText?.source('form_fields.text_4dbbb6857adb')||'* Pflichtfeld';return window.I18n?.t(source)||source;};
+ function caption(label,field){
+  // Den Stern unmittelbar hinter den Text setzen, auch bei verschachtelten Beschriftungen.
+  for(const n of label.childNodes){
+   if(n.nodeType===3&&n.textContent.trim())return n;
+   if(n.nodeType!==1||n.matches('input,select,textarea,datalist,button,.ctl-required-mark'))continue;
+   if(n.contains(field)){const nested=caption(n,field);if(nested)return nested;}else if(n.textContent.trim())return n;
+  }
+ }
+
+ function update(field){
+  let state=marks.get(field);
+  if(!required(field)||field.type==='hidden'){
+   if(state){if(!state.group||![...state.group.querySelectorAll(fields)].some(required))state.star?.remove();if(state.generated)state.label.remove();marks.delete(field);}return;
+  }
+  let label=field.labels?.[0]||field.closest('label')||field.closest('.brake-number')?.parentElement?.querySelector(':scope > label');
+  if(state&&state.star?.isConnected&&state.label===label)return;
+  if(state){state.star?.remove();if(state.generated)state.label.remove();}
+  let generated=false;
+  if(!label){
+   const cell=field.closest('td'),rowTitle=cell?.parentElement?.querySelector('th'),title=field.getAttribute('aria-label')||rowTitle?.textContent||field.getAttribute('placeholder');
+   if(!title)return;
+   if(!field.id)field.id='ctl-required-field-'+(++serial);
+   label=document.createElement('label');label.htmlFor=field.id;label.className='ctl-required-caption';label.textContent=title;field.before(label);generated=true;
+  }
+  const group=field.closest('.brake-number'),existing=label.querySelector('.ctl-required-mark');
+  if(existing){marks.set(field,{label,star:existing,group});return;}
+  const anchor=caption(label,field);if(!anchor)return;
+  const star=document.createElement('span');star.className='ctl-required-mark';star.setAttribute('aria-hidden','true');star.setAttribute('data-i18n-ignore','');star.textContent=' *';
+  // Bereits vorhandene, ausdrücklich gesetzte Pflichtsterne nicht doppeln.
+  if(!/\*\s*$/.test(anchor.textContent)){if(anchor.nodeType===3)anchor.after(star);else anchor.append(star);}
+  marks.set(field,{label,star,generated,group});
+  const scope=field.closest('form')||field.closest('dialog,section')||field.closest('main')||document.body;
+  if(!scope.querySelector(':scope > .ctl-required-hint')){const hint=document.createElement('p');hint.className='ctl-required-hint';hint.setAttribute('data-i18n-ignore','');hint.textContent=explanation();scope.append(hint);hints.add(hint);}
+ }
+ function scan(root){if(root.nodeType!==1&&root!==document)return;if(root.matches?.(fields))update(root);for(const field of root.querySelectorAll(fields))update(field);}
+ function start(){scan(document.body);new MutationObserver(records=>{for(const record of records){if(record.type==='attributes'){if(record.attributeName==='required'&&record.target.validity?.valid)window.CtlValidation?.clear(record.target);update(record.target);}else{for(const added of record.addedNodes)scan(added);if(record.target.matches?.('label,label *')){const label=record.target.closest('label');for(const field of label?.control?[label.control]:label?.querySelectorAll(fields)||[])update(field);}}}}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['required','aria-required','data-required-field','type']});}
+ window.addEventListener('languagechange',()=>{for(const hint of hints){if(hint.isConnected)hint.textContent=explanation();else hints.delete(hint);}});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();

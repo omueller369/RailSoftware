@@ -1,0 +1,5 @@
+{
+  "text_4dbbb6857adb": "* Pole wymagane",
+  "text_8b04cac930aa": "Pola wymagane i sprawdzanie danych",
+  "text_3c2d4d94680c": "Mała gwiazdka (*) za etykietą oznacza pole wymagane. Wypełnij te pola przed zakończeniem wpisu. Czerwona ramka pojawia się dopiero po błędnym wprowadzeniu danych lub sprawdzeniu, gdy wartości brakuje, jest nieprawidłowa lub nie pasuje do innych danych. Nadal możesz zapisywać niekompletne wersje robocze raportów. Pola wymagane warunkowo otrzymują gwiazdkę, gdy stają się konieczne."
+}

@@ -33,7 +33,7 @@ const api=window.CtlValidation;
  const safe=api.capture({body:JSON.stringify({new_password:'newer'})});await api.response(new Response(JSON.stringify({detail:'Check input',fields:[{field:'body.new_password',type:'value_error'}]}),{status:422}),safe);assert.equal(api.takeIssues('Check input')[0].loc.at(-1),'new_password');
  events.reset({target:scope});assert.equal(b.getAttribute('data-ctl-invalid'),null);
  const css=fs.readFileSync('backend/lokzeitleiste/static/portal-theme.css','utf8');
- assert(css.includes(':invalid,[aria-invalid=true],[data-invalid=true],[data-ctl-invalid=true]'));
+ assert(css.includes('[aria-invalid=true],[data-invalid=true],[data-ctl-invalid=true]'));
  assert(css.includes('border-color:#ff8585!important'));
  console.log('Field errors: native validity, correction, module ownership, repeated rows, stale responses, reset and dark theme passed.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

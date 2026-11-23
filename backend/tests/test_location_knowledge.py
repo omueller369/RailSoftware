@@ -48,7 +48,7 @@ class LocationKnowledgeTest(unittest.TestCase):
         with Session(self.engine) as db:
             self.assertEqual(renew_from_gps(db,self.tf,payload),1);db.commit()
             rows=list(db.scalars(select(TfLocationKnowledge).where(TfLocationKnowledge.owner_id==self.tf)));self.assertEqual(len(rows),1);self.assertEqual(rows[0].known_until,'2027-11-10')
-            payload['ended']=True;self.assertEqual(renew_from_gps(db,self.tf,payload),1);db.commit()
+            payload['ended']=True;payload['renew_end_location']=True;payload['renew_end_station']='BBB';self.assertEqual(renew_from_gps(db,self.tf,payload),1);db.commit()
             rows={r.ds100:r for r in db.scalars(select(TfLocationKnowledge).where(TfLocationKnowledge.owner_id==self.tf))};self.assertEqual(rows['BBB'].known_until,'2027-11-11')
             rows['AAA'].known_until='2030-01-01';refresh_hash(rows['AAA']);db.commit()
             self.assertEqual(renew_from_gps(db,self.tf,payload),0);self.assertEqual(rows['AAA'].known_until,'2030-01-01')
@@ -59,9 +59,29 @@ class LocationKnowledgeTest(unittest.TestCase):
     def test_real_gps_save_updates_inventory_atomically(self,_):
         from uuid import uuid4
         t=int(datetime(2026,11,10,23,30,tzinfo=timezone.utc).timestamp()*1000)
-        body=dict(train_number='123',expected_revision=0,start_station='AAA',end_station='BBB',ended=True,points=[dict(t=t,lat=52,lon=13,accuracy=5),dict(t=t+60000,lat=52.001,lon=13.001,accuracy=5)])
+        body=dict(train_number='123',expected_revision=0,start_station='AAA',end_station='BBB',renew_end_location=True,renew_end_station='BBB',ended=True,points=[dict(t=t,lat=52,lon=13,accuracy=5),dict(t=t+60000,lat=52.001,lon=13.001,accuracy=5)])
         response=self.driver.put('/api/v1/tf/gps/'+str(uuid4()),json=body);self.assertEqual(response.status_code,200,response.text)
         items=self.items();self.assertEqual(len(items),2);self.assertTrue(all(row['known_until']=='2027-11-11' for row in items),'Berlin capture date used after midnight')
+
+    @patch('lokzeitleiste.location_knowledge.today',return_value=date(2026,11,17))
+    def test_destination_requires_station_bound_yes_and_keeps_no_on_replay(self,_):
+        from uuid import uuid4
+        t=int(datetime(2026,11,10,12,tzinfo=timezone.utc).timestamp()*1000)
+        path='/api/v1/tf/gps/'+str(uuid4())
+        body=dict(train_number='123',expected_revision=0,start_station='AAA',end_station='BBB',ended=True,points=[dict(t=t,lat=52,lon=13,accuracy=5),dict(t=t+60000,lat=52.001,lon=13.001,accuracy=5)])
+        for decision,station in [(None,None),(False,'BBB'),(True,'AAA')]:
+            if decision is not None:body.update(renew_end_location=decision,renew_end_station=station)
+            response=self.driver.put(path,json=body);self.assertEqual(response.status_code,200,response.text)
+            body['expected_revision']=response.json()['revision']
+            self.assertEqual([r['ds100'] for r in self.items()],['AAA'],'Missing, No, or another destination never grants renewal')
+        body.update(renew_end_location=True,renew_end_station='BBB')
+        response=self.driver.put(path,json=body);self.assertEqual(response.status_code,200,response.text)
+        self.assertTrue(response.json()['renew_end_location']);body['expected_revision']=response.json()['revision']
+        places={r['ds100']:r for r in self.items()};self.assertEqual(places['BBB']['known_until'],'2027-11-10')
+        before=places['BBB'].copy()
+        body.update(renew_end_location=False)
+        response=self.driver.put(path,json=body);self.assertEqual(response.status_code,200,response.text)
+        self.assertEqual(next(r for r in self.items() if r['ds100']=='BBB'),before,'No never shortens or deletes previous knowledge')
 
     @patch('lokzeitleiste.location_knowledge.today',return_value=date(2026,11,17))
     def test_legacy_spacing_does_not_allow_a_duplicate_new_station(self,_):

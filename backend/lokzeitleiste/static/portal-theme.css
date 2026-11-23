@@ -54,12 +54,12 @@
 }
 @media print{html[data-theme]{color-scheme:light!important}.portal-theme-toggle{display:none!important}}
 
-/* Required, malformed and server-rejected fields share the same visible border. */
+/* Rote Rahmen erst nach einer Eingabeprüfung oder einer konkreten Serverrückmeldung. */
 @media screen{
- html body :is(input:not([type=hidden]),select,textarea):is(:invalid,[aria-invalid=true],[data-invalid=true],[data-ctl-invalid=true]){
+ html body :is(input:not([type=hidden]),select,textarea):is([aria-invalid=true],[data-invalid=true],[data-ctl-invalid=true]){
   border:2px solid #c40000!important;outline:1px solid #c40000!important;outline-offset:0;box-shadow:0 0 0 1px #c4000033!important
  }
- html[data-theme=dark] body :is(input:not([type=hidden]),select,textarea):is(:invalid,[aria-invalid=true],[data-invalid=true],[data-ctl-invalid=true]){
+ html[data-theme=dark] body :is(input:not([type=hidden]),select,textarea):is([aria-invalid=true],[data-invalid=true],[data-ctl-invalid=true]){
   border-color:#ff8585!important;outline-color:#ff8585!important
  }
 }
@@ -99,3 +99,5 @@ html[data-theme=dark] [data-knowledge-inventory=places] .route-csv-table tr[data
 [data-knowledge-inventory=places] .route-csv-table tr[aria-selected=true]>td:first-child{box-shadow:inset 4px 0 #368bd2}
 
 html body td[data-ctl-invalid=true]{outline:2px solid #d71920;outline-offset:-2px}html[data-theme=dark] body td[data-ctl-invalid=true]{outline-color:#ff8585}
+
+.ctl-required-mark{display:inline!important;font-size:.8em;vertical-align:super;line-height:0;color:inherit;margin-left:.12em}.ctl-required-hint{font-size:.85em;color:inherit;opacity:.85;margin:.65em 0}.ctl-required-caption{font-size:.85em;display:block}

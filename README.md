@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.13
+# LokZeitleiste v0.28.14
+
+**0.28.14 / Android 0.28.14.19:** Pflichtfelder werden mit kleinem Stern am Label und der Erklärung „* Pflichtfeld“ gekennzeichnet, einschließlich dynamischer Formulare und nativer Android-Eingaben. Rote Rahmen erscheinen bei festgestellten Eingabefehlern statt bereits beim Öffnen leerer Pflichtfelder. GPS-Zielbahnhöfe verlängern die Ortskenntnis erst nach einer ausdrücklichen Ja/Nein-Abfrage; die Entscheidung bleibt offline erhalten.
 
 **0.28.13 / Android 0.28.13.18:** Kartenverschiebung mit einem und zwei Fingern korrigiert. Die Übergabe der Berührung vom SVG-Kartenelement an den Kartencontainer verwirft die Geste nicht mehr. Nach dem Anheben eines Fingers kannst Du mit dem verbleibenden Finger weiter verschieben.
 

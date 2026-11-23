@@ -54,6 +54,8 @@ class Recording(BaseModel):
     end_station:str|None=Field(default=None,max_length=10)
     start_station_name:str=Field(default='',max_length=255)
     end_station_name:str=Field(default='',max_length=255)
+    renew_end_location:bool=False
+    renew_end_station:str|None=Field(default=None,max_length=10)
     manual_stops:list[ManualStop]|None=Field(default=None,max_length=500)
     stop_edits:dict[str,StopEdit]|None=Field(default=None,max_length=1024)
     departure_applied:bool=False
