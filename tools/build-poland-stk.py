@@ -15,7 +15,7 @@ def build(check=False):
     files['manifest.json']=packed(dict(schema=1,revision=revision,counts=manifest['counts'],snapshot=manifest['snapshot'],node_count=len(graph['nodes']),edge_count=len(graph['edges'])))
     # Canonical source for point rendering in the existing tiled rail layer.
     points_raw=gzip.compress(packed(point_tiles),mtime=0);points_path=REF/'map-points.json.gz'
-    if check:assert points_path.read_bytes()==points_raw
+    if check:assert gzip.decompress(points_path.read_bytes())==packed(point_tiles) # gzip OS header differs between Python releases
     else:points_path.write_bytes(points_raw)
     hashes={}
     for name,data in files.items():
