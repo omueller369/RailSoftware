@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Bremszettel und ihre Eingabe- und Druckansichten.
 """Rebuild the clean bilingual brake-sheet background without moving fill rectangles.
 
 Run from repository root. Requires ReportLab, DejaVu Sans and pdftoppm only for

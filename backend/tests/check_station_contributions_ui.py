@@ -1,3 +1,4 @@
+# Browserprüfung für Betriebsstellen und Ortszuordnungen.
 """Real DOM and IndexedDB: explicit consent, offline queue, conflict prompts and private TF overlays."""
 import check_work_report_layout as runner
 

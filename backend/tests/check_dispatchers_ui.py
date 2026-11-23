@@ -1,3 +1,4 @@
+# Browserprüfung für Disponenten und Zugverfolgung.
 """Shared personnel form in dispatcher context: defaults, create/edit and read-only."""
 import argparse,re
 from pathlib import Path
@@ -7,7 +8,7 @@ from localized_fixtures import localize_html
 
 def fixture():
     raw=(STATIC/'staff.html').read_text()
-    # Use the same four substitutions as the server's dispatcher page.
+    # Dieselben vier Ersetzungen wie auf der Disponentenseite des Servers anwenden.
     import hashlib
     def key(name):return 'dispatch_tracking.text_'+hashlib.sha256(name.encode()).hexdigest()[:12]
     for old in ['text_045e24cbddab','text_ae186dd21359','text_a3d928778935']:

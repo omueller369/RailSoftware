@@ -1,3 +1,4 @@
+# Browserprüfung für Streckenkenntnisse und Referenzgeometrie.
 """Real file input, preview/apply, original values, private cache and owner isolation."""
 import argparse
 from browser_realtime import check_pages

@@ -1,3 +1,4 @@
+# Regressionstests für Berichte und die zugehörigen Prüf- und Versandabläufe.
 """Ensure the tablet actually contains the changed editor and GPS defaults."""
 import argparse,zipfile,json,re
 from pathlib import Path

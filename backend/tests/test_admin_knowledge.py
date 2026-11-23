@@ -1,3 +1,4 @@
+# Regressionstests für persönliche Kenntnisbestände.
 import unittest,json
 from uuid import uuid4
 from fastapi.testclient import TestClient

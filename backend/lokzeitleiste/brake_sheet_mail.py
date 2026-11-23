@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Bremszettel und ihre Eingabe- und Druckansichten.
 """Explicit, account-owned brake-sheet mail composition and archived PDF snapshots."""
 from .localization import source as _text_source
 import json,os
@@ -35,7 +36,7 @@ class MailInput(BaseModel):
     bcc:list[EmailStr]=Field(default_factory=lambda:[BCC],max_length=30)
 
 def mailbox(db,user):
-    # Test-only routing for brake sheets; no TF access to administrator mail APIs.
+    # Versandweg für Bremszettel im Testbetrieb; Verwaltungs-Postfachrouten bleiben für TF gesperrt.
     admins=list(db.scalars(select(User).where(User.role=='admin',User.active==True).order_by(User.id)))
     primary=next((a for a in admins if a.username=='admin'),None)
     candidates=[primary] if primary else admins

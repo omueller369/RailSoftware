@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Tagesberichte und Dienstzeiten.
 from ..localization import source as _text_source
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta

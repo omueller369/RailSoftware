@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe.
 """Read-only comparison of Tf working hours and Berlin planning targets."""
 from .localization import source as _text_source
 from fastapi import APIRouter, Depends, HTTPException

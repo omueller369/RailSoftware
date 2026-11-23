@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Portalnavigation und Berechtigungen. */
 (async()=>{try{
 const response=await fetch('/api/v1/admin/me',{credentials:'same-origin',cache:'no-store'});if(!response.ok){window.BackendNavigation?.destroy();return;}const me=await response.json(),p=me.permissions;let preference={user_id:me.id,variant:'sidebar'};try{const r=await fetch('/api/v1/admin/menu-preference',{credentials:'same-origin',cache:'no-store'});if(r.ok)preference=await r.json();}catch(_){}const variants=['sidebar','compact','sections'];let variant=variants.includes(preference.variant)?preference.variant:'sidebar';const fingerprint=JSON.stringify({role:me.role,permissions:p}),existing=document.querySelector('.backend-menu-control');if(existing?.dataset.menuRevision==='20261025-year-fit-14'&&existing.dataset.variant===variant&&existing.dataset.accountId===String(me.id)&&existing.dataset.permissions===fingerprint&&window.BackendNavigation&&document.getElementById('backend-sidebar'))return;window.BackendNavigation?.destroy();existing?.remove();let nav=document.getElementById('navigation');if(!nav){nav=document.createElement('nav');nav.className='card';nav.id='navigation';document.querySelector('main').prepend(nav);}nav.setAttribute('aria-label',globalThis.CtlText.source("backend_backend_nav.text_d2fea9300391"));nav.hidden=true;nav.classList.add('backend-menu');nav.replaceChildren();const list=document.createElement('ul');list.className='menu-tree';nav.append(list);
 let groupCount=0;
@@ -15,6 +16,7 @@ function link(box,label,href,allowed=true){const li=document.createElement('li')
 function placeholder(box,label){const item=document.createElement('li'),text=document.createElement('span');text.className='menu-placeholder';text.textContent=label;text.setAttribute('aria-disabled','true');item.append(text);box.append(item);}
 const hasEmployees=['employees','planning','worktime','reports','directory','shifts','email'].some(module=>p[module]);
 const modules=[
+ ['quality',globalThis.CtlText.source('quality.text_340a3048a0b3'),'/admin/quality',me.role==='admin'||!!p.employees||!!p.knowledge],
  ['la',globalThis.CtlText.source('la_instructions.text_aaf232064610'),'/admin/la-instructions',!!p.la],
  ['dispatchers',globalThis.CtlText.source('dispatch_tracking.text_640480716e00'),'/admin/dispatchers',!!p.dispatchers],
  ['tracking',globalThis.CtlText.source('dispatch_tracking.text_5a95db2aa8e5'),'/admin/tracking',!!p.tracking],
@@ -47,7 +49,7 @@ const home=document.createElement('li'),homeLink=document.createElement('a');hom
 link(list,globalThis.CtlText.source("backend_backend_nav.text_e3e8b2523e66"),'/admin/menu-designs');
 if(me.role==='admin'){const administration=group(globalThis.CtlText.source("backend_backend_nav.text_4b42c6690ebe"));for(const module of modules)link(administration,module[1],module[2],module[3]);for(const [label,url]of [['phpMyAdmin','/phpmyadmin'],[globalThis.CtlText.source('server_backend_start.text_99ed27bf3bdb'),'/webmailer']]){const a=link(administration,label,url);a.target='_blank';a.rel='noopener noreferrer';}}
 const management=group(globalThis.CtlText.source("backend_backend_nav.text_2456bb8ed72f")),employees=group(globalThis.CtlText.source("backend_backend_nav.text_f4cb6891b9e5"),management);
-moduleLink(management,'la');moduleLink(management,'work_reports');moduleLink(management,'knowledge');moduleLink(management,'tracking');moduleLink(employees,'dispatchers');moduleLink(employees,'wgm');
+moduleLink(management,'quality');moduleLink(management,'la');moduleLink(management,'work_reports');moduleLink(management,'knowledge');moduleLink(management,'tracking');moduleLink(employees,'dispatchers');moduleLink(employees,'wgm');
 const drivers=group(globalThis.CtlText.source("admin_work_reports.text_205f153c67b5"),employees,'/admin/tf',hasEmployees);moduleLink(drivers,'tfNew',globalThis.CtlText.source("backend_backend_nav.text_5c1058aea6bf"));
 const office=group(globalThis.CtlText.source("backend_backend_nav.text_2456bb8ed72f"),employees,'/admin/staff',!!p.staff);moduleLink(office,'staffNew',globalThis.CtlText.source("backend_backend_nav.text_5c1058aea6bf"));
 const planning=group(globalThis.CtlText.source("backend_backend_nav.text_b702020127a6"));for(const id of ['planning','shifts','overview'])moduleLink(planning,id);

@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Fahrzeugübergaben und Mängelerfassung.
 """Lokübergabebuch: read-only vehicle overview, backed by the vehicle master data."""
 from .localization import source as _text_source
 from pathlib import Path

@@ -1,3 +1,4 @@
+# Browserprüfung für persönliche Kenntnisbestände.
 """Shared real map and inventories: TF switching, server-only privacy, staff editing."""
 import argparse,re
 from browser_realtime import check_pages

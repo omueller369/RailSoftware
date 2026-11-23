@@ -1,3 +1,4 @@
+/* Regressionstests für Kartenbedienung und Bildausschnitte. */
 const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
 const root='backend/lokzeitleiste/static/',context={window:{},console,Map,WeakMap,Math};vm.createContext(context);for(const file of ['m1-basemap-data.js','m1-map.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),context);
 const {M1Map:map,M1BasemapPlaces:places}=context.window,original=JSON.stringify(places);assert(places.length>10000);assert(places.some(p=>p[1]==='Görlitz'));

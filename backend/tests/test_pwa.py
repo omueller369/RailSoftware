@@ -1,3 +1,4 @@
+# Regressionstests für Installation der Webanwendung.
 import io,unittest
 from fastapi.testclient import TestClient
 from PIL import Image

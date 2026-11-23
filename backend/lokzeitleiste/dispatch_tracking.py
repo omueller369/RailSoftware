@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anzeige freigegebener Zugpositionen.
 """Dispatcher management pages and consent-filtered live train tracking."""
 from pathlib import Path
 from fastapi import APIRouter,Depends,Response

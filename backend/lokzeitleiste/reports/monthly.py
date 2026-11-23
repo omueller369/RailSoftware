@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Monatsberichte und Summen.
 """Monatsübersicht in Minuten; Gastfahrt gehört zur geleisteten Zeit."""
 from ..localization import source as _text_source
 

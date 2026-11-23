@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Arbeitsberichte und deren Übertragung.
 """Finalized report inbox and explicitly versioned TF correction returns."""
 import calendar
 import json
@@ -60,6 +61,7 @@ def create_router(require_admin):
     @router.get('/api/v1/admin/work-reports')
     def listing(year:int=Query(ge=2000,le=2100),month:int=Query(ge=1,le=12),
                 employee_id:int|None=Query(default=None,ge=1),employee_category:Literal['tf','wgm']|None=None,
+                review_state:Literal['received','in_review','returned','approved']|None=None,
                 offset:int=Query(default=0,ge=0),limit:int=Query(default=50,ge=1,le=100),
                 user=Depends(require_admin),db:Session=Depends(database_session)):
         query=select(DutyReport,TfProfile,EmployeeCategory.category,WgmProfile).join(TfProfile,TfProfile.user_id==DutyReport.tf_user_id).join(WorkEntry,WorkEntry.id==DutyReport.entry_id).outerjoin(EmployeeCategory,EmployeeCategory.user_id==TfProfile.user_id).outerjoin(WgmProfile,WgmProfile.user_id==DutyReport.tf_user_id)
@@ -67,21 +69,23 @@ def create_router(require_admin):
         if employee_id is not None:query=query.where(DutyReport.tf_user_id==employee_id)
         if employee_category:query=query.where(func.coalesce(EmployeeCategory.category,'tf')==employee_category)
         total=db.scalar(select(func.count()).select_from(query.subquery()))
-        rows=db.execute(query.order_by(WorkEntry.entry_date.desc(),DutyReport.id.desc()).offset(offset).limit(limit))
+        rows=db.execute(query.order_by(WorkEntry.entry_date.desc(),DutyReport.id.desc()) if review_state else query.order_by(WorkEntry.entry_date.desc(),DutyReport.id.desc()).offset(offset).limit(limit))
         items=[]
         for report,profile,kind,wgm in rows:
             if wgm:profile=wgm;kind='wgm'
             payload=json.loads(report.payload_json)
             start=datetime.fromisoformat(payload['start_at']);end=datetime.fromisoformat(payload['end_at'])
             items.append(dict(id=report.id,employee=employee(profile,kind or 'tf'),start_at=payload['start_at'],end_at=payload['end_at'],
-                              kind=payload.get('kind','Dienstschicht'),duration_minutes=int((end-start).total_seconds()//60),created_at=report.created_at.isoformat(),returned=report_view(db,report)['returned'],version=report_view(db,report)['version']))
+                              kind=payload.get('kind','Dienstschicht'),duration_minutes=int((end-start).total_seconds()//60),created_at=report.created_at.isoformat(),returned=report_view(db,report)['returned'],version=report_view(db,report)['version'],review=report_view(db,report)['review']))
+        if review_state:
+            items=[row for row in items if row['review']['state']==review_state];total=len(items);items=items[offset:offset+limit]
         return dict(items=items,total=total,offset=offset,limit=limit)
 
     @router.get('/api/v1/admin/work-reports/{report_id}')
     def details(report_id:int,user=Depends(require_admin),db:Session=Depends(database_session)):
         report=owned_report(db,report_id)
         from ..accounts.access import permissions
-        return dict(can_return=permissions(db,user)['work_reports']>=2 and category(db,report.tf_user_id)=='tf',report=report_view(db,report),employee=employee(db.get(WgmProfile,report.tf_user_id) or db.get(TfProfile,report.tf_user_id),category(db,report.tf_user_id)))
+        return dict(can_review=permissions(db,user)['work_reports']>=2,can_return=permissions(db,user)['work_reports']>=2 and category(db,report.tf_user_id)=='tf',report=report_view(db,report),employee=employee(db.get(WgmProfile,report.tf_user_id) or db.get(TfProfile,report.tf_user_id),category(db,report.tf_user_id)))
 
     @router.post('/api/v1/admin/work-reports/{report_id}/return')
     def return_to_tf(report_id:int,data:ReturnInput,user=Depends(require_admin),db:Session=Depends(database_session)):

@@ -1,3 +1,4 @@
+# Browserprüfung für Sprachwahl und Übersetzungen.
 """Exercise the real key bundle, language picker and help in headless Chrome."""
 import argparse
 import html

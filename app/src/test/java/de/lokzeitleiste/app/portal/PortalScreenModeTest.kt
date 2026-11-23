@@ -1,3 +1,4 @@
+/* Regressionstests für gemeinsame Portaloberfläche. */
 package de.lokzeitleiste.app.portal
 
 import android.view.WindowManager

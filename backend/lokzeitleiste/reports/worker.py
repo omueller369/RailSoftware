@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für im Hintergrund ausgeführte Versand- und Wartungsaufträge.
 import argparse
 import time
 
@@ -44,6 +45,13 @@ def main():
         parser.error("Intervall muss mindestens 5 Sekunden betragen")
     while True:
         poll_once()
+        from ..backups import tick
+        try:
+            backup_job=tick()
+            if args.once and backup_job:backup_job.join()
+        except Exception:
+            import logging
+            logging.getLogger(__name__).error("Sicherungsauftrag konnte nicht vorbereitet werden.")
         if args.once:
             return
         time.sleep(args.interval)

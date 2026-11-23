@@ -1,4 +1,5 @@
-/* Keep in sync with planning/palette.py. Calendar dates use UTC to avoid timezone shifts. */
+/* Gemeinsame Verarbeitung für Dienstplanung und Kalender. */
+/* Mit planning/palette.py abgleichen. Kalendertage verwenden UTC, damit keine Zeitzonenverschiebung entsteht. */
 (()=>{const colors={Arbeitstag:'#f5f5f5',Urlaub:'#ff7256',Ruhetag:'#66cdaa',Ungeplant:'#eef0f3',Feiertag:'#ffe4e1',Wochenende:'#eedc82'};
 function weekend(day){return [0,6].includes(new Date(day.date+'T00:00:00Z').getUTCDay());}
 function base(day){return colors[[globalThis.CtlText.source("backend_plan_colors.text_35d3a889824d"),globalThis.CtlText.source("backend_plan_colors.text_e79aa42d7d18")].includes(day.kind)?day.kind:weekend(day)?globalThis.CtlText.source("backend_plan_colors.text_fd7058ac0c38"):day.kind]||colors.Ungeplant;}

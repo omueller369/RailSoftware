@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anbindung des freigegebenen Google-Kontos.
 """Google OAuth/API account linking with PKCE, one-use state and session binding."""
 from ..localization import source as _text_source
 import base64
@@ -108,7 +109,7 @@ def create_router(require_admin,public_origin):
                 raise HTTPException(409,_text_source('server_mailbox_google.text_9e02095f3468'))
             profile=request_json('https://gmail.googleapis.com/gmail/v1/users/me/profile',token=result['access_token'])
             address=str(TypeAdapter(EmailStr).validate_python(profile.get('emailAddress','')))
-            # Lock the employee before replacing the linked account; reject concurrent changes.
+            # Den Mitarbeiter vor dem Austausch seines verknüpften Kontos sperren, damit parallele Änderungen auffallen.
             target=db.scalar(select(User).where(User.id==tf_id).with_for_update())
             if not target or target.role!='tf' or fingerprint(db,tf_id)!=data['fingerprint']:
                 raise HTTPException(409,_text_source('server_mailbox_google.text_ae943493dff8'))

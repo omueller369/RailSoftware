@@ -1,3 +1,4 @@
+# Regressionstests für Betriebsstellen und Ortszuordnungen.
 import copy,json,tempfile,unittest
 from pathlib import Path
 from sqlalchemy import create_engine,select,func

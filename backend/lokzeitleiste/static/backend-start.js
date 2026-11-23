@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 (()=>{
 const el=id=>document.getElementById(id),t=s=>window.I18n?.t(s)||s;
 let modules=[],adminTools=[];

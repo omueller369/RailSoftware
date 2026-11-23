@@ -1,3 +1,4 @@
+/* Regressionstests für Streckenkenntnisse und Referenzgeometrie. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 const window={};vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/route-coverage.js','utf8'),{window});const C=window.RouteCoverage;
 const now=Date.parse('2026-11-17T12:00:00Z'),ago=n=>Date.UTC(2026,10,17-n,12),state=(days,counts=[2,2])=>C.ageState(counts,ago(days),now);

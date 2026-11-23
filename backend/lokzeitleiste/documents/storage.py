@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für sichere Dateipfade und dauerhafte Ablage.
 from ..localization import source as _text_source
 import hashlib
 import os
@@ -103,7 +104,7 @@ def _rollback_relocations(db):
 def relocate(db,user,row,relative):
     """Copy first; remove the original only after its database path is committed."""
     root=prepare_tree(user)
-    # Keep a previous collision suffix once the document is in the correct folder.
+    # Ist das Dokument schon im richtigen Ordner, bleibt ein früherer Kollisionszusatz erhalten.
     if row.relative_path==relative or (PurePosixPath(row.relative_path).parent==PurePosixPath(relative).parent and
             PurePosixPath(row.relative_path).name.startswith(PurePosixPath(relative).stem+'-system-')):
         return row
@@ -135,7 +136,7 @@ def generated(db,user,relative,content,source):
     existing=db.scalar(select(DocumentFile).where(DocumentFile.owner_id==user.id,DocumentFile.source_key==source))
     if existing:
         relocate(db,user,existing,relative)
-        # A missing original is recreated directly in the requested directory.
+        # Ein fehlendes Original wird direkt im angeforderten Verzeichnis neu erstellt.
         if (root/existing.relative_path).is_file():relative=existing.relative_path
     parts=PurePosixPath(relative).parts
     if not parts or parts[0]!=_text_source('server_documents_storage.text_36f250abd259') or any(p in ('.','..') for p in parts):raise ValueError(_text_source('server_documents_storage.text_955e73698b54'))

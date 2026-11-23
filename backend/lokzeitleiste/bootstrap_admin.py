@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für erste Einrichtung des Administratorkontos.
 """Admin aus einer geschützten Passwortdatei (stdin) anlegen; keine Passwortausgabe."""
 import re
 import sys

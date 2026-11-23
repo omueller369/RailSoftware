@@ -1,3 +1,4 @@
+# Regressionstests für erste Einrichtung des Administratorkontos.
 import io
 import unittest
 import tempfile

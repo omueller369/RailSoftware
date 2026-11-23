@@ -1,4 +1,5 @@
-/* Display-only sorting/paging. Original row indexes preserve the route's order. */
+/* Gemeinsame Verarbeitung für Streckenkenntnisse und Referenzgeometrie. */
+/* Sortierung und Seitenwechsel ändern nur die Anzeige. Die ursprünglichen Zeilenindizes erhalten die Streckenreihenfolge. */
 (()=>{
 const keys={rows:'text_478a57b978d0',all:'text_0f99809346ee',page:'text_6da204d6ce9f',of:'text_b318fdec2abb',go:'text_e5414b7a08ec',first:'text_4d74d39dc01d',previous:'text_35a1f687569e',next:'text_fb9cf3d48159',last:'text_644b1c01028a',ascending:'text_363ebe2d71dc',descending:'text_cbea2a926376'},t=k=>{const s=globalThis.CtlText.source('route_module.'+keys[k]);return window.I18n?.t(s)||s;},node=(tag,text)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;return e;};
 function make({columns,rows,state,changed,busy=false,scope}){

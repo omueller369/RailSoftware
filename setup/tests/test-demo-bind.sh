@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Beispieldaten und getrennte Vorführbestände. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 set -Eeuo pipefail
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)
 case_dir=$(mktemp -d)

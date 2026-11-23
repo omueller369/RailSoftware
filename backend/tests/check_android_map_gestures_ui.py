@@ -1,3 +1,4 @@
+# Browserprüfung für Kartenbedienung und Bildausschnitte.
 """Chrome-generated two-finger events on the real Android map renderers at 4x CPU slowdown."""
 import argparse,json,time
 from browser_realtime import check_pages

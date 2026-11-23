@@ -1,3 +1,4 @@
+/* Regressionstests für Betriebsstellen und Ortszuordnungen. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 const seedSource=fs.readFileSync('backend/lokzeitleiste/static/station-catalog-data.js','utf8'),source=fs.readFileSync('backend/lokzeitleiste/static/station-catalog.js','utf8');
 function runtime(storage=new Map(),broken=false){

@@ -1,4 +1,5 @@
-// Regression: asynchronously replaced header must not interrupt TF list/navigation.
+/* Regressionstests für Verwaltung der TF-Stammdaten. */
+// Ein asynchron ersetzter Kopfbereich darf die TF-Liste und ihre Navigation nicht unterbrechen.
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 const source=fs.readFileSync('backend/lokzeitleiste/static/admin.js','utf8');
 const html=fs.readFileSync('backend/lokzeitleiste/static/admin.html','utf8');
@@ -29,7 +30,7 @@ async function scenario(path,search='',employees=3){
  vm.runInNewContext(source,context);await tick();await tick();return {ids,body,calls,document};
 }
 (async()=>{
- // There is deliberately no legacy #logout: the shared shell has replaced it.
+ // Die alte Abmeldeschaltfläche fehlt absichtlich, weil der gemeinsame Kopfbereich sie ersetzt.
  const list=await scenario('/admin/tf');assert.equal(list.ids.users.children.length,2);assert(list.ids.createTfCard.hidden);assert(!list.ids.employeeCard.hidden);assert(!list.ids.newTfLink.hidden);assert(list.body.children.some(n=>n.tagName==='SCRIPT'&&n.src.startsWith('/admin/backend-nav.js')));assert(!list.ids.pageMessage.textContent);
  const requests=list.calls.length;list.ids.tfSearch.value='ALEX 123';list.ids.tfSearch.oninput();assert.equal(list.ids.users.children.length,1);list.ids.tfTypeFilter.value='border';list.ids.tfTypeFilter.onchange();assert.equal(list.ids.users.children.length,0);assert(!list.ids.tfNoResults.hidden);list.ids.tfSearch.value='';list.ids.tfSearch.oninput();assert.equal(list.ids.users.children.length,1);list.ids.tfTypeFilter.value='';list.ids.tfTypeFilter.onchange();assert.equal(list.ids.users.children.length,2);assert.equal(list.calls.length,requests,'Filtering uses loaded data');list.ids.tfSearch.value='example.test';list.ids.tfSearch.oninput();assert.equal(list.ids.users.children.length,1);list.ids.tfSearch.value='';list.ids.tfSearch.oninput();
  const actions=list.ids.users.children[0].children.at(-1).children;assert.equal(actions.length,7);for(const a of actions){assert(a.title);assert.equal(a.attrs['aria-label'],a.title);assert.equal(a.children[0].attrs['aria-hidden'],'true');}

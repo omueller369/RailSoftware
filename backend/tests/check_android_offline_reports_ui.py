@@ -1,3 +1,4 @@
+# Browserprüfung für Berichte und die zugehörigen Prüf- und Versandabläufe.
 """Actual report finalization queues offline, then retries only the explicitly selected report."""
 import re
 from pathlib import Path

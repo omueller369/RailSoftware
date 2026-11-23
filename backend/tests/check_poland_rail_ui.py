@@ -1,3 +1,4 @@
+# Browserprüfung für polnische Referenznetz und die manuelle Streckenerfassung.
 """Real renderer: Polish-only reference, lazy detail tiles, toggles and preserved selection."""
 import argparse
 from browser_realtime import check_pages

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Installation der Webanwendung. */
 (()=>{
 if(window.NativePortal||window.AndroidPortal||window.ctlPwaInitialized)return;
 const path=location.pathname;if(!/^\/(tf|admin)(\/|$)/.test(path)&&!['/account','/documents','/my/worktime'].includes(path))return;

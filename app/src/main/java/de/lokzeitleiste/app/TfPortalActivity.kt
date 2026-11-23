@@ -1,3 +1,4 @@
+/* Der WebView nutzt die gemeinsamen Portaldateien; die nativen Brücken übernehmen GPS, Downloads und lokale Dateien. */
 package de.lokzeitleiste.app
 
 import android.Manifest

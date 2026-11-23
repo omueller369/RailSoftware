@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldung und fachliche Server-Endpunkte.
 from ..localization import source as _text_source
 from ..accounts.tf_profiles import daily_minutes
 from datetime import date

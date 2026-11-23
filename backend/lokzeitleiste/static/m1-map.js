@@ -1,4 +1,5 @@
-/* Shared public M1 geometry/points. This layer never starts GPS or awards trips. */
+/* Gemeinsame Verarbeitung für Kartenbedienung und Bildausschnitte. */
+/* Öffentliche M1-Geometrie und Betriebsstellen. Diese Ebene startet keine Aufzeichnung und vergibt keine Kenntnisse. */
 (()=>{
 let loading,index,source;const networks=new WeakMap();
 const project=p=>({x:(p.lon+180)/360,y:(1-Math.asinh(Math.tan(p.lat*Math.PI/180))/Math.PI)/2});
@@ -41,7 +42,7 @@ function suggestions(from,data,{nodesOnly=false,selected=[]}={}){
  for(const route of new Set((points().byCode.get(from)||[]).map(p=>String(Number(p.route))))){const rows=graph.ordered.get(route);if(!rows)continue;const at=rows.findIndex(p=>p.code===from);if(at<0)continue;for(const direction of [-1,1])for(let i=at+direction;i>=0&&i<rows.length;i+=direction){const code=rows[i].code,prev=rows[i-direction].code;if(!graph.neighbors.get(prev)?.has(code)||selected.includes(code))break;if(nodesOnly&&!isJunction(code,data))continue;const options=candidates(from,code,data);if(options.length)result.set(code,options);break;}}
  return [...result].map(([code,options])=>({code,options}));
 }
-// Clip measured M1 geometry to the explicitly selected kilometre interval.
+// Die gemessene M1-Geometrie auf den ausdrücklich gewählten Kilometerabschnitt begrenzen.
 function trace(match,data){const result=[];for(const row of network(data).lines.get(match.route)||[]){const [start,end]=row[5],lo=Math.max(Math.min(start,end),Math.min(match.from_m,match.to_m)),hi=Math.min(Math.max(start,end),Math.max(match.from_m,match.to_m));if(hi<=lo||start===end)continue;const c=row[3],lengths=[0];for(let i=2;i<c.length;i+=2)lengths.push(lengths.at(-1)+Math.hypot(c[i]-c[i-2],c[i+1]-c[i-1]));const total=lengths.at(-1);if(!total)continue;const limits=[(lo-start)/(end-start)*total,(hi-start)/(end-start)*total].sort((a,b)=>a-b),path=[];for(let i=1;i<lengths.length;i++){const a=Math.max(limits[0],lengths[i-1]),b=Math.min(limits[1],lengths[i]);if(b<a||lengths[i]===lengths[i-1])continue;for(const at of [a,b]){const f=(at-lengths[i-1])/(lengths[i]-lengths[i-1]);path.push([(c[i*2-2]+(c[i*2]-c[i*2-2])*f)/data.scale,(c[i*2-1]+(c[i*2+1]-c[i*2-1])*f)/data.scale]);}}if(path.length>1)result.push(path);}return result;}
 function parallel(options,data){
  if(options.length<2)return false;const key=options.map(o=>[o.route,o.from_m,o.to_m].join(':')).sort().join('|'),cache=network(data).parallel;if(cache.has(key))return cache.get(key);

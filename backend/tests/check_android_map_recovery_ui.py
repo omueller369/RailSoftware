@@ -1,3 +1,4 @@
+# Browserprüfung für Kartenbedienung und Bildausschnitte.
 """Regression: STK editing stays responsive while real GPS history is matched in a worker."""
 import argparse
 from browser_realtime import check_pages

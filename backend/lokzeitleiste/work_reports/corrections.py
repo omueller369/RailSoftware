@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für nachvollziehbare Berichtskorrekturen.
 """Explicit owner-bound corrections; one accounting entry and immutable prior PDFs."""
 import json,hashlib
 from datetime import datetime,timedelta,time
@@ -84,7 +85,7 @@ def resubmit(db,user,data,row):
     payload=json.loads(data.model_dump_json());payload['_train_revision']=previous.get('_train_revision',0)+1;payload['_pdf_version_offset']=previous.get('_pdf_version_offset',0)
     encoded=json.dumps(payload,ensure_ascii=False)
     if len(encoded.encode('utf-8'))>60000:raise HTTPException(422,text('conflict'))
-    # Absence entries occupy the entire day, just as on first submission.
+    # Abwesenheiten belegen wie bei der ersten Übertragung den ganzen Kalendertag.
     first=data.start_at.date();last=(data.end_at-timedelta(minutes=1)).date()
     from ..reports.daily import WORK_KINDS
     absences={source('server_work_reports_service.text_35d3a889824d'),source('server_work_reports_service.text_be1600b499c6')}

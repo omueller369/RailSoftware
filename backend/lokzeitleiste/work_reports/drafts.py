@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Arbeitsberichte und deren Übertragung.
 """Private, versioned draft backup; no work entries, PDFs or email before final submission."""
 from ..localization import source as _text_source
 import json

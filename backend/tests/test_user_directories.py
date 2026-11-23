@@ -1,3 +1,4 @@
+# Regressionstests für Benutzerkonten und ihre Dateiverzeichnisse.
 import os
 import stat
 import tempfile

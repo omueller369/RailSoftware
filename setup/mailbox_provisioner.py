@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Bündelt die notwendigen Schritte für Postfächer und Nachrichtenversand. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Root-owned local mailbox provisioner. No HTTP, shell commands or user-supplied paths."""
 import fcntl
 import grp
@@ -48,7 +49,7 @@ def main():
                     local,domain=address.split('@')
                     if domain not in allowed or any(p in ('','..','.') for p in domain.split('.')):raise ValueError('Invalid managed domain')
                     home=Path('/var/vmail')/domain/local
-                    # Only fixed descendants, never follow an existing symlink.
+                    # Nur feste Unterpfade verwenden; vorhandenen symbolischen Links nicht folgen.
                     for folder in [home.parent,home,home/'Maildir',*[home/'Maildir'/p for p in ('cur','new','tmp')]]:
                         if folder.is_symlink():raise ValueError('Symlink rejected')
                         folder.mkdir(exist_ok=True);os.chown(folder,identity.pw_uid,identity.pw_gid);folder.chmod(0o700)
@@ -73,6 +74,6 @@ def main():
 if __name__=='__main__':
     try:main()
     except Exception as exc:
-        # No SQL, passwords, encrypted payloads or arguments in the journal.
+        # SQL, Passwörter, verschlüsselte Nutzdaten und Aufrufargumente gehören nicht ins Journal.
         print('Mailbox provisioning failed: '+type(exc).__name__)
         raise SystemExit(1)

@@ -1,3 +1,4 @@
+/* Regressionstests für Betriebsstellen und Ortszuordnungen. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E {
  constructor(tag){this.tag=tag;this.children=[];this.attrs={};this.events={};this.style={};this.value='';this.isConnected=true;}

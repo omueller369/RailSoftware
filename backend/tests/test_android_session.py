@@ -1,3 +1,4 @@
+# Regressionstests für Anbindung der gemeinsamen Oberfläche an Android.
 import unittest
 import re
 from pathlib import Path

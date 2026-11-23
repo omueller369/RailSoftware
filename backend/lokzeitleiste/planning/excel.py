@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Dienstplanung und Kalender.
 """XLSX-Vertrag: Blatt Plan, Datum/Art/Notiz/Personalnummer; keine Formeln."""
 from ..localization import source as _text_source
 from datetime import date, datetime

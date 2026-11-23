@@ -1,3 +1,4 @@
+# Regressionstests für Übergabeprotokolle und deren Bearbeitung.
 import io,json,os,unittest
 from fastapi.testclient import TestClient
 from PIL import Image

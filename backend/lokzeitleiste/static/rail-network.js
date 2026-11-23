@@ -1,4 +1,5 @@
-/* Public offline reference geometry. It never adds to a TF's travelled routes. */
+/* Gemeinsame Verarbeitung für öffentliche Eisenbahn-Referenzdaten. */
+/* Öffentliche Offline-Geometrie ohne Einfluss auf die tatsächlich gefahrenen Strecken eines TF. */
 (()=>{
 const REVISION='46c6219268ba0fb31521540ef19506f6467025ee7663e7bd95909a94771c500a';
 const HIDDEN_URBAN_SBAHN=new Set(["1224", "1225", "1226", "1239", "1240", "1241", "1244", "1270", "1271", "6002", "6004", "6005", "6006", "6007", "6008", "6009", "6010", "6011", "6012", "6017", "6018", "6019", "6020", "6021", "6023", "6024", "6025", "6030", "6032", "6033", "6034", "6035", "6036", "6039", "6044"]);
@@ -17,7 +18,7 @@ function paths(data,view){
 function labels(svg,make,data,view){
  if(view.zoom<11)return 0;
  const width=view.width||600,height=view.height||650,factor=view.size/data.scale,candidates=new Map(),occupied=[];
- // Keep station markers (and their labels at detail zoom) clear and clickable.
+ // Bahnhofspunkte und ihre Beschriftungen müssen auch bei hoher Vergrößerung anklickbar bleiben.
  for(const p of window.M1Map?.points()?.projected||[]){if(!routeVisible(p.point.route))continue;const x=p.x*view.size-view.left,y=p.y*view.size-view.top;if(x<-80||x>width+20||y<-20||y>height+30)continue;occupied.push([x-10,y-(view.zoom>=12?24:10),x+(view.zoom>=12?12+p.point.code.length*7:10),y+10]);}
  function clip(ax,ay,bx,by){const dx=bx-ax,dy=by-ay;let lo=0,hi=1;for(const [p,q]of [[-dx,ax-8],[dx,width-8-ax],[-dy,ay-8],[dy,height-8-ay]]){if(p===0){if(q<0)return null;continue;}const t=q/p;if(p<0)lo=Math.max(lo,t);else hi=Math.min(hi,t);if(lo>hi)return null;}return [ax+lo*dx,ay+lo*dy,ax+hi*dx,ay+hi*dy];}
  for(const row of data.lines){if(!routeVisible(data.routes[row[0]][0]))continue;const box=row[2];if(box[2]*factor<view.left||box[0]*factor>view.left+width||box[3]*factor<view.top||box[1]*factor>view.top+height)continue;const code=String(data.routes[row[0]][0]),coords=row[3],segments=[];let length=0;

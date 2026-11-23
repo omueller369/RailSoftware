@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Arbeitszeiten und deren Korrekturen. */
 function endDate(entry){if(entry.end_date)return entry.end_date;const d=new Date(entry.date+'T12:00:00');if(entry.end<=entry.start)d.setDate(d.getDate()+1);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');}
 const el=id=>document.getElementById(id),clock=n=>Math.floor(n/60)+':'+String(n%60).padStart(2,'0');let me=null,editing=null,busy=false,dirty=false,selected=null,manualForm=null;
 async function api(path,options={}){const response=await fetch(path,{credentials:'same-origin',...options});const data=await response.json().catch(()=>({}));if(!response.ok){if(response.status===401)location.href='/account';throw Error(typeof data.detail==='string'?data.detail:globalThis.CtlText.source("backend_my_worktime.text_926e66e23dec")+response.status+')');}return data;}

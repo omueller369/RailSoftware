@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Arbeitszeitsalden und Mehrarbeit. */
 (()=>{
  const t=value=>window.I18n?.t(value)||value;
  const node=(tag,label)=>{const value=document.createElement(tag);if(label!==undefined)value.textContent=label;return value;};

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 # Vollständige Neuinstallation ohne Wiederverwendung vorhandener Testdaten.
 set -Eeuo pipefail
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)

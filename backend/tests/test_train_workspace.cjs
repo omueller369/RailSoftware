@@ -1,3 +1,4 @@
+/* Regressionstests für Zugfahrten und deren Detailerfassung. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class Element {
  constructor(tag){this.tag=tag;this.children=[];this.handlers={};this.attrs={};this.value='';}

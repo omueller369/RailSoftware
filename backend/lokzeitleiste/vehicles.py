@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Fahrzeugstammdaten.
 """Administrative railway vehicles; status codes/colors are reusable by future TF views."""
 from .localization import source as _text_source
 import re

@@ -1,3 +1,4 @@
+# Regressionstests für Streckenkenntnisse und Referenzgeometrie.
 import csv,io,json,unittest
 from sqlalchemy import select,func
 from sqlalchemy.orm import Session

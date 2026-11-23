@@ -1,4 +1,5 @@
-/* A device/browser preference shared by every portal page. Never touches form or GPS state. */
+/* Gemeinsame Verarbeitung für helles und dunkles Erscheinungsbild. */
+/* Die Darstellungsvorliebe gilt für alle Portalseiten dieses Browsers; Eingaben und GPS-Daten bleiben erhalten. */
 (()=>{
 if(window.PortalTheme)return;
 const root=document.documentElement,key='ctl.portal.theme';let mode=root.dataset.theme==='dark'?'dark':'light',button;

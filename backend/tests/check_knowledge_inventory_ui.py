@@ -1,3 +1,4 @@
+# Browserprüfung für persönliche Kenntnisbestände.
 """Both TF inventory tabs: real files, confirmation, saved lists, offline owner isolation."""
 import argparse
 from browser_realtime import check_pages

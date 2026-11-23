@@ -1,3 +1,4 @@
+# Regressionstests für Browserprüfungen mit echten Benutzerabläufen.
 """Small standard-library CDP driver for tests that await real IndexedDB I/O.
 
 Virtual-time budgets can finish before IndexedDB callbacks arrive. This driver
@@ -83,7 +84,7 @@ def check_pages(fixture,output_dir,widths=(1280,800,768,600,375,320),assets=None
         try:
             deadline=time.monotonic()+15;port_file=profile/'DevToolsActivePort'
             # Chrome creates this file before writing its port and WebSocket path.
-            # Existence alone can race with the first write on fast CI runners.
+            # Auf schnellen CI-Systemen kann die Datei vor ihrem ersten vollständigen Inhalt sichtbar werden.
             while True:
                 if process.poll() is not None or time.monotonic()>deadline:raise RuntimeError('Chrome remote debugging did not start')
                 try:lines=port_file.read_text().splitlines()

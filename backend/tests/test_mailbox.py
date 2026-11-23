@@ -1,3 +1,4 @@
+# Regressionstests für Postfächer und Nachrichtenversand.
 import email
 import unittest
 from unittest.mock import patch, MagicMock

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Zugfahrten und deren Detailerfassung. */
 (()=>{
 const MINIMUM_ADDITIONAL_PAUSE_MINUTES = 15;
 const REASONS=[globalThis.CtlText.source("portal_train_journeys.text_17ff0035d004"),'V1','V3','A1','A1A','A3',globalThis.CtlText.source("portal_train_journeys.text_858e4ba7a29f"),globalThis.CtlText.source("portal_train_journeys.text_f833868f87d4"),globalThis.CtlText.source("portal_train_journeys.text_1ec195f5b2d6"),'BrP','vBrP',globalThis.CtlText.source("portal_train_journeys.text_64f45b98b2db"),globalThis.CtlText.source("portal_train_journeys.text_cde67dfbede8"),globalThis.CtlText.source("portal_train_journeys.text_979811cf207a"),globalThis.CtlText.source("portal_train_journeys.text_ec85a036c547"),globalThis.CtlText.source("portal_train_journeys.text_66775ecb98fd"),globalThis.CtlText.source("portal_train_journeys.text_69384a6be550")];

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Zugriffsrechte der Verwaltungsbereiche. */
 (()=>{
 const button=document.getElementById('refresh'),body=document.getElementById('accessRows'),status=document.getElementById('status');
 async function load(){button.disabled=true;status.textContent='';try{

@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Berichte und die zugehörigen Prüf- und Versandabläufe.
 from ..localization import source as _text_source
 import logging
 

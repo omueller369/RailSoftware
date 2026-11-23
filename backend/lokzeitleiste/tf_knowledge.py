@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für persönliche Kenntnisbestände.
 """Private per-TF location and rolling-stock CSV inventories, with explicit confirmation."""
 import csv,io,hashlib,re,unicodedata
 from datetime import date

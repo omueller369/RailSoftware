@@ -167,6 +167,7 @@
   "method": "Coordinates plus layer; only unbranched dangling endpoint pairs join different levels. Station projection max 200 m; equal-distance different-level candidates remain unlinked. Junctions/endpoints are derived OSM reference nodes, not official operating-point identities.",
   "bundles": {
     "topology.json": "714284d8c004ba3df26497f8adc0ff56d22376e4cb40803d84aedbafb45f9983",
+    "stations.json": "0541c86cf1a04958d2586301caf8aa38b8a41d6b4422309cc855ccc18839fdbc",
     "geometry-0.json": "a60550c83f5c86ee153a37ef8bb9da30943d85e9de7a573e19fb22b9262862bf",
     "geometry-1.json": "fce81092b603dc7dd0a44b401e39e7d3836a4b4ddec5b2b2c95b685b47a13588",
     "geometry-2.json": "7d37c537054a8c8b7235a9dc5212e07cce61993bab8293e9f94da05dcc206b86",

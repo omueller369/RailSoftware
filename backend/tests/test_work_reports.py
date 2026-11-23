@@ -1,3 +1,4 @@
+# Regressionstests für Arbeitsberichte und deren Übertragung.
 import io,json,unittest
 from datetime import date,datetime,timedelta
 from uuid import uuid4
@@ -65,7 +66,7 @@ class WorkReportsTest(unittest.TestCase):
         with Session(self.engine) as db:
             db.get(RailwayStation,'BHF').name='New catalog name';db.commit()
         self.assertEqual(self.create(data)['trips'][0]['start_station_name'],'Berlin Beispiel')
-        # Old records remain readable and retryable without a data migration.
+        # Alte Einträge bleiben ohne Datenmigration lesbar und erneut übertragbar.
         with Session(self.engine) as db:
             row=db.get(DutyReport,report['id']);payload=json.loads(row.payload_json)
             for trip in payload['trips']:
@@ -202,7 +203,7 @@ class WorkReportsTest(unittest.TestCase):
 
     def test_pause_is_documented_without_work_deduction(self):
         data=self.payload();data['actual_pause']=120
-        # A guest journey may occupy the entire duty; pauses are independent documentation.
+        # Eine Gastfahrt darf den ganzen Dienst belegen; Pausen werden unabhängig davon dokumentiert.
         data['trips'][0]['end_at']=data['end_at']
         report=self.create(data)
         month=self.driver.get('/api/v1/tf/work-reports/month/2026/10').json()

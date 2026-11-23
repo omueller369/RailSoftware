@@ -1,3 +1,4 @@
+# Browserprüfung für Stammdaten der Wagenmeister.
 """WGM administration: own fields, safe display, view/edit/create and responsive forms."""
 import re
 import check_work_report_layout as runner

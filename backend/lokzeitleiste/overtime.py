@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Arbeitszeitsalden und Mehrarbeit.
 """Monthly overtime per duty; immutable closing snapshots with explicit reopening."""
 from .localization import source as _text_source
 import hashlib

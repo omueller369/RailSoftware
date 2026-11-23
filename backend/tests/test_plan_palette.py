@@ -1,3 +1,4 @@
+# Regressionstests für Dienstplanung und Kalender.
 import unittest
 from datetime import date
 from lokzeitleiste.planning.palette import COLORS,base_key,background_key

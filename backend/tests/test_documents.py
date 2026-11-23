@@ -1,3 +1,4 @@
+# Regressionstests für Dokumentablage und Dateizugriff.
 import importlib.util
 import json
 from pathlib import Path
@@ -73,7 +74,7 @@ class DocumentsTest(unittest.TestCase):
         self.assertEqual(other.delete('/api/v1/documents/file',params={'path':'Dokumente/limit.txt'}).status_code,403)
 
     def test_staff_without_module_grants_and_initial_password_gate(self):
-        # This class uses report payload(); use the staff fixture payload explicitly.
+        # Diese Testklasse hat eine eigene Berichtsvorlage; deshalb die Verwaltungsvorlage ausdrücklich auswählen.
         result=self.client.post('/api/v1/admin/staff',json=test_accounts.AccountsTest.payload(self,'docs-office'))
         self.assertEqual(result.status_code,201,result.text)
         staff,_=self.staff_login('docs-office')
@@ -119,7 +120,7 @@ class DocumentsTest(unittest.TestCase):
                 new.rename(old);row.relative_path=old.relative_to(root).as_posix()
                 originals[row.source_key]=(old,old.read_bytes())
             db.commit()
-            # First run rolls back: old originals must survive.
+            # Der erste Lauf wird zurückgerollt; die bisherigen Originale müssen erhalten bleiben.
             backfill_documents(db);db.rollback()
             for old,content in originals.values():self.assertEqual(old.read_bytes(),content)
             backfill_documents(db);db.commit()

@@ -1,3 +1,4 @@
+/* Regressionstests für Portalnavigation und Berechtigungen. */
 // Browser contract simulation: desktop sidebar, mobile modal, focus and cleanup.
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 let document;

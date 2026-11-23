@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Streckenkenntnisse und Referenzgeometrie.
 """Explicitly confirmed route knowledge, with no fabricated GPS rides or trip counts."""
 import json
 from datetime import datetime,date

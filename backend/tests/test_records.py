@@ -1,3 +1,4 @@
+# Regressionstests für die gemeinsamen Anwendungsabläufe.
 import io
 import unittest
 from uuid import uuid4

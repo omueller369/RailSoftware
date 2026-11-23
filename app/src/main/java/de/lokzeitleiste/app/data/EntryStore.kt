@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 package de.lokzeitleiste.app.data
 
 import android.content.Context

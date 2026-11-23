@@ -1,3 +1,4 @@
+# Regressionstests für Betriebsstellen und Ortszuordnungen.
 import json,math,unittest
 from datetime import datetime,timezone
 from uuid import uuid4
@@ -60,7 +61,7 @@ class StationContributionTest(unittest.TestCase):
         result=self.write({**data,'confirm_overwrite':True});self.assertEqual(result.status_code,409);self.assertEqual(result.json()['detail']['code'],'coordinate_changed')
         with Session(self.engine) as db:self.assertEqual(db.get(RailwayStationCoordinates,'BBB').latitude,50);self.assertEqual(db.scalar(select(func.count()).select_from(StationCoordinateContribution)),0)
         data['expected_token']=self.check().json()['token'];self.assertEqual(self.write(data).status_code,409);self.assertEqual(self.write({**data,'confirm_overwrite':True}).status_code,200)
-        # If an acknowledgement was lost, checking the same accepted request never asks to apply it twice.
+        # Geht eine Bestätigung verloren, darf dieselbe angenommene Anfrage keine zweite Anwendung verlangen.
         self.point(49,9)
         repeat=self.check(request_id=data['request_id']).json();self.assertTrue(repeat['already_applied']);self.assertEqual(repeat['coordinate']['latitude'],49)
     def test_authentication_owner_binding_and_invalid_proposals(self):

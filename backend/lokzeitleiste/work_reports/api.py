@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldung und fachliche Server-Endpunkte.
 from ..localization import source as _text_source
 from fastapi import APIRouter,BackgroundTasks,Depends,HTTPException,UploadFile,File,Query,Header
 from fastapi.responses import Response,FileResponse

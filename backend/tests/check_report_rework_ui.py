@@ -1,3 +1,4 @@
+# Browserprüfung für Berichte und die zugehörigen Prüf- und Versandabläufe.
 """Actual TF editor: yellow correction row, draft bounds and final synchronization."""
 import argparse,re
 from browser_realtime import check_pages
@@ -7,7 +8,7 @@ from localized_fixtures import localize_html
 def fixture():
     page=localize_html((STATIC/'tf-portal.html').read_text());page=re.sub(r'<script\b[^>]*>.*?</script>|<link\b[^>]*>','',page,flags=re.S)
     css='\n'.join((STATIC/f).read_text() for f in ['tf-portal.css','work-report.css','portal-theme.css','responsive.css'])
-    source=(STATIC/'work-report.js').read_text().split('// Keep collapse buttons')[0]
+    source=(STATIC/'work-report.js').read_text().split('// Die Klappschalter')[0]
     source=re.sub(r'\}\)\(\);\s*$',r'''window.ReworkFixture={loadReport,saveLocal,synchronize,rows:()=>pending,isReadonly:()=>reportViewOnly,setup(editor,report,server){user={id:7};key='report-rework-ui';trainEditor=editor;state={client_id:'new',kind:'Dienstschicht'};pending=[report];monthCache={'2026-11':server};plans={};el('reportPeriod').value='2026-11';renderMonth();}};})();''',source)
     scripts='\n'.join((STATIC/f).read_text() for f in ['messages.js','plan-colors.js','report-tabs.js','station-picker.js','train-journeys.js'])+'\n'+source
     checks=r'''

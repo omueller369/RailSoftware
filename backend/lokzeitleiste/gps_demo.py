@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung.
 """Opt-in recording snapshots for read-only TF and administrative playback."""
 import json
 from pathlib import Path
@@ -85,7 +86,7 @@ def create_router(require_account,require_admin):
         owner=db.get(User,row.owner_id) if row else None
         if not owner or owner.role!='tf' or not account_active(db,owner):raise HTTPException(404)
         return row
-    # Identical read-only services; administrative authorization remains module-scoped.
+    # Gemeinsame schreibgeschützte Dienste; die Verwaltungsrechte werden weiterhin je Modul geprüft.
     for prefix,dependency in [('/api/v1/tf/gps-demo',driver),('/api/v1/admin/gps-demo',require_admin)]:
         def listing(offset:int=Query(default=0,ge=0),user=Depends(dependency),db:Session=Depends(database_session)):
             rows=list(db.scalars(select(GpsDemoShare).order_by(GpsDemoShare.recording_id.desc()).offset(offset).limit(101)))

@@ -1,3 +1,4 @@
+/* Regressionstests für Fahrzeugstammdaten. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E{constructor(){this.dataset={};this.value='';this.style={};this.maxLength=120;}addEventListener(){}focus(){}select(){}setAttribute(){}scrollIntoView(){}}
 const nodes={},el=id=>nodes[id]??=new E(),window={addEventListener(){}};

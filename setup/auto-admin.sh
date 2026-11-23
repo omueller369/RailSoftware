@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 # Argumente: geschützte Passwortdatei, dann Compose-Kommando als einzelne Argumente.
 set -euo pipefail
 password_file=$1

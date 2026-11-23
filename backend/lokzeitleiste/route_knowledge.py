@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Streckenkenntnisse und Referenzgeometrie.
 """Private, paginated map geometry derived only from the driver's measured fixes."""
 import json
 from pathlib import Path
@@ -23,7 +24,7 @@ def route_segments(points,timed=False):
             finish()
             segment=[]
         if valid:
-            # Preserve endpoints while reducing dense stationary samples.
+            # Die Endpunkte erhalten und nur dichte Messungen im Stillstand reduzieren.
             if not segment or distance(dict(lat=segment[-1][0],lon=segment[-1][1]),point)>=30:
                 segment.append(coordinate(point))
             last=point

@@ -1,4 +1,5 @@
-/* Shared deterministic key resolver. No network dependency, including in Android assets. */
+/* Bereitet Sprachschlüssel und Übersetzungen aus den eingecheckten Quellen reproduzierbar auf. */
+/* Gemeinsame deterministische Auflösung der Sprachschlüssel ohne Netzabhängigkeit, auch in den Android-Dateien. */
 (()=>{
  const languages=['de','pl','en'],catalog=globalThis.CtlMessages;
  let language='de';try{const saved=globalThis.localStorage?.getItem('lokzeitleiste.language');if(languages.includes(saved))language=saved;}catch{}

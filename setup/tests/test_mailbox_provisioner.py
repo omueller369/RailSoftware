@@ -1,3 +1,4 @@
+# Bündelt die notwendigen Schritte für Postfächer und Nachrichtenversand. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 import importlib.util
 import json
 from pathlib import Path

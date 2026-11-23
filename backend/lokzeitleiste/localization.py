@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Sprachschlüssel und Übersetzungen.
 """Stable message keys. Canonical values keep persisted domain contracts unchanged."""
 import json
 import re

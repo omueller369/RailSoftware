@@ -1,3 +1,4 @@
+# Regressionstests für Sprachschlüssel und Übersetzungen.
 """Module coverage, stable contracts, public locale assets and keyed output."""
 import importlib.util
 import json

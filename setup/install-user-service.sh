@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Benutzerkonten und ihre Dateiverzeichnisse. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 set -euo pipefail
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
 [[ $EUID -eq 0 ]] || { echo 'Benutzerdienst benötigt root.' >&2; exit 1; }
 command -v setfacl >/dev/null
-# The root-run helper is copied to a root-owned path; it never imports project code.
+# Der root-Helfer wird an einen root-eigenen Pfad kopiert und importiert keinen Projektcode.
 install -d -m 755 /usr/local/lib/lokzeitleiste
 install -m 644 "$root/setup/provision-users.py" /usr/local/lib/lokzeitleiste/provision-users.py
-# Encode the project path for systemd's EnvironmentFile instead of shell interpolation.
+# Den Projektpfad für die systemd-Umgebungsdatei kodieren, statt ihn in Shelltext einzusetzen.
 python3 - "$root/backend" <<'PY'
 import sys
 from pathlib import Path

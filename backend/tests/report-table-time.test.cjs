@@ -1,3 +1,4 @@
+/* Regressionstests für Berichte und die zugehörigen Prüf- und Versandabläufe. */
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {readFileSync}=require('node:fs');

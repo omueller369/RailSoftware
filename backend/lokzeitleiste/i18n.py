@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Sprachwahl und Übersetzungen.
 """Shared three-language catalogue for UI, API messages and generated outputs."""
 import json
 import re

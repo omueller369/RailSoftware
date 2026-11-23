@@ -1,3 +1,4 @@
+# Bündelt die notwendigen Schritte für Beispieldaten und getrennte Vorführbestände. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Small validated configuration builder used by the external demo installer."""
 import os
 import json

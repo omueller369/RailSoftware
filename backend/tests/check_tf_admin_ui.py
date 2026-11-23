@@ -1,3 +1,4 @@
+# Browserprüfung für Verwaltung der TF-Stammdaten.
 """Real DOM regression for TF list, shell-header replacement and immediate editing."""
 import argparse
 import html
@@ -59,7 +60,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--output-dir',type=Path,required=True);args=parser.parse_args();out=args.output_dir.resolve();out.mkdir(parents=True,exist_ok=True)
     chrome=next((shutil.which(n) for n in ['google-chrome','google-chrome-stable','chromium'] if shutil.which(n)),None)
     if not chrome:raise SystemExit('Chrome is required')
-    # Supply the route input while running the unchanged controller in a local fixture.
+    # Die Routeneingabe bereitstellen und den unveränderten Controller in der lokalen Testseite ausführen.
     route=out/'fixture.html';route.write_text(fixture().replace("location.pathname", "'/admin/tf'"))
     for width in [1280,375]:
         r=subprocess.run([chrome,'--headless','--no-sandbox','--disable-gpu','--allow-file-access-from-files','--window-size='+str(width)+',900','--virtual-time-budget=4000','--user-data-dir='+str(out/('profile'+str(width))),'--screenshot='+str(out/(str(width)+'.png')),'--dump-dom',route.as_uri()],capture_output=True,text=True,timeout=45)

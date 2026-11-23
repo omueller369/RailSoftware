@@ -1,3 +1,4 @@
+# Regressionstests für Stammdaten der Wagenmeister.
 import unittest
 from pathlib import Path
 from sqlalchemy.orm import Session

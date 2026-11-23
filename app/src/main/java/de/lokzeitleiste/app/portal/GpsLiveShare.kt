@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung. */
 package de.lokzeitleiste.app.portal
 
 import android.content.Context
@@ -11,7 +12,7 @@ import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
-/** Session exists only after an explicit share action. No location backlog is uploaded. */
+/** Eine Freigabesitzung beginnt erst auf ausdrücklichen Wunsch; alte Positionen werden nicht nachgesendet. */
 object GpsLiveShare {
     private data class State(val key:String,val session:String,var train:String,var manual:JSONArray,val stopMinutes:Int?,@Volatile var attempted:Long=0,@Volatile var sent:Long=0)
     private val executor=Executors.newSingleThreadExecutor()

@@ -1,3 +1,4 @@
+/* Regressionstests für die gemeinsamen Anwendungsabläufe. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
 class Element{constructor(tag){this.tagName=tag;this.children=[];this.hidden=false;this.value='';}append(...nodes){this.children.push(...nodes);}replaceChildren(...nodes){this.children=nodes;}setAttribute(){}addEventListener(){}}
 const source=fs.readFileSync('backend/lokzeitleiste/static/backend-start.js','utf8');

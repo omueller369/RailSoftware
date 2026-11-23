@@ -1,11 +1,12 @@
-/* Apply the saved appearance in the head, before page content is painted. */
+/* Gemeinsame Verarbeitung für getrennte Anmeldung der Portale. */
+/* Das gespeicherte Erscheinungsbild schon im Seitenkopf anwenden, bevor der Inhalt gezeichnet wird. */
 (()=>{const root=document.documentElement;if(!root)return;let mode='light';try{if(localStorage.getItem('ctl.portal.theme')==='dark')mode='dark';}catch{}root.dataset.theme=mode;root.style.colorScheme=mode;
 const css=document.createElement('link');css.id='portalThemeStyles';css.rel='stylesheet';css.href='/theme.css?v=20261118-infra-go-02712';document.head.append(css);
 const script=document.createElement('script');script.src='/theme.js?v=20261108-validation-02619';document.head.append(script);})();
-/* Per-tab bearer credentials keep TF and backend logins independent. */
+/* Getrennte Tab-Anmeldung hält TF- und Verwaltungszugänge unabhängig voneinander. */
 (()=>{const native=window.fetch.bind(window);let area=location.pathname.startsWith('/tf')?'tf':location.pathname.startsWith('/admin')?'backend':new URLSearchParams(location.search).get('area')||sessionStorage.getItem('ctl.area')||'backend';sessionStorage.setItem('ctl.area',area);const key=a=>'ctl.session.'+a;
-window.fetch=async(input,options={})=>{const url=new URL(typeof input==='string'?input:input.url,location.href),headers=new Headers(options.headers||(input instanceof Request?input.headers:undefined));if(url.origin===location.origin&&url.pathname.startsWith('/api/')&&!url.pathname.endsWith('/login')){headers.set('X-CTL-Area',area);const token=sessionStorage.getItem(key(area));if(token&&!headers.has(globalThis.CtlText.source("backend_auth_session.text_ca5839e38a15")))headers.set(globalThis.CtlText.source("backend_auth_session.text_ca5839e38a15"),globalThis.CtlText.source("backend_auth_session.text_35e5a9632e18")+token);}const validation=window.CtlValidation?.capture(options);const response=await native(input,{...options,headers});if(validation&&url.origin===location.origin&&url.pathname.startsWith('/api/'))await window.CtlValidation.response(response,validation);if(url.origin===location.origin&&response.ok&&options.method==='POST'){if(url.pathname.endsWith('/login')){const data=await response.clone().json();if(data.access_token){area=data.role==='tf'||url.pathname==='/api/v1/tf/login'?'tf':'backend';sessionStorage.setItem('ctl.area',area);sessionStorage.setItem(key(area),data.access_token);}}else if(url.pathname.endsWith('/logout')||url.pathname==='/api/v1/account/password'){sessionStorage.removeItem(key(area));}}return response;};
-// Load the same static help on every TF page, including packaged Android pages.
+window.fetch=async(input,options={})=>{const url=new URL(typeof input==='string'?input:input.url,location.href),headers=new Headers(options.headers||(input instanceof Request?input.headers:undefined));if(url.origin===location.origin&&url.pathname.startsWith('/api/')&&!url.pathname.endsWith('/login')){headers.set('X-CTL-Area',area);const token=sessionStorage.getItem(key(area));if(token&&!headers.has(globalThis.CtlText.source("backend_auth_session.text_ca5839e38a15")))headers.set(globalThis.CtlText.source("backend_auth_session.text_ca5839e38a15"),globalThis.CtlText.source("backend_auth_session.text_35e5a9632e18")+token);}const validation=window.CtlValidation?.capture(options);const response=await native(input,{...options,headers}).catch(error=>{window.RailDiagnostics?.error('http',0);throw error;});if(url.origin===location.origin&&url.pathname.startsWith('/api/')&&!response.ok)window.RailDiagnostics?.error('http',response.status);if(validation&&url.origin===location.origin&&url.pathname.startsWith('/api/'))await window.CtlValidation.response(response,validation);if(url.origin===location.origin&&response.ok&&options.method==='POST'){if(url.pathname.endsWith('/login')){const data=await response.clone().json();if(data.access_token){area=data.role==='tf'||url.pathname==='/api/v1/tf/login'?'tf':'backend';sessionStorage.setItem('ctl.area',area);sessionStorage.setItem(key(area),data.access_token);}}else if(url.pathname.endsWith('/logout')||url.pathname==='/api/v1/account/password'){sessionStorage.removeItem(key(area));}}return response;};
+// Auf jeder TF-Seite dieselbe Hilfe laden, auch aus den Android-Dateien.
 let helpTask;
 window.loadTfHelp=()=>{
  if(window.TfHelp)return Promise.resolve(window.TfHelp);
@@ -13,16 +14,16 @@ window.loadTfHelp=()=>{
  helpTask=new Promise((resolve,reject)=>{
   if(!document.getElementById('tfHelpStyles')){const css=document.createElement('link');css.id='tfHelpStyles';css.rel='stylesheet';css.href='/tf/help.css?v=20261108-validation-02619';document.head.append(css);}
   const load=path=>new Promise((done,fail)=>{const script=document.createElement('script');script.src=path;script.onload=done;script.onerror=()=>{script.remove();fail(Error(globalThis.CtlText.source("backend_auth_session.text_6227b32686e3")));};document.head.append(script);});
-  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261123-poland-stk-02811')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
+  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261123-quality-02812')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
  }).catch(error=>{helpTask=null;throw error;});return helpTask;
 };
-// Downloads need the same tab identity as API requests, rather than shared cookies.
+// Downloads brauchen dieselbe Tab-Anmeldung wie API-Aufrufe.
 function downloadName(header,fallback){const extended=header.match(/filename\*\s*=\s*(?:"([^"]+)"|([^;]+))/i);if(extended){const value=(extended[1]||extended[2]).trim(),encoded=value.match(/^UTF-8'[^']*'(.*)$/i);if(encoded){try{return decodeURIComponent(encoded[1]);}catch{}}}const plain=header.match(/filename\s*=\s*(?:"([^"]+)"|([^;]+))/i);return (plain?.[1]||plain?.[2]||fallback||globalThis.CtlText.source("backend_auth_session.text_836ae9356297")).trim();}
 document.addEventListener('click',async event=>{const link=event.target.closest?.('a[href]');if(!link||event.defaultPrevented)return;const url=new URL(link.href,location.href);if(url.origin!==location.origin||!url.pathname.startsWith('/api/')||!sessionStorage.getItem(key(area)))return;event.preventDefault();try{const response=await fetch(url.href);if(!response.ok)throw Error(globalThis.CtlText.source("backend_auth_session.text_e29111b10e59"));const object=URL.createObjectURL(await response.blob()),anchor=document.createElement('a');anchor.href=object;anchor.download=link.download||downloadName(response.headers.get('Content-Disposition')||'',url.pathname.split('/').pop());anchor.click();setTimeout(()=>URL.revokeObjectURL(object),10000);}catch(error){alert(error.message);}});
-document.addEventListener('DOMContentLoaded',()=>{if(!location.pathname.startsWith('/admin')){const meter=document.createElement('script');meter.src='/tf/beta-traffic.js?v=0.26.60';document.head.append(meter);}if((location.pathname.startsWith('/tf')||location.pathname.startsWith('/admin'))&&!location.pathname.endsWith('/install')||['/documents','/my/worktime','/account'].includes(location.pathname)){const shell=document.createElement('script');shell.src='/tf/shell.js?v=20261112-updates-02646';document.head.append(shell);}if(window.NativePortal||window.AndroidPortal)return;const script=document.createElement('script');script.src='/pwa/install.js?v=20261104-rail-0263';document.head.append(script);},{once:true});
+document.addEventListener('DOMContentLoaded',()=>{if(location.pathname.startsWith('/tf')||location.pathname.startsWith('/admin')){const quality=document.createElement('script');quality.src='/tf/quality-ui.js?v=0.28.12';document.head.append(quality);}if(!location.pathname.startsWith('/admin')){const meter=document.createElement('script');meter.src='/tf/beta-traffic.js?v=0.26.60';document.head.append(meter);}if((location.pathname.startsWith('/tf')||location.pathname.startsWith('/admin'))&&!location.pathname.endsWith('/install')||['/documents','/my/worktime','/account'].includes(location.pathname)){const shell=document.createElement('script');shell.src='/tf/shell.js?v=20261112-updates-02646';document.head.append(shell);}if(window.NativePortal||window.AndroidPortal)return;const script=document.createElement('script');script.src='/pwa/install.js?v=20261104-rail-0263';document.head.append(script);},{once:true});
 })();
 
-/* Shared field feedback for all web and packaged Android modules. */
+/* Gemeinsame Feldrückmeldungen für Web und Android. */
 (()=>{
 if(window.CtlValidation||!document.querySelectorAll)return;
 const selector='input:not([type="hidden"]),select,textarea',owned=new WeakMap();
@@ -135,7 +136,7 @@ async function response(response,snapshot){
    if(captured&&captured.value===value(field))mark(field,data.detail);
   }
  }
- // Failed credentials concern the pair, while transport failures have no field.
+ // Falsche Zugangsdaten betreffen beide Felder; Verbindungsfehler gehören zu keinem einzelnen Feld.
  if(response.status===401&&snapshot.payload?.password!==undefined){
   for(const field of fields(snapshot.scope,['username','password'])){
    const captured=snapshot.entries.find(entry=>entry.field===field);
@@ -159,7 +160,7 @@ for(const type of ['click','submit'])document.addEventListener(type,event=>{
 window.CtlValidation={issuesFromResponse,mark,clear,validate,fields,capture,response,report,takeIssues,resolveIssues,reveal,rememberIssue,registerResolver:(owner,resolver)=>resolvers.set(owner,resolver)};
 })();
 
-// One authenticated page visit per top-level TF document; telemetry never blocks the portal.
+// Pro sichtbarem TF-Dokument einen angemeldeten Aufruf melden. Die Erfassung blockiert das Portal nicht.
 if(typeof location!=='undefined'&&location.pathname.startsWith('/tf')&&window.top===window)document.addEventListener('DOMContentLoaded',async()=>{
  try {
   const account=await fetch('/api/v1/account/me',{credentials:'same-origin',cache:'no-store'});

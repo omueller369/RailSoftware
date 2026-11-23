@@ -1,1 +1,2 @@
+/* Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung. */
 (async()=>{try{const response=await fetch('/api/v1/admin/me',{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw Error();const user=await response.json();await window.startGpsDemo(user,{administration:true});}catch(error){document.getElementById('gpsDemoWorkspace').textContent=window.I18n?.t(globalThis.CtlText.source('portal_gps_demo.text_cb1011064bf5'))||globalThis.CtlText.source('portal_gps_demo.text_cb1011064bf5');}})();

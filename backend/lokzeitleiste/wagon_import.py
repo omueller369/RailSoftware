@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Einlesen von Wagenlisten.
 """Bounded read-only XLSX wagon import; no workbook formulas are executed."""
 import re
 import unicodedata
@@ -197,8 +198,8 @@ def parse(content):
             result.sort(key=lambda item:item[0])
             if [p for p,_ in result] != list(range(1,len(result)+1)) or len({r.number for _,r in result}) != len(result): raise ImportError('format')
             totals = {key+'_total':number(cell(total,cols[key]),True) if total is not None else None for key in ('length','weight','g','p','cargo') if key in cols}
-            # Excel SUM can omit numbers stored as text. Use all parsed individual
-            # numeric values; retain the source summaries for explicit preview warnings.
+            # Excel-Summen können Zahlen übergehen, die als Text gespeichert sind. Deshalb die eingelesenen
+            # Einzelwerte verwenden und die ursprünglichen Summen für die ausdrückliche Vorschauwarnung behalten.
             for field in ('length','cargo','weight','p','g'):
                 if field not in cols:continue
                 totals['reported_'+field+'_total']=totals[field+'_total']

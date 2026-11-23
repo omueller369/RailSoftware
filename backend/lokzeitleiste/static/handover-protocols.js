@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Übergabeprotokolle und deren Bearbeitung. */
 (()=>{
  const el=id=>document.getElementById(id),t=s=>window.I18n?.t(s)||s,base='/api/v1/'+(location.pathname.startsWith('/tf/')?'tf':'admin')+'/loco-handover';
  let vehicle=null,generation=0,detailVersion=0,searchVersion=0,stations=[],timer,busy=false;

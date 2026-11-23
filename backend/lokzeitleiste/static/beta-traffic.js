@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Anzeige des Datenverbrauchs im Betatest. */
 /* Beta counters: Android UID counters, or explicitly labelled browser estimates. */
 (()=>{
 if(window.CtlTraffic)return;

@@ -1,3 +1,4 @@
+# Regressionstests für Fahrzeugübergaben und Mängelerfassung.
 import unittest
 from uuid import uuid4
 from decimal import Decimal

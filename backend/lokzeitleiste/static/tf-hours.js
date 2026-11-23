@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 const el=id=>document.getElementById(id),names=Array.from({length:12},(_,i)=>new Intl.DateTimeFormat('de-DE',{month:'long'}).format(new Date(2026,i,1)));
 let data=null,view='month',generation=0;
 const clock=n=>n===null?globalThis.CtlText.source("portal_tf_hours.text_64509e1af49c"):(n<0?'−':'')+Math.floor(Math.abs(n)/60)+':'+String(Math.abs(n)%60).padStart(2,'0')+' h';

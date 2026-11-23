@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Konten und Stammdaten der Beschäftigten.
 """Shared personnel foundation for TF and future WGM portals; no new privileges."""
 from ..models import EmployeeCategory, WgmProfile
 

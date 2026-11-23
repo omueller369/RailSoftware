@@ -1,3 +1,4 @@
+# Bündelt die notwendigen Schritte für Anbindung der vorhandenen Serverdienste. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 import importlib.util
 from pathlib import Path
 import tempfile

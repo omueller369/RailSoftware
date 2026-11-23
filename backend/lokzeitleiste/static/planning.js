@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Dienstplanung und Kalender. */
 const el = id => document.getElementById(id);
 const kinds = [globalThis.CtlText.source("backend_planning.text_eb8f579b6931"), globalThis.CtlText.source("backend_planning.text_35d3a889824d"), globalThis.CtlText.source("backend_planning.text_e79aa42d7d18"), globalThis.CtlText.source("backend_planning.text_52e37a639da5")];
 const codes = {Arbeitstag: 'A', Urlaub: 'U', Ruhetag: 'R', Ungeplant: '?'};

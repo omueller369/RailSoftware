@@ -1,4 +1,5 @@
-/* Canonical train-event cause. No coordinates, times, revisions or personal free text change. */
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
+/* Die Ereignisart vereinheitlichen; Koordinaten, Zeiten, Versionen und persönliche Texte bleiben erhalten. */
 (()=>{
  const name='DB-InfraGo',aliases=new Set(),tasks=new Map();let owner=null;
  const named=value=>typeof value==='string'&&['dbinfrago','dbinfraogo'].includes(value.trim().toLowerCase().replace(/[ -]/g,''));

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Bremszettel und ihre Eingabe- und Druckansichten. */
 (()=>{'use strict';
 const el=id=>document.getElementById(id),t=s=>window.I18n?.t(s)||s,base='/api/v1/tf/national-brake-sheets';
 const node=(tag,text)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=t(text);return e;};

@@ -1,5 +1,6 @@
+/* Regressionstests für Feldzuordnung bei Eingabefehlern. */
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const source=fs.readFileSync('backend/lokzeitleiste/static/auth-session.js','utf8').split('/* Shared field feedback')[1];
+const source=fs.readFileSync('backend/lokzeitleiste/static/auth-session.js','utf8').split('/* Gemeinsame Feldrückmeldungen')[1];
 class Field{
  constructor(name,value=''){this.name=name;this.id='';this.value=value;this.type='text';this.dataset={};this.attributes={};this.willValidate=true;this.validity={valid:true};this.labels=[];}
  getAttribute(key){return this.attributes[key]??null;}
@@ -11,7 +12,7 @@ class Field{
 const a=new Field('email','bad'),b=new Field('new_password','secret'),c=new Field('email','other');
 const fields=[a,b,c],events={},scope={isConnected:true,querySelectorAll:()=>fields};
 const document={querySelectorAll:()=>fields,addEventListener:(key,fn)=>events[key]=fn};
-const window={};vm.runInNewContext('/* Shared field feedback'+source,{window,document,console,FormData});
+const window={};vm.runInNewContext('/* Gemeinsame Feldrückmeldungen'+source,{window,document,console,FormData});
 const api=window.CtlValidation;
 (async()=>{
  a.validity.valid=false;events.invalid({target:a});assert.equal(a.getAttribute('aria-invalid'),'true');

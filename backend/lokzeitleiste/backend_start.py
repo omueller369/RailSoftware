@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe.
 """Permission-filtered landing page, available to every backend account."""
 from .localization import source as _text_source
 from pathlib import Path

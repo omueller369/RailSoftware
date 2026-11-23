@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Betriebsstellen und Ortszuordnungen.
 """Authenticated TF sharing of immutable station snapshots through a recipient-owned inbox."""
 from .localization import source as _text_source
 import hashlib

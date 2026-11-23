@@ -1,3 +1,4 @@
+# Regressionstests für Anmeldung und Kontoverwaltung.
 import unittest
 from datetime import date
 from unittest.mock import patch

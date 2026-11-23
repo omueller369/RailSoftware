@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Postfächer und Nachrichtenversand.
 from ..localization import source as _text_source
 import email
 import imaplib

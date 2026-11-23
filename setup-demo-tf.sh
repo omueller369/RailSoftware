@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Explicit, repeatable import of the packaged TF demo accounts on the Host-MySQL server.
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
+# Die verpackten TF-Demokonten ausdrücklich und wiederholbar auf dem Host-MySQL-Server importieren.
 set -Eeuo pipefail
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 if [[ ${1:-} == --help || ${1:-} == -h ]];then
@@ -15,10 +16,10 @@ command -v flock >/dev/null || { echo 'flock fehlt (Paket util-linux).' >&2;exit
 mkdir -p "$root/backend/testenv"
 exec 9>"$root/backend/testenv/demo-tf-import.lock"
 flock -n 9 || { echo 'Ein Testdatenimport läuft bereits.' >&2;exit 1; }
-# Bring the code/image/schema up to date using the existing backed-up update path.
+# Programm, Abbild und Schema über den vorhandenen abgesicherten Updateweg aktualisieren.
 bash "$root/setup-demo.sh"
 compose=(docker compose --project-directory "$root/backend" --env-file "$root/backend/.env.host" -f "$root/backend/compose.host.yaml")
-# A second snapshot immediately precedes the data import and stops API/mailer.
+# Direkt vor dem Datenimport erneut sichern und API sowie Mailer anhalten.
 bash "$root/backend/testenv/control-host.sh" backup
 recover(){
  local status=$?

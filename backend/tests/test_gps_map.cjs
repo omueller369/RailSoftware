@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 // Simulated browser contract test; no real GPS hardware or installed browser required.
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 class Element{
@@ -44,7 +45,7 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  }));
  r.drawMap();
  assert.deepEqual(labels().slice(1,4).map(n=>n.textContent),['00:05','/','00:01']);
- // Waiting before departure is excluded; intermediate stops and signal gaps remain in total time.
+ // Warten vor der Abfahrt zählt nicht mit. Unterwegshalte und Signallücken bleiben in der Gesamtzeit.
  const moving=Array.from({length:4},(_,i)=>({...point(52,13+i*.0007,600001+i*5000),speed:10}));
  r.record.points=[{...point(52,13,1),speed:0},...moving,{...moving.at(-1),t:4200001,speed:0}];
  r.drawMap();assert.equal(labels()[1].textContent,'01:00');
@@ -61,7 +62,7 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  r.mapFollow.onclick();assert.equal(r.mapState.mode,'follow');r.mapState.zoom=19;r.drawMap();r.mapZoomIn.onclick();assert.equal(r.mapView.zoom,19);assert.equal(r.mapZoomIn.disabled,true);
  r.mapRail.onclick();assert.equal(r.railEnabled,false);assert(!r.mapSvg.children.some(n=>'data-m1-test' in n.attributes));r.mapRail.onclick();assert(r.mapSvg.children.some(n=>'data-m1-test' in n.attributes));assert(!r.mapSvg.children.some(n=>String(n.attributes.href).includes('tiles.openrailwaymap.org')));
  context.document.visibilityState='hidden';r.drawMap();assert(!r.mapSvg.children.some(n=>n.tag==='image'));assert(r.mapSvg.children.some(n=>'data-gps-trail' in n.attributes));
- // Old recordings need no migration: markers are derived from original fixes.
+ // Alte Aufzeichnungen bleiben unverändert; Markierungen werden aus ihren Messpunkten abgeleitet.
  r.record={ended:true,points:Array.from({length:63},(_,i)=>({...point(52,13,100000+i*5000),speed:0}))};r.draw();
  r.mapFollow.onclick();
  const standCenter=r.mapView.center.x;
@@ -75,7 +76,7 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  assert.equal(r.mapState.mode,'free');assert.equal(r.mapView.zoom,12);assert(markers()[0].attributes.transform.includes('translate(300 150)'));assert(markers()[0].attributes.transform.endsWith('scale(2)'));r.liveInputs[0].tr.events.focusout({relatedTarget:null});
  assert(markers()[0].attributes.transform.endsWith('scale(1)'));r.liveInputs[0].tr.events.focusin();assert(markers()[0].attributes.transform.endsWith('scale(2)'));
  const key=r.liveInputs[0].row.key;r.record.stop_edits={[key]:{imported:true}};let imported=null;r.o.focusImported=value=>imported=value;r.draw();assert.equal(r.liveInputs.length,0);markers()[0].events.click();assert.equal(imported,key);
- // Route colors follow the shared 0–140 km/h scale; signal gaps stay light pink.
+ // Spurfarben folgen der gemeinsamen Skala von 0 bis 140 km/h; Signallücken bleiben hellrosa.
  r.record={ended:true,points:[
   point(52,13,1),{...point(52,13.001,5001),speed:50/3.6},
   {...point(52,13.002,10001),speed:100/3.6},
@@ -90,13 +91,13 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  assert.equal(gap.attributes.stroke,'#f6b6d2');assert.equal(gap.attributes['stroke-width'],6);assert.equal(gap.attributes['stroke-dasharray'],undefined);
  const scale=r.trailLegend().children[1];assert.deepEqual(scale.children.map(n=>n.textContent),['0','50','100','140']);
  assert(scale.attributes.style.includes('rgb(0,0,255) 0%'));assert(scale.attributes.style.includes('rgb(255,0,0) 100%'));
- // Exact knots and intermediate speeds use a continuous interpolation, without 5 km/h buckets.
+ // Stützwerte und Zwischengeschwindigkeiten werden stetig interpoliert, ohne Fünf-km/h-Stufen.
  const palette=new Element('svg'),speeds=[0,0,25,50,75,76,100,120,140,180];
  r.drawTrail(palette,tag=>new Element(tag),speeds.map((speed,i)=>({t:i*5000,accuracy:5,lon:i,mapSpeed:speed/3.6})),p=>({x:p.lon,y:0}));
  assert.deepEqual(palette.children.map(n=>n.attributes.stroke),['rgb(0,0,255)','rgb(0,64,128)','rgb(0,128,0)','rgb(128,192,0)','rgb(133,194,0)','rgb(255,255,0)','rgb(255,127,0)','rgb(255,0,0)']);
  // Signal gaps do not invent stops, and short stationary runs have no marker.
  r.record={ended:true,points:[{...point(52,13,1),speed:0},{...point(52,13,400001),speed:0}]};r.draw();assert.equal(markers().length,0);
- // Manual gap stops persist as times; their map position is derived on the pink bridge.
+ // Manuelle Halte in Signallücken speichern nur Zeiten. Ihre Kartenposition wird auf der rosa Verbindung ermittelt.
  const gapStart=1794358800000;
  r.record={train_number:'123',ended:false,points:[{...point(52,13,gapStart),speed:0},{...point(52,14,gapStart+600000),speed:0}],manual_stops:[{key:'manual-'+(gapStart+120000),start:gapStart+120000,end:gapStart+180000}]};
  const gapRaw=JSON.stringify(r.record.points);r.draw();
@@ -106,30 +107,30 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  assert.equal(labels()[3].textContent,'00:01');assert.equal(context.window.GpsRecorder.liveStops(r.record.points).length,0);
  manualMarker().events.click();assert.equal(r.mapView.zoom,12);assert.equal(manualMarker().attributes.transform,'translate(300 150) scale(2)');
  await r.sync();assert.equal(body.manual_stops[0].end,gapStart+180000);r.draw();assert(manualMarker());assert.equal(JSON.stringify(r.record.points),gapRaw);
- // A time covered by both the returning GPS signal and a manual stop counts once.
+ // Eine Zeit, die sowohl vom zurückkehrenden Signal als auch von einem manuellen Halt abgedeckt wird, zählt nur einmal.
  r.record={train_number:'123',ended:false,points:Array.from({length:37},(_,i)=>({...point(52,13,gapStart+i*5000),speed:0})),manual_stops:[{key:'manual-'+(gapStart+60000),start:gapStart+60000,end:gapStart+120000}]};r.draw();assert.equal(labels()[3].textContent,'00:03');
  // Poor-accuracy fixes also create a bridge and a manual gap marker.
  r.record={train_number:'123',ended:true,points:[point(52,13,gapStart),{...point(52,13.5,gapStart+10000),accuracy:100},point(52,14,gapStart+20000)],manual_stops:[{key:'manual-'+(gapStart+5000),start:gapStart+5000,end:gapStart+15000}]};r.draw();assert(manualMarker());assert(r.mapSvg.children.some(n=>n.attributes['data-gps-gap']));
  for(const fixture of JSON.parse(fs.readFileSync('backend/tests/fixtures/gps-rail-stops.json','utf8'))){const actual=context.window.GpsRecorder.liveStops(fixture.points,true,fixture.edits).map(({start,end})=>({start,end}));assert.equal(JSON.stringify(actual),JSON.stringify(fixture.expected),fixture.name);}
- // A newly visible shorter stop must not inherit the old s0 location of a later stop.
+ // Ein neu sichtbarer kurzer Halt darf nicht die alte s0-Ortszuordnung eines späteren Halts übernehmen.
  const oldTrack=JSON.parse(fs.readFileSync('backend/tests/fixtures/gps-rail-stops.json','utf8')).find(f=>f.name==='two different stops').points;
  const base=oldTrack[0].t;r.record={ended:true,points:oldTrack.filter(p=>p.t<base+495000).concat(Array.from({length:13},(_,i)=>({...oldTrack.find(p=>p.t===base+490000),t:base+(495+i*5)*1000,speed:0}))),stations:{s0:{code:'CCC',name:'Old stop'}},reasons:{s0:{reason:'V1'}},selection:['s0']};
- // Keep the second stop stationary for >5 minutes so it was the only legacy stop.
+ // Den zweiten Halt länger als fünf Minuten unbewegt halten, damit nur er im Altbestand sichtbar war.
  r.draw();assert.equal(r.liveInputs.length,2);assert.equal(r.liveInputs[0].station.value,'');assert.equal(r.liveInputs[1].station.value,'CCC · Old stop');assert.equal(r.record.selection[0],'s1');
- // Version-2 edited intervals are re-evaluated and merged; all source edits remain available.
+ // Bearbeitete Intervalle der Version 2 werden erneut ausgewertet und zusammengeführt. Alle ursprünglichen Änderungen bleiben verfügbar.
  const mergedBase=1792627200000,oldKey='live-'+(mergedBase+300000),firstKey='live-'+mergedBase;
  r.record={ended:true,detection_version:2,points:Array.from({length:121},(_,i)=>({t:mergedBase+i*5000,lat:52,lon:13,accuracy:5,speed:0})),stop_edits:{[firstKey]:{station_input:'BBB · First',reason:'V1'},[oldKey]:{station_input:'CCC · Second',reason:'V3'}}};r.draw();assert.equal(r.liveInputs.length,1);assert.equal(markers().length,1);assert.equal(r.record.stop_edits[oldKey].station_input,'CCC · Second');assert(r.liveInputs[0].row.source_keys.includes(oldKey));
  const beforeDelete=JSON.stringify(r.record);await r.deleteStop(r.liveInputs[0].row);assert.equal(r.record.stop_edits[firstKey].deleted,true);assert.equal(r.record.stop_edits[oldKey].deleted,true);assert.equal(r.liveInputs.length,0);assert.equal(markers().length,0);r.record=JSON.parse(beforeDelete);r.draw();
  let focusedOld;r.o.hasImported=key=>key===oldKey;r.o.importedKeys=()=>[oldKey];r.o.focusImported=key=>focusedOld=key;r.draw();assert.equal(r.liveInputs.length,0);r.focusStop(firstKey);assert.equal(focusedOld,oldKey);r.setFocusedStop(oldKey);assert(markers()[0].attributes.transform.endsWith('scale(2)'));r.setExpanded(false);assert.equal(r.content.hidden,true);context.document.visibilityState='visible';r.setFocusedStop(oldKey);assert.equal(r.content.hidden,false);assert.equal(r.collapseButton.attributes['aria-expanded'],'true');assert(!r.mapSvg.children.some(node=>node.tag==='image'));assert(r.mapSvg.children.some(node=>'data-m1-background' in node.attributes));
- // Row clicks center and zoom the selected stop rather than the last GPS point.
+ // Ein Klick auf die Zeile zentriert und vergrößert den gewählten Halt.
  r.o.hasImported=()=>false;r.o.importedKeys=()=>[];r.record={ended:true,detection_version:3,points:JSON.parse(fs.readFileSync('backend/tests/fixtures/gps-rail-stops.json','utf8')).find(f=>f.name==='two different stops').points};r.mapState={mode:'overview',zoom:3};r.draw();
  const selected=r.liveInputs[0];selected.tr.onclick({target:{}});assert.equal(r.mapState.mode,'free');assert.equal(r.mapView.zoom,12);assert.equal(r.mapView.center.x,(13+180)/360);assert.equal(markers().find(m=>m.attributes['data-gps-stop']===selected.row.key).attributes.transform,'translate(300 150) scale(2)');
  const center={...r.mapView.center};r.drawMap();assert.deepEqual(r.mapView.center,center);r.mapState={mode:'free',zoom:19,center:{x:0,y:0}};r.drawMap();selected.tr.onclick({target:{}});assert.equal(r.mapView.zoom,12);assert.deepEqual(r.mapView.center,center);
- // All visible time fields use HH:MM, and changing a station preserves the measured seconds.
+ // Sichtbare Zeitfelder zeigen HH:MM. Ein anderer Bahnhof verändert die gemessenen Sekunden nicht.
  r.record={ended:true,detection_version:3,points:Array.from({length:63},(_,i)=>({t:mergedBase+37123+i*5000,lat:52,lon:13,accuracy:5,speed:0}))};r.draw();const timed=r.liveInputs[0];assert.equal(timed.end.type,'time');assert.equal(timed.end.step,'60');assert.match(timed.end.value,/^\d{2}:\d{2}$/);assert.match(timed.tr.children[2].children[0].textContent,/^\d{2}:\d{2}$/);timed.station.value='BBB';timed.station.oninput();assert.equal(r.record.stop_edits[timed.row.key].end,r.record.points.at(-1).t);assert.equal(r.record.stop_edits[timed.row.key].manual_end,false);
- // Removing a halt keeps every fix, survives redraw and sync, and respects read-only/cancel.
+ // Beim Entfernen eines Halts bleiben alle Messpunkte erhalten. Neuzeichnen, Synchronisieren, Schreibschutz und Abbrechen werden berücksichtigt.
  const original=JSON.stringify(r.record.points),deletedKey=timed.row.key;r.o.readonly=()=>true;await r.deleteStop(timed.row);assert.equal(r.liveInputs.length,1);r.o.readonly=()=>false;context.confirm=()=>false;await r.deleteStop(timed.row);assert.equal(r.liveInputs.length,1);context.confirm=()=>true;await timed.remove.onclick();assert.equal(r.liveInputs.length,0);assert.equal(markers().length,0);assert.equal(JSON.stringify(r.record.points),original);assert.equal(r.record.stop_edits[deletedKey].deleted,true);r.draw();assert.equal(r.liveInputs.length,0);r.record.train_number='123';await r.sync();assert.equal(body.stop_edits[deletedKey].deleted,true);assert.equal(r.liveInputs.length,0);
- // GPS/HTTPS warnings pass  the auto-dismiss option and clear their status after 3 seconds.
+ // GPS- und HTTPS-Hinweise erhalten die automatische Schließzeit und verschwinden nach drei Sekunden.
  const scheduled=[],notices=[];context.setTimeout=(fn,ms)=>{scheduled.push({fn,ms});return scheduled.length;};context.clearTimeout=id=>{if(scheduled[id-1])scheduled[id-1].cancelled=true;};context.window.ReportFeedback={error:(message,options)=>notices.push({message,options})};
  r.fail('GPS fehlt oder wurde abgelehnt. Aufzeichnung hat eine Lücke.');assert.equal(notices.at(-1).options.autoCloseMs,3000);assert.equal(scheduled.at(-1).ms,3000);scheduled.at(-1).fn();assert.equal(r.message.textContent,'');
  r.fail('GPS benötigt HTTPS oder localhost.');assert.equal(notices.at(-1).options.autoCloseMs,3000);const timeout=scheduled.at(-1);r.say('GPS-Aufzeichnung läuft.');assert(timeout.cancelled);assert.equal(r.message.textContent,'GPS-Aufzeichnung läuft.');

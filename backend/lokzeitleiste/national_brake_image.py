@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Bremszettel und ihre Eingabe- und Druckansichten.
 """Sharp vector A5 national freight brake sheet plus matching image preview."""
 from .localization import source as _text_source
 import io,os
@@ -74,7 +75,7 @@ def render(sheet,result,creator,image=False):
     if len(trains)<=3:
         d.centered(12,36,278,13,'Zugnummer(n)',7,True);d.centered(290,36,118,13,_text_source('server_national_brake_image.text_672de87511ac'),7,True);d.line(290,36,290,85)
     else:d.text(17,40,_text_source('server_national_brake_image.text_22cc39a34733'),7,True)
-    # Keep each DS100 paired with its train; up to 20 pairs fit as four compact columns.
+    # Jedes DS100-Kürzel bleibt bei seiner Zugnummer. Bis zu 20 Paare passen in vier kompakte Spalten.
     if len(trains)<=3:
         for i,t in enumerate(trains):
             height=34/max(1,len(trains));d.centered(12,51+i*height,278,height,t.number);d.centered(290,51+i*height,118,height,t.station)
@@ -129,7 +130,7 @@ def render(sheet,result,creator,image=False):
     for i,(n,title) in enumerate(labels):
         yy=travel_top+i*13;d.centered(62,yy,20,13,n,6.5);d.text(86,yy+3,title,6,maxwidth=188);d.text(281,yy+3,_text_source('server_national_brake_image.text_1f81524a386b'),6.5,maxwidth=36);d.line(62,yy+13,320,yy+13)
     d.text(16,travel_top+7,_text_source('server_national_brake_image.text_f0c017b40dbf'),6.4,True);d.text(16,travel_top+17,_text_source('server_national_brake_image.text_ef8dbf86d6f9'),6.4,True)
-    # Strike only row-number/description cells: lower-left of 29 to upper-right of 21.
+    # Nur Nummern- und Beschreibungsfelder von links unten in Zeile 29 bis rechts oben in Zeile 21 durchstreichen.
     d.line(62,travel_end,320,travel_top,1.2)
     d.line(left,travel_top,left,travel_end);d.line(right,travel_top,right,travel_end)
     d.line(left,travel_end,right,travel_end,1)

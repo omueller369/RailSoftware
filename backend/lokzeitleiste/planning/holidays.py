@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Feiertage und regionale Kalenderregeln.
 """Gesetzliche Berliner Feiertage, ohne Ersatzfeiertage oder Schulferien."""
 from functools import lru_cache
 import holidays

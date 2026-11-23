@@ -1,3 +1,4 @@
+# Regressionstests für die gemeinsamen Anwendungsabläufe.
 import unittest
 import test_accounts
 

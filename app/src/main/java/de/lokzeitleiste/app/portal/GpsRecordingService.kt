@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung. */
 package de.lokzeitleiste.app.portal
 
 import android.Manifest

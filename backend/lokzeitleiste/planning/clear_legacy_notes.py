@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für persönliche Notizen.
 """One-time removal of current TF planning notes, retaining a private backup."""
 from sqlalchemy import select
 from ..models import PlanDay,PlanMonth,SystemMigration,PlanningNoteBackup,SystemChangeLog

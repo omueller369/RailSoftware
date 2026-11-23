@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung.
 """Per-driver preferences and explicitly enabled, expiring live sharing."""
 import json
 from pathlib import Path

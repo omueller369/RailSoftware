@@ -1,3 +1,4 @@
+# Regressionstests für die gemeinsamen Anwendungsabläufe.
 import json,unittest
 from sqlalchemy import create_engine,select,func
 from sqlalchemy.orm import Session

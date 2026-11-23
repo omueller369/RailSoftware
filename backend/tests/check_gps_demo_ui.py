@@ -1,3 +1,4 @@
+# Browserprüfung für GPS-Erfassung und Kartendarstellung.
 """Real-browser GPS-DEMO playback checks with isolated, synthetic recording data."""
 import re
 import check_work_report_layout as runner

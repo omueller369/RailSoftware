@@ -1,3 +1,4 @@
+# Browserprüfung für die gemeinsamen Anwendungsabläufe.
 """Offline localStorage and IndexedDB conversion, account isolation and one Art choice."""
 import argparse
 from browser_realtime import check_pages

@@ -1,3 +1,4 @@
+# Regressionstests für GPS-Erfassung und Kartendarstellung.
 import json,unittest
 from uuid import uuid4
 from fastapi.testclient import TestClient
@@ -18,7 +19,7 @@ class DemoSharingTest(unittest.TestCase):
         first,first_id,_=self.recording();second,second_id,_=self.recording()
         def change(journey,shared=True,revision=1):return dict(journey_id=journey,shared=shared,expected_revision=revision)
         endpoint='/api/v1/tf/gps-demo/shares'
-        # A conflict in any selected recording must leave the whole selection unpublished.
+        # Bei einem Konflikt in einer gewählten Aufnahme darf die gesamte Auswahl nicht veröffentlicht werden.
         failed=self.driver.post(endpoint,json={'changes':[change(first),change(second,revision=2)]})
         self.assertEqual(failed.status_code,409,failed.text)
         self.assertEqual(self.driver.get('/api/v1/tf/gps-demo/shared').json()['items'],[])

@@ -1,3 +1,4 @@
+# Browserprüfung für Versionsprüfung und bestehende Installationen.
 """Browser checks for the update module, including native availability and GPS guards."""
 import re
 import check_work_report_layout as runner

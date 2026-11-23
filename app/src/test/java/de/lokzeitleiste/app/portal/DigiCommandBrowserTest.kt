@@ -1,3 +1,4 @@
+/* Regressionstests für Datenbankverbindungen und Transaktionen. */
 package de.lokzeitleiste.app.portal
 
 import android.Manifest

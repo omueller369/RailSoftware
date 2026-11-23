@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Erfassung und Druck von Unterschriften.
 """Private TF signature capture; normalized transparent ink only."""
 from .localization import source as _text_source
 import io,json
@@ -23,7 +24,7 @@ def normalize(content,with_position=False,viewport=None):
     except (UnidentifiedImageError,OSError,ValueError,Image.DecompressionBombError) as exc:
         raise HTTPException(422,_text_source('server_signatures.text_a89a5968837b')) from exc
     alpha=ImageChops.multiply(image.getchannel('A'),ImageChops.invert(image.convert('L')))
-    # Remove nearly invisible background pixels and encode black ink with alpha only.
+    # Fast unsichtbare Hintergrundpixel entfernen und die schwarze Schrift mit Transparenz speichern.
     alpha=alpha.point(lambda p:0 if p<8 else p)
     bounds=alpha.getbbox()
     if not bounds:raise HTTPException(422,_text_source('server_signatures.text_962f00bf5f86'))

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Versionsprüfung und bestehende Installationen. */
 package de.lokzeitleiste.app.portal
 
 import android.app.AlertDialog
@@ -26,7 +27,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.security.MessageDigest
 
-/** Public GitHub test releases only. Android always handles the final installation consent. */
+/** Der Updatekanal verwendet öffentliche GitHub-Testversionen. Android bestätigt die Installation abschließend. */
 class PortalUpdater(private val activity:ComponentActivity, private val autoOffer:Boolean=true) {
     companion object { private val downloadLock=Mutex() }
     private val prefs=activity.getSharedPreferences("portal_updates",0)

@@ -1,3 +1,4 @@
+/* Regressionstests für Installation der Webanwendung. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 const handlers={},self={location:{origin:'https://example.org'},clients:{claim:async()=>{}},addEventListener:(type,fn)=>handlers[type]=fn};let offline=false,calls=0;
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/pwa-sw.js','utf8'),{self,URL,Response,fetch:async()=>{calls++;if(offline)throw Error('offline');return new Response('fresh server response',{status:200});}});

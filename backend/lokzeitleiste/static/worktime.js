@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Arbeitszeiten und deren Korrekturen. */
 function endDate(entry){if(entry.end_date)return entry.end_date;const d=new Date(entry.date+'T12:00:00');if(entry.end<=entry.start)d.setDate(d.getDate()+1);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');}
 const el = id => document.getElementById(id);
 const clock = n => (n < 0 ? '-' : '') + Math.floor(Math.abs(n) / 60) + ':' + String(Math.abs(n) % 60).padStart(2, '0');

@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für gemeinsame Darstellungsfarben.
 """System-wide plan colours. Leave and rest override weekends; holidays retain diagonal status."""
 from ..localization import source as _text_source
 from datetime import date

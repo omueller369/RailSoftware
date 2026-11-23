@@ -1,3 +1,4 @@
+# Regressionstests für Sprachschlüssel und Übersetzungen.
 """Render default-language fixture markup without relying on a running server."""
 import json
 import re

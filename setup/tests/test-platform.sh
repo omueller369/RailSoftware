@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 set -euo pipefail
 # shellcheck source=setup/platform.sh
 source "$(dirname -- "${BASH_SOURCE[0]}")/../platform.sh"

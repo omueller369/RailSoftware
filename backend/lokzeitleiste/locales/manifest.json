@@ -414,6 +414,11 @@
     "en": "/locales/portal_work_report_feedback/en.json",
     "pl": "/locales/portal_work_report_feedback/pl.json"
   },
+  "quality": {
+    "de": "/locales/quality/de.json",
+    "en": "/locales/quality/en.json",
+    "pl": "/locales/quality/pl.json"
+  },
   "rail_network": {
     "de": "/locales/rail_network/de.json",
     "en": "/locales/rail_network/en.json",

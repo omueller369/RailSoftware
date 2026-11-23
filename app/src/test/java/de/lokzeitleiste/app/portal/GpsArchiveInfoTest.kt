@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 package de.lokzeitleiste.app.portal
 
 import org.json.JSONObject

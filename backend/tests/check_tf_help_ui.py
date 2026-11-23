@@ -1,3 +1,4 @@
+# Browserprüfung für modulbezogene Hilfe und Druckansicht.
 """Real-browser help reader, responsive overlay and print-only-help checks."""
 import argparse
 import html

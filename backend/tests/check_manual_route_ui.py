@@ -1,3 +1,4 @@
+# Browserprüfung für Streckenkenntnisse und Referenzgeometrie.
 """Real offline M1 references: station selection, autozoom, green preview, confirmation."""
 from pathlib import Path
 import argparse

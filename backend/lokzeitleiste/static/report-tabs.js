@@ -1,4 +1,5 @@
-/* Tabs only change visibility. Editors, drafts and GPS services keep their identity. */
+/* Gemeinsame Verarbeitung für Berichte und die zugehörigen Prüf- und Versandabläufe. */
+/* Reiter ändern nur die Sichtbarkeit. Bearbeitung, Entwürfe und GPS-Dienste bleiben bestehen. */
 (()=>{
  const names=['duty','train','month'],root=document.getElementById('workReport'),details=document.getElementById('reportDetails');
  const tabs=names.map(name=>document.getElementById('reportTab-'+name)),panels=names.map(name=>document.getElementById('reportPanel-'+name));

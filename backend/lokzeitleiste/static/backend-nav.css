@@ -1,3 +1,4 @@
+/* Gemeinsame Darstellung für Portalnavigation und Berechtigungen, einschließlich schmaler Ansichten. */
 /* A permanent desktop sidebar and a modal navigation drawer on smaller screens. */
 body.backend-sidebar-desktop{box-sizing:border-box;padding-inline-start:280px}
 .backend-menu-control[hidden],.backend-sidebar-panel[hidden],.backend-sidebar-overlay[hidden],.backend-sidebar-close[hidden]{display:none!important}

@@ -1,3 +1,4 @@
+# Regressionstests für Sprachwahl und Übersetzungen.
 import unittest
 import csv
 from pathlib import Path

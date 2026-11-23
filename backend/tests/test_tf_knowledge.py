@@ -1,3 +1,4 @@
+# Regressionstests für persönliche Kenntnisbestände.
 import csv,io,unittest
 from fastapi.testclient import TestClient
 from sqlalchemy import select,func

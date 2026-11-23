@@ -1,3 +1,4 @@
+/* Regressionstests für Dokumentablage und Dateizugriff. */
 package de.lokzeitleiste.app.portal
 import org.junit.Assert.*
 import org.junit.Test

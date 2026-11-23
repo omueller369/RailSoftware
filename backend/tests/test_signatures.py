@@ -1,3 +1,4 @@
+# Regressionstests für Erfassung und Druck von Unterschriften.
 import io,unittest
 from unittest.mock import patch
 from PIL import Image,ImageDraw,ImageChops
@@ -80,7 +81,7 @@ class SignatureTest(unittest.TestCase):
         from lokzeitleiste.brake_sheets import Sheet,calculate
         from datetime import datetime
         from sqlalchemy import select
-        # The ink intentionally crosses field 40's upper/right borders.
+        # Der Strich überschreitet absichtlich die obere und rechte Grenze von Feld 40.
         image=Image.new('RGBA',(1000,500),(0,0,0,0));ImageDraw.Draw(image).rectangle((600,100,899,349),fill='black')
         raw=io.BytesIO();image.save(raw,format='PNG')
         guide=self.driver.get(self.base+'/background');self.assertEqual(guide.status_code,200)
@@ -94,7 +95,7 @@ class SignatureTest(unittest.TestCase):
             sheet=Sheet(**self.sheet(departure_date='2026-10-27'));result=calculate(db,sheet)
         rendered=Image.open(io.BytesIO(render(sheet,result,datetime(2026,10,27),'Mira Beispiel',transparent=True,signature=saved.content,signature_position=geometry)))
         sx=rendered.width/1335;sy=rendered.height/1888
-        # Signature keeps its captured extents; it is not fitted inside the field.
+        # Die Unterschrift behält ihre erfasste Ausdehnung und wird nicht in das Feld eingepasst.
         self.assertGreater(rendered.getpixel((round(900*sx),round(1780*sy)))[3],200)
         self.assertEqual(self.driver.put(self.base,data={'capture_mode':'wrong'},files={'file':('sig.png',raw.getvalue(),'image/png')}).status_code,422)
         self.assertEqual(self.driver.put(self.base,data={'capture_mode':'field40-v1'},files={'file':('sig.png',sample(),'image/png')}).status_code,422)

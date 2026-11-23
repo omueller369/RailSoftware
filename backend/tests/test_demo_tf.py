@@ -1,3 +1,4 @@
+# Regressionstests für Beispieldaten und getrennte Vorführbestände.
 import io
 import unittest
 from collections import Counter

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Versionsprüfung und bestehende Installationen. */
 package de.lokzeitleiste.app.portal
 import java.net.URI
 object UpdatePolicy {

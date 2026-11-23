@@ -1,4 +1,5 @@
-/* Public graph worker: no account, credentials or qualification data. */
+/* Gemeinsame Verarbeitung für polnische Referenznetz und die manuelle Streckenerfassung. */
+/* Der Hintergrundprozess verarbeitet nur den öffentlichen Graphen, keine Konten oder persönlichen Kenntnisse. */
 function PolandStkWorker(){
  let graph,adj,points,byNode,revision;
  const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[łŁ]/g,'l').toLowerCase();
@@ -16,6 +17,12 @@ function PolandStkWorker(){
  for(const edge of sample){const result=shortest(a.node,b.node,new Set([edge]),first.length*1.6+2000);if(result&&!signatures.has(result.edges.join(','))){signatures.add(result.edges.join(','));results.push(result);}if(results.length>=3)break;}
  results.sort((a,b)=>a.length-b.length);return results.map(result=>({...result,via:[...new Set(result.nodes.map(n=>points.get(byNode.get(n))).filter(p=>p?.name&&p.id!==from&&p.id!==to).map(p=>p.name))].slice(0,3)}));}
  function inspect(waypoints,legs){return legs.map((choices,i)=>{const a=points.get(waypoints[i]),b=points.get(waypoints[i+1]);if(!a||!b||a.node===null||b.node===null)throw Error('invalid');return choices.map(edges=>{let node=a.node,length=0;const forward=[],nodes=[node];for(const id of edges){const edge=graph.edges[id];if(!edge)throw Error('invalid');if(edge[0]===node){node=edge[1];forward.push(true);}else if(edge[1]===node){node=edge[0];forward.push(false);}else throw Error('not_connected');length+=edge[2];nodes.push(node);}if(node!==b.node)throw Error('not_connected');return {edges,forward,nodes,length,via:[]};});});}
+ // Bei der Knotensuche überspringen wir Zwischenstationen, behalten aber die echte Gleisfolge bei.
+ function hints(ident,nodesOnly,previous){const p=points.get(ident),back=points.get(previous)?.node;if(!p||p.node===null)return [];const result=[];for(const [first,edge,length]of adj[p.node]){if(first===back)continue;let at=first,from=p.node,total=length;const edges=[edge],forward=[graph.edges[edge][0]===from],seen=new Set([from]);while(nodesOnly&&adj[at].length===2&&!seen.has(at)){seen.add(at);const next=adj[at].find(x=>x[0]!==from);if(!next)break;const [node,id,d]=next;forward.push(graph.edges[id][0]===at);edges.push(id);total+=d;from=at;at=node;if(edges.length>=5000)break;}if(at===p.node||seen.has(at)||at===back)continue;const target=points.get(byNode.get(at));if(target)result.push({point:value(target),edges,forward,length:total});}return result;}
+ // Gleiche Endpunkte allein reichen nicht: Alle Varianten müssen über ihre ganze Länge im gleichen Korridor liegen.
+ function parallel(lines){if(lines.length<2||lines.length>3)return false;let south=90;const paths=lines.map(parts=>parts.map(flat=>{const path=[];for(let i=0;i<flat.length;i+=2){const lon=flat[i]/graph.scale,lat=flat[i+1]/graph.scale;south=Math.min(south,lat);path.push({x:(lon+180)/360,y:(1-Math.asinh(Math.tan(lat*Math.PI/180))/Math.PI)/2});}return path;}));const scale=40075016.686*Math.cos(south*Math.PI/180)*200/190;
+ const near=(source,target)=>{const grid=new Map(),cell=1000/scale,margin=200/scale;for(const path of target)for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i];for(let x=Math.floor((Math.min(a.x,b.x)-margin)/cell);x<=Math.floor((Math.max(a.x,b.x)+margin)/cell);x++)for(let y=Math.floor((Math.min(a.y,b.y)-margin)/cell);y<=Math.floor((Math.max(a.y,b.y)+margin)/cell);y++){const key=x+','+y;if(!grid.has(key))grid.set(key,[]);grid.get(key).push([a,b]);}}if(!grid.size)return false;for(const path of source)for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i],steps=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)*scale/100));for(let j=0;j<=steps;j++){const p={x:a.x+(b.x-a.x)*j/steps,y:a.y+(b.y-a.y)*j/steps};let best=Infinity;for(const [c,d]of grid.get(Math.floor(p.x/cell)+','+Math.floor(p.y/cell))||[]){const dx=d.x-c.x,dy=d.y-c.y,n=dx*dx+dy*dy,f=n?Math.max(0,Math.min(1,((p.x-c.x)*dx+(p.y-c.y)*dy)/n)):0;best=Math.min(best,Math.hypot(p.x-c.x-f*dx,p.y-c.y-f*dy)*scale);}if(best>200)return false;}}return true;};return paths.every((a,i)=>paths.slice(i+1).every(b=>near(a,b)&&near(b,a)));}
+
  self.onmessage=event=>{const {id,type,...args}=event.data;try{let result;
  if(type==='init')result=init(args.buffer);
  else if(type==='search'){const q=normalize(args.query);result=[...points.values()].filter(p=>p.kind<2&&(normalize(p.name).includes(q)||normalize(p.id).includes(q))||q.startsWith('pl:')&&normalize(p.id).startsWith(q)).sort((a,b)=>a.kind-b.kind||a.name.localeCompare(b.name,'pl')||a.id.localeCompare(b.id)).slice(0,30).map(value);}
@@ -23,6 +30,8 @@ function PolandStkWorker(){
  else if(type==='points')result=args.ids.map(p=>points.has(p)?value(points.get(p)):null);
  else if(type==='options')result=paths(args.from,args.to);
  else if(type==='inspect')result=inspect(args.waypoints,args.legs);
+ else if(type==='hints')result=hints(args.point,args.nodesOnly,args.previous);
+ else if(type==='parallel')result=parallel(args.lines);
  else if(type==='neighbors'){const p=points.get(args.point);result=p?.node!==null&&p?[...new Map(adj[p.node].map(([node,e,length])=>[byNode.get(node),{point:value(points.get(byNode.get(node))),edges:[e],forward:[graph.edges[e][0]===p.node],length}])).values()]:[];}
  else throw Error('invalid');self.postMessage({id,ok:true,result});
  }catch(error){self.postMessage({id,ok:false,error:error.message||'invalid'});}};

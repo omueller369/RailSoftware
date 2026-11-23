@@ -1,8 +1,9 @@
+/* Gemeinsame Verarbeitung für Dateidownloads mit korrekten Dateinamen. */
 package de.lokzeitleiste.app.portal
 
 import java.net.URLDecoder
 
-/** Preserve the server's UTF-8 attachment name instead of WebView's download.bin fallback. */
+/** Der UTF-8-Dateiname des Servers bleibt beim Download erhalten. */
 object DownloadMetadata {
     fun name(disposition: String, fallback: String): String {
         val extended = Regex("filename\\*\\s*=\\s*(?:\"([^\"]+)\"|([^;]+))", RegexOption.IGNORE_CASE).find(disposition)
@@ -17,6 +18,7 @@ object DownloadMetadata {
 
     fun mime(name: String, supplied: String?): String {
         if (name.endsWith(".pdf", ignoreCase = true)) return "application/pdf"
+        if (name.endsWith(".json", ignoreCase = true)) return "application/json"
         return supplied?.substringBefore(';')?.trim()?.takeIf { it.contains('/') } ?: "application/octet-stream"
     }
 }

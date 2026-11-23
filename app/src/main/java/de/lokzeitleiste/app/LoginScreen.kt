@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 package de.lokzeitleiste.app
 
 import android.graphics.Paint
@@ -54,7 +55,7 @@ private object LoginText {
     const val ok = "text_d37b853faffe"
 }
 
-/** Rounded, parallel rails with sleepers, using the logo's burgundy and navy. */
+/** Abgerundete, parallele Schienen mit Schwellen in den beiden Logofarben. */
 private fun Modifier.railFrame() = drawWithCache {
     val burgundy = android.graphics.Color.rgb(164, 0, 39)
     val navy = android.graphics.Color.rgb(0, 43, 76)
@@ -183,7 +184,7 @@ fun LoginScreen(
     }
 }
 
-/** OS app counters include WebView and the native GPS sharing service. */
+/** Die Betriebssystemzähler umfassen WebView und den nativen GPS-Freigabedienst. */
 @Composable
 private fun BetaTrafficCounter(modifier: Modifier = Modifier) {
     var upload by remember { mutableLongStateOf(0L) }

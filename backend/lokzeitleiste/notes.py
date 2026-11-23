@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für persönliche Notizen.
 """Private TF notes: every read and mutation is scoped to the authenticated owner."""
 from .localization import source as _text_source
 from fastapi import APIRouter, Depends, HTTPException, Query

@@ -1,3 +1,4 @@
+# Bindet die Fachrouten und gemeinsamen Schutzprüfungen in die Serveranwendung ein.
 from .localization import source as _text_source
 import os
 from pathlib import Path
@@ -635,7 +636,7 @@ from fastapi.exceptions import RequestValidationError
 
 @app.exception_handler(RequestValidationError)
 async def localized_validation_error(request: Request, exc):
-    # Never echo passwords, mailbox credentials or complete uploaded files in error responses.
+    # Fehlerantworten dürfen keine Passwörter, Postfachzugänge oder vollständigen hochgeladenen Dateien enthalten.
     from .field_errors import validation_loc
     fields=[{'field':'.'.join(str(part) for part in (validation_loc(error) if request.url.path.startswith('/api/v1/tf/work-report') else error['loc'])), 'type':error['type']} for error in exc.errors()]
     return JSONResponse({'detail':translate(_text_source('server_main.text_ee756c3e4909')),'fields':fields},status_code=422)
@@ -802,3 +803,6 @@ app.include_router(manual_route_router(require_account))
 
 from .poland_stk import create_router as poland_stk_router
 app.include_router(poland_stk_router(require_account,require_admin))
+
+from .quality import create_router as quality_router
+app.include_router(quality_router(require_account,require_admin))

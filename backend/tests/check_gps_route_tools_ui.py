@@ -1,3 +1,4 @@
+# Browserprüfung für GPS-Erfassung und Kartendarstellung.
 """Real UI: select/filter a GPS trace, explicitly save, separately confirm compaction and delete."""
 import argparse
 from browser_realtime import check_pages

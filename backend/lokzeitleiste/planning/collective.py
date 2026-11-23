@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Dienstplanung und Kalender.
 """Confirmed, atomic edits spanning multiple TFs and planning periods."""
 from ..localization import source as _text_source
 import hashlib,json

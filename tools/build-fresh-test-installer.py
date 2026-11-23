@@ -1,8 +1,9 @@
+# Bereitet Einrichtung und Aktualisierung der Testumgebung aus den eingecheckten Quellen reproduzierbar auf.
 """Render the standalone full-server setup; no companion setup files needed by users."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 header=r'''#!/usr/bin/env bash
-# Full fresh Ubuntu 26.04 CTL test server. Never execute on an existing production host.
+# Vollständige frische Ubuntu-Testinstallation. Auf bestehenden Systemen ausschließlich den geprüften Updateweg verwenden.
 set -Eeuo pipefail
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 script_file="$script_dir/$(basename -- "${BASH_SOURCE[0]}")"

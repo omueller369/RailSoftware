@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Beispieldaten und getrennte Vorführbestände.
 """Add the packaged twenty demo TF without deleting existing accounts or work data."""
 import argparse
 import json
@@ -31,7 +32,7 @@ def import_demo_tf(db, today=None, seed=23):
     reserved = list(db.scalars(select(User.username)))
     if folder.is_dir():
         reserved.extend(path.name for path in folder.iterdir())
-    # Generate before inserting. Fewer than 20 free numbers only matter for NEW people.
+    # Vor dem Einfügen erzeugen. Weniger als 20 freie Nummern betreffen nur neue Personen.
     records = build_records(today, seed=seed)
     validate_records(records, today)
     photos = []

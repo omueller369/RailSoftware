@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Belege und ihre Zuordnung zum Arbeitsbericht.
 from ..localization import source as _text_source
 import hashlib,io,logging,os,warnings
 from email.message import EmailMessage

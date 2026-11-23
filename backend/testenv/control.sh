@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für die gemeinsamen Anwendungsabläufe. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 [[ -f .env.test ]] || { echo 'Zuerst bash testenv/prepare.sh ausführen.' >&2; exit 1; }

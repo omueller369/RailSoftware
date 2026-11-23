@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Erfassung und Druck von Unterschriften. */
 (()=>{'use strict';if(!location.pathname.startsWith('/tf/'))return;
 const el=id=>document.getElementById(id),t=s=>window.I18n?.t(s)||s,base='/api/v1/tf/me/signature',canvas=el('signatureCanvas');if(!canvas)return;
 const ctx=canvas.getContext('2d');let dirty=false,busy=false,pointer=null,last=null,previewUrl=null,returnFocus=null,backgroundUrl=null,backgroundReady=false,generation=0;

@@ -1,3 +1,4 @@
+# Regressionstests für Portalnavigation und Berechtigungen.
 from test_backend_start import BackendStartTest
 from unittest import TestCase
 

@@ -1,4 +1,5 @@
-/* Accessible error and help dialogs shared by the work report and its GPS editor. */
+/* Gemeinsame Verarbeitung für Arbeitsberichte und deren Übertragung. */
+/* Gemeinsame zugängliche Fehler- und Hilfefenster für Arbeitsbericht und GPS-Erfassung. */
 (()=>{
 const t=value=>window.I18n?.t(value)||value,node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=t(text);return n;};
 const queue=[];let current=null,returnFocus=null,dismissTimer;
@@ -26,7 +27,7 @@ function finish(){
 okay.onclick=()=>dialog.close();dialog.addEventListener('close',finish);dialog.addEventListener('cancel',event=>{event.preventDefault();dialog.close();});
 helpButton.onclick=openHelp;
 window.ReportFeedback={help:openHelp,error(value,options={}){const message=String(value||'').trim();const targets=window.CtlValidation?.report(message,options.field?[options.field]:undefined)||[],issues=options.issues||window.CtlValidation?.takeIssues(message)||[];if(!message||current?.message===message||queue.some(row=>row.message===message))return;queue.push({message,field:options.field||(!issues.length?targets[0]:null),issues,...options});next();},hint};
-// A form can emit several invalid events at once. Show its first invalid field only.
+// Ein Formular kann mehrere ungültige Felder gleichzeitig melden. Zuerst nur das erste Feld anzeigen.
 let invalidPending=false;
 (document.getElementById('workReport')||(document.getElementById('messageCompose')?document:null))?.addEventListener('invalid',event=>{event.preventDefault();if(invalidPending)return;invalidPending=true;setTimeout(()=>invalidPending=false,0);const field=event.target,label=field.labels?.[0]?.textContent?.trim()||field.getAttribute('aria-label')||'';window.ReportFeedback.error(label?label+': '+field.validationMessage:field.validationMessage,{field,hint:globalThis.CtlText.source("portal_work_report_feedback.text_d19d77ca4519")});},true);
 })();

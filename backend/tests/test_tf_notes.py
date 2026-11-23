@@ -1,3 +1,4 @@
+# Regressionstests für persönliche Notizen.
 import unittest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session

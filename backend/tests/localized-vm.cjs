@@ -1,4 +1,5 @@
-/* VM fixtures load the same deterministic source-key resolver as browser pages. */
+/* Regressionstests für Sprachschlüssel und Übersetzungen. */
+/* Die VM-Tests verwenden dieselbe deterministische Auflösung der Sprachschlüssel wie die Browserseiten. */
 const vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
 const bundle=fs.readFileSync(path.join(__dirname,'../lokzeitleiste/static/messages.js'),'utf8');
 function prepare(context){if(!context.CtlText)vm.runInContext(bundle,context);return context;}

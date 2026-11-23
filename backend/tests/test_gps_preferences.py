@@ -1,3 +1,4 @@
+# Regressionstests für GPS-Erfassung und Kartendarstellung.
 import json,unittest
 from datetime import datetime,timedelta,timezone
 from uuid import uuid4

@@ -1,9 +1,13 @@
+/* Regressionstests für Dateidownloads mit korrekten Dateinamen. */
 package de.lokzeitleiste.app.portal
 
 import org.junit.Assert.*
 import org.junit.Test
 
 class DownloadMetadataTest {
+    @Test fun diagnosticJsonKeepsItsMimeType() {
+        assertEquals("application/json",DownloadMetadata.mime("RailSoftware-Diagnose.JSON",null))
+    }
     @Test fun utf8PdfNameOverridesBinaryFallback() {
         assertEquals("Arbeitsbericht-Müller.pdf", DownloadMetadata.name("attachment; filename*=UTF-8''Arbeitsbericht-M%C3%BCller.pdf", "download.bin"))
         assertEquals("application/pdf", DownloadMetadata.mime("Arbeitsbericht-Müller.PDF", "application/octet-stream"))

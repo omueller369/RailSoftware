@@ -1,3 +1,4 @@
+/* Gemeinsame Darstellung für helles und dunkles Erscheinungsbild, einschließlich schmaler Ansichten. */
 /* Tagmodus keeps the established palette. Print output is deliberately independent. */
 .portal-theme-toggle{display:inline-flex!important;align-items:center;justify-content:center;flex:0 0 auto;width:44px;min-width:44px;min-height:44px;padding:9px!important;border:1px solid #94adbe!important;border-radius:8px;background:#17445b;color:#fff;cursor:pointer;vertical-align:middle}
 .portal-theme-header{display:flex;justify-content:flex-end;padding:10px 20px}.portal-theme-toggle svg{display:block;pointer-events:none}.portal-theme-toggle:focus-visible{outline:3px solid #e4b640!important;outline-offset:3px}

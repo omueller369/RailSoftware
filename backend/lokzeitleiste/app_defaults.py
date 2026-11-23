@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Grundwerte und Vorgaben.
 """Versioned app vocabulary with explicit DB-InfraGo legacy compatibility."""
 from .field_errors import FieldError
 from .localization import source as _text_source
@@ -63,7 +64,7 @@ def _ensure_defaults(db):
 
 
 def use_value(db,category,value,previous=None,loc=None,context=None,aliases=None):
-    # Match historical CTL DE to its current key without rewriting report snapshots.
+    # Historisches CTL DE dem aktuellen Schlüssel zuordnen, ohne gespeicherte Berichtsfassungen umzuschreiben.
     from .infra_go import canonical as infra_canonical,alias_map
     if category=='cause':
         lookup=alias_map(db) if aliases is None else aliases

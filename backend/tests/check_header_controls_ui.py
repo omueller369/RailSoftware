@@ -1,3 +1,4 @@
+# Browserprüfung für die gemeinsamen Anwendungsabläufe.
 """Real shared header layout, glyph-only help, reload and keyboard order."""
 import argparse
 import html

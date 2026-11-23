@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Dokumentablage und Dateizugriff. */
 (()=>{const el=id=>document.getElementById(id),t=value=>window.I18n?.t(value)||value;let selected=globalThis.CtlText.source("backend_documents.text_36f250abd259"),data={folders:[],files:[]},busy=false,version=0;const opened=new Set([globalThis.CtlText.source("backend_documents.text_36f250abd259")]);
 function node(tag,text){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;}
 function message(value){el('documentMessage').textContent=t(value);}

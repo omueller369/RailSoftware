@@ -1,3 +1,4 @@
+/* Regressionstests für Versionsprüfung und bestehende Installationen. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E{constructor(tag){this.tag=tag;this.children=[];}append(...nodes){this.children.push(...nodes);}replaceChildren(...nodes){this.children=nodes;}setAttribute(){} }
 const walk=root=>root.children.flatMap(n=>[n,...walk(n)]);

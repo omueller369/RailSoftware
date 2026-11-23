@@ -1,3 +1,4 @@
+/* Regressionstests für modulbezogene Hilfe und Druckansicht. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 let active;const events={};
 class Element{

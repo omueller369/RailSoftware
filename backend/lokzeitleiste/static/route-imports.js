@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Streckenkenntnisse und Referenzgeometrie. */
 /* Zoom-aware rendering of imported knowledge; original reference/data stay intact. */
 (()=>{
 const indexes=new WeakMap(),imports=new WeakMap(),formatter=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'});let cachedMinute,cachedToday,maskSerial=0;

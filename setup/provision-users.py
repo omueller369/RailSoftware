@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Bündelt die notwendigen Schritte für Benutzerkonten und ihre Dateiverzeichnisse. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Root-only Linux host provisioning. Never executes database values as shell code."""
 import argparse
 import json

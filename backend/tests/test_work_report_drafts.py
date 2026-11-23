@@ -1,3 +1,4 @@
+# Regressionstests für Arbeitsberichte und deren Übertragung.
 import io,json,unittest
 from uuid import uuid4
 from PIL import Image

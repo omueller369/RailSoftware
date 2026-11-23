@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 // Simulated browser contract test; no real GPS hardware or installed browser required.
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 class Element{
@@ -22,7 +23,7 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  const field=new Element('input'),container=new Element('div');field.value='';
  const r=context.window.GpsRecorder.mount({userId:5,journeyId:'00000000-0000-4000-8000-000000000001',container,numberField:field,trainNumber:()=>field.value,readonly:()=>false,selectEnd:async()=>({code:'CCC',name:'Ziel'}),selectStart:async()=>({code:'BBB',name:'Berlin Beispiel'}),stations(){},resolve:async()=>({code:'BBB'})});
  await r.readyPromise;
- // Full-screen SVGs may be letterboxed: pointer positions must use the actual SVG transform.
+ // Vollbild-SVGs können freie Ränder haben. Zeigerpositionen müssen deshalb die tatsächliche SVG-Transformation verwenden.
  context.DOMPoint=class {constructor(x,y){this.x=x;this.y=y;}matrixTransform(m){return{x:this.x*m.scale+m.dx,y:this.y*m.scale+m.dy};}};
  const originalDraw=r.drawMap;r.drawMap=()=>{};r.mapView={zoom:12,center:{x:.5,y:.5},size:1048576};
  r.mapSvg={getScreenCTM:()=>({inverse:()=>({scale:.5,dx:-50,dy:-25})})};
@@ -65,7 +66,7 @@ assert.equal(r.content.hidden,true);assert.equal(r.collapseButton.textContent,'+
  await r.erase();delete chosen.end;await r.start();await new Promise(resolve=>setTimeout(resolve,5));assert.equal(startQuestions,0);assert.equal(endQuestions,1);assert.equal(r.record.end_station,'CCC');
  delete chosen.end;r.o.selectEnd=async()=>{endQuestions++;return {code:'DDD',name:'Neues Ziel'};};const previousQuestions=questions.length;await r.stop();assert.equal(endQuestions,2);assert.equal(body.end_station,'DDD');assert.equal(body.arrival_at,null);assert.equal(questions.length,previousQuestions);await r.erase();
  delete chosen.start;r.o.selectStart=async()=>{startQuestions++;return null;};await r.start();assert.equal(startQuestions,1);assert.equal(endQuestions,2);assert.equal(r.record,null);assert(!context.window.GpsRecorder.isActive());
- // The duty begins on the previous Berlin day but continues today.
+ // Der Dienst beginnt am vorherigen Berliner Kalendertag und dauert heute an.
  const realNow=Date.now;
  try {
   Date.now=()=>Date.parse('2026-11-11T01:00:00Z');

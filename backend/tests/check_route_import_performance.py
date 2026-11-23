@@ -1,3 +1,4 @@
+# Browserprüfung für Streckenkenntnisse und Referenzgeometrie.
 """Actual SVG render with full reference and 2013 synthetic imports at 4x CPU slowdown."""
 import argparse,re,html,json
 from pathlib import Path
@@ -7,7 +8,7 @@ from check_rail_network_ui import fixture as base_fixture
 
 def fixture():
     page=base_fixture()
-    # Keep only setup through loading the actual full public network, then stress the renderer.
+    # Den echten vollständigen Referenzbestand laden und anschließend die Darstellung unter Last prüfen.
     marker=" const reference=data.lines.find"
     start=page.index(marker)
     end=page.index("})().catch(error=>",start)

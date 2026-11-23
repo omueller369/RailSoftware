@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Anmeldung und Kontoverwaltung. */
 const el = id => document.getElementById(id);
 let user = null;
 function message(text,error=false){el('message').textContent=text;el('message').className=error?'error':'ok';}

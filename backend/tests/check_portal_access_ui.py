@@ -1,3 +1,4 @@
+# Browserprüfung für Zugriffsrechte der Verwaltungsbereiche.
 """Real DOM: six requested columns, safe employee text, failed refresh and recovery."""
 import re
 from localized_fixtures import localize_html

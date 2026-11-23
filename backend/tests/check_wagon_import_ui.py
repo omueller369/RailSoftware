@@ -1,3 +1,4 @@
+# Browserprüfung für Einlesen von Wagenlisten.
 """Exercise the actual international brake-sheet import preview and apply flow in Chrome."""
 import argparse, html, re, shutil, subprocess, sys
 from pathlib import Path

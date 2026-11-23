@@ -1,3 +1,4 @@
+# Regressionstests für Arbeitszeitsalden und Mehrarbeit.
 import unittest
 from datetime import date
 from uuid import uuid4
@@ -111,7 +112,7 @@ class OvertimeTest(unittest.TestCase):
         self.assertEqual(data['closing']['annual_minutes'],120)
         self.assertEqual(data['total_minutes'],180)
         self.entry(date(2026,8,1));self.enable(10)
-        # A new closing must not book against an unresolved old snapshot.
+        # Ein neuer Abschluss darf keine Buchung gegen einen ungeklärten alten Stand vornehmen.
         with patch('lokzeitleiste.overtime.current_month',return_value=date(2026,11,1)):
             result=self.client.post(self.url(10)+'/close',json=dict(mode='annual',expected_token=self.get(10)['token']))
         self.assertEqual(result.status_code,409)

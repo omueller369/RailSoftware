@@ -1,4 +1,5 @@
-/* Android-only private cache and explicit-send outbox. Never loaded by web pages. */
+/* Gemeinsame Verarbeitung für Anbindung der gemeinsamen Oberfläche an Android. */
+/* Privater Android-Zwischenspeicher und ausdrücklich beauftragte Übertragungen; diese Datei wird im Web nicht geladen. */
 (()=>{
 window.AndroidOffline={create({session,send,network}){
  let database,flushing=false,flushingKey=null,reportHook=null,startingReports=false,reportsBusy=false,gpsBlocked=false;
@@ -27,7 +28,8 @@ window.AndroidOffline={create({session,send,network}){
  function prepareReports(){if(startingReports||reportHook||location.pathname==='/tf/arbeitsbericht'||!intents().some(item=>!item.blocked))return;startingReports=true;if(!document.getElementById('reportForm')||typeof window.startWorkReport!=='function'){const frame=document.createElement('iframe');frame.hidden=true;frame.setAttribute('aria-hidden','true');frame.src='/tf/arbeitsbericht?android-offline-worker=1';document.body.append(frame);return;}window.startWorkReport(session.profile).catch(()=>{}).finally(()=>{startingReports=false;});}
  let statusBox;
  async function status(){if(!document.body||window.AndroidPortal?.offline!==api)return;if(!statusBox){statusBox=document.createElement('div');statusBox.id='androidOfflineStatus';statusBox.setAttribute('role','status');statusBox.style.cssText='padding:.35rem .7rem;font-size:.85rem;border-bottom:1px solid currentColor';document.body.prepend(statusBox);}let jobs=[];try{jobs=(await store('jobs','getAll')).filter(row=>row.scope===scope);}catch{}const reports=intents(),blocked=gpsBlocked||jobs.some(row=>row.blocked)||reports.some(row=>row.blocked),count=jobs.length+reports.length;statusBox.textContent=blocked?text('blocked'):!network()?text('offline'):count?text('waiting')+' '+count:'';statusBox.hidden=!statusBox.textContent;}
- const api={cached,remember,forgetGpsGeometry,completed,enqueue,eligible,status,flush,confirmReports,registerReports(hook){reportHook=hook;reportTransfer();},get online(){return network();}};
+ async function inspect(){const jobs=(await store('jobs','getAll')).filter(r=>r.scope===scope).map(r=>({key:r.key,url:r.url,method:r.method,blocked:!!r.blocked,at:new Date(r.time).toISOString()}));return {jobs,reports:intents().map(r=>({id:r.id,blocked:!!r.blocked}))};}
+ const api={inspect,cached,remember,forgetGpsGeometry,completed,enqueue,eligible,status,flush,confirmReports,registerReports(hook){reportHook=hook;reportTransfer();},get online(){return network();}};
  const retry=()=>{prepareReports();flush();if(network())window.GpsRecorder?.flushAndroid?.(owner).catch(()=>{});status();};
  window.addEventListener('android-offline-error',()=>{gpsBlocked=true;status();});window.addEventListener('online',retry);window.addEventListener('focus',retry);window.addEventListener('offline',status);window.addEventListener('languagechange',status);window.addEventListener('pagehide',()=>clearInterval(timer));const timer=setInterval(retry,15000);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',retry,{once:true});else setTimeout(retry,0);
  return api;

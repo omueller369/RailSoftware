@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für zulässige Eingaben und Datenformen.
 from .localization import source as _text_source
 from datetime import date, time, datetime, timedelta
 from typing import Literal

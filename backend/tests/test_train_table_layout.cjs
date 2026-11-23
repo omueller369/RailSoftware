@@ -1,3 +1,4 @@
+/* Regressionstests für Zugfahrten und deren Detailerfassung. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E{constructor(){this.children=[];this.dataset={};this.classList={toggle(){}};}append(...n){this.children.push(...n);}replaceChildren(){this.children=[];}setAttribute(){} }
 const window={addEventListener(){}},context={window,document:{createElement:()=>new E()},console};vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/train-journeys.js','utf8'),context);

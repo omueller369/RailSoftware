@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung. */
 /* Isolated playback: no location service, report writes or recording mutations. */
 (()=>{
 class PlaybackClock {
@@ -59,7 +60,7 @@ window.startGpsDemo=async (user,{administration=false}={})=>{
   recorder.record={...record,stop_minutes:window.GpsPreferences?.settings?.stop_minutes??record.stop_minutes};
   const rows=recorder.rows().filter(row=>!recorder.removed(row)),locations=[];
   for(const row of rows){
-   // Manual stops without a reliable position must not acquire guessed coordinates.
+   // Manuelle Halte ohne belastbare Position erhalten keine geschätzten Koordinaten.
    const point=row.manual?record.points.find(p=>Math.abs(p.t-row.start)<=30000&&p.accuracy<=50):row;
    if(point&&Number.isFinite(point.lat)&&Number.isFinite(point.lon))locations.push({row,lat:point.lat,lon:point.lon});
   }

@@ -1,3 +1,4 @@
+# Browserprüfung für gemeinsame Portaloberfläche.
 """Real DOM: pause/fullscreen, readable share icon, route geometry and traffic badge."""
 import json
 import re

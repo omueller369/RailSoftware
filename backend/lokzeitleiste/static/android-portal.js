@@ -1,10 +1,11 @@
-/* Android-only adapters. Shared portal rules and APIs remain the source of truth. */
+/* Gemeinsame Verarbeitung für gemeinsame Portaloberfläche. */
+/* Android-Anbindung an die gemeinsamen Portalregeln und APIs. */
 (()=>{
-// Same-origin brake overlay shares the main adapter; it must not create a
-// second session request or replace the bridge reply handler.
+// Das Bremszettel-Overlay nutzt die Verbindung der übergeordneten Seite.
+// Es darf keine zweite Sitzung anfordern oder deren Antwortfunktion ersetzen.
 if(window.parent&&window.parent!==window){try{if(window.parent.location.origin===location.origin&&window.parent.AndroidPortal){const parent=window.parent.AndroidPortal;window.AndroidPortal={version:parent.version,saveBlob:parent.saveBlob,printHelp:parent.printHelp};if(location.search?.includes('android-offline-worker=1')){window.AndroidPortal.offline=parent.offline;window.AndroidPortal.gps=(method,values)=>method==='snapshot'?parent.gps(method,values):Promise.reject(Error('Read-only offline worker'));window.fetch=window.parent.fetch.bind(window.parent);try{Object.defineProperty(navigator,'onLine',{configurable:true,get:()=>parent.offline.online});}catch{}}return;}}catch{}}
 if(!window.NativePortal)return;
-// Native login owns the TF cookie, including the initial password-change page.
+// Die native Anmeldung verwaltet das TF-Cookie einschließlich des ersten Passwortwechsels.
 sessionStorage.setItem('ctl.area','tf');
 sessionStorage.removeItem('ctl.session.tf');
 let serial=0;const waiting=new Map();
@@ -17,7 +18,7 @@ function cacheable(path){if(path.startsWith('/api/v1/tf/route-knowledge/manual/g
 window.fetch=async(input,options={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.href),method=options.method||input.method||'GET';
  if(url.origin!==location.origin)return originalFetch(input,options);
- if(method==='GET'&&/^\/tf\/poland-stk-data\/(manifest|topology|geometry-\d{1,3})[.]json$/.test(url.pathname))return originalFetch(input,options);
+ if(method==='GET'&&/^\/tf\/poland-stk-data\/(manifest|topology|stations|geometry-\d{1,3})[.]json$/.test(url.pathname))return originalFetch(input,options);
  const current=await session;if(offline&&method!=='GET'){const replayed=await offline.completed(url.pathname,method,options.body);if(replayed)return replayed;if(!online){const queued=await offline.enqueue(url.pathname,method,options.body,options.headers);if(queued)return queued;}}
  if(method==='GET'&&url.pathname==='/api/v1/account/me')return new Response(JSON.stringify(current.account),{headers:{'Content-Type':'application/json'}});
  if(method==='GET'&&url.pathname==='/api/v1/tf/portal')return new Response(JSON.stringify(current.profile),{headers:{'Content-Type':'application/json'}});

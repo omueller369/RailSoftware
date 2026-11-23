@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldung und Kontoverwaltung.
 """Validated host-provisioning manifest; no credentials or document contents."""
 import json
 from sqlalchemy import select

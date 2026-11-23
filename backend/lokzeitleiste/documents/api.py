@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldung und fachliche Server-Endpunkte.
 from ..localization import source as _text_source
 import re
 import hashlib

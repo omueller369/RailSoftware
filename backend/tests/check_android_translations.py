@@ -1,3 +1,4 @@
+# Browserprüfung für Sprachschlüssel und Übersetzungen.
 """Check the shared source catalogue and the actual HTML shipped in an APK."""
 import argparse
 import fnmatch

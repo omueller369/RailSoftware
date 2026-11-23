@@ -1,2 +1,2 @@
-/* © OpenStreetMap contributors / Geofabrik, ODbL 1.0. See reference/poland-rail. */
+/* © OpenStreetMap contributors / Geofabrik, ODbL 1.0. Öffentliche polnische Kartenreferenz; Quelle: reference/poland-rail. */
 window.PolandRailNetwork.receive("tile-276-170",{"schema":1,"scale":10000000,"lines":[],"points":[["PL:N526799164","Gablenz / Gora",1,5407821,3324287,false,68153,false],["PL:N6061420585","Bad Muskau",0,5408967,3323897,false,38379,false],["PL:N804890500","Krauschwitz / Baierweiche",0,5408122,3324052,false,59754,false],["PL:N804890502","Bad Muskau Feuerturmteich",1,5408432,3324159,false,52583,false],["PL:N804890503","Bad Muskau",0,5408972,3323889,false,38246,false]]});

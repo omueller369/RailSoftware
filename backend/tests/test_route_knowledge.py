@@ -1,3 +1,4 @@
+# Regressionstests für Streckenkenntnisse und Referenzgeometrie.
 import json
 import unittest
 from uuid import uuid4

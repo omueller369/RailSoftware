@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung.
 """Conservative GPS stop detection. Missing fixes never imply a stop."""
 from .localization import source as _text_source
 import math
@@ -59,7 +60,7 @@ def analyse(points,preserved_starts=(),legacy=False,version2=False,version3=Fals
             else:finish()
         elif run:
             nearby=distance(run[0],point)<=100+1e-6
-            # A speed inferred from position jumps does not end a stop inside its circle.
+            # Eine aus Positionssprüngen abgeleitete Geschwindigkeit beendet keinen Halt innerhalb seines Kreises.
             departure=(point['t'] in confirmed if confirmed is not None else
                        speed is not None and speed*3.6>(5 if previous_rule else 10)
                        and (not nearby or (reported_speed and not previous_rule)))

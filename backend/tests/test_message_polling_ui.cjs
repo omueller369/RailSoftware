@@ -1,3 +1,4 @@
+/* Regressionstests für Nachrichten und die gemeinsame Kommunikation. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E{constructor(tag){this.tag=tag;this.children=[];}append(...n){this.children.push(...n);}prepend(n){this.children.unshift(n);}setAttribute(){}after(n){this.afterNode=n;}before(n){this.beforeNode=n;}replaceWith(n){this.replacement=n;}querySelector(){return null;}}
 async function scenario(path){const old=new E('header'),footer=new E('footer'),events={},intervals=new Map(),navigator={onLine:true};let next=0,calls=0,count=0,fail=false,release;

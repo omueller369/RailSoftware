@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 // Simulated browser contract test; no real GPS hardware or installed browser required.
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 class Element{

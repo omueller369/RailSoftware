@@ -1,3 +1,4 @@
+# Regressionstests für GPS-Erfassung und Kartendarstellung.
 import json
 import unittest
 from uuid import uuid4

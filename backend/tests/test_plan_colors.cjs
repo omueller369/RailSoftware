@@ -1,3 +1,4 @@
+/* Regressionstests für Dienstplanung und Kalender. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs'),window={};
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/plan-colors.js','utf8'),{window,Date});
 const p=window.PlanColors;

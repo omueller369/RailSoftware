@@ -1,3 +1,4 @@
+/* Regressionstests für gemeinsame Portaloberfläche. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 const source=fs.readFileSync('backend/lokzeitleiste/static/android-portal.js','utf8'),storage=new Map();
 async function boot(id){let online=true,status=200,calls=[];const native={postMessage(raw){const r=JSON.parse(raw);calls.push(r);const value=r.method==='session'?{app_version:'0.26.42-test.9',account:{id,role:'tf'},profile:{id},username:'787100'}:r.method==='export.start'?{export_id:'export'}:{};queueMicrotask(()=>native.onmessage({data:JSON.stringify({id:r.id,ok:true,value})}));}};

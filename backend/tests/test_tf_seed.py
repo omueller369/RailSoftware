@@ -1,3 +1,4 @@
+# Regressionstests für geprüfte Übernahme der Anfangsdaten.
 import unittest
 from collections import Counter
 from datetime import date

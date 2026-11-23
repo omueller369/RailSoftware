@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für sprachabhängige Darstellung.
 """Unicode fonts and localized ReportLab text."""
 import os
 import re
@@ -25,7 +26,7 @@ def register_fonts(prefix):
 
 
 def markup(value,lang=None):
-    # Preserve ReportLab markup; translate only visible text, never markup syntax.
+    # ReportLab-Auszeichnungen erhalten; übersetzt wird nur sichtbarer Text.
     return ''.join(part if part.startswith('<') else escape(display(unescape(part),lang)) for part in re.split(r'(<[^>]*>)',str(value)))
 
 

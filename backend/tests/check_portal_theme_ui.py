@@ -1,3 +1,4 @@
+# Browserprüfung für helles und dunkles Erscheinungsbild.
 """Real Chrome contrast, layout, module surfaces, modal and print palette checks."""
 import argparse
 from localized_fixtures import localize_html
@@ -65,7 +66,7 @@ def main():
                 match=re.search('data-theme-message="([^"]*)"',run.stdout);message=html.unescape(match.group(1)) if match else 'Fixture did not complete'
                 (args.output_dir/(name+'-'+str(width)+'.html')).write_text(run.stdout)
                 results.append(dict(module=name,width=width,passed=passed,message='' if passed else message));print(name,str(width), 'PASS' if passed else 'FAIL '+message)
-        # Print media must ignore the night palette, including forms and help dialogs.
+        # Im Druck gilt die Nachtpalette nicht, auch nicht für Formulare und Hilfefenster.
         (root/'print.html').write_text(fixture('druck','tf-portal.html','workReport').replace("document.documentElement.dataset.themeStatus='pass';", "document.documentElement.dataset.themeStatus='pass';document.body.setAttribute('data-print-body',getComputedStyle(document.body).backgroundColor);"))
         run=subprocess.run([chrome,'--headless=new','--no-sandbox','--disable-gpu','--allow-file-access-from-files','--virtual-time-budget=3000',f'--user-data-dir={root/"print-profile"}',f'--print-to-pdf={args.output_dir.resolve()/"theme-print.pdf"}','--dump-dom',(root/'print.html').as_uri()],capture_output=True,text=True,timeout=60)
         pdf=args.output_dir/'theme-print.pdf'

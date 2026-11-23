@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für polnische Referenznetz und die manuelle Streckenerfassung.
 """Owned manual Polish paths validated against the separate OSM reference graph."""
 import gzip,hashlib,json,math,re
 from functools import lru_cache
@@ -89,7 +90,7 @@ def create_router(require_account,require_admin):
     router=APIRouter();driver=driver_dependency(require_account)
     @router.get('/tf/poland-stk-data/{name}.json')
     def public(name:str):
-        if not re.fullmatch(r'(topology|manifest|geometry-\d{1,3})',name):raise HTTPException(404)
+        if not re.fullmatch(r'(topology|stations|manifest|geometry-\d{1,3})',name):raise HTTPException(404)
         path=STATIC/'poland-stk-data'/(name+'.json')
         if not path.is_file():raise HTTPException(404)
         return FileResponse(path,media_type='application/json',headers={'Cache-Control':'public, max-age=86400'})

@@ -1,3 +1,4 @@
+# Browserprüfung für GPS-Erfassung und Kartendarstellung.
 """Browser checks for account-scoped tile visibility and saving failures."""
 import json
 import check_work_report_layout as runner

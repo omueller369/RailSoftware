@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Betriebsstellen und Ortszuordnungen.
 """Confirmed TF GPS coordinates: parent-row locking, compare-and-set and idempotent audit."""
 import hashlib
 import json

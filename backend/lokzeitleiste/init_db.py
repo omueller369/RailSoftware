@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Datenbankverbindungen und Transaktionen.
 import getpass
 import sys
 

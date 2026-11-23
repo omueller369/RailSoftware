@@ -1,4 +1,5 @@
-/* Personal server-backed notes. Render user content only with textContent/value. */
+/* Gemeinsame Verarbeitung für persönliche Notizen. */
+/* Persönliche Servernotizen; Inhalte ausschließlich als Text oder Eingabewert darstellen. */
 (()=>{
 const make=(tag,text)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
 const size=value=>Array.from(value).length;

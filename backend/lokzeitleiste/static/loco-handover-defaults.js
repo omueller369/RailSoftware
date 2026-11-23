@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Fahrzeugübergaben und Mängelerfassung. */
 (async()=>{
  const root=document.getElementById('locoDefaults'),t=s=>window.I18n?.t(s)||s;
  const node=(tag,text)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=t(text);return e;};

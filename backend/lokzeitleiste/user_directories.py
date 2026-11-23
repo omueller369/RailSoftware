@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Benutzerkonten und ihre Dateiverzeichnisse.
 """Persistent per-login document directories; no documents are moved into them yet."""
 import argparse
 import logging
@@ -84,7 +85,7 @@ def directory_transaction(user, previous_username=None, *, creating=False, previ
                     if folder.is_dir() and not folder.is_symlink():
                         try:folder.rmdir()
                         except OSError:pass
-                path.rmdir()  # Never remove a directory containing documents.
+                path.rmdir()  # Ein Verzeichnis mit Dokumenten darf nicht entfernt werden.
         except OSError:
             logging.getLogger(__name__).exception('Leeres Benutzerverzeichnis konnte nicht zurückgesetzt werden.')
         raise

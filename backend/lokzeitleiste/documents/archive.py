@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Archivierung fertiger Dokumente.
 from ..localization import source as _text_source
 import io
 import json
@@ -87,7 +88,7 @@ def pdf_document(title,lines,rows=None,sections=None,wide=False,paired_head=Fals
         if header:commands.append(('BACKGROUND',(0,0),(-1,0),colors.HexColor('#dcebf4')))
         for row in spans or []:commands.append(('SPAN',(0,row),(-1,row)))
         result.setStyle(TableStyle(commands));return result
-    # Key/value metadata is always tabular; legacy string callers remain supported.
+    # Schlüssel und Werte werden tabellarisch ausgegeben; ältere Aufrufer mit Text bleiben unterstützt.
     metadata=[list(value) if isinstance(value,(tuple,list)) else list(value.split(': ',1)) if ': ' in value else ['',value] for value in lines]
     story=[Paragraph(escape(title),heading),Spacer(1,12)]
     if metadata:
@@ -230,7 +231,7 @@ def archive_dispatch(db,dispatch):
 def backfill_documents(db):
     from ..user_directories import user_path
     from calendar import monthrange
-    # Include months reached by overnight duties, even without a WorkMonth row there.
+    # Auch den Folgemonat eines Nachtdienstes berücksichtigen, wenn dort noch kein Monatsdatensatz besteht.
     for user in db.scalars(select(User).where(User.role=='tf')):
         db.scalar(select(User).where(User.id==user.id).with_for_update())
         root=user_path(user.username,user.role)

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 package de.lokzeitleiste.app
 
 import android.Manifest
@@ -65,7 +66,7 @@ private fun saveStations(context: Context, username: String, stations: List<Stat
 }
 
 private fun fetchStations(lat: Double, lon: Double): List<Station> {
-    // One user-initiated request for a 10 km radius; location samples never trigger network requests.
+    // Die Umkreissuche startet nur auf Knopfdruck; einzelne GPS-Messungen lösen keine Netzanfragen aus.
     val query = "[out:json][timeout:25];(nwr[railway~\"^(station|yard|service_station|junction|halt)$\"](around:10000,$lat,$lon););out center;"
     return fetchQuery(query)
 }
@@ -142,7 +143,7 @@ fun LokZeitApp(username: String) {
         onDispose { locationManager.removeUpdates(listener) }
     }
     // Conservative point proximity: require two minutes within 300 m and two minutes beyond 600 m.
-    // OSM points do not describe signal boundaries; a driver must review the result.
+    // OSM-Punkte beschreiben keine Signalgrenzen. Der TF muss die Zuordnung prüfen.
     LaunchedEffect(currentLocation, stations, dutyStarted) {
         val fix = currentLocation ?: return@LaunchedEffect
         if (!dutyStarted || fix.accuracy > 100f || fix.time < System.currentTimeMillis() - 120000) return@LaunchedEffect

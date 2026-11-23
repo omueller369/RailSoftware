@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Feldzuordnung bei Eingabefehlern.
 """Semantic form errors keep their readable message and add a stable field path."""
 from fastapi import HTTPException
 class FieldError(HTTPException):

@@ -1,3 +1,4 @@
+# Regressionstests für GPS-Erfassung und Kartendarstellung.
 import unittest
 import json
 from pathlib import Path
@@ -83,7 +84,7 @@ class RecordingTest(unittest.TestCase):
             self.assertEqual(result.json()['station']['code'],'BBB')
             self.assertLess(result.json()['station']['distance_m'],100)
             self.assertEqual(result.json()['radius_m'],1000)
-        # Coordinates attached to a renamed catalogue entry must not be reused.
+        # Koordinaten eines umbenannten Katalogeintrags dürfen nicht wiederverwendet werden.
         with Session(self.engine) as db:
             db.get(RailwayStation,'BBB').name='Geänderter Name';db.commit()
         self.assertEqual(self.driver.get(endpoint).json()['station']['code'],'CCC')
@@ -164,7 +165,7 @@ class RecordingTest(unittest.TestCase):
 
     def test_local_jitter_stop_and_existing_edits_roundtrip(self):
         data=points(240)
-        # Movement/jitter inside the stop area must not split the interval.
+        # Messrauschen innerhalb des Haltebereichs darf den Halt nicht aufteilen.
         for i in range(5,len(data),5):data[i]={**data[i],'lat':52.0005,'speed':2}
         key='live-'+str(BASE)
         path,response=self.save(points=data,stop_edits={key:{'station_input':'BBB','reason':'V1'}})
@@ -218,7 +219,7 @@ class RecordingTest(unittest.TestCase):
         self.assertEqual(changed.status_code,200,changed.text)
         self.assertEqual(changed.json()['stop_edits'][key]['station']['name'],'Berlin Beispiel')
         self.assertTrue(changed.json()['stop_edits'][key]['imported'])
-        # Older GPS clients that omit the new field cannot erase the manual intervals.
+        # Ältere GPS-Clients ohne das neue Feld dürfen manuelle Standzeiten nicht löschen.
         extended=self.save(path,expected_revision=2,points=points())[1]
         self.assertEqual(extended.status_code,200,extended.text)
         self.assertEqual(extended.json()['manual_stops'][0]['end'],BASE+125000)

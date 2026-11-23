@@ -1,3 +1,4 @@
+/* Regressionstests für die gemeinsamen Anwendungsabläufe. */
 package de.lokzeitleiste.app
 
 import android.graphics.Bitmap

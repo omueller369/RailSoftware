@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Streckenkenntnisse und Referenzgeometrie.
 """Private, verbatim knowledge imports. Never manufacture GPS points or passage credits."""
 import csv,hashlib,io,json,re,unicodedata
 from collections import Counter

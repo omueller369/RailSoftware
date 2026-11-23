@@ -1,3 +1,4 @@
+# Regressionstests für Beispieldaten und getrennte Vorführbestände.
 import os
 import subprocess
 import tempfile

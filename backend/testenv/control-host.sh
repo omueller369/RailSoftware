@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Anbindung der vorhandenen Serverdienste. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 set -Eeuo pipefail
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)
 backend="$root/backend"
@@ -14,7 +15,7 @@ case ${1:-status} in
   umask 077
   mkdir -p "$backend/testenv/backups"
   target=$(mktemp -d "$backend/testenv/backups/host-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
-  # Remember only services that really were running before the snapshot.
+  # Nur Dienste merken, die vor der Sicherung tatsächlich liefen.
   running_list=$("${compose[@]}" ps --services --filter status=running)
   resume=()
   while IFS= read -r service;do
@@ -28,7 +29,7 @@ case ${1:-status} in
     return "$status"
   }
   trap recover_backup ERR
-  # Existing containers are stopped without building new code before the snapshot.
+  # Vor dem Abbild die vorhandenen Container anhalten, ohne dabei neue Programmstände zu bauen.
   "${compose[@]}" stop api mailer
   python3 "$root/setup/host-mysql.py" backup "$backend/.env.host" "$target/database.sql.gz"
   files=(backend/.env.host)

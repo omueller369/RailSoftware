@@ -1,3 +1,4 @@
+# Regressionstests für Streckenkenntnisse und Referenzgeometrie.
 """Deletion/compaction never bypass ownership, coverage, revisions or explicit consent."""
 import json,math,unittest
 from uuid import uuid4

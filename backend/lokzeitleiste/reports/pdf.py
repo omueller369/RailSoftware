@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Erzeugung und Darstellung von PDF-Dokumenten.
 from ..localization import source as _text_source
 from datetime import datetime
 from html import escape

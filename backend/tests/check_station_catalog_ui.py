@@ -1,3 +1,4 @@
+# Browserprüfung für Betriebsstellen und Ortszuordnungen.
 """Real browser: offline cold start, DS100 search, favorites and GPS-stop prefill."""
 import check_work_report_layout as runner
 

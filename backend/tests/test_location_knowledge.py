@@ -1,3 +1,4 @@
+# Regressionstests für Ortskenntnisse und ihre Gültigkeit.
 import unittest,json
 from datetime import date,datetime,timezone
 from unittest.mock import patch

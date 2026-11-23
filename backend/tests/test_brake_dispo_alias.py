@@ -1,3 +1,4 @@
+# Prüft, dass der Dispo-Alias bestehende Postfächer und Weiterleitungen erhält.
 import ast,tempfile,unittest
 from pathlib import Path
 

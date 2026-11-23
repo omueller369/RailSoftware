@@ -1,3 +1,4 @@
+# Regressionstests für Grundwerte und Vorgaben.
 import unittest
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -21,7 +22,7 @@ class DefaultOrderTest(unittest.TestCase):
         choices=self.client.get('/api/v1/admin/app-defaults').json();self.assertEqual([r['id'] for r in choices if r['category']=='reason'],ids[::-1])
         token=self.client.post('/api/v1/account/login',json={'username':'787100','password':'tf-secret-12345'}).json()['access_token']
         choices=self.client.get('/api/v1/tf/app-defaults',headers={'Authorization':'Bearer '+token}).json();self.assertEqual([r['id'] for r in choices if r['category']=='reason'],ids[::-1])
-        # Explicit admin bearer session after the TF login.
+        # Nach der TF-Anmeldung die ausdrückliche Administrator-Anmeldung verwenden.
         self.client.post('/api/v1/admin/login',json={'username':'admin','password':'admin-secret-12345'})
         self.assertEqual(self.client.put(path,json={'ids':ids,'expected_revision':0}).status_code,409)
         self.assertEqual(self.client.put(path,json={'ids':ids[:-1],'expected_revision':1}).status_code,409)

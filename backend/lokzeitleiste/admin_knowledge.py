@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für persönliche Kenntnisbestände.
 """Staff-scoped knowledge views using the same services as the TF portal."""
 import json,hashlib,unicodedata
 from datetime import date
@@ -15,7 +16,7 @@ from .route_knowledge_import import identity,digest,packed
 from .tf_knowledge import SCHEMAS
 STATIC=Path(__file__).parent/'static'
 
-# Shared translation keys; no personal source files are bundled.
+# Die Übersetzungsschlüssel werden gemeinsam verwendet; persönliche Quelldateien werden nicht verpackt.
 KEYS={'title': 'admin_knowledge.text_64d055aab207', 'intro': 'admin_knowledge.text_d8540198fe92', 'find': 'admin_knowledge.text_97ad4bce6620', 'choose': 'admin_knowledge.text_11584457e67f', 'empty': 'admin_knowledge.text_a00deeebd72a', 'loading': 'admin_knowledge.text_58570aaa3dd7', 'forbidden': 'admin_knowledge.text_0946d5917273', 'readonly': 'admin_knowledge.text_6b9a4ba09b16', 'failure': 'admin_knowledge.text_4393bd057e8a', 'new_series': 'admin_knowledge.text_96453327a4fc', 'save_series': 'admin_knowledge.text_455faa1eea5c', 'bad_series': 'admin_knowledge.text_7d8b71e08aef', 'duplicate_series': 'admin_knowledge.text_9db33041272a', 'help': 'admin_knowledge.text_284bc2a831a1', 'history': 'admin_knowledge.text_06452a53499d'}
 def text(key):return source(KEYS[key])
 class SeriesInput(BaseModel):
@@ -59,7 +60,7 @@ def create_router(require_admin):
         user=db.get(User,tf_id);category=db.get(EmployeeCategory,tf_id)
         if not user or user.role!='tf' or (category and category.category!='tf') or not db.get(TfProfile,tf_id):raise HTTPException(404)
         return user
-    # Only remapped administrative API routes are included; public assets keep their original routes.
+    # Nur die Verwaltungsrouten werden umgebogen. Öffentliche Dateien behalten ihre ursprünglichen Adressen.
     from .route_knowledge import create_router as shared_router
     shared=shared_router(require_admin,target_dependency=target,api_prefix='/api/v1/admin/knowledge/{tf_id}')
     router.include_router(shared)

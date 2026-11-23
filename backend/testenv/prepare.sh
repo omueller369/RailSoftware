@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für die gemeinsamen Anwendungsabläufe. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 # Nur lokale Dateien vorbereiten; keine Systemänderungen.
 set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."

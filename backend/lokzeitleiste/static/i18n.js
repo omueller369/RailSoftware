@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Sprachwahl und Übersetzungen. */
 (()=>{const flags={de:'🇩🇪',pl:'🇵🇱',en:'🇬🇧'},names={de:'Deutsch',pl:'Polski',en:'English'};let lang='de',catalog={},pattern=null,selector=null,ready=false,selectionRevision=0;let saveQueue=Promise.resolve();const canonical=new Map();
 try{const saved=localStorage.getItem('lokzeitleiste.language');if(saved in flags)lang=saved;}catch(e){}
 const rawFetch=window.fetch.bind(window),rawAlert=window.alert.bind(window),rawConfirm=window.confirm.bind(window);

@@ -1,4 +1,5 @@
-/* Network only: never cache authenticated pages, API responses, files or credentials. */
+/* Gemeinsame Verarbeitung für Installation der Webanwendung. */
+/* Angemeldete Seiten, API-Antworten, Dateien und Zugangsdaten werden nicht im Web-Cache gespeichert. */
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
 self.addEventListener('fetch',event=>{
  const url=new URL(event.request.url);

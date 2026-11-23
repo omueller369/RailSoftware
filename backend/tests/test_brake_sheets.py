@@ -1,3 +1,4 @@
+# Regressionstests für Bremszettel und ihre Eingabe- und Druckansichten.
 import unittest
 from uuid import uuid4
 from decimal import Decimal

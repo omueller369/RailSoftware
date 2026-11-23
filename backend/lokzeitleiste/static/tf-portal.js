@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für gemeinsame Portaloberfläche. */
 const el=id=>document.getElementById(id);
 let data=null,generation=0,yearData=null,yearGeneration=0;
 const modules={'/tf/bremszettel':globalThis.CtlText.source("portal_tf_portal.text_3309282eccb7"),'/tf/arbeitsbericht':globalThis.CtlText.source("portal_tf_portal.text_363b42b18514"),'/tf/leuna-uebergabeprotokoll':globalThis.CtlText.source("portal_tf_portal.text_26674402a8dd")};

@@ -1,3 +1,4 @@
+# Regressionstests für Beispieldaten und getrennte Vorführbestände.
 import unittest
 from datetime import date
 from unittest.mock import patch

@@ -1,3 +1,4 @@
+# Regressionstests für gemeinsame Portaloberfläche.
 import unittest
 from datetime import date
 from sqlalchemy.orm import Session

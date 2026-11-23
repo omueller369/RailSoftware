@@ -1,3 +1,4 @@
+# Browserprüfung für Streckenkenntnisse und Referenzgeometrie.
 """Actual browser multipart -> authenticated FastAPI -> database import round trip."""
 import argparse,base64,http.server,json,threading
 from pathlib import Path
@@ -8,7 +9,7 @@ from test_route_knowledge_import import RouteKnowledgeImportTest,csv_bytes,ROWS
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--output-dir',required=True);parser.add_argument('--source',type=Path);args=parser.parse_args()
-    # An optional private source is read locally only, never included in repository assets.
+    # Eine optionale persönliche Quelldatei nur lokal lesen und nicht in die Projektdateien aufnehmen.
     raw=args.source.read_bytes() if args.source else csv_bytes([[f'Strecke {i}',str(i+1),'streckenkundig','2027-12-31','-','-','AAA','BBB'] for i in range(2013)])
     case=RouteKnowledgeImportTest();case.setUp()
     class Proxy(http.server.BaseHTTPRequestHandler):

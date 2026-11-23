@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldung und fachliche Server-Endpunkte.
 from ..localization import source as _text_source, resolve_placeholders
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Request, Response
 from sqlalchemy import delete, select

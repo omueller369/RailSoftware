@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 const assert=require('node:assert/strict');
 const {context,Element,tracks}=require('./test_gps_live_v26.cjs');
 const wait=()=>new Promise(setImmediate),pending=[];

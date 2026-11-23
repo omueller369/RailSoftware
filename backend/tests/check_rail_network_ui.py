@@ -1,3 +1,4 @@
+# Browserprüfung für öffentliche Eisenbahn-Referenzdaten.
 """Real full M1 bundle offline; directional counts and layer visibility."""
 import argparse
 from browser_realtime import check_pages

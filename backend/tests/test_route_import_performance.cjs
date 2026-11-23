@@ -1,3 +1,4 @@
+/* Regressionstests für Streckenkenntnisse und Referenzgeometrie. */
 /* Full public reference, synthetic old inventory; no personal CSV in test assets. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs'),{performance}=require('node:perf_hooks');const context={window:{},Intl,Date,Map,WeakMap};for(const name of ['rail-network-data.js','route-imports.js'])vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/'+name,'utf8'),context);const data=context.window.RailNetworkSeed,api=context.window.RouteImports,lines=data.lines.filter(row=>row[5]),rows=[];
 for(let i=0;i<2013;i++){const line=lines[Math.floor(i*lines.length/2013)],mile=line[5];rows.push({status:['streckenkundig','abgelaufen','wird erworben'][i%3],valid_until:'2027-12-31',map_match:{status:'mapped',route:data.routes[line[0]][0],from_m:mile[0],to_m:mile[1],reference_revision:'synthetic'}});}

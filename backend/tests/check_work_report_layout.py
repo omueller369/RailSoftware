@@ -1,3 +1,4 @@
+# Browserprüfung für Arbeitsberichte und deren Übertragung.
 """Headless Chrome layout checks using the real portal CSS and editor controllers.
 
 The fixture contains no account data and makes no server requests. Chrome is
@@ -22,7 +23,7 @@ def fixture():
     page = re.sub(r'<link\b[^>]*>', '', page)
     css = '\n'.join((STATIC / name).read_text() for name in ['tf-portal.css', 'work-report.css', 'responsive.css'])
     page = page.replace('</head>', '<style>' + css + '</style></head>')
-    source = (STATIC / 'work-report.js').read_text().split('// Keep collapse buttons')[0]
+    source = (STATIC / 'work-report.js').read_text().split('// Die Klappschalter')[0]
     source = re.sub(r'\}\)\(\);\s*$', '''window.LayoutReport={fill(editor,day){
         setupReportToggles();limitReportLists(el('workReport'));trainEditor=editor;user={id:1};key='layout-test';trips=[];
         state={kind:'Sonstige Erfassung',client_id:'layout',legacy_pause:30,ausbleibe:[]};

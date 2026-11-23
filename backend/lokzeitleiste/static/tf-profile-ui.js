@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 var tfMetadata=null;
 function tfDefaultValidity(){const today=tfMetadata?.today||new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin'}).format(new Date());const d=new Date(today+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+365);return d.toISOString().slice(0,10);}
 function tfExtraForm(form,user=null,readonly=false){

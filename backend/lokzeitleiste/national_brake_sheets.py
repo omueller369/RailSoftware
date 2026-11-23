@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Bremszettel und ihre Eingabe- und Druckansichten.
 """Private national freight brake sheets; no mail dispatch endpoints."""
 from .localization import source as _text_source
 import json,re

@@ -1,10 +1,11 @@
+/* Gemeinsame Verarbeitung für Anmeldung und Kontoverwaltung. */
 package de.lokzeitleiste.app.data
 
 import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
 
-/** Preserve local records when a verified account is assigned a TF number. */
+/** Lokale Aufzeichnungen bleiben erhalten, wenn ein geprüftes Konto seine TF-Nummer erhält. */
 fun migrateAccountData(context: Context, previous: String?, current: String) {
     if (previous.isNullOrBlank() || previous == current) return
     for ((prefix, keys) in listOf("entries_" to listOf("data"), "lokzeit_" to listOf("entries", "stations"))) {

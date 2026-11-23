@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für geprüfte Übernahme der Anfangsdaten.
 """Explicit replacement of all TF records with twenty fictional test accounts."""
 import argparse
 import json
@@ -105,7 +106,7 @@ def delete_tf_records(db):
         rows=db.execute(select(*keys).where(predicate)).all()
         if not rows:continue
         for offset,key in enumerate(keys):columns[(table.name,key.name)]={r[offset] for r in rows}
-        # Capture FK filters while the parent IDs are still available.
+        # Die Fremdschlüsselfilter sichern, solange die übergeordneten IDs noch vorhanden sind.
         predicates[table.name]=predicate
     deleted={}
     for table in reversed(tables):
@@ -131,7 +132,7 @@ def replace_all_tf(db,today=None,seed=None):
         path=DATA/record['photo']
         if not path.is_file():raise ValueError(f'Fiktives Profilbild fehlt: {record["photo"]}')
         photos.append(normalize(path.read_bytes()))
-    # Preserve unique user identities even on SQLite (which can reuse deleted IDs).
+    # Benutzerkennungen bleiben auch unter SQLite eindeutig, obwohl gelöschte IDs dort erneut vergeben werden können.
     next_id=(db.scalar(select(func.max(User.id))) or 0)+1
     deleted=delete_tf_records(db)
     for index,(record,photo) in enumerate(zip(records,photos)):
@@ -163,7 +164,7 @@ def main():
     if not args.replace_all_tf:
         records=build_records(seed=args.seed);validate_records(records,berlin_today())
         print(json.dumps({'preview':True,'people':records},ensure_ascii=False,default=str,indent=2));return
-    # Production uses MySQL/InnoDB; all new tables must exist before the transaction.
+    # Unter MySQL/InnoDB müssen alle neuen Tabellen vor Beginn der Transaktion vorhanden sein.
     Base.metadata.create_all(engine())
     from .tf_profiles import ensure_gender_column
     with Session(engine()) as db:

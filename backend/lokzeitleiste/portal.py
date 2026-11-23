@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für gemeinsame Portaloberfläche.
 """Combined employee directory and reusable shift cycles."""
 from .localization import source as _text_source
 import json

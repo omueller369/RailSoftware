@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Postfächer und Nachrichtenversand.
 """Managed employee addresses and an encrypted outbox for the local mail provisioner."""
 from .localization import source as _text_source
 import base64
@@ -44,7 +45,7 @@ def local_name(first,last):
 
 
 def address_taken(db,address,user_id=None):
-    # Include historical profiles not yet migrated into the unique address registry.
+    # Auch ältere Profile berücksichtigen, die noch nicht im eindeutigen Adressregister stehen.
     for cls,field,pk in ((EmployeeEmail,EmployeeEmail.address,EmployeeEmail.user_id),(TfProfile,TfProfile.email,TfProfile.user_id),(MailboxAccount,MailboxAccount.address,MailboxAccount.tf_user_id)):
         query=select(pk).where(field==address)
         if user_id is not None:query=query.where(pk!=user_id)

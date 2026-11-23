@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Zugriffsrechte der Verwaltungsbereiche.
 """Modulrechte: 0=keine, 1=lesen, 2=lesen/schreiben, 3=administrieren."""
 from ..localization import source as _text_source
 import re
@@ -49,6 +50,12 @@ def redact_plan(db,user,summary):
 
 def authorize_route(db, user, request):
     path, method = request.url.path.rstrip('/'), request.method
+    if path.startswith('/api/v1/admin/quality'):
+        if '/coordinates' in path:return demand(db,user,'employees',1 if method=='GET' else 2)
+        if '/knowledge/' in path:return demand(db,user,'knowledge',1)
+        ready(db,user)
+        if user.role!='admin':raise HTTPException(403,_text_source('server_accounts_access.text_a32fc4d85def'))
+        return
     if path.startswith('/api/v1/admin/portal-access'):
         return demand(db,user,'portal_access',1)
     if path.startswith('/api/v1/admin/gps-demo'):
@@ -64,8 +71,8 @@ def authorize_route(db, user, request):
     if path=='/api/v1/admin/wgm' or path.startswith('/api/v1/admin/wgm/'):
         return demand(db,user,'wgm',1 if method=='GET' else 3 if method=='POST' and path=='/api/v1/admin/wgm' else 2)
     if path=='/api/v1/admin/work-reports' or path.startswith('/api/v1/admin/work-reports/'):
-        # This first stage deliberately exposes no write operation.
-        return demand(db,user,'work_reports',1 if method=='GET' else 2 if method=='POST' and path.endswith('/return') else 3)
+        # Lesen, Rückgeben und Prüfen verwenden getrennte Berechtigungsstufen.
+        return demand(db,user,'work_reports',1 if method=='GET' else 2 if method=='POST' and path.endswith(('/return','/review')) else 3)
     if path=='/api/v1/admin/leasing' or path.startswith('/api/v1/admin/leasing/'):
         if method=='GET' and permissions(db,user).get('vehicles',0):return demand(db,user,'vehicles',1)
         return demand(db,user,'leasing',1 if method=='GET' else 2)

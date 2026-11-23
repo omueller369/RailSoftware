@@ -1,3 +1,4 @@
+/* Regressionstests für Streckenkenntnisse und Referenzgeometrie. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
 const context={window:{},Intl,Date,Map,WeakMap};vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/route-imports.js','utf8'),context);const api=context.window.RouteImports;
 const data={scale:100,routes:[['1000','A-B'],['2000','Other']],lines:[[0,0,[0,0,100,0],[0,0,100,0],[0,0,100,0],[0,1000]],[1,0,[0,10,100,10],[0,10,100,10],[0,10,100,10],[0,1000]]]},view={size:100,left:0,top:0},now=Date.parse('2026-11-17T12:00:00Z');

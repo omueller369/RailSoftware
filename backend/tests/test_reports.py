@@ -1,3 +1,4 @@
+# Regressionstests für Berichte und die zugehörigen Prüf- und Versandabläufe.
 import unittest
 from datetime import date
 

@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Erzeugung und Darstellung von PDF-Dokumenten.
 """Farbige Monatskalender und Jahresmatrix für den administrativen Plan."""
 from ..localization import source as _text_source
 import calendar

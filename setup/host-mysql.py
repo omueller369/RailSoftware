@@ -1,3 +1,4 @@
+# Bündelt die notwendigen Schritte für Anbindung der vorhandenen Serverdienste. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Prepare or back up the existing host database without exposing credentials."""
 import getpass
 import gzip

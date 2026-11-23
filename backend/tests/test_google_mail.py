@@ -1,3 +1,4 @@
+# Regressionstests für Postfächer und Nachrichtenversand.
 import json
 import unittest
 from urllib.parse import urlsplit,parse_qs

@@ -1,3 +1,4 @@
+# Regressionstests für Betriebsstellen und Ortszuordnungen.
 from datetime import timedelta
 from unittest.mock import patch
 from fastapi.testclient import TestClient
@@ -139,7 +140,7 @@ class StationSharingTest(test_stations.StationDirectoryTest):
         delivery=self.share([self.create()])
         for response in [recipients,self.other.get('/api/v1/tf/station-inbox'),self.other.get('/api/v1/tf/station-inbox/'+str(delivery['id']))]:
             for private in ['787100','787200','tf_number','username']:self.assertNotIn(private,response.text)
-        # The driver's own identity remains available; staff-only lists stay protected.
+        # Die eigene TF-Identität bleibt verfügbar; Verwaltungslisten bleiben geschützt.
         self.assertEqual(self.driver.get('/api/v1/tf/portal').json()['username'],'787100')
         for url in ['/api/v1/admin/tf','/api/v1/admin/directory']:
             self.assertIn(self.other.get(url).status_code,(401,403))

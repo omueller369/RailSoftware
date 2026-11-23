@@ -1,3 +1,4 @@
+/* Regressionstests für die gemeinsamen Anwendungsabläufe. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
 const source=fs.readFileSync('backend/lokzeitleiste/static/auth-session.js','utf8');
 function tab(path){const values=new Map(),calls=[];const storage={getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};const window={fetch:async(input,opts)=>{calls.push({input,headers:opts.headers});const role=opts.body==='tf'?'tf':'admin';return {ok:true,clone:()=>({json:async()=>({role,access_token:role+'-token'})})};}};vm.runInNewContext(source,{window,location:{pathname:path,search:'',href:'https://example.org'+path,origin:'https://example.org'},sessionStorage:storage,document:{addEventListener(){}},Headers,Request,URL,URLSearchParams,setTimeout,alert(){}});return{window,storage,calls};}

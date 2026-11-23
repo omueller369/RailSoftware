@@ -1,3 +1,4 @@
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Install only LokZeitleiste into an existing Ubuntu/ISPConfig stack. No apt/Docker/vhost edits."""
 import argparse
 import base64
@@ -217,7 +218,7 @@ def main():
         if not password:raise ValueError('Datenbankpasswort darf nicht leer sein.')
         dburl=database_url(args.db_host,args.db_port,args.db_name,args.db_user,password)
     os.umask(0o022)
-    # A non-login application account is separate from ISPConfig web users.
+    # Das Anwendungskonto ohne interaktive Anmeldung bleibt von den ISPConfig-Webbenutzern getrennt.
     try:
         account=pwd.getpwnam(ACCOUNT)
         if account.pw_uid>=1000 or account.pw_shell not in ('/usr/sbin/nologin','/sbin/nologin'):raise ValueError('Vorhandenes Anwendungskonto hat unerwartete Eigenschaften.')
@@ -241,7 +242,7 @@ def main():
         else:env=json.loads((CONFIG/'environment.json').read_text())
         backend=INSTALL/'backend';backend.mkdir(exist_ok=True)
         shutil.copytree(SOURCE/'backend/lokzeitleiste',backend/'lokzeitleiste',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-        # Checkout permissions may come from a restrictive root umask. Code is not secret.
+        # Nach dem Auschecken können restriktive root-Dateirechte vorliegen. Der Programmcode braucht passende Leserechte.
         for path in (backend/'lokzeitleiste',*(backend/'lokzeitleiste').rglob('*')):
             path.chmod(0o755 if path.is_dir() else 0o644)
         shutil.copy2(SOURCE/'backend/requirements.txt',INSTALL/'requirements.txt')

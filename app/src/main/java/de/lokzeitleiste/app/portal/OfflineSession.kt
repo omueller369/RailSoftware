@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für gemeinsame Portaloberfläche. */
 package de.lokzeitleiste.app.portal
 
 import android.content.Context

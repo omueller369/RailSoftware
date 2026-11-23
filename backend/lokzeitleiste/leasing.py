@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Leasingdaten der Fahrzeuge.
 """Leasing company master data and vehicle assignments, without altering legacy columns."""
 from .localization import source as _text_source
 import json

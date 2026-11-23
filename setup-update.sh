@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Versionsprüfung und bestehende Installationen. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 # Gesicherte Aktualisierung einer vorhandenen Linux-Testumgebung.
 set -Eeuo pipefail
 umask 077

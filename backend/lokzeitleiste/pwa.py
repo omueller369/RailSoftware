@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Installation der Webanwendung.
 """Two installable web apps. A shared origin scope keeps account/documents inside the app."""
 from .localization import source as _text_source, resolve_placeholders
 from functools import lru_cache
@@ -14,7 +15,7 @@ APPS={'tf':(_text_source('server_pwa.text_875244874743'),'TF-Portal','/tf','#117
 
 @lru_cache(maxsize=6)
 def icon(area,size):
-    # Shared RS freight mark: both independently installed apps use the selected brand.
+    # Beide unabhängig installierten Apps verwenden dasselbe gewählte RS-Markenzeichen.
     im=Image.open(STATIC/'rail-software-icon.png').convert('RGB')
     mark=im.resize((round(size*.8),round(size*.8)),Image.Resampling.LANCZOS)
     canvas=Image.new('RGB',(size,size),'white');canvas.paste(mark,((size-mark.width)//2,(size-mark.height)//2))
@@ -25,7 +26,7 @@ def create_router():
     @router.get('/pwa/{area}/manifest.webmanifest')
     def manifest(area:Literal['tf','backend']):
         name,short,start,color=APPS[area]
-        # Separate stable IDs allow both apps on one device. Shared modules require root scope.
+        # Getrennte, stabile Kennungen erlauben beide Apps auf einem Gerät. Gemeinsame Module brauchen den gemeinsamen Wurzelpfad.
         return JSONResponse(dict(id='/pwa/apps/'+area,name=name,short_name=short,start_url=start,
             scope='/',display='standalone',background_color='#eef3f5',theme_color=color,lang='de',
             description=name+_text_source('server_pwa.text_3a574fa974cf'),prefer_related_applications=False,

@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe.
 """Realer API/MySQL/SMTP-Test über Apache; legt je Lauf einen fiktiven Tf an."""
 import getpass
 import http.cookiejar

@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 let now=0,tick;
 const context={window:{},structuredClone,performance:{now:()=>now},setInterval:fn=>(tick=fn,1),clearInterval(){}};

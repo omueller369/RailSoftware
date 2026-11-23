@@ -1,4 +1,5 @@
-/* ODbL reference only. Polish language controls visibility; no qualification writes. */
+/* Die polnische Referenz wird kachelweise geladen und nur bei gewählter polnischer Sprache angezeigt. */
+/* Öffentliche ODbL-Referenz. Die Sprachwahl steuert die Anzeige; diese Ebene schreibt keine Kenntnisse. */
 (()=>{
 const pending=new Map(),loaded=new Map(),cache=new Map();let overview=null,failed=false,eventFrame=0;
 const enabled=()=>String(window.I18n?.language||document.documentElement.lang||'de').split('-')[0]==='pl';
@@ -19,9 +20,11 @@ function draw(svg,make,view,options={}){if(!enabled())return 0;if(!overview){if(
  if(path){const p=make('path');for(const [k,v]of Object.entries({d:path,fill:'none',stroke:'#4A4A4A','stroke-width':2.2,'stroke-linecap':'round','stroke-linejoin':'round','pointer-events':'none','aria-hidden':'true','data-poland-rail-network':''}))p.setAttribute(k,v);svg.append(p);}if(options.points!==false)drawPoints(svg,make,view,options);return count;
 }
 
+const markerIndexes=new WeakMap();
+function markersFor(tile,view,selected){let index=markerIndexes.get(tile);if(!index){const grid=new Map(),byId=new Map();for(const point of tile.points||[]){byId.set(point[0],point);const key=Math.floor(point[3]/tile.scale*8192)+','+Math.floor(point[4]/tile.scale*8192);if(!grid.has(key))grid.set(key,[]);grid.get(key).push(point);}index={grid,byId};markerIndexes.set(tile,index);}if(view.zoom<10)return [...selected].map(id=>index.byId.get(id)).filter(Boolean);const rows=[];for(let x=Math.floor(view.left/view.size*8192);x<=Math.floor((view.left+(view.width||600))/view.size*8192);x++)for(let y=Math.floor(view.top/view.size*8192);y<=Math.floor((view.top+(view.height||650))/view.size*8192);y++)rows.push(...index.grid.get(x+','+y)||[]);return rows;}
 function drawPoints(svg,make,view,{choose,selected=[],suggested=[],nodesOnly=false}={}){
  if(!enabled()||!overview)return;const width=view.width||600,height=view.height||650,chosen=new Set(selected),next=new Set(suggested),seen=new Set(),rows=[];
- for(const tile of [overview,...loaded.values()])for(const p of tile.points||[]){if(seen.has(p[0]))continue;seen.add(p[0]);const special=chosen.has(p[0])||next.has(p[0]);if(!special&&(nodesOnly?!p[7]:p[2]<2?view.zoom<10:p[2]===2?view.zoom<13:view.zoom<14))continue;const x=p[3]/tile.scale*view.size-view.left,y=p[4]/tile.scale*view.size-view.top;if(x<0||x>width||y<0||y>height)continue;rows.push({p,x,y,priority:special?0:p[2]<2?1:2});}
+ for(const tile of [overview,...loaded.values()])for(const p of markersFor(tile,view,new Set([...chosen,...next]))){if(seen.has(p[0]))continue;seen.add(p[0]);const special=chosen.has(p[0])||next.has(p[0]);if(!special&&(nodesOnly?!p[7]:p[2]<2?view.zoom<10:p[2]===2?view.zoom<13:view.zoom<14))continue;const x=p[3]/tile.scale*view.size-view.left,y=p[4]/tile.scale*view.size-view.top;if(x<0||x>width||y<0||y>height)continue;rows.push({p,x,y,priority:special?0:p[2]<2?1:2});}
  rows.sort((a,b)=>a.priority-b.priority||Math.hypot(a.x-width/2,a.y-height/2)-Math.hypot(b.x-width/2,b.y-height/2));let labels=0;
  for(const {p,x,y}of rows.slice(0,400)){const group=make('g'),dot=make('circle'),title=make('title'),label=(p[1]||p[0])+' · '+p[0];group.setAttribute('transform',`translate(${x.toFixed(1)} ${y.toFixed(1)})`);group.setAttribute('data-poland-point',p[0]);dot.setAttribute('r',choose?6:3.5);dot.setAttribute('fill',chosen.has(p[0])?'#7cfc00':next.has(p[0])?'#87cefa':p[5]?'#fff':'#ffd6a0');dot.setAttribute('stroke','#243a50');dot.setAttribute('stroke-width',1.4);title.textContent=label;group.append(dot,title);
  if((chosen.has(p[0])||next.has(p[0]))){const pin=make('path');for(const [k,v]of Object.entries({d:'M0 0C-3 -4 -7 -8 -7 -12A7 7 0 1 1 7 -12C7 -8 3 -4 0 0Z',fill:chosen.has(p[0])?'#7cfc00':'#87cefa',stroke:'#243a50','stroke-width':1}))pin.setAttribute(k,v);group.append(pin);}

@@ -1,3 +1,4 @@
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Application-side setup checks, executed with the application's virtualenv/user."""
 import json
 import sys

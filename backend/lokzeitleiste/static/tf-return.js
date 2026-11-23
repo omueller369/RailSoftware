@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Rückgabe von Berichten zur Überarbeitung. */
 (()=>{
 const label=globalThis.CtlText.source("portal_tf_return.text_499eee9fe513");let generation=0;
 function clear(){document.querySelectorAll('[data-tf-portal-return]').forEach(node=>node.remove());}

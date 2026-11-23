@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Fahrzeugübergaben und Mängelerfassung.
 """Administrative handover vocabulary, with category-owned damage locations."""
 from .localization import source as _text_source
 import re

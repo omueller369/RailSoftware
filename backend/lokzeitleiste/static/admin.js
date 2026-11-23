@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 const el=id=>document.getElementById(id);
 let me=null,openedProfile=null,createExtras=null,tfUsers=[];
 const createPhoto=photoSelection(el("tfPhotoSelection"));

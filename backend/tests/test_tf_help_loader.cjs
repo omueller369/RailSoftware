@@ -1,3 +1,4 @@
+/* Regressionstests für modulbezogene Hilfe und Druckansicht. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 function boot(){const scripts=[],nodes=[];const document={addEventListener(){},getElementById:id=>nodes.find(node=>node.id===id),createElement:tag=>({tag,remove(){this.removed=true;}}),head:{append(node){nodes.push(node);if(node.tag==='script')scripts.push(node);}}};const storage=new Map(),window={fetch:async()=>({ok:true})};vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/auth-session.js','utf8'),{window,document,location:{pathname:'/tf',search:'',href:'https://test/tf',origin:'https://test'},sessionStorage:{getItem:key=>storage.get(key),setItem:(key,value)=>storage.set(key,value)},URL,URLSearchParams,Headers,Request,console});return {window,scripts,nodes};}
 (async()=>{

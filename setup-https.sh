@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Free Let's Encrypt HTTPS using the existing Apache demo installer.
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
+# Kostenloses Let's-Encrypt-HTTPS mit dem vorhandenen Apache-Demoinstaller einrichten.
 set -Eeuo pipefail
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 email=''

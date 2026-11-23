@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 # Öffentliche Demo auf einem dedizierten Ubuntu-Server, mit internem Test-Mailversand.
 set -Eeuo pipefail
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
@@ -21,7 +22,7 @@ while (($#)); do
   *) echo "Unbekannte Option: $1" >&2;exit 2 ;;
  esac
 done
-# Preserve an established HTTPS demo on later updates.
+# Eine bereits eingerichtete HTTPS-Demo bleibt bei späteren Updates erhalten.
 if [[ $scheme == auto ]];then
  if grep -qs '^PUBLIC_ORIGIN=https://' "$root/backend/.env.host" "$root/backend/.env.test" || [[ -e /etc/apache2/sites-enabled/lokzeitleiste-ctl-demo-https.conf ]];then scheme=https;else scheme=http;fi
 fi

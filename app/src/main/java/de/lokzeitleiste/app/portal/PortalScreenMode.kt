@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für gemeinsame Portaloberfläche. */
 package de.lokzeitleiste.app.portal
 
 import android.app.Activity
@@ -6,7 +7,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
-/** Only the visible full-screen map holds the display awake. GPS service is independent. */
+/** Nur die sichtbare Vollbildkarte hält den Bildschirm wach. Der GPS-Dienst läuft unabhängig davon. */
 object PortalScreenMode {
     fun apply(activity: Activity, enabled: Boolean) {
         val window=activity.window

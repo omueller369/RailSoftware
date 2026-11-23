@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Übergabeprotokolle und deren Bearbeitung.
 """Vehicle handover protocols with atomic attachment storage and snapshot details."""
 from .localization import source as _text_source
 import json,logging

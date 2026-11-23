@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für getrennte Anmeldung der Portale.
 """Microsoft device authorization; secrets are never returned to the browser."""
 from ..localization import source as _text_source
 import json

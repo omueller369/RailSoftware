@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe.
 """Authenticated publication and delivery of regional La PDFs."""
 import hashlib,io,json
 from datetime import date

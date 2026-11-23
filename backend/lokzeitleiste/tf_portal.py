@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für gemeinsame Portaloberfläche.
 """TF landing pages and read-only access to the driver's own personnel plan."""
 from .localization import source as _text_source, resolve_placeholders
 from pathlib import Path as FilePath

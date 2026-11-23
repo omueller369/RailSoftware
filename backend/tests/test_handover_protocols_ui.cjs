@@ -1,3 +1,4 @@
+/* Regressionstests für Übergabeprotokolle und deren Bearbeitung. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 class Element{constructor(tag='div',value=''){this.tag=tag;this.value=value;this.textContent='';this.children=[];this.dataset={};this.hidden=false;this.disabled=false;this.files=[];}append(...nodes){this.children.push(...nodes);}replaceChildren(...nodes){this.children=[...nodes];}reset(){}focus(){}reportValidity(){return true;}}
 const ids=['protocolMessage','protocolEditor','protocolDetail','handoverNew','protocolRows','protocolDetailTitle','protocolData','protocolDownloads','protocolForm','protocolStations','protocolCount','protocolVehicle','protocolTime','protocolTimeLabel','protocolRecipient','protocolSave','protocolCancel','protocolNotes','protocolStation','protocolDetailClose','protocolFiles','protocolDuty','protocolTrain','protocol180','protocol280','protocolMileage','protocolLocData','protocolUploadMessage'];

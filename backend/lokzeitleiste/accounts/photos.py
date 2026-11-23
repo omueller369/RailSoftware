@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldung und Kontoverwaltung.
 from ..localization import source as _text_source
 import io
 import base64

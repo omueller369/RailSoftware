@@ -1,4 +1,5 @@
-/* Keep the recording DOM and native service intact while showing tools above it. */
+/* Gemeinsame Verarbeitung für Zugfahrten und deren Detailerfassung. */
+/* Die Aufzeichnungsansicht und der native Dienst bleiben beim Einblenden zusätzlicher Werkzeuge bestehen. */
 (()=>{
 const S={"fullscreen":globalThis.CtlText.source("train_workspace.text_f74d8120b2d8"),"exit":globalThis.CtlText.source("train_workspace.text_e73783b190e8"),"close":globalThis.CtlText.source("train_workspace.text_1d64ba65b706"),"brake":globalThis.CtlText.source("train_workspace.text_ec1d45170dba"),"popular":globalThis.CtlText.source("train_workspace.text_975481af3b6a"),"loading":globalThis.CtlText.source("train_workspace.text_14053b87a5da"),"empty":globalThis.CtlText.source("train_workspace.text_424d6ebaa785"),"offline":globalThis.CtlText.source("train_workspace.text_2b60d05f8538"),"help":globalThis.CtlText.source("train_workspace.text_1aef2add4f33"),"history":globalThis.CtlText.source("train_workspace.text_c68d9d3ca82a")};
 const t=n=>window.I18n?.t(S[n])||S[n],overlays=new Map();let full=null,lease=null,screenGeneration=0;

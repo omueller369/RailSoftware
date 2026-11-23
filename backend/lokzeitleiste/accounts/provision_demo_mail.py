@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Postfächer und Nachrichtenversand.
 """Assign personal demo addresses once, without changing existing portal passwords."""
 import os
 from sqlalchemy import select

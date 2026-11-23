@@ -1,3 +1,4 @@
+# Die Beziehungen zwischen Konten, Berichten und Referenzbeständen werden hier gemeinsam definiert.
 from datetime import date, datetime, timezone
 
 from sqlalchemy import Boolean, CheckConstraint, Date, DateTime, Double, ForeignKey, Integer, LargeBinary, String, Text, UniqueConstraint
@@ -31,7 +32,7 @@ class TfProfile(Base):
     vacation_days: Mapped[int] = mapped_column(Integer, nullable=False)
     birth_date: Mapped[date] = mapped_column(Date, nullable=False)
     bahncard: Mapped[int] = mapped_column(Integer, nullable=False)
-    # Compatibility with the interim branch implementation; tf_identity is canonical.
+    # Die Zwischenlösung bleibt lesbar; maßgeblich ist tf_identity.
     gender: Mapped[str] = mapped_column(String(20), default='unspecified', server_default='unspecified', nullable=False)
     email: Mapped[str | None] = mapped_column(String(320), nullable=True)
     federal_state: Mapped[str | None] = mapped_column(String(2), nullable=True)
@@ -1094,3 +1095,43 @@ class PolandRouteKnowledge(Base):
     path_key:Mapped[str]=mapped_column(String(64))
     payload_json:Mapped[str]=mapped_column(Text().with_variant(MEDIUMTEXT(),'mysql'))
     created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)
+
+
+class ReportReviewEvent(Base):
+    # Die Freigabe gilt immer für genau eine Berichtsversion; spätere Änderungen machen sie nicht stillschweigend gültig.
+    __tablename__='report_review_events'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    report_id:Mapped[int]=mapped_column(ForeignKey('duty_reports.id',ondelete='CASCADE'),index=True)
+    actor_id:Mapped[int|None]=mapped_column(ForeignKey('users.id',ondelete='SET NULL'),nullable=True)
+    version:Mapped[int]=mapped_column(Integer)
+    state:Mapped[str]=mapped_column(String(20))
+    payload_sha256:Mapped[str]=mapped_column(String(64))
+    comment:Mapped[str]=mapped_column(Text,default='')
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)
+
+
+class CoordinateReviewEvent(Base):
+    __tablename__='coordinate_review_events'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    contribution_id:Mapped[int]=mapped_column(ForeignKey('station_coordinate_contributions.id',ondelete='CASCADE'),index=True)
+    actor_id:Mapped[int|None]=mapped_column(ForeignKey('users.id',ondelete='SET NULL'),nullable=True)
+    decision:Mapped[str]=mapped_column(String(20))
+    comment:Mapped[str]=mapped_column(Text,default='')
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)
+
+
+class BackupSettings(Base):
+    __tablename__='backup_settings'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    enabled:Mapped[bool]=mapped_column(Boolean,default=True)
+    requested:Mapped[bool]=mapped_column(Boolean,default=False)
+    last_started:Mapped[datetime|None]=mapped_column(DateTime,nullable=True)
+
+
+class BackupRun(Base):
+    __tablename__='backup_runs'
+    id:Mapped[str]=mapped_column(String(32),primary_key=True)
+    state:Mapped[str]=mapped_column(String(20))
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)
+    completed_at:Mapped[datetime|None]=mapped_column(DateTime,nullable=True)
+    summary_json:Mapped[str]=mapped_column(Text,default='{}')

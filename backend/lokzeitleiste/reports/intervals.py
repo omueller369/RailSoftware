@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Zeitintervalle und Tageswechsel.
 """Explizite Enddaten mit kompatibler Mitternachtsregel für alte Einträge."""
 from datetime import datetime, time, timedelta
 from sqlalchemy import select, or_

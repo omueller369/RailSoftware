@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Anmeldung und fachliche Server-Endpunkte. */
 package de.lokzeitleiste.app.network
 
 import de.lokzeitleiste.app.BuildConfig

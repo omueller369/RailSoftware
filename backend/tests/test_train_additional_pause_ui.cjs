@@ -1,3 +1,4 @@
+/* Regressionstests für Zugfahrten und deren Detailerfassung. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 const window={};vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/train-journeys.js','utf8'),{window});
 let id=0,error='',readonly=false;const e=Object.create(window.TrainJourneyEditor.prototype);e.o={readonly:()=>readonly,minute:v=>Date.parse(v)/60000,uuid:()=>String(++id),block(){},message:v=>error=v,bounds:()=>({start:'2026-10-26T09:00',end:'2026-10-26T17:00'})};e.header=async()=>{};e.resolve=async()=>({code:'BHF',name:'Bahnhof'});e.clearEvent=()=>{};e.changed=()=>{};

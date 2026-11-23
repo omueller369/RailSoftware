@@ -1,3 +1,4 @@
+/* Regressionstests für Anzeige des Datenverbrauchs im Betatest. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 const values=new Map(),source=fs.readFileSync('backend/lokzeitleiste/static/beta-traffic.js','utf8');
 let offline=false;const window={addEventListener(){},fetch:async()=>new Response('abc',{headers:offline?{'X-LokZeitleiste-Offline':'1'}:{}})};

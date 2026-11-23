@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldeschutz und Berechtigungsprüfung.
 import hashlib
 import hmac
 import secrets

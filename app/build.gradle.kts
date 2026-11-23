@@ -1,3 +1,4 @@
+/* Version und verpackte Portaldateien stammen aus den gemeinsamen Projektquellen. */
 import groovy.json.JsonSlurper
 
 plugins {
@@ -8,7 +9,7 @@ plugins {
 
 val apiBaseUrl = providers.gradleProperty("lokzeitleisteApiBaseUrl").orElse("https://ctl-software.io-goerlitz.eu").get()
 
-// Read the visible application version from the shared backend version source.
+// Die sichtbare App-Version kommt aus derselben Quelle wie die Backend-Version.
 val softwareVersion = Regex("""SOFTWARE_VERSION\s*=\s*['"]([^'"]+)['"]""")
     .find(rootProject.file("backend/lokzeitleiste/version.py").readText())
     ?.groupValues?.get(1) ?: error("Shared software version is missing")
@@ -22,8 +23,8 @@ android {
         applicationId = "de.lokzeitleiste.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("123").get().toInt()
-        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.15").get()
+        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("124").get().toInt()
+        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.16").get()
         buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl}\"")
     }
     val signingPath = providers.gradleProperty("lokzeitleisteSigningStoreFile").orElse(providers.environmentVariable("ANDROID_KEYSTORE_PATH")).orNull
@@ -55,7 +56,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 }
 
-// Package the actual shared portal sources on every build; no second UI implementation.
+// Bei jedem Build werden die gemeinsamen Portaldateien verpackt; eine zweite Oberfläche wird nicht gepflegt.
 val portalAssets = layout.buildDirectory.dir("generated/portalAssets")
 val portalMessageFile = rootProject.file("backend/lokzeitleiste/locales/keys.json")
 val portalSourceMessages = (JsonSlurper().parse(portalMessageFile) as Map<*, *>)["de"] as Map<*, *>
@@ -64,7 +65,7 @@ val prepareTfPortal by tasks.registering(Sync::class) {
     inputs.file(portalMessageFile)
     filteringCharset = "UTF-8"
     from(rootProject.file("backend/lokzeitleiste/static")) {
-        include("route-table.js", "poland-stk.js", "poland-stk-worker.js", "poland-stk-data/*.json", "poland-rail.js", "poland-rail-data/*.js", "gps-route-tools.js", "map-gestures.js", "android-offline.js", "m1-basemap-data.js", "m1-map.js", "route-editor.js", "la-instructions.js", "la-instructions.css", "la-vendor/**", "location-editor.js", "knowledge-inventory.js", "route-imports.js", "route-csv.js", "route-coverage.js", "rail-network*.js", "route-knowledge.js", "beta-traffic.js", "station-contributions.js", "gps-marker-*.png", "station-catalog-data.js", "station-catalog.js", "station-picker.js", "train-workspace.js", "messages.js", "national-brake-sheet.*", "brake-sheet.*", "tf-shell.*", "portal-theme.*", "plan-colors.js", "auth-session.js", "tf-help*", "tf-notes.*", "tf-messages.*", "tf-profile.*", "tf-signature.*", "ctl-logistics-logo.jpg", "rail-software-*.png", "handover-protocols.js", "loco-handover.*", "tf-portal.*", "work-report.*", "work-report-feedback.js", "train-journeys.js", "report-tabs.js", "gps.js", "infra-go.js", "gps-settings.js", "gps-demo.js", "gps-demo-visibility.js", "updates.js", "stations.js",
+        include("quality-ui.js", "route-table.js", "poland-stk.js", "poland-stk-worker.js", "poland-stk-data/*.json", "poland-rail.js", "poland-rail-data/*.js", "gps-route-tools.js", "map-gestures.js", "android-offline.js", "m1-basemap-data.js", "m1-map.js", "route-editor.js", "la-instructions.js", "la-instructions.css", "la-vendor/**", "location-editor.js", "knowledge-inventory.js", "route-imports.js", "route-csv.js", "route-coverage.js", "rail-network*.js", "route-knowledge.js", "beta-traffic.js", "station-contributions.js", "gps-marker-*.png", "station-catalog-data.js", "station-catalog.js", "station-picker.js", "train-workspace.js", "messages.js", "national-brake-sheet.*", "brake-sheet.*", "tf-shell.*", "portal-theme.*", "plan-colors.js", "auth-session.js", "tf-help*", "tf-notes.*", "tf-messages.*", "tf-profile.*", "tf-signature.*", "ctl-logistics-logo.jpg", "rail-software-*.png", "handover-protocols.js", "loco-handover.*", "tf-portal.*", "work-report.*", "work-report-feedback.js", "train-journeys.js", "report-tabs.js", "gps.js", "infra-go.js", "gps-settings.js", "gps-demo.js", "gps-demo-visibility.js", "updates.js", "stations.js",
             "station-sharing.js", "tf-return.js", "documents.*", "account.*", "my-worktime.*",
             "entry-form.js", "portal.css", "responsive.css", "i18n.js", "android-portal.js")
     }
@@ -76,8 +77,8 @@ val prepareTfPortal by tasks.registering(Sync::class) {
         include("*.json")
         into("native-updates")
     }
-    // Match the server's template rendering before WebView sees the page. Static
-    // labels inside data-i18n-ignore must be resolved too; user values are untouched.
+    // Die Platzhalter werden vor dem Laden genauso aufgelöst wie auf dem Server.
+    // Auch Beschriftungen in data-i18n-ignore auflösen. Persönliche Werte bleiben erhalten.
     filesMatching("*.html") {
         filter { line: String ->
             portalMessageToken.replace(line) { match ->

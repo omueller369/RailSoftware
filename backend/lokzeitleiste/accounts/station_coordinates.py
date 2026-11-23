@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Betriebsstellen und Ortszuordnungen.
 """Conservative, offline and fill-only reference coordinate import."""
 import json
 import math
@@ -57,6 +58,6 @@ def with_coordinates(db,rows):
     coords={r.code:r for r in db.scalars(select(RailwayStationCoordinates).where(RailwayStationCoordinates.code.in_([r['code'] for r in rows])))}
     for row in rows:
         point=coords.get(row['code'])
-        # Do not attach a stale position after a live catalogue rename.
+        # Nach einer Umbenennung im Katalog darf keine veraltete Position übernommen werden.
         row['coordinates']=dict(latitude=point.latitude,longitude=point.longitude,crs='EPSG:4326',source_url=point.source_url,source_date=point.source_date) if point and normalized_name(point.catalog_name)==normalized_name(row['name']) else None
     return rows

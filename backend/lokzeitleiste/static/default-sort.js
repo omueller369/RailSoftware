@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Grundwerte und Vorgaben. */
 (()=>{
 const t=s=>window.I18n?.t(s)||s,active=new Set();
 window.addEventListener('beforeunload',event=>{if([...active].some(controller=>controller.root.isConnected&&controller.dirty())){event.preventDefault();event.returnValue='';}});

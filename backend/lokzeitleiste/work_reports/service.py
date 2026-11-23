@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Arbeitsberichte und deren Übertragung.
 from ..field_errors import FieldError
 from ..localization import source as _text_source
 import json
@@ -38,7 +39,8 @@ def report_view(db,report):
     returned=active(db,report.id)
     from ..models import DutyReportCorrection
     versions=[dict(version=v,reason=reason) for v,reason in db.execute(select(DutyReportCorrection.version,DutyReportCorrection.reason).where(DutyReportCorrection.report_id==report.id).order_by(DutyReportCorrection.version.desc()))]
-    return dict(versions=versions,version=report_version(json.loads(report.payload_json)),returned=info(returned) if returned else None,id=report.id,entry_id=report.entry_id,**payload,
+    from ..quality import review_view
+    return dict(review=review_view(db,report),versions=versions,version=report_version(json.loads(report.payload_json)),returned=info(returned) if returned else None,id=report.id,entry_id=report.entry_id,**payload,
                 duration_minutes=minutes(datetime.fromisoformat(payload['start_at']),datetime.fromisoformat(payload['end_at'])),
                 minimum_pause_minutes=minimum_pause(minutes(start,end)) if payload['kind']==_text_source('server_work_reports_service.text_f31b8681bfca') else 0,
                 required_pause_minutes=required_pause(minutes(start,end)) if payload['kind']==_text_source('server_work_reports_service.text_f31b8681bfca') else 0,
@@ -63,8 +65,8 @@ def save_report(db,user,data,commit=True):
         return report
     existing=db.scalar(select(DutyReport).where(DutyReport.tf_user_id==user.id,DutyReport.client_id==str(data.client_id)))
     if existing:
-        # Historical reports have no station names. Compare the actual duty/trip data;
-        # keep the original station-name snapshot on retries and catalog changes.
+        # Ältere Berichte enthalten keine Bahnhofsnamen. Für Wiederholungen die tatsächlichen Dienst- und Fahrtdaten vergleichen;
+        # die ursprünglich gespeicherten Bahnhofsnamen bleiben auch bei späteren Katalogänderungen erhalten.
         def identity(payload):
             payload.setdefault('ausbleibe',[])
             payload.setdefault('kind',_text_source('server_work_reports_service.text_f31b8681bfca'))
@@ -87,7 +89,7 @@ def save_report(db,user,data,commit=True):
     resolve_train_stations(db,data.train_journeys)
     normalized=data.model_dump_json()
     if len(normalized.encode('utf-8'))>60000:raise HTTPException(422,_text_source('server_work_reports_service.text_a14edc14d076'))
-    # An absence occupies a calendar day, regardless of the display times.
+    # Eine Abwesenheit belegt unabhängig von den angezeigten Uhrzeiten den gesamten Kalendertag.
     first=data.start_at.date();last=(data.end_at-timedelta(minutes=1)).date()
     for other in period_entries(db,user.id,first,last,lock=True):
         begin,end=interval(other)

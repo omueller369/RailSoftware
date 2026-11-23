@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für modulbezogene Hilfe und Druckansicht. */
 /* Originale GPS-PNG-Symbole: transparenter Hintergrund ohne helle Hinterlegung. */
 /* GPS-Kartenzeiten in Aufzeichnung und Demo: HH:MM / HH:MM ohne Labels. */
 /* Arbeitsbericht: drei gleich gestaltete Reiter, ohne Verlust von Eingaben oder GPS. */
@@ -37,6 +38,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "short": "{{knowledge_tabs.text_1308485034f1}}",
     "sections": [
+ {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},
       {
         "title": "{{poland_rail.text_60596798b343}}",
         "paragraphs": [
@@ -275,6 +277,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf",
     "aliases": [],
     "sections": [
+ {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},
       {
         "title": "{{map_gestures.text_f6fd4ff9c63f}}",
         "paragraphs": [
@@ -544,6 +547,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": "/tf/arbeitsbericht",
     "aliases": [],
     "sections": [
+ {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},
       {
         "title": "{{portal_report_tabs.text_8f92cd7b253a}}",
         "paragraphs": [

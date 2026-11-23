@@ -1,3 +1,4 @@
+# Regressionstests für Einlesen von Wagenlisten.
 """Synthetic XLSX fixtures for dynamic rows and exact import arithmetic."""
 from io import BytesIO
 from decimal import Decimal
@@ -188,7 +189,7 @@ class WagonImportApiTest(unittest.TestCase):
         self.assertEqual(data['requested_brake_mode'],'G');self.assertEqual(data['brake_mode'],'P');self.assertEqual(data['wagon']['brake'],2100)
         self.assertEqual(len(data['notices']),3);self.assertTrue(any('350' in text and '2100' in text for text in data['notices']))
         self.assertEqual(self.driver.get(self.base).json(),[])
-        # This proposes G, rather than making up missing P values.
+        # Vorgeschlagen wird G. Fehlende P-Werte werden nicht erfunden.
         response=self.driver.post(self.base+'/import-wagons',files={'file':('wagons.xlsx',workbook(missing_p=True))},data={'mode':'G+P'})
         self.assertEqual(response.status_code,200,response.text);self.assertEqual(response.json()['brake_mode'],'G')
 

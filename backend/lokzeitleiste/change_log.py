@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe.
 """Transactional audit of authenticated employee changes; no public listing endpoint."""
 import hashlib,json,re
 from datetime import date,datetime

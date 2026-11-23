@@ -1,3 +1,4 @@
+/* Gemeinsame Darstellung für modulbezogene Hilfe und Druckansicht, einschließlich schmaler Ansichten. */
 .tf-help-dialog{box-sizing:border-box;width:min(1120px,96vw);height:min(880px,92dvh);max-height:92dvh;padding:0;border:1px solid #b9c8d1;border-radius:14px;color:#193044;background:#fff;font:18px/1.6 system-ui,sans-serif;overflow:hidden;box-shadow:0 18px 70px #102a3d66}
 .tf-help-dialog::backdrop{background:#102a3daa}
 .tf-help-dialog[open]{display:flex;flex-direction:column}

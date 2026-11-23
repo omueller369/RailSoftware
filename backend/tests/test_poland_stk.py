@@ -1,3 +1,4 @@
+# Regressionstests für polnische Referenznetz und die manuelle Streckenerfassung.
 """Owned Polish STK uses real reference paths, never synthetic GPS or DS100."""
 import unittest
 from datetime import timedelta

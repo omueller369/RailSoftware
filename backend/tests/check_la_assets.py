@@ -1,3 +1,4 @@
+# Regressionstests für die gemeinsamen Anwendungsabläufe.
 """Pinned local PDF renderer, licences, native routes and packaged assets."""
 import argparse,hashlib,json,zipfile
 from pathlib import Path

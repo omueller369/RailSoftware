@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Fahrzeugstammdaten. */
 (()=>{
 const el=id=>document.getElementById(id),t=value=>window.I18n?.t(value)||value,node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 const fields={length_m:'vehicleLength',weight_kg:'vehicleWeight',axle_count:'vehicleAxles',brake_shoe:'vehicleBrakeShoe',status:'vehicleStatus',status_note:'vehicleStatusNote',series:'vehicleSeries',leasing_company_id:'vehicleLeasing',name:'vehicleName',brake_r:'vehicleBrakeR',brake_p:'vehicleBrakeP',brake_g:'vehicleBrakeG',spring_brake:'vehicleSpring',spring_unit:'vehicleSpringUnit',next_revision:'vehicleRevisionDate',mileage:'vehicleMileage',notes:'vehicleNotes'};

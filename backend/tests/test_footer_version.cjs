@@ -1,3 +1,4 @@
+/* Regressionstests für Versions- und Eigentümerangaben. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 const source=fs.readFileSync('backend/lokzeitleiste/static/tf-shell.js','utf8');
 class E{constructor(tag){this.tag=tag;this.children=[];}append(...items){this.children.push(...items);}prepend(item){this.children.unshift(item);}setAttribute(){}replaceWith(item){this.replacement=item;}}

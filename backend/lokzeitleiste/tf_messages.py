@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Nachrichten und die gemeinsame Kommunikation.
 """TF-to-TF inbox. No SMTP, usernames or TF numbers in message-facing responses."""
 from .localization import source as _text_source, resolve_placeholders
 import io

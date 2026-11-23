@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung.
 """Owned GPS-to-manual links and explicitly confirmed raw-point reduction."""
 import json,math
 from datetime import datetime,timezone

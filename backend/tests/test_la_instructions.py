@@ -1,3 +1,4 @@
+# Regressionstests für die gemeinsamen Anwendungsabläufe.
 """La publication permission, PDF validation and authenticated TF delivery."""
 import unittest,hashlib
 import test_accounts

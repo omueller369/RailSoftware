@@ -1,3 +1,4 @@
+/* Öffentliche Android-Dateien werden über feste Pfade freigegeben. Persönliche API-Antworten gehören nicht in diesen Dateikatalog. */
 package de.lokzeitleiste.app.portal
 
 import java.net.URI
@@ -12,7 +13,7 @@ class PortalPolicy(base: String) {
         fun port(u: URI) = if (u.port >= 0) u.port else if (u.scheme == "https") 443 else 80
         uri.rawUserInfo == null && uri.scheme == root.scheme && uri.host.equals(root.host, true) && port(uri) == port(root)
     }.getOrDefault(false)
-    // Public image tiles only. Portal cookies and native API requests remain same-origin.
+    // Nur öffentliche Bildkacheln dürfen extern geladen werden. Portal-Cookies und API-Aufrufe bleiben beim eigenen Server.
     fun mapTile(value: String): Boolean = runCatching {
         val uri = URI(value)
         if (uri.scheme != "https" || uri.rawUserInfo != null || uri.port !in listOf(-1, 443) || uri.rawQuery != null || uri.rawFragment != null) return@runCatching false
@@ -27,7 +28,7 @@ class PortalPolicy(base: String) {
         zoom in 0..19 && x.toInt() < (1 shl zoom) && y.toInt() < (1 shl zoom)
     }.getOrDefault(false)
     fun asset(path: String): String? {
-        if(Regex("^/tf/poland-stk-data/(topology|manifest|geometry-[0-9]{1,3})[.]json$").matches(path))return path.removePrefix("/tf/")
+        if(Regex("^/tf/poland-stk-data/(topology|stations|manifest|geometry-[0-9]{1,3})[.]json$").matches(path))return path.removePrefix("/tf/")
         if(Regex("^/tf/poland-rail-data/(overview|tile-[0-9]{1,3}-[0-9]{1,3})[.]js$").matches(path))return path.removePrefix("/tf/")
         val laVendor = Regex("^/tf/la-vendor/(pdf(?:[.]worker)?[.]mjs|(?:cmaps|standard_fonts|wasm)/[A-Za-z0-9][A-Za-z0-9_.-]*[.](?:bcmap|pfb|ttf|wasm))$")
         if (laVendor.matches(path) && !path.contains("..")) return path.removePrefix("/tf/")
@@ -68,6 +69,7 @@ class PortalPolicy(base: String) {
         "/tf/route-table.js" -> "route-table.js"
         "/tf/route-editor.js" -> "route-editor.js"
         "/tf/gps-route-tools.js" -> "gps-route-tools.js"
+        "/tf/quality-ui.js" -> "quality-ui.js"
         "/tf/poland-stk.js" -> "poland-stk.js"
         "/tf/poland-stk-worker.js" -> "poland-stk-worker.js"
         "/tf/poland-rail.js" -> "poland-rail.js"

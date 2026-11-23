@@ -1,4 +1,5 @@
-/* One read-only help reader for every TF module. No form values or API data enter print output. */
+/* Gemeinsame Verarbeitung für modulbezogene Hilfe und Druckansicht. */
+/* Gemeinsame schreibgeschützte Hilfe. Persönliche Formularwerte gelangen nicht in die Druckansicht. */
 (()=>{
 if(window.TfHelp)return;
 const pages=window.TfHelpPages||[],t=value=>window.I18n?.t(value)||value;

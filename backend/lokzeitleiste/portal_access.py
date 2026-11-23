@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Zugriffsrechte der Verwaltungsbereiche.
 """Authenticated TF login/page telemetry for the temporary administration test tile."""
 from pathlib import Path
 import re
@@ -30,7 +31,7 @@ def create_router(require_account, require_admin):
     driver=driver_dependency(require_account)
     @router.post('/api/v1/tf/portal-access',status_code=204)
     def visit(data:Visit,user=Depends(driver),db:Session=Depends(database_session)):
-        # Only path names, never search strings, personal text or tokens.
+        # Nur Pfadnamen erfassen, keine Suchbegriffe, persönlichen Texte oder Anmeldetoken.
         if not re.fullmatch(r'/tf(?:/[a-z0-9-]+)*',data.path): raise HTTPException(422)
         record(db,user,data.android_version,'page',data.path)
         db.commit()

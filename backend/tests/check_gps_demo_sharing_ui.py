@@ -1,3 +1,4 @@
+# Browserprüfung für GPS-Erfassung und Kartendarstellung.
 """Synthetic browser checks for consent, read-only stops, DS100 refresh and revocation."""
 import re
 import check_work_report_layout as runner

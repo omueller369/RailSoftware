@@ -1,3 +1,4 @@
+# Jede Anfrage erhält ihre eigene Datenbanksitzung; der Verbindungspool wird gemeinsam genutzt.
 import os
 from functools import lru_cache
 

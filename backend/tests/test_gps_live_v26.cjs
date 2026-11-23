@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 // Simulated browser contract test; no real GPS hardware or installed browser required.
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 class Element{
@@ -43,7 +44,7 @@ if(require.main!==module){module.exports={context,Element,tracks};return;}
  const winter=base+240000;assert.equal(context.window.GpsRecorder.berlinTime(context.window.GpsRecorder.berlinInput(winter)),winter);
  r.record.points=oldPoints;const liveRecord=r.record;let finishRequest;context.fetch=async(path,options)=>options?.method==='PUT'?new Promise(resolve=>{finishRequest=()=>resolve(response({...JSON.parse(options.body),revision:7}));}):initialFetch(path,options);
  const checkpoint=r.checkpoint();await new Promise(resolve=>setTimeout(resolve,5));await r.add({timestamp:base+630000,coords:{latitude:52,longitude:13,accuracy:5,speed:10}});finishRequest();await checkpoint;assert.strictEqual(r.record,liveRecord);assert.equal(r.record.points.at(-1).t,base+630000);assert.equal(r.record.revision,7);assert.equal(r.record.dirty,true);
- // Select the first and third rows, leaving the row between them untouched.
+ // Die erste und dritte Zeile auswählen; die Zeile dazwischen bleibt unverändert.
  const firstStart=base+700000;
  const manualStops=[0,1,2].map(i=>({key:'manual-'+(firstStart+i*60000),start:firstStart+i*60000,end:firstStart+i*60000+30000}));
  r.record={train_number:'123',ended:true,detection_version:5,points:[],manual_stops:manualStops,stop_edits:{}};

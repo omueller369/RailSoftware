@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für GPS-Erfassung und Kartendarstellung.
 """Private browser-test GPS recordings and cached place-name/DS100 suggestions."""
 from .localization import source as _text_source
 import json,math,time,threading,urllib.request,urllib.parse,re,unicodedata
@@ -92,7 +93,7 @@ _lock=threading.Lock();_last_query=0
 
 def osm_query(lat,lon,radius=3500):
     global _last_query
-    # One small vicinity query per explicit request; cached for 30 days.
+    # Pro ausdrücklicher Anfrage wird die nahe Umgebung einmal abgefragt und 30 Tage zwischengespeichert.
     if not _lock.acquire(blocking=False):raise HTTPException(429,_text_source('server_gps.text_9ba3a6373f57'))
     try:
         if time.monotonic()-_last_query<2:raise HTTPException(429,_text_source('server_gps.text_348b25b6d7f6'))
@@ -262,7 +263,7 @@ def create_router(require_account):
         stops={'live-'+str(item['start']):item for item in gps_stops}
         for item in payload['manual_stops']:stops[item['key']]=item
         timestamps={p['t'] for p in payload['points']}
-        # Retain all historical source IDs even when several halts now merge into one.
+        # Alle ursprünglichen Kennungen erhalten, auch wenn mehrere Halte inzwischen zusammengeführt werden.
         for key in set(previous.get('stop_edits') or {})|set(payload.get('stop_edits') or {}):
             if key.startswith('live-') and key[5:].isdigit() and int(key[5:]) in timestamps:
                 match=next((item for item in gps_stops if item['start']<=int(key[5:])<=item['end']),None)
@@ -283,7 +284,7 @@ def create_router(require_account):
                     station=db.get(RailwayStation,code)
                     if not station:raise HTTPException(422,_text_source('server_gps.text_b418a717a2d3'))
                     edit['station']=dict(code=station.code,name=station.name)
-        # Preserve explicit assignments from older 0.25/RC recordings.
+        # Ausdrückliche Zuordnungen aus älteren Aufzeichnungen bleiben bei der Übernahme erhalten.
         for item in analyse(previous.get('points',[]),(previous.get('stop_edits') or {}),stop_minutes=previous.get('stop_minutes'))['rows']:
             key='live-'+str(item['start'])
             if item['kind']!=_text_source('server_gps.text_0fd998791d67') or key not in stops or key in edits:continue

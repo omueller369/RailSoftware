@@ -1,3 +1,4 @@
+# Bereitet die gemeinsamen Anwendungsabläufe aus den eingecheckten Quellen reproduzierbar auf.
 """Import supplied M1 operating points; preserve route-specific points and source names.
 
 Only unambiguous active stations get a shared GPS coordinate. Existing coordinates

@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Betriebsstellen und Ortszuordnungen.
 """Import an official DB station list into the local search catalog (CSV/XLSX)."""
 import argparse
 import csv

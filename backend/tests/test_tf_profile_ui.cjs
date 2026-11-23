@@ -1,3 +1,4 @@
+/* Regressionstests für die gemeinsamen Anwendungsabläufe. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E{constructor(){this.children=[];this.attrs={};this.style={};this.dataset={};}append(...n){this.children.push(...n);}replaceChildren(){this.children=[];}setAttribute(k,v){this.attrs[k]=v;}addEventListener(name,handler){this[name]=handler;}}
 const nodes={},window={addEventListener(){}},data={has_photo:false,data:{first_name:'<script>kein HTML</script>',last_name:'Beispiel',tf_number:787123,personnel_number:'00123',gender:'female',nationality:'DE',role:'tf',weekly_minutes:2400,monthly_minutes:10440,bahncard:100,addresses:[{street:'Teststraße',house_number:'1A',postal_code:'01234',city:'Berlin',federal_state:'BE',is_postal:true}]}};

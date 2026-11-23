@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe.
 """One explicitly requested spelling for the train-event cause, including legacy keys."""
 import json
 from sqlalchemy import select
@@ -43,7 +44,7 @@ def migrate(db):
         if not db.get(AppDefaultAlias,('cause',alias)):db.add(AppDefaultAlias(category='cause',alias=alias,canonical=CANONICAL))
     duplicate_ids={row.id for row in matches if row is not target}
     used=any(row.ever_used for row in matches)
-    # Delete duplicate unique labels before changing the surviving row's key/label.
+    # Doppelte eindeutige Bezeichnungen vor dem Ändern des verbleibenden Schlüssels entfernen.
     for row in matches:
         if row is not target:db.delete(row)
     db.flush()

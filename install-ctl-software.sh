@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# CTL-Software: interactive application installation on an existing Ubuntu/ISPConfig server.
-# Standalone setup file: engine and helper are embedded; application source is cloned if needed.
+# CTL-Software: interaktive Anwendungseinrichtung auf einem vorhandenen Ubuntu-/ISPConfig-Server.
+# Eigenständige Einrichtung mit eingebetteter Logik und Helfer. Die Anwendungsquellen werden bei Bedarf ausgecheckt.
 set -Eeuo pipefail
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 script_file="$script_dir/$(basename -- "${BASH_SOURCE[0]}")"
@@ -101,6 +101,7 @@ source_dir=$(cd -- "$source_dir" && pwd -P)
 work_dir=$(mktemp -d)
 trap 'rm -rf -- "$work_dir"' EXIT
 cat > "$work_dir/ispconfig_app.py" <<'CTL_APP_HELPER'
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Application-side setup checks, executed with the application's virtualenv/user."""
 import json
 import sys
@@ -133,6 +134,7 @@ def main():
 if __name__=='__main__':main()
 CTL_APP_HELPER
 cat > "$work_dir/ispconfig_install.py" <<'CTL_INSTALL_ENGINE'
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Install only LokZeitleiste into an existing Ubuntu/ISPConfig stack. No apt/Docker/vhost edits."""
 import argparse
 import base64
@@ -352,7 +354,7 @@ def main():
         if not password:raise ValueError('Datenbankpasswort darf nicht leer sein.')
         dburl=database_url(args.db_host,args.db_port,args.db_name,args.db_user,password)
     os.umask(0o022)
-    # A non-login application account is separate from ISPConfig web users.
+    # Das Anwendungskonto ohne interaktive Anmeldung bleibt von den ISPConfig-Webbenutzern getrennt.
     try:
         account=pwd.getpwnam(ACCOUNT)
         if account.pw_uid>=1000 or account.pw_shell not in ('/usr/sbin/nologin','/sbin/nologin'):raise ValueError('Vorhandenes Anwendungskonto hat unerwartete Eigenschaften.')
@@ -376,7 +378,7 @@ def main():
         else:env=json.loads((CONFIG/'environment.json').read_text())
         backend=INSTALL/'backend';backend.mkdir(exist_ok=True)
         shutil.copytree(SOURCE/'backend/lokzeitleiste',backend/'lokzeitleiste',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-        # Checkout permissions may come from a restrictive root umask. Code is not secret.
+        # Nach dem Auschecken können restriktive root-Dateirechte vorliegen. Der Programmcode braucht passende Leserechte.
         for path in (backend/'lokzeitleiste',*(backend/'lokzeitleiste').rglob('*')):
             path.chmod(0o755 if path.is_dir() else 0o644)
         shutil.copy2(SOURCE/'backend/requirements.txt',INSTALL/'requirements.txt')

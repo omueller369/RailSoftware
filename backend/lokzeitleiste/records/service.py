@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe.
 from ..localization import source as _text_source
 from datetime import date, timedelta
 from fastapi import HTTPException

@@ -1,3 +1,4 @@
+# Browserprüfung für GPS-Erfassung und Kartendarstellung.
 """Real DOM: settings, explicit start/stop gate and customizable map marker."""
 import re
 import check_work_report_layout as runner

@@ -1,3 +1,4 @@
+# Browserprüfung für die gemeinsamen Anwendungsabläufe.
 """Actual CSV controller in standalone STK: folding preserves preview and never saves."""
 import argparse
 from browser_realtime import check_pages

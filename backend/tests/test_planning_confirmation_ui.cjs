@@ -1,3 +1,4 @@
+/* Regressionstests für Dienstplanung und Kalender. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
 class E{constructor(){this.children=[];this.dataset={};this.checked=false;}append(x){this.children.push(x);}replaceChildren(){this.children=[];}showModal(){this.open=true;}close(){this.open=false;}}
 const nodes={},el=id=>nodes[id]??=new E(),requests=[],preview={confirmation:'a'.repeat(64),changes:[{name:'Mira Test',date:'2026-10-01',before:{kind:'Ruhetag',note:'',target_minutes:0},after:{kind:'Urlaub',note:'RU',target_minutes:480}}]};

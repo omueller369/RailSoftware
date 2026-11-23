@@ -3,7 +3,7 @@
   "text_4e949448fe91": "Railway network",
   "text_228b24f6c92a": "Germany · M1",
   "text_805bfcab2ea8": "Poland · OSM",
-  "text_5e82d6ed96e1": "Station, halt or PL identifier",
+  "text_5e82d6ed96e1": "DS100 / PL identifier, station or reporting point",
   "text_ee32d5fd6140": "Selected path",
   "text_fef8849a23eb": "Saved Polish paths",
   "text_ab9c9a82b8e5": "PL identifier",
@@ -56,5 +56,11 @@
   "text_0d4692733bfa": "An earlier queued selection was transferred. Your newer changes remain local.",
   "text_3f1de7495a0e": "Retry loading",
   "text_e358c57c1c86": "Polish map hidden; your selection remains saved. Choose Polski to edit it again.",
-  "text_0b4e24dce2c7": "In STK-anlegen o. bearbeiten, select the Polski language and Poland · OSM network. Search for a station or halt by name or PL identifier. The map zooms to the starting point. Click successive stations and network nodes along your route. If several connections are offered, choose one variant; check the map and add intermediate points. Undo removes the last point. Nodes only hides other reference points without clearing your selection. Set Valid until, at most one year, and select Save. Load, edit or delete your saved Polish paths. Android includes offline search, network and route calculation. Your selection stays as a draft on this device. Saving offline queues a transfer attempt after reconnection. Reload the list afterwards. If the transfer outcome is uncertain, check saved paths first. German knowledge and original GPS data remain separate. PL identifiers are OSM references, not DS100, PKP or UIC numbers. Junctions and endpoints are derived from OSM geometry, not confirmed official reporting points. Source: OSM/Geofabrik, 19 November 2026. 3,089 of 3,366 stations and halts are matched. 277 points without an unambiguous track match remain visible but cannot be selected. This is not a complete official operating-point register. Automatic direction-based GPS qualification for Poland is not yet connected."
+  "text_0b4e24dce2c7": "With the Polski language, choose the network. On the Polish network, the shared place search finds Polish stations and halts by name or PL identifier, including names without Polish diacritics. Select unnamed nodes on the map or by their PL:J identifier. German DS100 codes remain in the German network. The map zooms to the first point. Click successive points along your route. Nodes only skips intermediate stations in suggestions. Selected points are light green; suggested points and sections are light blue. If several variants are offered, choose a connection. All parallel connections is offered only for paths that stay close throughout. Check the map. Undo removes the final point. Continue from here in the sortable selection list removes only later points. Set Valid until, at most one year, and Save. The selection then clears. Search, sort, page, open, edit or delete saved paths. Android includes offline search, network and calculations. The draft remains on the device; saving offline queues a transfer. Transfer acknowledgement clears only an unchanged draft; newer local edits stay intact. If the transfer outcome is uncertain, inspect saved paths first. German knowledge and GPS originals remain separate. Source: OSM/Geofabrik, 19 November 2026: 3,089 of 3,366 stations/halts are matched. 277 uncertain points cannot be selected. Junctions and endpoints are derived OSM nodes, not confirmed official reporting points. This is not a full official directory. Automatic Polish route-knowledge assessment from GPS is not yet connected.",
+  "text_e9aa895ee060": "Continue from here",
+  "text_73374a8132c0": "Search saved paths",
+  "text_f46fbfc234ea": "From",
+  "text_155e63d31d70": "To",
+  "text_c10a4b1496d1": "Replace your current selection with this saved path?",
+  "text_5d49538d69d9": "OSM/Geofabrik, 19 November 2026. 3,366 stations/halts, of which 3,089 are geometrically matched to the track network. 277 uncertain points remain visible but cannot anchor a route. Junctions and endpoints are derived from geometry, not an official operating-point register. PL identifiers are OSM references."
 }

@@ -1,3 +1,4 @@
+/* Regressionstests für gemeinsamen Kopf- und Fußbereich. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E{constructor(tag){this.tag=tag;this.children=[];this.attrs={};}append(...n){this.children.push(...n);}prepend(n){this.children.unshift(n);}setAttribute(k,v){this.attrs[k]=v;}replaceWith(n){this.replacement=n;}}
 const head=new E('head'),body=new E('body'),oldHeader=new E('header'),oldFooter=new E('footer'),events={};let unread=3,logout=0;const document={head,body,createElement:tag=>new E(tag),querySelector:q=>q==='header'?oldHeader:oldFooter},window={addEventListener:(k,fn)=>events[k]=fn};const location={pathname:'/tf'};

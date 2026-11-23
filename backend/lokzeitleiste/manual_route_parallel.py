@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Streckenkenntnisse und Referenzgeometrie.
 """Geometry check for an explicit selection of parallel M1 sections (200 m corridor)."""
 import gzip,json,math
 from functools import lru_cache
@@ -53,7 +54,7 @@ def nearby(source,target,scale):
 def parallel(matches):
     from .route_knowledge_mapping import reference
     refs=reference()[0];first=matches[0]
-    # Use the same latitude reference as the browser, scoped to the first route.
+    # Für die erste Strecke dieselbe Bezugsbreite wie im Browser verwenden.
     latitude=next((p['lat'] for (route,_),rows in refs.items() if route==first['route'] for p in rows),51)
     scale=40075016.686*math.cos(math.radians(latitude))
     paths=[trace(m['route'],m['from_m'],m['to_m']) for m in matches]

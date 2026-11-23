@@ -1,3 +1,4 @@
+# Regressionstests für die gemeinsamen Anwendungsabläufe.
 import unittest
 from datetime import date
 from sqlalchemy.orm import Session

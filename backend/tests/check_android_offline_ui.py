@@ -1,3 +1,4 @@
+# Browserprüfung für Anbindung der gemeinsamen Oberfläche an Android.
 """Real IndexedDB and Android adapter: immediate cached boot, DS100, queued writes and GPS."""
 from pathlib import Path
 import argparse

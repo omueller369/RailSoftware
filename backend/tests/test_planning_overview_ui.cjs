@@ -1,3 +1,4 @@
+/* Regressionstests für Dienstplanung und Kalender. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
 class E{constructor(tag='div'){this.tagName=tag;this.children=[];this.dataset={};this.style={};this.value='';this.checked=false;this.attrs={};}append(...a){this.children.push(...a);}replaceChildren(...a){this.children=a;}setAttribute(k,v){this.attrs[k]=v;}addEventListener(){}scrollIntoView(){}}
 async function run(level){const nodes={},get=id=>nodes[id]??=new E(),requests=[],window={addEventListener(){}},context={window,document:{getElementById:get,createElement:t=>new E(t)},Date,Intl,console,location:{},confirm:()=>true};get('overviewKind').value='Ruhetag';

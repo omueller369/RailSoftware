@@ -1,3 +1,4 @@
+/* Regressionstests für Kartenbedienung und Bildausschnitte. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 let scheduled=[],changes=[],listeners={},globalEvents={};
 const svg={style:{},contains:()=>true,getBoundingClientRect:()=>({left:0,top:0,width:600,height:650})},map={style:{},addEventListener:(name,fn)=>listeners[name]=fn,setPointerCapture(){},releasePointerCapture(){}};

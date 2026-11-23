@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 package de.lokzeitleiste.app
 
 import android.content.Intent
@@ -8,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import de.lokzeitleiste.app.network.TokenVault
 import de.lokzeitleiste.app.portal.PortalUpdater
 
-/** Native login, followed by the same versioned TF portal used in the browser. */
+/** Nach der nativen Anmeldung öffnet sich dasselbe versionierte TF-Portal wie im Browser. */
 class MainActivity : ComponentActivity() {
     private var loginUpdater:PortalUpdater?=null
     override fun onCreate(savedInstanceState: Bundle?) {

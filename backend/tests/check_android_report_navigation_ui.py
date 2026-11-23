@@ -1,3 +1,4 @@
+# Browserprüfung für Berichte und die zugehörigen Prüf- und Versandabläufe.
 """Actual Android adapter + monthly synchronization + report/row correction."""
 import json,re
 from browser_realtime import check_pages
@@ -5,9 +6,9 @@ from check_field_error_navigation_ui import shell
 from check_work_report_layout import STATIC
 
 def fixture(legacy=False):
-    raw=(STATIC/'work-report.js').read_text();source,blocks=raw.split('// Keep collapse buttons',1)
+    raw=(STATIC/'work-report.js').read_text();source,blocks=raw.split('// Die Klappschalter',1)
     exported=r'''window.NavFixture={loadReport,synchronize,storeDraft,dropPending:id=>persistPending(pending.filter(row=>row.client_id!==id)),state:()=>state,rows:()=>pending,readonly:()=>busy||reportViewOnly,setup(editor,rows){user={id:7};key='android-report-navigation';trainEditor=editor;state={client_id:'blank',saved_id:null,kind:'Dienstschicht'};pending=rows;monthCache={'2026-11':{reports:[],days:[],work_minutes:0,guest_minutes:0,pause_minutes:0}};plans={};el('reportPeriod').value='2026-11';window.CtlValidation.registerResolver(el('workReport'),reportIssueField);renderMonth();}};})();'''
-    source=re.sub(r'\}\)\(\);\s*$',lambda _:exported,source)+'// Keep collapse buttons'+blocks
+    source=re.sub(r'\}\)\(\);\s*$',lambda _:exported,source)+'// Die Klappschalter'+blocks
     prelude=r'''
 localStorage.clear();history.replaceState(null,'','/tf/arbeitsbericht');
 const legacy=LEGACY,sessionId=7;let attempts=0,uploads=0,stored=null,cloud={};

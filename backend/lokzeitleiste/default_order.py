@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Grundwerte und Vorgaben.
 """Persistent, revision-checked selection ordering; no changes to stable value IDs."""
 from .localization import source as _text_source
 import json,re
@@ -52,7 +53,7 @@ def create_router(require_admin):
         return dict(ids=[r.id for r in rows],revision=record.revision if record else 0)
     @router.put('/api/v1/admin/app-defaults/order/{scope}',dependencies=[Depends(require_admin)])
     def save_order(scope:str,data:OrderInput,db:Session=Depends(database_session)):
-        # Serialise concurrent reorders, also when no order record exists yet.
+        # Gleichzeitige Umsortierungen auch dann nacheinander ausführen, wenn noch kein Reihenfolgedatensatz besteht.
         rows=scope_rows(db,scope)
         if not rows or set(data.ids)!={r.id for r in rows}:raise HTTPException(409,_text_source('server_default_order.text_0079f43ebc70'))
         record=db.scalar(select(AppDefaultOrder).where(AppDefaultOrder.scope==scope).with_for_update())

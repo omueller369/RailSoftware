@@ -1,4 +1,5 @@
-/* Read-only live feed: no device cache, no historical GPS access. */
+/* Gemeinsame Verarbeitung für Anzeige freigegebener Zugpositionen. */
+/* Schreibgeschützte Live-Anzeige ohne Gerätecache oder Zugriff auf historische GPS-Daten. */
 (()=>{
 const S={"tracking": globalThis.CtlText.source("dispatch_tracking.text_5a95db2aa8e5"), "count": globalThis.CtlText.source("dispatch_tracking.text_6c35493a2b93"), "error": globalThis.CtlText.source("dispatch_tracking.text_ca00fccfb408"), "refresh": globalThis.CtlText.source("dispatch_tracking.text_d6cc0a088c07")},t=k=>window.I18n?.t(S[k])||S[k],el=id=>document.getElementById(id),map=el('trackingMap');
 if(!map)return;

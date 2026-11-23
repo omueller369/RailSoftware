@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Anmeldung und Kontoverwaltung.
 """TF employment, addresses, contract hours and one-time account migration."""
 from ..localization import source as _text_source
 import calendar
@@ -128,13 +129,13 @@ def migrate_existing(db):
     originals={u.id:u.username for u in pending}
     for user in pending:
         if db.get(TfProfile,user.id) is None:raise RuntimeError(_text_source('server_accounts_tf_profiles.text_93f86cbd8d01'))
-    # Free numeric legacy names before assignment; all stages share one transaction.
+    # Alte numerische Anmeldenamen vor der Zuordnung freigeben; alle Schritte gehören zu derselben Transaktion.
     for user in pending:user.username='__tf_migration_'+str(user.id)+'_'+secrets.token_hex(12)
     db.flush()
     for user,number in zip(pending,available):
         profile=db.get(TfProfile,user.id)
         if not profile:raise RuntimeError(_text_source('server_accounts_tf_profiles.text_93f86cbd8d01'))
-        # Preserve a larger contractual workload; old input was monthly minutes.
+        # Ein höherer vertraglicher Arbeitsumfang bleibt erhalten. Alte Eingaben waren Monatsminuten.
         weekly=min(10080,max(2400,int((Decimal(profile.target_hours_minutes)*12/52).quantize(Decimal('1'),rounding=ROUND_HALF_UP))))
         db.add(TfNumberMigration(user_id=user.id,previous_username=originals[user.id],tf_number=number))
         user.username=str(number)
@@ -152,7 +153,7 @@ def seed_stations(db):
     records=json.loads((Path(__file__).parent/'stations.json').read_text())
     existing={' '.join(value.upper().split()) for value in db.scalars(select(RailwayStation.code))}
     if existing:
-        # Only append reviewed additions on upgrades. Keep site names and legacy deletions.
+        # Bei Updates nur geprüfte Ergänzungen aufnehmen. Örtliche Namen und frühere Löschungen bleiben erhalten.
         additions=set((Path(__file__).parent/'station_catalog_additions.txt').read_text().splitlines())
         records=[row for row in records if row['code'] in additions and ' '.join(row['code'].upper().split()) not in existing]
     if records:db.bulk_insert_mappings(RailwayStation,records)

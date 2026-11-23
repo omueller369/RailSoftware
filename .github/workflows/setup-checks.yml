@@ -43,6 +43,10 @@ jobs:
         run: python backend/tests/check_stk_csv_fold_ui.py --output-dir "$RUNNER_TEMP/stk-csv-fold-ui"
       - name: Standalone STK module and sortable paged tables
         run: python backend/tests/check_stk_module_ui.py --output-dir "$RUNNER_TEMP/stk-module-ui"
+      - name: Administrative quality and report review
+        run: python backend/tests/check_quality_admin_ui.py --output-dir "$RUNNER_TEMP/quality-admin-ui"
+      - name: Synchronization status and private beta diagnostics
+        run: python backend/tests/check_quality_ui.py --output-dir "$RUNNER_TEMP/quality-ui"
       - name: Polish offline operating points and route editor
         run: python backend/tests/check_poland_stk_ui.py --output-dir "$RUNNER_TEMP/poland-stk-ui"
       - name: Manual M1 route knowledge and offline Germany background

@@ -1,3 +1,4 @@
+/* Regressionstests für Dienstplanung und Kalender. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
 class E{constructor(){this.value='';this.children=[];this.dataset={};}showModal(){this.open=true;}close(){this.open=false;}}
 const nodes={},el=id=>nodes[id]??=new E(),window={PlanColors:{}},source=fs.readFileSync('backend/lokzeitleiste/static/planning.js','utf8'),context={window,document:{getElementById:el},console};vm.createContext(context);

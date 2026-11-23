@@ -1,3 +1,4 @@
+# Bereitet polnische Referenznetz und die manuelle Streckenerfassung aus den eingecheckten Quellen reproduzierbar auf.
 """Reproducible ODbL-only Poland reference tiles, separate from M1 and qualifications."""
 import argparse,gzip,hashlib,json,math
 from pathlib import Path
@@ -14,10 +15,10 @@ def simplify(points,tolerance):
         if at is not None:keep.add(at);stack.extend([(a,at),(at,b)])
     return [points[i] for i in sorted(keep)]
 def build(check=False):
-    raw=(REF/'poland.json.gz').read_bytes();manifest=json.loads((REF/'manifest.json').read_text());assert hashlib.sha256(raw).hexdigest()==manifest['canonical_sha256'];data=json.loads(gzip.decompress(raw));tiles={};overview=set();step=400 # ~1 km at Poland's latitude, used only for country overview.
+    raw=(REF/'poland.json.gz').read_bytes();manifest=json.loads((REF/'manifest.json').read_text());assert hashlib.sha256(raw).hexdigest()==manifest['canonical_sha256'];data=json.loads(gzip.decompress(raw));tiles={};overview=set();step=400 # Etwa ein Kilometer auf polnischer Breite, ausschließlich für die Länderübersicht.
     for ident,name,line in data:
         points=[(round((lon+180)/360*SCALE),round((1-math.asinh(math.tan(math.radians(lat)))/math.pi)/2*SCALE)) for lon,lat in line]
-        detail=simplify(points,8) # ~20 m for the visual reference; raw source stays checked in.
+        detail=simplify(points,8) # Für die Anzeige auf etwa 20 Meter vereinfachen; der ursprüngliche Quellbestand bleibt erhalten.
         box=[min(p[0] for p in detail),min(p[1] for p in detail),max(p[0] for p in detail),max(p[1] for p in detail)];flat=[c for p in detail for c in p];row=[ident,box,flat]
         for x in range(box[0]*GRID//SCALE,box[2]*GRID//SCALE+1):
             for y in range(box[1]*GRID//SCALE,box[3]*GRID//SCALE+1):tiles.setdefault(f'tile-{x}-{y}',[]).append(row)
@@ -40,7 +41,7 @@ def build(check=False):
         bodies['overview']['tiles'].sort()
     expected={}
     for key,value in bodies.items():
-        content=('/* © OpenStreetMap contributors / Geofabrik, ODbL 1.0. See reference/poland-rail. */\nwindow.PolandRailNetwork.receive('+json.dumps(key)+','+json.dumps(value,separators=(',',':'))+');\n').encode();expected[key+'.js']=hashlib.sha256(content).hexdigest();path=OUT/(key+'.js')
+        content=('/* © OpenStreetMap contributors / Geofabrik, ODbL 1.0. Öffentliche polnische Kartenreferenz; Quelle: reference/poland-rail. */\nwindow.PolandRailNetwork.receive('+json.dumps(key)+','+json.dumps(value,separators=(',',':'))+');\n').encode();expected[key+'.js']=hashlib.sha256(content).hexdigest();path=OUT/(key+'.js')
         if check:assert path.read_bytes()==content,path
         else:OUT.mkdir(exist_ok=True);path.write_bytes(content)
     if check:assert manifest['bundles']==expected

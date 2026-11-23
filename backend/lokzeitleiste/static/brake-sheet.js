@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Bremszettel und ihre Eingabe- und Druckansichten. */
 (()=>{
 const el=id=>document.getElementById(id),t=s=>window.I18n?.t(s)||s,node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=t(text);if(tag==='output')n.setAttribute('data-i18n-ignore','');return n;},base='/api/v1/tf/brake-sheets';
 let vehicles=[],lines=[],trainFields=[],numberGroups={},countryFields=[],id,revision=0,owner,key,busy=false,dirty=false,timeout,ticket=0,lastCalculation=null,imageUrl=null,countryPresetActive=false,wagonImport=null,pendingImport=null,towLines=[],sectionParent=null,sectionIndex=0,sectionSuperseded=false;

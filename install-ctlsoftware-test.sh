@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Full fresh Ubuntu 26.04 CTL test server. Never execute on an existing production host.
+# Vollständige frische Ubuntu-Testinstallation. Auf bestehenden Systemen ausschließlich den geprüften Updateweg verwenden.
 set -Eeuo pipefail
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 script_file="$script_dir/$(basename -- "${BASH_SOURCE[0]}")"
@@ -56,6 +56,7 @@ if [[ -z $source_dir && -f $script_dir/backend/requirements.txt ]];then source_d
 work_dir=$(mktemp -d)
 trap 'rm -rf -- "$work_dir"' EXIT
 cat > "$work_dir/ispconfig_app.py" <<'CTL_FRESH_APP_HELPER'
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Application-side setup checks, executed with the application's virtualenv/user."""
 import json
 import sys
@@ -88,6 +89,7 @@ def main():
 if __name__=='__main__':main()
 CTL_FRESH_APP_HELPER
 cat > "$work_dir/ispconfig_install.py" <<'CTL_FRESH_ENGINE'
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Install only LokZeitleiste into an existing Ubuntu/ISPConfig stack. No apt/Docker/vhost edits."""
 import argparse
 import base64
@@ -307,7 +309,7 @@ def main():
         if not password:raise ValueError('Datenbankpasswort darf nicht leer sein.')
         dburl=database_url(args.db_host,args.db_port,args.db_name,args.db_user,password)
     os.umask(0o022)
-    # A non-login application account is separate from ISPConfig web users.
+    # Das Anwendungskonto ohne interaktive Anmeldung bleibt von den ISPConfig-Webbenutzern getrennt.
     try:
         account=pwd.getpwnam(ACCOUNT)
         if account.pw_uid>=1000 or account.pw_shell not in ('/usr/sbin/nologin','/sbin/nologin'):raise ValueError('Vorhandenes Anwendungskonto hat unerwartete Eigenschaften.')
@@ -331,7 +333,7 @@ def main():
         else:env=json.loads((CONFIG/'environment.json').read_text())
         backend=INSTALL/'backend';backend.mkdir(exist_ok=True)
         shutil.copytree(SOURCE/'backend/lokzeitleiste',backend/'lokzeitleiste',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-        # Checkout permissions may come from a restrictive root umask. Code is not secret.
+        # Nach dem Auschecken können restriktive root-Dateirechte vorliegen. Der Programmcode braucht passende Leserechte.
         for path in (backend/'lokzeitleiste',*(backend/'lokzeitleiste').rglob('*')):
             path.chmod(0o755 if path.is_dir() else 0o644)
         shutil.copy2(SOURCE/'backend/requirements.txt',INSTALL/'requirements.txt')
@@ -384,6 +386,7 @@ if __name__=='__main__':
         sys.exit(1)
 CTL_FRESH_ENGINE
 cat > "$work_dir/fresh_ubuntu.py" <<'CTL_FRESH_SERVER'
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 """Fresh Ubuntu 26.04 server installer; rendered into install-ctlsoftware-test.sh."""
 import argparse
 import base64
@@ -435,7 +438,7 @@ def write(path,content,mode=0o644):
     path=Path(path)
     if path.is_symlink():raise ValueError('Symlink als Konfigurationsziel abgelehnt: '+str(path))
     path.parent.mkdir(parents=True,exist_ok=True)
-    # Preserve the initial package config before replacing it; no backup contains CLI secrets.
+    # Die ursprüngliche Paketkonfiguration vor dem Ersetzen sichern. Zugangsdaten aus Aufrufargumenten gehören nicht in die Sicherung.
     backup=STATE/'original-configs'/path.relative_to('/')
     if path.exists() and not backup.exists():
         backup.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(path,backup);backup.chmod(0o600)
@@ -718,7 +721,7 @@ $config['smtp_conn_options'] = ['ssl' => ['verify_peer' => true, 'verify_peer_na
 
 
 def prepare_php_apps():
-    # Keep generated encryption keys stable when resuming a partially completed stage.
+    # Erzeugte Verschlüsselungsschlüssel beim Fortsetzen eines unterbrochenen Schritts beibehalten.
     keyfile=STATE/'php-app-keys.json'
     if not keyfile.exists():write(keyfile,json.dumps({'pma':secrets.token_hex(16),'roundcube':secrets.token_hex(12)}),0o600)
     keys=json.loads(keyfile.read_text())
@@ -744,7 +747,7 @@ def prepare_php_apps():
     write(STATE/'php-version',version,0o600)
     write(f'/etc/php/{version}/fpm/conf.d/99-ctl.ini','upload_max_filesize=10M\npost_max_size=32M\nmemory_limit=256M\nsession.cookie_secure=1\nsession.cookie_httponly=1\n')
     for config in ('/etc/roundcube/config.inc.php','/etc/phpmyadmin/conf.d/99-ctl.php'):run(['php','-l',config])
-    # Only the dedicated TLS vhost publishes these applications.
+    # Nur der eigene TLS-VHost veröffentlicht diese Anwendungen.
     for config in ('phpmyadmin','roundcube'):
         if Path('/etc/apache2/conf-enabled/'+config+'.conf').exists():run(['a2disconf',config])
     run(['a2enmod','proxy_fcgi','setenvif'])
@@ -753,7 +756,7 @@ def prepare_php_apps():
 
 
 def roundcube_php85_patch(source):
-    # Backport the function_exists guard from Roundcube upstream commit 060fc956.
+    # Die Prüfung mit function_exists aus dem Roundcube-Änderungsstand 060fc956 übernehmen.
     if re.search(r"if\s*\(\s*!\s*function_exists\s*\(\s*['\"]array_first['\"]",source):return source
     pattern=r'^function array_first\(\$array\)\s*\n\{\n.*?^\}'
     match=re.search(pattern,source,re.MULTILINE|re.DOTALL)
@@ -786,7 +789,7 @@ def prepare_dns():
     if not (key_dir/'ctl.private').exists():run(['opendkim-genkey','-b','2048','-d',DOMAIN,'-s','ctl','-D',str(key_dir)])
     user=pwd.getpwnam('opendkim');os.chown(key_dir,user.pw_uid,user.pw_gid)
     os.chown(key_dir/'ctl.private',user.pw_uid,user.pw_gid);(key_dir/'ctl.private').chmod(0o600)
-    # DNS stays authoritative at STRATO. Keep optional local BIND loopback-only.
+    # STRATO bleibt für DNS zuständig. Ein optionales lokales BIND nur an die Rückschleifenschnittstelle binden.
     write('/etc/bind/named.conf.local',MARKER+'// Public DNS is managed at STRATO.\n')
     write('/etc/bind/named.conf.options',MARKER+'''options {
  directory "/var/cache/bind";
@@ -877,7 +880,7 @@ def prepare_mail():
         home=root/DOMAIN/local
         for path in (home,home/'Maildir',home/'Maildir/cur',home/'Maildir/new',home/'Maildir/tmp'):
             path.mkdir(parents=True,exist_ok=True);os.chown(path,vmail.pw_uid,vmail.pw_gid);path.chmod(0o700)
-        # OpenSSL reads the default password from stdin, never argv.
+        # OpenSSL liest das Anfangspasswort über die Standardeingabe, nicht aus Prozessargumenten.
         hashed=run(['openssl','passwd','-6','-stdin'],input=MAIL_PASSWORD,text=True,capture_output=True).stdout.strip()
         entries.append(f'{local}@{DOMAIN}:{{SHA512-CRYPT}}{hashed}:{vmail.pw_uid}:{vmail.pw_gid}::{home}::')
     # Parent domain directory was created by mkdir(parents=True).
@@ -891,7 +894,7 @@ def prepare_mail():
     run(['sievec','/etc/dovecot/sieve/ctl-forward.sieve'])
     write('/etc/postfix/main.cf',postfix_config())
     master=Path('/etc/postfix/master.cf');text=master.read_text()
-    # Original package defaults have submission entries commented out; avoid duplicates on resume.
+    # Die Paketvorlage hat auskommentierte Submission-Einträge. Beim Fortsetzen keine doppelten Einträge erzeugen.
     text=text.split('# CTL authenticated submission;')[0].rstrip()+postfix_submission()
     write(master,text)
     write('/etc/postfix/ctl-mailboxes',''.join(f'{local}@{DOMAIN} 1\n' for local in MAIL_USERS))
@@ -914,9 +917,9 @@ OversignHeaders From
     write('/etc/opendkim/ctl-signing',f'*@{DOMAIN} ctl._domainkey.{DOMAIN}\n')
     write('/etc/opendkim/ctl-trusted','127.0.0.1\nlocalhost\n')
     if not (STATE/'srs-secret').exists():write(STATE/'srs-secret',secrets.token_hex(32)+'\n',0o600)
-    # A service-private copy, not /etc/ctlsoftware-test-setup (which is root-only).
+    # Für den Dienst eine eigene private Kopie verwenden; das Einrichtungsverzeichnis bleibt nur für root lesbar.
     write('/etc/postsrsd.secret',(STATE/'srs-secret').read_text(),0o600)
-    # The packaged unit may start under a service user; initialize as root, then
+    # Der Paketdienst kann bereits unter einem Dienstbenutzer starten. Deshalb zuerst als root initialisieren und danach
     # let PostSRSd drop to its configured unprivileged account after reading secrets.
     try:pwd.getpwnam('postsrsd')
     except KeyError:run(['useradd','--system','--user-group','--no-create-home','--shell','/usr/sbin/nologin','postsrsd'])
@@ -978,7 +981,7 @@ def update_existing_application(args):
     env=json.loads((APP_CONFIG/'environment.json').read_text())
     env.update(CTL_MAIL_DOMAIN=DOMAIN,CTL_MAIL_PROVISIONING='1')
     write(APP_CONFIG/'environment.json',json.dumps(env),0o600)
-    # Activate the domain map without replacing existing mailbox passwords or messages.
+    # Die Domainzuordnung aktivieren, ohne vorhandene Postfachpasswörter oder Nachrichten zu ersetzen.
     if not Path('/etc/postfix/ctl-domains').exists():write('/etc/postfix/ctl-domains',DOMAIN+' OK\n')
     run(['postmap','/etc/postfix/ctl-domains'])
     run(['postconf','-e','virtual_mailbox_domains=hash:/etc/postfix/ctl-domains'])
@@ -999,7 +1002,6 @@ def ensure_dispo_alias():
     write(aliases,aliases.read_text().rstrip()+'\n'+address+' '+target+'\n')
     run(['postmap',str(aliases)]);run(['postfix','reload'])
 
-
 def configure_employee_mail():
     ensure_dispo_alias()
     source=Path(os.getenv('CTL_SETUP_SOURCE','/opt/ctlsoftware-test-source'))
@@ -1008,7 +1010,7 @@ def configure_employee_mail():
     write('/usr/local/lib/ctl-mailbox-provisioner.py',script.read_text(),0o700)
     settings=json.loads((APP_CONFIG/'environment.json').read_text())
     settings.update(CTL_MAIL_DOMAIN=DOMAIN,CTL_MAIL_PROVISIONING='1')
-    # Keep one shared configuration format for the app and the root-only provisioner.
+    # Anwendung und nur für root zugänglicher Provisioner verwenden dasselbe Konfigurationsformat.
     write(APP_CONFIG/'environment.json',json.dumps(settings),0o600)
     write(APP_CONFIG/'app.env',''.join(k+'='+json.dumps(str(v),ensure_ascii=False)+'\n' for k,v in settings.items()),0o600)
     def app_task(module):
@@ -1036,7 +1038,7 @@ systemctl reload apache2 postfix dovecot
 
 
 def wait_for_backend():
-    # systemctl restart returns before Uvicorn has completed importing the app.
+    # Ein Dienstneustart kehrt zurück, bevor Uvicorn alle Anwendungsmodule geladen hat.
     for attempt in range(15):
         result=subprocess.run(['curl','--fail','--silent','--show-error','--max-time','2','http://127.0.0.1:18080/health'],capture_output=True,text=True)
         if result.returncode==0:
@@ -1057,7 +1059,7 @@ def verify():
     for service in ('named','mariadb','apache2','opendkim','postsrsd','postfix','dovecot','ctlsoftware-test','ctlsoftware-test-worker'):
         run(['systemctl','is-active','--quiet',service])
     run(['curl','--fail','--silent','--show-error','https://'+DOMAIN+'/health'])
-    # Verify outbound TCP/25 without sending any email.
+    # Ausgehendes TCP auf Port 25 prüfen, ohne eine Nachricht zu senden.
     mx_rows=output(['dig','+short','gmail.com','MX']).splitlines()
     hosts=[line.split()[1].rstrip('.') for line in sorted(mx_rows,key=lambda row:int(row.split()[0])) if len(line.split())==2]
     reachable=False
@@ -1073,7 +1075,7 @@ def verify():
         with imaplib.IMAP4_SSL(DOMAIN,993,ssl_context=context) as imap:
             imap.login(address,MAIL_PASSWORD);imap.select('INBOX');imap.logout()
         with smtplib.SMTP_SSL(DOMAIN,465,context=context,timeout=15) as smtp:smtp.login(address,MAIL_PASSWORD)
-    # Probe only RCPT; no test message or email is sent.
+    # Nur RCPT prüfen; dabei wird keine Testnachricht verschickt.
     with smtplib.SMTP(IP,25,local_hostname='ctl-relay-check.invalid',source_address=(IP,0),timeout=15) as smtp:
         smtp.ehlo();smtp.mail('probe@example.net');code,_=smtp.rcpt(FORWARD)
         if code<500:raise ValueError('Unauthentifizierte externe Weiterleitung wurde nicht abgelehnt.')
@@ -1121,7 +1123,7 @@ def main():
 if __name__=='__main__':
     try:main()
     except Exception as exc:
-        # Never format SQL exceptions: they may contain a password in bound parameters.
+        # SQL-Ausnahmen nicht ausgeben: Ihre gebundenen Parameter können Passwörter enthalten.
         if isinstance(exc,(ValueError,OSError,subprocess.CalledProcessError)):print('FEHLER: '+str(exc),file=sys.stderr)
         else:print('FEHLER ('+type(exc).__name__+'). Zugang/Journal prüfen; Zugangsdaten werden nicht ausgegeben.',file=sys.stderr)
         print('Nach Behebung mit --resume fortsetzen. Keine Datenbank wird gelöscht.',file=sys.stderr)

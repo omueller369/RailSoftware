@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Dienstplanung und Kalender. */
 (()=>{
 const element=id=>document.getElementById(id),translate=value=>window.I18n?.t(value)||value;
 const node=(tag,value)=>{const result=document.createElement(tag);if(value!==undefined)result.textContent=value;return result;};

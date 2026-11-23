@@ -1,7 +1,8 @@
+/* Regressionstests für Grundwerte und Vorgaben. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');
 class E{constructor(){this.value='';this.checked=false;this.dataset={};this.children=[];this.classList={toggle(){}};}querySelectorAll(){return [];}append(...items){this.children.push(...items);}}
 const nodes={},el=id=>nodes[id]??=new E(),window={};
-const code=fs.readFileSync('backend/lokzeitleiste/static/work-report.js','utf8').split('// Keep collapse buttons')[0].replace(/\}\)\(\);\s*$/,`window.dutyTest={changeDutyKind,prefillDutyHours,keepDefaultDutyDate,realTotals:totals,mergeLocal,validateKind,setup(options={}){state={kind:'Sonstige Erfassung',legacy_pause:0,...options};trips=[];pending=[];key='test';plans={};trainEditor={items:[],draft:()=>[],dutyChanged(){window.boundsChanged=(window.boundsChanged||0)+1;}};totals=freeze=loadPlan=refreshGuestDefaults=storeDraft=kindControls=()=>{};},state:()=>state,addTrain(){trainEditor.items.push({});},setPending(rows){pending=rows;}};})();`);
+const code=fs.readFileSync('backend/lokzeitleiste/static/work-report.js','utf8').split('// Die Klappschalter')[0].replace(/\}\)\(\);\s*$/,`window.dutyTest={changeDutyKind,prefillDutyHours,keepDefaultDutyDate,realTotals:totals,mergeLocal,validateKind,setup(options={}){state={kind:'Sonstige Erfassung',legacy_pause:0,...options};trips=[];pending=[];key='test';plans={};trainEditor={items:[],draft:()=>[],dutyChanged(){window.boundsChanged=(window.boundsChanged||0)+1;}};totals=freeze=loadPlan=refreshGuestDefaults=storeDraft=kindControls=()=>{};},state:()=>state,addTrain(){trainEditor.items.push({});},setPending(rows){pending=rows;}};})();`);
 vm.runInNewContext(code,{window,document:{getElementById:el},localStorage:{getItem:()=>null,setItem(){}},Date,Intl,console});
 const api=window.dutyTest;
 for(const kind of ['Sonstige Erfassung','Krank','Rufbereitschaft','Bereitschaft','Ausfallschicht']){

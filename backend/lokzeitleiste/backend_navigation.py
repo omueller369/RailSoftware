@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Portalnavigation und Berechtigungen.
 """Account-owned navigation preferences; no module grant or target-user parameter."""
 from .localization import source as _text_source
 from pathlib import Path

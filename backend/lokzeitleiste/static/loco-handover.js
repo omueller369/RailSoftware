@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Fahrzeugübergaben und Mängelerfassung. */
 (()=>{
 const el=id=>document.getElementById(id),t=value=>window.I18n?.t(value)||value;
 const tf=location.pathname?.startsWith('/tf/'),api='/api/v1/'+(tf?'tf':'admin')+'/loco-handover/vehicles';

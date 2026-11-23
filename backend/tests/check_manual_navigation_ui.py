@@ -1,3 +1,4 @@
+# Browserprüfung für Portalnavigation und Berechtigungen.
 """Real M1 map: parallel multi-selection, persistent edits, node filter and pin suggestions."""
 import argparse
 from check_manual_route_ui import fixture as base_fixture,ASSETS

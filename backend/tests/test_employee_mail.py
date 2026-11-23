@@ -1,3 +1,4 @@
+# Regressionstests für Postfächer und Nachrichtenversand.
 import os
 import unittest
 from datetime import date
@@ -96,7 +97,7 @@ class EmployeeMailTest(unittest.TestCase):
         self.assertEqual(self.client.get('/api/v1/admin/start').json()['admin_tools'],[])
 
     def test_tf_and_wgm_creation_queue_entered_address_and_initial_password(self):
-        # TF input mirrors the regular creation form, using a managed address.
+        # Die TF-Eingabe entspricht dem regulären Anlageformular und verwendet eine verwaltete Adresse.
         from unittest.mock import patch as mock_patch
         original=self.client.post
         def post(url,**kwargs):

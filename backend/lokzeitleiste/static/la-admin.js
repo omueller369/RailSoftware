@@ -1,1 +1,2 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 (async()=>{try{const r=await fetch('/api/v1/admin/me',{credentials:'same-origin',cache:'no-store'});if(r.status===401){location.href='/admin';return;}if(!r.ok)throw Error();const user=await r.json();await window.startLaInstructions(user,document.getElementById('laAdminWorkspace'),{admin:true});}catch(error){document.getElementById('laAdminStatus').textContent=globalThis.CtlText.source('la_instructions.text_ca00fccfb408');}})();

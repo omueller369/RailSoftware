@@ -1,3 +1,4 @@
+# Regressionstests für Nachrichten und die gemeinsame Kommunikation.
 import io,json,unittest
 from fastapi.testclient import TestClient
 from PIL import Image

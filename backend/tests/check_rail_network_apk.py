@@ -1,3 +1,4 @@
+# Regressionstests für öffentliche Eisenbahn-Referenzdaten.
 """Verify the actual offline data and counting modules in the tablet APK."""
 import argparse,hashlib,json,zipfile
 from pathlib import Path
@@ -14,7 +15,7 @@ def main():
         polish_stk=json.loads((ROOT/'backend/lokzeitleiste/reference/poland-stk/manifest.json').read_text())
         for name,checksum in polish_stk['bundles'].items():
             assert hashlib.sha256(archive.read('assets/tf-portal/poland-stk-data/'+name)).hexdigest()==checksum,name
-        for name in ['poland-stk.js','poland-stk-worker.js']:
+        for name in ['poland-stk.js','poland-stk-worker.js','quality-ui.js','auth-session.js']:
             assert archive.read('assets/tf-portal/'+name)==(ROOT/'backend/lokzeitleiste/static'/name).read_bytes()
         poland=json.loads((ROOT/'backend/lokzeitleiste/reference/poland-rail/manifest.json').read_text())
         assert archive.read('assets/tf-portal/poland-rail.js')==(ROOT/'backend/lokzeitleiste/static/poland-rail.js').read_bytes()

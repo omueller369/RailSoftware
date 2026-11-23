@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für zulässige Eingaben und Datenformen.
 from ..localization import source as _text_source
 from datetime import datetime,time
 from typing import Literal,ClassVar
@@ -204,6 +205,6 @@ class ReportIn(BaseModel):
 
 class DraftReportIn(ReportIn):
     check_duty_bounds:ClassVar[bool]=False
-    # Only drafts relax duty bounds and minimum-pause completion. Final reports
-    # always use ReportIn; clients cannot disable these checks through payloads.
+    # Nur Entwürfe erlauben vorläufig unvollständige Dienstgrenzen und Pausen. Endgültige Berichte
+    # verwenden weiterhin ReportIn; die Prüfungen lassen sich nicht durch Nutzdaten abschalten.
     check_required_pause:ClassVar[bool]=False

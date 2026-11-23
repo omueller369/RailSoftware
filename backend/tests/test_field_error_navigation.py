@@ -1,3 +1,4 @@
+# Regressionstests für Portalnavigation und Berechtigungen.
 import unittest
 import test_app_defaults
 

@@ -1,3 +1,4 @@
+# Regressionstests für Zugfahrten und deren Detailerfassung.
 import copy,json,unittest
 from uuid import uuid4
 from sqlalchemy.orm import Session

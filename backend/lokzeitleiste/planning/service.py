@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Dienstplanung und Kalender.
 from ..localization import source as _text_source
 import calendar
 from datetime import date

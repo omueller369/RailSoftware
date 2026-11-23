@@ -1,3 +1,4 @@
+# Regressionstests für Fahrzeugstammdaten.
 import unittest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session

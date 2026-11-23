@@ -1,3 +1,4 @@
+/* Regressionstests für Dienstplanung und Kalender. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('./localized-vm.cjs');
 class E{constructor(tag='div'){this.tagName=tag;this.children=[];this.dataset={};this.attrs={};this.style={setProperty:(k,v)=>this.attrs[k]=v};}append(...nodes){this.children.push(...nodes);}replaceChildren(...nodes){this.children=nodes;}setAttribute(k,v){this.attrs[k]=v;}}
 const nodes={},el=id=>nodes[id]??=new E(),window={};const source=fs.readFileSync('backend/lokzeitleiste/static/tf-portal.js','utf8');vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/plan-colors.js','utf8')+source.slice(0,source.indexOf("\nel('period').value="))+`;window.test={render,loadYear,showPlanDay,set(month,year){data=month;yearData=year;}};`,{window,document:{getElementById:el,createElement:tag=>new E(tag)},Date,Intl,console});

@@ -1,3 +1,4 @@
+# Regressionstests für Anmeldung und fachliche Server-Endpunkte.
 import unittest
 import tempfile
 from datetime import date

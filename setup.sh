@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 # Automatischer Einstieg für die vollständige Backend-Testumgebung.
 set -euo pipefail
 args=("$@")

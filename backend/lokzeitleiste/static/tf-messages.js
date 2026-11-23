@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Nachrichten und die gemeinsame Kommunikation. */
 (()=>{
 const el=id=>document.getElementById(id),t=s=>window.I18n?.t(s)||s,node=(tag,text,ignore=false)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=ignore?text:t(text);if(ignore)n.setAttribute('data-i18n-ignore','');return n;};
 let replyId=null;let sentFolder=false,offset=0,total=0,busy=false,current=null,listTicket=0,readTicket=0,previewUrls=[];

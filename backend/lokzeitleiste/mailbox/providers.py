@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für unterstützte Postfachanbieter.
 """Provider defaults. Saved settings always take precedence over environment defaults."""
 from ..localization import source as _text_source
 import json

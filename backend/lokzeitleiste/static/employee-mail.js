@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Postfächer und Nachrichtenversand. */
 (()=>{
 let domainPromise;const instances=new WeakMap();
 const getDomains=()=>domainPromise??=fetch('/api/v1/admin/email-domains').then(async r=>{if(!r.ok)throw Error(globalThis.CtlText.source("backend_employee_mail.text_daa71ecc378d"));return r.json();}).catch(error=>{domainPromise=null;throw error;});

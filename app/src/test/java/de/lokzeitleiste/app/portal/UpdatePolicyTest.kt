@@ -1,3 +1,4 @@
+/* Regressionstests für Versionsprüfung und bestehende Installationen. */
 package de.lokzeitleiste.app.portal
 import org.junit.Assert.*
 import org.junit.Test

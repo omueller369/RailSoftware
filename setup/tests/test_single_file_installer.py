@@ -1,3 +1,4 @@
+# Bündelt die notwendigen Schritte für Einrichtung und Aktualisierung der Testumgebung. Vorhandene Daten werden über die vorgesehenen Updatewege erhalten.
 import ast
 import importlib.util
 import os

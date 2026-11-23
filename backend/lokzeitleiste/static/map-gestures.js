@@ -1,4 +1,5 @@
-/* Android map interaction: no GPU transform/clip surface; commit only after release. */
+/* Gemeinsame Verarbeitung für Kartenbedienung und Bildausschnitte. */
+/* Android-Kartenbewegung ohne zusätzliche GPU-Transformation. Den neuen Ausschnitt erst beim Loslassen übernehmen. */
 (()=>{
 const controllers=new WeakMap(),engaged=new Set();
 function mount(element,options){

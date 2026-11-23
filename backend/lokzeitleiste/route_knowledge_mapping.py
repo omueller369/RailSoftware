@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Streckenkenntnisse und Referenzgeometrie.
 """Map imported knowledge onto public reference geometry, without inventing GPS rides."""
 import gzip,json,re
 from collections import defaultdict,Counter
@@ -17,7 +18,7 @@ def reference():
     network=json.loads(gzip.decompress((REF/'m1-network.json.gz').read_bytes()))
     for row in network['records']:
         if row[4]:routes[str(int(row[0]))].append(sorted(row[4]))
-    revision=json.loads((REF/'manifest.json').read_text())['bundle_sha256']
+    manifest=json.loads((REF/'manifest.json').read_text());revision=manifest.get('reference_revision',manifest['bundle_sha256'])
     return points,routes,revision
 
 def match(row):

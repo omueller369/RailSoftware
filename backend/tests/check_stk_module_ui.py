@@ -1,3 +1,4 @@
+# Browserprüfung für die gemeinsamen Anwendungsabläufe.
 """Standalone STK editor: sort/paging is display-only; editing/GPS/import layers remain."""
 import argparse,re
 from browser_realtime import check_pages

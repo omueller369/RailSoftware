@@ -1,6 +1,7 @@
+/* Gemeinsame Verarbeitung für Dokumentablage und Dateizugriff. */
 package de.lokzeitleiste.app.portal
 
-/** Only static help text enters this document; no portal page or personal fields. */
+/** In das Druckdokument gelangen ausschließlich Hilfetexte, keine persönlichen Eingaben. */
 object HelpPrintDocument {
     fun render(title:String,text:String):String {
         require(title.isNotBlank() && title.length<=200 && text.isNotBlank() && text.length<=100000) { "Ungültige Druckanleitung." }

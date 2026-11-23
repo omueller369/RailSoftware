@@ -1,3 +1,4 @@
+# Browserprüfung für Anzeige freigegebener Zugpositionen.
 """Real complete national network, disclosed labels, stale/offline and revoked access."""
 import argparse,re,json
 from browser_realtime import check_pages

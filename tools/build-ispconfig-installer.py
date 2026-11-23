@@ -1,9 +1,10 @@
+# Bereitet Einrichtung und Aktualisierung der Testumgebung aus den eingecheckten Quellen reproduzierbar auf.
 """Build the single-file interactive installer from the reviewed setup engine/helpers."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 header=r'''#!/usr/bin/env bash
-# CTL-Software: interactive application installation on an existing Ubuntu/ISPConfig server.
-# Standalone setup file: engine and helper are embedded; application source is cloned if needed.
+# CTL-Software: interaktive Anwendungseinrichtung auf einem vorhandenen Ubuntu-/ISPConfig-Server.
+# Eigenständige Einrichtung mit eingebetteter Logik und Helfer. Die Anwendungsquellen werden bei Bedarf ausgecheckt.
 set -Eeuo pipefail
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 script_file="$script_dir/$(basename -- "${BASH_SOURCE[0]}")"

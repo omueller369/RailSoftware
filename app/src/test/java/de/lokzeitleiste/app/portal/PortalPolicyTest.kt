@@ -1,3 +1,4 @@
+/* Regressionstests für gemeinsame Portaloberfläche. */
 package de.lokzeitleiste.app.portal
 import org.junit.Assert.*
 import org.junit.Test
@@ -21,6 +22,8 @@ class PortalPolicyTest {
         assertNull(policy.asset("/tf/poland-rail-data/manifest.json"))
     }
     @Test fun polishGraphIsPublicOfflineReferenceWithStrictPaths() {
+        assertEquals("quality-ui.js",policy.asset("/tf/quality-ui.js"))
+        assertEquals("poland-stk-data/stations.json",policy.asset("/tf/poland-stk-data/stations.json"))
         assertEquals("poland-stk.js",policy.asset("/tf/poland-stk.js"))
         assertEquals("poland-stk-worker.js",policy.asset("/tf/poland-stk-worker.js"))
         assertEquals("poland-stk-data/topology.json",policy.asset("/tf/poland-stk-data/topology.json"))

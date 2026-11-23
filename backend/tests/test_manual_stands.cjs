@@ -1,3 +1,4 @@
+/* Regressionstests für die gemeinsamen Anwendungsabläufe. */
 // Simulated browser contract test; no real GPS hardware or installed browser required.
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 class Element{
@@ -28,7 +29,7 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  await r.toggleManual();assert.equal(count,0);assert.equal(r.manualButton.textContent,'Ende Stand');assert.equal(r.manualButton.attributes['aria-pressed'],'true');assert.equal(r.manualDuration.tag,'strong');assert.equal(r.manualDuration.hidden,false);assert(r.startButton.disabled);assert(context.window.GpsRecorder.isActive());
  const start=now;now+=125000;r.updateManual();assert(r.manualDuration.textContent.includes('2,1'));assert.equal(r.record.points.length,0);assert.equal(r.liveInputs.length,0);
  await r.start();assert.equal(count,0);assert.equal(r.record.points.length,0);
- // A reload recreates the controller; the stored timestamp resumes the timer.
+ // Nach erneutem Laden entsteht der Controller neu; der gespeicherte Zeitpunkt setzt die Uhr fort.
  r.clearManual();const restored=context.window.GpsRecorder.mount(options);await restored.readyPromise;
  assert.equal(restored.manualButton.textContent,'Ende Stand');assert.equal(restored.manualRunning().start,start);assert(restored.manualDuration.textContent.includes('2,1'));
  const send=context.fetch;let release;context.fetch=(path,options)=>options?.method==='PUT'?new Promise(resolve=>{release=()=>send(path,options).then(resolve);}):send(path,options);const saving=restored.checkpoint();await new Promise(resolve=>setTimeout(resolve,5));
@@ -38,7 +39,7 @@ vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8')
  readonly=true;await restored.toggleManual();assert.equal(restored.manualRunning(),undefined);readonly=false;
  restored.record.points=[{t:now,lat:52,lon:13,accuracy:5,speed:0}];restored.record.ended=false;restored.freeze();assert(restored.manualButton.disabled);await assert.rejects(restored.toggleManual(),/laufende/);
  await restored.discard();assert.equal(tracks.has(restored.key),false);assert.equal(context.window.GpsRecorder.isActive(),false);
- // Time-only input uses the recorded date across midnight, with no visible seconds.
+ // Eine reine Uhrzeiteingabe nutzt das Aufzeichnungsdatum auch über Mitternacht und zeigt keine Sekunden.
  const overnightStart=Date.parse('2026-11-01T23:57:48+01:00'),overnightEnd=Date.parse('2026-11-02T00:07:25+01:00'),overnightKey='manual-'+overnightStart;
  restored.record={train_number:'123',points:[],ended:true,detection_version:3,revision:0,manual_stops:[{key:overnightKey,start:overnightStart,end:overnightEnd}]};restored.draw();const overnight=restored.liveInputs[0];assert.equal(overnight.tr.children[2].children[0].textContent,'23:57');assert.equal(overnight.end.value,'00:07');overnight.station.value='BBB';overnight.station.oninput();assert.equal(restored.record.stop_edits[overnightKey].end,overnightEnd);overnight.end.value='00:12';overnight.end.oninput();assert.equal(restored.record.stop_edits[overnightKey].end,Date.parse('2026-11-02T00:12:00+01:00'));overnight.row.end=Date.parse('2026-11-03T00:20:00+01:00');overnight.station.oninput();assert.equal(restored.record.stop_edits[overnightKey].end,Date.parse('2026-11-02T00:12:00+01:00'));
  await overnight.remove.onclick();assert.equal(restored.liveInputs.length,0);assert.equal(restored.record.stop_edits[overnightKey].deleted,true);assert.equal(restored.record.manual_stops[0].end,overnightEnd);await restored.sync();assert.equal(body.stop_edits[overnightKey].deleted,true);restored.draw();assert.equal(restored.liveInputs.length,0);await restored.discard();

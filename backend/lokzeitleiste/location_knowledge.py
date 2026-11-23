@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Ortskenntnisse und ihre Gültigkeit.
 """Calendar-based location validity and monotonic renewal from actual GPS captures."""
 import calendar,hashlib,json,unicodedata,math
 from datetime import date,datetime,timezone

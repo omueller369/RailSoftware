@@ -1,3 +1,4 @@
+/* Regressionstests für Erfassung und Druck von Unterschriften. */
 const fs=require('node:fs'),vm=require('./localized-vm.cjs'),assert=require('node:assert/strict');const nodes={},events={},draws=[],requests=[];let revoked=0,clears=0;
 class E{constructor(){this.events={};this.hidden=true;this.style={};}addEventListener(k,f){this.events[k]=f;}showModal(){this.open=true;}close(){this.open=false;}focus(){}getContext(){return ctx;}getBoundingClientRect(){return{left:0,top:0,width:400,height:200};}setPointerCapture(){}toBlob(cb){cb(new Blob(['PNG'],{type:'image/png'}));}}
 const ctx={clearRect(){clears++;},beginPath(){},arc(){},fill(){},moveTo(x,y){draws.push([x,y]);},lineTo(x,y){draws.push([x,y]);},stroke(){}};const html=require('./localized-vm.cjs').resolveHtml(fs.readFileSync('backend/lokzeitleiste/static/tf-profile.html','utf8'));for(const m of html.matchAll(/id="([^"]+)"/g))nodes[m[1]]=new E();nodes.signatureCanvas.width=1000;nodes.signatureCanvas.height=500;

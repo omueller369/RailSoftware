@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Arbeitszeiten und deren Korrekturen.
 """Arbeitszeitkorrekturen, Kalenderwochen und dauerhafte E-Mail-Aufträge."""
 from ..localization import source as _text_source
 import calendar

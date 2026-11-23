@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Abwesenheiten und deren Zeitgutschrift.
 """Sick days credit eight hours; vacation credit follows the personnel plan."""
 from ..localization import source as _text_source
 from sqlalchemy import select

@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Betriebsstellen und Ortszuordnungen. */
 (()=>{
 const el=id=>document.getElementById(id),t=value=>window.I18n?.t(value)||value;
 const categories={landline:globalThis.CtlText.source("portal_station_sharing.text_529ac693a9e9"),mobile:globalThis.CtlText.source("portal_station_sharing.text_833cce4e3125"),bada:globalThis.CtlText.source("portal_station_sharing.text_a1f14b321431"),long_dial:globalThis.CtlText.source("portal_station_sharing.text_02053ab94a24"),local_radio:globalThis.CtlText.source("portal_station_sharing.text_99c07a8b0e30")};

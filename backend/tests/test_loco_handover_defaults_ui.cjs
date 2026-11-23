@@ -1,3 +1,4 @@
+/* Regressionstests für Fahrzeugübergaben und Mängelerfassung. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 class Element{
  constructor(tag,text=''){this.tag=tag;this.textContent=text;this.children=[];this.value='';this.dataset={};this.disabled=false;this.hidden=false;}

@@ -1,3 +1,4 @@
+# Browserprüfung für die gemeinsamen Anwendungsabläufe.
 """Real PDF.js page rendering, regions, offline isolation and inert portal login."""
 import argparse,re,json,base64,hashlib
 from browser_realtime import check_pages

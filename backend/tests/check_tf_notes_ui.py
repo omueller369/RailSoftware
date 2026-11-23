@@ -1,3 +1,4 @@
+# Browserprüfung für persönliche Notizen.
 """Exercise real notes UI, not a duplicate implementation, at desktop and phone widths."""
 import argparse
 import html

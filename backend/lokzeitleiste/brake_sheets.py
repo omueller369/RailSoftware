@@ -1,3 +1,4 @@
+# Gemeinsame Verarbeitung für Bremszettel und ihre Eingabe- und Druckansichten.
 """Private brake-sheet drafts and calculations according to the agreed DE/PL form rules."""
 from .localization import source as _text_source, text as _localized_text
 from .i18n import request_language

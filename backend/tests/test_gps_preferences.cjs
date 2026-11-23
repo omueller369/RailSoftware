@@ -1,3 +1,4 @@
+/* Regressionstests für GPS-Erfassung und Kartendarstellung. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 const context={window:{addEventListener(){}}};
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/gps.js','utf8'),context);

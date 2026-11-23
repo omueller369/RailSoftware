@@ -1,3 +1,4 @@
+# Bereitet polnische Referenznetz und die manuelle Streckenerfassung aus den eingecheckten Quellen reproduzierbar auf.
 """Prepare the separate OSM Poland STK graph. Build-time only: shapely>=2 required.
 Input: the 16 matching Geofabrik transport point exports and railway metadata.
 The original rail geometry remains in reference/poland-rail/poland.json.gz.
@@ -41,7 +42,7 @@ def main(source):
         for a,b in zip(indexes,indexes[1:]):connect(a,b,int(ident))
         ways.append(LineString(projected));levels.append(layer);way_nodes.append(indexes)
     print('Raw graph',len(nodes),'nodes',len(way_by_edge),'edges',flush=True)
-    # Join grade transitions only for an unbranched pair of dangling endpoints.
+    # Höhenwechsel nur bei einem unverzweigten Paar offener Endpunkte verbinden.
     dangling=collections.defaultdict(list)
     for i,links in enumerate(adj):
         if len(links)==1:dangling[nodes[i][:2]].append(i)

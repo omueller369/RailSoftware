@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für die gemeinsamen Anwendungsabläufe. */
 const dispatcherContext=location.pathname.startsWith('/admin/dispatchers'),staffBase=dispatcherContext?'/admin/dispatchers':'/admin/staff',staffApi='/api/v1'+staffBase,staffPermission=dispatcherContext?'dispatchers':'staff';
 const el=id=>document.getElementById(id);
 let me=null,modules=[],users=[],current=null,resetTarget=null,dirty=false,busy=false,selectedPhoto=null;

@@ -16,10 +16,11 @@
     ]
   },
   "canonical_sha256": "23a6569653de23debfe207cb99b3da34f2644a87ecf7e3e934d35b08f1e1f280",
-  "bundle_sha256": "46c6219268ba0fb31521540ef19506f6467025ee7663e7bd95909a94771c500a",
-  "bundle_bytes": 10454556,
+  "bundle_sha256": "bbe425cd958e18d7c2a74d6f54ec17d47b412ccc1bfc2372ed7384d16d8c7438",
+  "bundle_bytes": 10454568,
   "detail_points": 367614,
   "overview_points": 96063,
   "detail_tolerance_projected_m": 2,
-  "overview_tolerance_projected_m": 80
+  "overview_tolerance_projected_m": 80,
+  "reference_revision": "46c6219268ba0fb31521540ef19506f6467025ee7663e7bd95909a94771c500a"
 }

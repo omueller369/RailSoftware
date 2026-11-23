@@ -1,3 +1,4 @@
+# Browserprüfung für Ortskenntnisse und ihre Gültigkeit.
 """Location editor, real DS100 picker, sorting/filtering, German dates and expiry colours."""
 import argparse
 from browser_realtime import check_pages

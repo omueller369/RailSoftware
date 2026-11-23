@@ -1,3 +1,4 @@
+/* Gemeinsame Verarbeitung für Menüstruktur und gewählte Anordnung. */
 (()=>{
 const el=id=>document.getElementById(id),t=s=>window.I18n?.t(s)||s,titles={sidebar:globalThis.CtlText.source("backend_menu_preference.text_af223dbd846d"),compact:globalThis.CtlText.source("backend_menu_preference.text_52dc3386f196"),sections:globalThis.CtlText.source("backend_menu_preference.text_386e1ddeda3e")};
 let preference=null,busy=false;
