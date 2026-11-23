@@ -87,7 +87,7 @@
   "text_df6a9e9a8721": "Kein letzter GPS-Fix. Letzte gültige Position wird verwendet.",
   "text_e11d7606e7e0": "GPS-Aufzeichnung läuft.",
   "text_e237c9e516bb": "Standorte und Gründe gespeichert.",
-  "text_e461aed646b6": "Standzeiten (GPS länger als zwei Minuten, manuell ab Start Stand)",
+  "text_e461aed646b6": "Standzeit wird gespeichert ab: {minutes} Minuten, oder sofort durch ",
   "text_e73e1be46ebb": "Grund als Freitext",
   "text_e945e3bd7919": "Aktueller GPS-Position folgen",
   "text_ea75d1374ab3": "GPS synchronisieren",
@@ -112,5 +112,7 @@
   "text_9da13de7c459": "Standzeiten zusammenführen",
   "text_3c33cfa89c44": "Standzeit zum Zusammenführen auswählen",
   "text_d8a2f19e4b61": "Ausgewählte Standzeiten zusammenführen? Ort und Grund bleiben aus der ersten Zeile erhalten. Die letzte Zeile bestimmt die Bis-Zeit. Nur die ausgewählten Zeilen werden zusammengefasst.",
-  "text_863943169fc2": "Manueller Halt in GPS-Lücke (Position geschätzt)"
+  "text_863943169fc2": "Manueller Halt in GPS-Lücke (Position geschätzt)",
+  "text_6b0b8aef96d1": "Standzeit wird gespeichert ab: 1 Minute, oder sofort durch ",
+  "text_8147b93ec6e2": "Der Hinweis bei den Standzeiten zeigt die beim Start der Aufzeichnung übernommene Minutenzahl aus Mein Konto → GPS-Einstellungen. Start Stand ist darin grün hervorgehoben. Mit Start Stand beginnst Du die manuelle Standzeit sofort. Bereits begonnene und gespeicherte Aufzeichnungen behalten ihren bisherigen Schwellwert."
 }

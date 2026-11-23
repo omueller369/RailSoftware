@@ -762,6 +762,7 @@ window.TfHelpPages=globalThis.CtlText.restore([
     "path": null,
     "aliases": [],
     "sections": [
+      {"title":"{{portal_tf_help_content.text_0217d5644486}}","paragraphs":["{{portal_gps.text_8147b93ec6e2}}"],"steps":[]},
       {"title":"{{gps_vehicle.text_57938b216e59}}","paragraphs":["{{gps_vehicle.text_c746b75f5259}}"],"steps":[]},
       {"title":"{{location_arrival.text_b2723732fa72}}","paragraphs":["{{location_arrival.text_f644177310eb}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},

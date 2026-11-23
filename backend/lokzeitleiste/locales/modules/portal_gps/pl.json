@@ -87,7 +87,7 @@
   "text_df6a9e9a8721": "Brak końcowej pozycji GPS. Użyto ostatniej prawidłowej pozycji.",
   "text_e11d7606e7e0": "Trwa rejestracja GPS.",
   "text_e237c9e516bb": "Lokalizacje i przyczyny zapisane.",
-  "text_e461aed646b6": "Postoje (GPS dłużej niż dwie minuty, ręcznie od rozpoczęcia postoju)",
+  "text_e461aed646b6": "Postój jest zapisywany od: {minutes} min lub natychmiast przez ",
   "text_e73e1be46ebb": "Przyczyna jako tekst własny",
   "text_e945e3bd7919": "Śledź aktualną pozycję GPS",
   "text_ea75d1374ab3": "Synchronizuj GPS",
@@ -112,5 +112,7 @@
   "text_9da13de7c459": "Scal postoje",
   "text_3c33cfa89c44": "Wybierz postój do scalenia",
   "text_d8a2f19e4b61": "Scalić wybrane postoje? Miejsce i przyczyna zostaną zachowane z pierwszego wiersza. Ostatni wiersz określa godzinę końcową. Scalone zostaną tylko zaznaczone wiersze.",
-  "text_863943169fc2": "Ręczny postój w luce GPS (pozycja szacunkowa)"
+  "text_863943169fc2": "Ręczny postój w luce GPS (pozycja szacunkowa)",
+  "text_6b0b8aef96d1": "Postój jest zapisywany od: 1 min lub natychmiast przez ",
+  "text_8147b93ec6e2": "Wskazówka przy postojach pokazuje liczbę minut pobraną przy rozpoczęciu nagrywania z Moje konto → Ustawienia GPS. Rozpocznij postój jest wyróżnione na zielono. Przycisk rozpoczyna ręczny postój natychmiast. Rozpoczęte i zapisane nagrania zachowują dotychczasowy próg."
 }

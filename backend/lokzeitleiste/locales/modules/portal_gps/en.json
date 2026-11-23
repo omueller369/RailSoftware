@@ -87,7 +87,7 @@
   "text_df6a9e9a8721": "No final GPS fix. The last valid position is used.",
   "text_e11d7606e7e0": "GPS recording in progress.",
   "text_e237c9e516bb": "Locations and reasons saved.",
-  "text_e461aed646b6": "Stops (GPS longer than two minutes, manual from Start stop)",
+  "text_e461aed646b6": "Stop time is saved after: {minutes} minutes, or immediately with ",
   "text_e73e1be46ebb": "Reason as free text",
   "text_e945e3bd7919": "Follow current GPS position",
   "text_ea75d1374ab3": "Synchronize GPS",
@@ -112,5 +112,7 @@
   "text_9da13de7c459": "Merge stops",
   "text_3c33cfa89c44": "Select stop to merge",
   "text_d8a2f19e4b61": "Merge the selected stops? The first row supplies the location and reason. The last row supplies the end time. Only selected rows are merged.",
-  "text_863943169fc2": "Manual stop in GPS gap (estimated position)"
+  "text_863943169fc2": "Manual stop in GPS gap (estimated position)",
+  "text_6b0b8aef96d1": "Stop time is saved after: 1 minute, or immediately with ",
+  "text_8147b93ec6e2": "The stop hint shows the threshold taken from My account → GPS settings when recording started. Start stop is highlighted in green. Use Start stop to begin a manual stop immediately. Existing and saved recordings keep their original threshold."
 }

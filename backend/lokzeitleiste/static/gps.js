@@ -582,7 +582,9 @@ class Recorder{
   const stops = this.rows().filter(row => !this.imported(row) && !this.removed(row));
   const visibleKeys = new Set(stops.map(row => row.key));
   for (const key of this.mergeSelection) if (!visibleKeys.has(key)) this.mergeSelection.delete(key);
-  this.results.append(node('h4',t(globalThis.CtlText.source("portal_gps.text_e461aed646b6"))));
+  const minutes=this.record.stop_minutes??2;
+  const hint=node('h4',t(globalThis.CtlText.source(minutes===1?'portal_gps.text_6b0b8aef96d1':'portal_gps.text_e461aed646b6')).replace('{minutes}',String(minutes)));
+  const manualStart=node('strong',t(globalThis.CtlText.source('portal_gps.text_ea7a852a9397')));manualStart.className='gps-start-stand-hint';hint.append(manualStart);this.results.append(hint);
   this.liveInputs = [];
   if (!stops.length) {
    this.results.append(node('p',t(globalThis.CtlText.source("portal_gps.text_280e8fae6dfe"))));

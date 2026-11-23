@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.16
+# LokZeitleiste v0.28.17
+
+**0.28.17 / Android 0.28.17.22:** Der Standzeiten-Hinweis zeigt den aus Mein Konto übernommenen Schwellwert der Aufzeichnung statt einer festen Zwei-Minuten-Angabe. „Start Stand“ ist im Hinweis grün hervorgehoben. Die Erfassungsregeln werden dadurch nicht verändert.
 
 **0.28.16 / Android 0.28.16.21:** Optionale Tfz-Auswahl vor dem GPS-Start mit Offline-Zuordnung. Abgeschlossene synchronisierte Fahrten werden getrennt verdichtet und in der Verwaltung beim Tfz über „GPS-Fahrten“ angezeigt: Datum, Uhrzeit, Tf-Nummer, Von/Bis (DS100), Gesamt km. Die GPS-Schätzung verändert keinen Stammdaten-Kilometerstand. Zuerst den Server aktualisieren, damit Zuordnung und neue Tabelle unterstützt werden.
 
