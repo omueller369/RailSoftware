@@ -11,7 +11,9 @@ def fixture():
     page=page.replace("let attempts=0,uploads=0,stored=null,cloud={};","let attempts=0,uploads=0,stored=null,cloud={},connected=false;")
     page=page.replace("app_version:'test',account:","online:false,app_version:'0.28.0.2',account:")
     page=page.replace("window.fetch=async(url,options={})=>{url=String(url);", "window.fetch=async(url,options={})=>{if(!connected)throw TypeError('Network offline');url=String(url);")
-    page=page.replace('/* Android-only adapters.',(STATIC/'android-offline.js').read_text()+'\n/* Android-only adapters.',1)
+    adapter=(STATIC/'android-portal.js').read_text()
+    assert page.count(adapter)==1, 'Android adapter fixture must be present exactly once'
+    page=page.replace(adapter,(STATIC/'android-offline.js').read_text()+'\n'+adapter,1)
     source=(STATIC/'work-report.js').read_text();a=source.index('if(window.AndroidPortal?.offline)window.AndroidPortal.offline.registerReports(');z=source.index('\n',a);register=source[a:z]
     page=page.replace('window.NavFixture={loadReport,','window.NavFixture={enableAndroid(){'+register+'},loadReport,',1)
     start=page.index(" const a=report(");end=page.index("parent.postMessage({layoutStatus:'pass'}",start)
