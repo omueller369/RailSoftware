@@ -1,7 +1,7 @@
 /* Regressionstests für Kartenbedienung und Bildausschnitte. */
 const fs=require('fs'),vm=require('./localized-vm.cjs'),assert=require('assert');
 let scheduled=[],changes=[],listeners={},globalEvents={};
-const svg={style:{},contains:()=>true,getBoundingClientRect:()=>({left:0,top:0,width:600,height:650})},map={style:{},addEventListener:(name,fn)=>listeners[name]=fn,setPointerCapture(){},releasePointerCapture(){}};
+const svg={style:{},contains:()=>true,getBoundingClientRect:()=>({left:0,top:0,width:600,height:650})},map={style:{},addEventListener:(name,fn)=>listeners[name]=fn,setPointerCapture(){},releasePointerCapture(){},hasPointerCapture(){return false;}};
 map.append=()=>{};
 const context={document:{createElement:()=>({style:{},setAttribute(){},remove(){}})},window:{addEventListener:(name,fn)=>globalEvents[name]=fn},requestAnimationFrame:fn=>(scheduled.push(fn),scheduled.length),cancelAnimationFrame(){},Date,Math,Map,Set,WeakMap};
 vm.runInNewContext(fs.readFileSync('backend/lokzeitleiste/static/map-gestures.js','utf8'),context);
@@ -15,5 +15,13 @@ listeners.pointerup(event(1,142,325));assert.equal(changes.length,0);listeners.p
 const zoom=view.zoom;listeners.pointerdown(event(1,100,325));listeners.pointerdown(event(2,500,325));listeners.pointermove(event(1,200,325));listeners.pointermove(event(2,400,325));listeners.pointerup(event(1,200,325));listeners.pointerup(event(2,400,325));assert(view.zoom<zoom,'Pinch inward zooms out');
 const before=changes.length;listeners.pointerdown(event(1,250,325));listeners.pointerup(event(1,250,325));assert.equal(changes.length,before,'Tap does not pan or zoom');
 listeners.pointerdown(event(1,200,300));listeners.pointermove(event(1,250,350));listeners.pointercancel(event(1,250,350));assert.equal(changes.length,before,'Cancellation does not commit a partial gesture');assert.equal(svg.style.transform,'');
+// Die Übergabe vom SVG an den Container darf nicht als Abbruch gelten.
+const panStart={...view.center},panCount=changes.length;
+listeners.pointerdown(event(1,200,300));listeners.pointermove(event(1,240,330));
+listeners.lostpointercapture(event(1,240,330));assert(api.active,'Implicit child capture transfer retains the gesture');
+listeners.pointermove(event(1,270,350));listeners.pointerup(event(1,270,350));
+assert.equal(changes.length,panCount+1);assert(view.center.x<panStart.x&&view.center.y<panStart.y,'Single finger pan survives capture transfer');
+listeners.pointerdown(event(1,200,300));listeners.pointermove(event(1,240,330));
+listeners.lostpointercapture(event(1,240,330,{target:map}));assert(!api.active,'Actual container capture loss still cancels');assert.equal(changes.length,panCount+1);
 const images=[],make=()=>({setAttribute(k,v){this[k]=v;}});context.window.MapGestures.tiles({append:x=>images.push(x)},make,{zoom:8.5,left:-10,top:300,width:600,height:300});assert(images.length>0);for(const image of images){assert(image.href.includes('/8/'),'Fractional views request integer tile levels');assert(image.width>256,'Tiles scale to fractional zoom');assert(!image.href.includes('/-'),'Tile x values wrap at the date line');}
 console.log('Android maps: two-finger zoom both ways, stable focal point, sixty preview-only moves, one commit, taps, cancellation and fractional tiles passed.');

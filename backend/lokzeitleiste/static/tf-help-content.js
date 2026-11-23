@@ -1,4 +1,5 @@
 /* Gemeinsame Verarbeitung für modulbezogene Hilfe und Druckansicht. */
+/* Kartenverschiebung und Fingerwechsel: Anleitung aus dem Sprachmodul map_gestures. */
 /* Originale GPS-PNG-Symbole: transparenter Hintergrund ohne helle Hinterlegung. */
 /* GPS-Kartenzeiten in Aufzeichnung und Demo: HH:MM / HH:MM ohne Labels. */
 /* Arbeitsbericht: drei gleich gestaltete Reiter, ohne Verlust von Eingaben oder GPS. */

@@ -23,8 +23,8 @@ android {
         applicationId = "de.lokzeitleiste.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("124").get().toInt()
-        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.17").get()
+        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("125").get().toInt()
+        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.18").get()
         buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl}\"")
     }
     val signingPath = providers.gradleProperty("lokzeitleisteSigningStoreFile").orElse(providers.environmentVariable("ANDROID_KEYSTORE_PATH")).orNull

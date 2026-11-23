@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.12
+# LokZeitleiste v0.28.13
+
+**0.28.13 / Android 0.28.13.18:** Kartenverschiebung mit einem und zwei Fingern korrigiert. Die Übergabe der Berührung vom SVG-Kartenelement an den Kartencontainer verwirft die Geste nicht mehr. Nach dem Anheben eines Fingers kannst Du mit dem verbleibenden Finger weiter verschieben.
 
 **0.28.12 / Android 0.28.12.17:** Netzabhängige polnische Ortssuche und erweiterte manuelle STK-Erfassung mit parallelen Varianten, Weiterzeichnen und Verbindungsvorschlägen. Gemeinsamer Übertragungsstatus und datensparsamer Diagnoseexport, Prüfablauf für Arbeitsberichte, DS100-Prüfliste, gemeinsame Ablaufübersicht sowie tägliche private Sicherung mit isolierter Datenbank-/Dateiwiederherstellung. Betrieb und Grenzen: [Prüfung und Sicherung](docs/QUALITY-OPERATIONS.md).
 

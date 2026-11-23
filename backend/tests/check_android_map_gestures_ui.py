@@ -37,6 +37,29 @@ def interact(client,width):
         def touch(kind,distance):
             points=[] if kind in ('touchEnd','touchCancel') else [dict(id=i+1,x=x+sign*distance/2,y=y,radiusX=4,radiusY=4,force=1) for i,sign in enumerate([-1,1])]
             client.call('Input.dispatchTouchEvent',dict(type=kind,touchPoints=points))
+        # Echte, zeitversetzte Berührungen lösen die implizite SVG-Erfassung aus.
+        # Gleichzeitiges Aufsetzen allein deckt deren Übergabe nicht zuverlässig ab.
+        def fingers(kind,positions):
+            client.call('Input.dispatchTouchEvent',dict(type=kind,touchPoints=[dict(id=i,x=px,y=py,radiusX=4,radiusY=4,force=1) for i,px,py in positions]))
+        time.sleep(.15)
+        before=state()['view']
+        fingers('touchStart',[(1,x,y)]);time.sleep(.06)
+        fingers('touchMove',[(1,x+40,y+30)]);time.sleep(.06)
+        fingers('touchMove',[(1,x+70,y+50)]);time.sleep(.06)
+        fingers('touchEnd',[]);time.sleep(.1)
+        single=state()['view']
+        assert single['center']['x']<before['center']['x'] and single['center']['y']<before['center']['y'],(name,'One real finger commits pan after capture transfer',before,single)
+        assert single['zoom']==before['zoom'],(name,'One finger never changes zoom')
+        fingers('touchStart',[(1,x-70,y)]);time.sleep(.06)
+        fingers('touchStart',[(1,x-70,y),(2,x+70,y)]);time.sleep(.06)
+        fingers('touchMove',[(1,x-30,y+35),(2,x+110,y+35)]);time.sleep(.06)
+        fingers('touchEnd',[(2,x+110,y+35)]);time.sleep(.06)
+        fingers('touchMove',[(2,x+145,y+65)]);time.sleep(.06)
+        fingers('touchEnd',[]);time.sleep(.1)
+        paired=state()['view']
+        assert paired['center']['x']<single['center']['x'] and paired['center']['y']<single['center']['y'],(name,'Staggered two-finger pan commits and continues with remaining finger',single,paired)
+        assert abs(paired['zoom']-single['zoom'])<.01,(name,'Parallel two-finger pan retains zoom')
+        client.evaluate(prefix+'.GestureHarness.prepare('+json.dumps(name)+')')
         touch('touchStart',140)
         for distance in range(150,261,10):touch('touchMove',distance)
         client.evaluate(prefix+'.GestureHarness.backgroundUpdate()')
@@ -55,7 +78,7 @@ def interact(client,width):
             client.call('Input.dispatchTouchEvent',dict(type='touchStart',touchPoints=[dict(id=1,**point,radiusX=4,radiusY=4,force=1)]));client.call('Input.dispatchTouchEvent',dict(type='touchEnd',touchPoints=[]))
             assert state()['waypoints']=='AFW,AFR,AFW','A real finger tap still selects an operating point'
             client.evaluate(prefix+'.GestureHarness.undo()');assert state()['waypoints']=='AFW,AFR'
-        print(f'{name}: two-finger zoom both ways; zero full redraws during movement; one commit; unchanged data',flush=True)
+        print(f'{name}: one-/two-finger pan with capture transfer; two-finger zoom both ways; zero full redraws during movement; one commit; unchanged data',flush=True)
     client.evaluate(prefix+'.GestureHarness.finish()')
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--output-dir',required=True);a=p.parse_args();check_pages(fixture,a.output_dir,widths=(800,375),assets={'/tf/'+name:STATIC/name for name in ASSETS},label='Android map gestures',cpu_rate=4,timeout=40,interact=interact)

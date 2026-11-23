@@ -18,9 +18,12 @@ function mount(element,options){
  const mid=list=>({x:list.reduce((s,p)=>s+p.x,0)/list.length,y:list.reduce((s,p)=>s+p.y,0)/list.length}),before=mid(g.points),after=mid(ps);let zoom=g.view.zoom;if(ps.length===2){const first=Math.hypot(g.points[0].x-g.points[1].x,g.points[0].y-g.points[1].y),next=Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y);if(first<2||next<2)return;zoom=Math.max(base.minZoom,Math.min(base.maxZoom,g.view.zoom+Math.log2(next/first)));}
  if(!active&&Math.hypot(after.x-before.x,after.y-before.y)*(matrix?.a||bounds.width/base.width)<5)return;
  e.preventDefault();if(!active)capture();const oldSize=256*2**g.view.zoom,size=256*2**zoom;current={...base,zoom,center:{x:Math.max(0,Math.min(1,g.view.center.x+(before.x-base.width/2)/oldSize-(after.x-base.width/2)/size)),y:Math.max(0,Math.min(1,g.view.center.y+(before.y-base.height/2)/oldSize-(after.y-base.height/2)/size))}};if(!frame)frame=requestAnimationFrame(paint);};
- const up=e=>{if(!pointers.has(e.pointerId))return;e.stopPropagation();pointers.delete(e.pointerId);if(!pointers.size)reset();};
+ const up=e=>{if(!pointers.has(e.pointerId))return;e.stopPropagation();pointers.delete(e.pointerId);if(!pointers.size)reset();else begin();};
  const cancel=e=>{if(pointers.has(e.pointerId))reset(true);};
- element.addEventListener('pointerdown',down,{capture:true,passive:false});element.addEventListener('pointermove',move,{capture:true,passive:false});element.addEventListener('pointerup',up,true);element.addEventListener('pointercancel',cancel,true);element.addEventListener('lostpointercapture',cancel,true);
+ element.addEventListener('pointerdown',down,{capture:true,passive:false});element.addEventListener('pointermove',move,{capture:true,passive:false});element.addEventListener('pointerup',up,true);element.addEventListener('pointercancel',cancel,true);
+ // SVG-Kindelemente verlieren ihre implizite Erfassung bei der Übergabe an die Karte.
+ // Nur ein tatsächlicher Verlust der Container-Erfassung bricht die Geste ab.
+ element.addEventListener('lostpointercapture',e=>{if(e.target===element&&!element.hasPointerCapture(e.pointerId))cancel(e);},true);
  element.addEventListener('click',e=>{if(e.detail&&Date.now()<suppressUntil&&!e.target.closest?.('button,a,input,select,textarea,label')){e.preventDefault();e.stopImmediatePropagation();}},true);
  const api={get active(){return active;},get view(){const value=options.view();return value?{...value,center:{...value.center}}:null;},defer(callback){if(!pointers.size)return false;pending=callback;return true;},cancel:()=>reset(true)};controllers.set(element,api);return api;
 }
