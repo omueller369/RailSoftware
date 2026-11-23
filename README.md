@@ -1,6 +1,6 @@
 # LokZeitleiste v0.28.12
 
-**0.28.12 / Android 0.28.12.16:** Netzabhängige polnische Ortssuche und erweiterte manuelle STK-Erfassung mit parallelen Varianten, Weiterzeichnen und Verbindungsvorschlägen. Gemeinsamer Übertragungsstatus und datensparsamer Diagnoseexport, Prüfablauf für Arbeitsberichte, DS100-Prüfliste, gemeinsame Ablaufübersicht sowie tägliche private Sicherung mit isolierter Datenbank-/Dateiwiederherstellung. Betrieb und Grenzen: [Prüfung und Sicherung](docs/QUALITY-OPERATIONS.md).
+**0.28.12 / Android 0.28.12.17:** Netzabhängige polnische Ortssuche und erweiterte manuelle STK-Erfassung mit parallelen Varianten, Weiterzeichnen und Verbindungsvorschlägen. Gemeinsamer Übertragungsstatus und datensparsamer Diagnoseexport, Prüfablauf für Arbeitsberichte, DS100-Prüfliste, gemeinsame Ablaufübersicht sowie tägliche private Sicherung mit isolierter Datenbank-/Dateiwiederherstellung. Betrieb und Grenzen: [Prüfung und Sicherung](docs/QUALITY-OPERATIONS.md).
 
 **0.28.11 / Android 0.28.11.15:** Polnische Bahnhofs-/Haltepunkte und abgeleitete Netzknoten in der polnischen Karte. Eigene polnische STK-Verläufe mit Offline-Suche, Routenberechnung im Hintergrund, Speichern, Bearbeiten und Löschen je TF. Bei Sprache Polski im STK-Modul das Netz Polen · OSM wählen. 3.366 Stations-/Haltepunkte, davon 3.089 geometrisch zugeordnet; 277 ungeklärte Punkte bleiben gesperrt. Kein vollständiges amtliches Betriebsstellenverzeichnis. Quellen, Grenzen und Reproduktion: [Polnische STK-Referenz](backend/lokzeitleiste/reference/poland-stk/README.md).
 
