@@ -1,6 +1,6 @@
-# LokZeitleiste v0.28.10
+# LokZeitleiste v0.28.11
 
-**0.28.10 / Android 0.28.10.13:** Strecken-CSV-Import ganz unten im eigenen STK-Modul, standardmäßig eingeklappt und über +/− einblendbar. Vorschau, Datei und Filter bleiben beim Zuklappen erhalten. Die Kenntnisansicht lädt den bestätigten Bestand weiterhin für die Karte.
+**0.28.11 / Android 0.28.11.14:** Polnische Bahnhofs-/Haltepunkte und abgeleitete Netzknoten in der polnischen Karte. Eigene polnische STK-Verläufe mit Offline-Suche, Routenberechnung im Hintergrund, Speichern, Bearbeiten und Löschen je TF. Bei Sprache Polski im STK-Modul das Netz Polen · OSM wählen. 3.366 Stations-/Haltepunkte, davon 3.089 geometrisch zugeordnet; 277 ungeklärte Punkte bleiben gesperrt. Kein vollständiges amtliches Betriebsstellenverzeichnis. Quellen, Grenzen und Reproduktion: [Polnische STK-Referenz](backend/lokzeitleiste/reference/poland-stk/README.md).
 
 **0.28.9 / Android 0.28.9.11:** Überflüssigen Unterreiter Streckenkenntnis anzeigen entfernt. Karte, Bestandsanzeige und Import stehen direkt im Reiter Streckenkenntnis; das eigene STK-Modul bleibt erhalten.
 

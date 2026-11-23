@@ -29,7 +29,16 @@ def build(check=False):
     summary=[]
     for a,b in sorted(overview):summary.append([[min(a[0],b[0]),min(a[1],b[1]),max(a[0],b[0]),max(a[1],b[1])],[*a,*b]])
     bodies={'overview':dict(schema=1,scale=SCALE,grid=GRID,tiles=sorted(tiles),lines=summary)}
-    bodies.update({key:dict(schema=1,scale=SCALE,lines=rows) for key,rows in tiles.items()});expected={}
+    bodies.update({key:dict(schema=1,scale=SCALE,lines=rows) for key,rows in tiles.items()})
+    points_file=ROOT/'reference/poland-stk/map-points.json.gz'
+    if points_file.exists():
+        point_tiles=json.loads(gzip.decompress(points_file.read_bytes()))
+        bodies['overview']['points']=[p for values in point_tiles.values() for p in values if p[2]<2]
+        for key,values in point_tiles.items():
+            if key not in bodies:bodies[key]=dict(schema=1,scale=SCALE,lines=[]);bodies['overview']['tiles'].append(key)
+            bodies[key]['points']=values
+        bodies['overview']['tiles'].sort()
+    expected={}
     for key,value in bodies.items():
         content=('/* © OpenStreetMap contributors / Geofabrik, ODbL 1.0. See reference/poland-rail. */\nwindow.PolandRailNetwork.receive('+json.dumps(key)+','+json.dumps(value,separators=(',',':'))+');\n').encode();expected[key+'.js']=hashlib.sha256(content).hexdigest();path=OUT/(key+'.js')
         if check:assert path.read_bytes()==content,path

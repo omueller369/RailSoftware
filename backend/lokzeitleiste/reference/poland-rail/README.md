@@ -5,3 +5,5 @@
 `manifest.json` lists all 16 dated public source archives, checksums of the extracted railway SHP/DBF files, and the canonical database checksum. Only `fclass=rail` geometry is retained; identical OSM geometry parts from overlapping extracts are deduplicated. This can include service/industrial tracks. It is a visual reference, not official PKP PLK operating information or proof of route knowledge. OSM identifiers and source coordinates remain in `poland.json.gz`. It contains no user records.
 
 Run `python tools/build-poland-rail.py` to regenerate a coarse overview and ~20 m visual detail geometry, divided into world-grid tiles. `--check` verifies exact reproducibility. Original source coordinates remain unchanged in the separate ODbL database; the German M1 database and user qualifications are not merged into it.
+
+Operating-point markers and manual routing use the separate [Polish STK reference](../poland-stk/README.md). Run `build-poland-stk.py` before this tile builder. Derived junctions are not official reporting points.

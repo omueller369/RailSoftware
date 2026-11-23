@@ -17,6 +17,7 @@ function cacheable(path){if(path.startsWith('/api/v1/tf/route-knowledge/manual/g
 window.fetch=async(input,options={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.href),method=options.method||input.method||'GET';
  if(url.origin!==location.origin)return originalFetch(input,options);
+ if(method==='GET'&&/^\/tf\/poland-stk-data\/(manifest|topology|geometry-\d{1,3})[.]json$/.test(url.pathname))return originalFetch(input,options);
  const current=await session;if(offline&&method!=='GET'){const replayed=await offline.completed(url.pathname,method,options.body);if(replayed)return replayed;if(!online){const queued=await offline.enqueue(url.pathname,method,options.body,options.headers);if(queued)return queued;}}
  if(method==='GET'&&url.pathname==='/api/v1/account/me')return new Response(JSON.stringify(current.account),{headers:{'Content-Type':'application/json'}});
  if(method==='GET'&&url.pathname==='/api/v1/tf/portal')return new Response(JSON.stringify(current.profile),{headers:{'Content-Type':'application/json'}});

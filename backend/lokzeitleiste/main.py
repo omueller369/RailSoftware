@@ -799,3 +799,6 @@ app.include_router(portal_access_router(require_account,require_admin))
 
 from .manual_route_knowledge import create_router as manual_route_router
 app.include_router(manual_route_router(require_account))
+
+from .poland_stk import create_router as poland_stk_router
+app.include_router(poland_stk_router(require_account,require_admin))

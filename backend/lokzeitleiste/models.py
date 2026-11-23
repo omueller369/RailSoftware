@@ -1083,3 +1083,14 @@ class ManualRouteKnowledge(Base):
     path_key:Mapped[str]=mapped_column(String(64))
     payload_json:Mapped[str]=mapped_column(Text().with_variant(MEDIUMTEXT(),'mysql'))
     created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)
+
+
+class PolandRouteKnowledge(Base):
+    """Explicit Polish manual qualifications; separate from German VzG/DS100 rows."""
+    __tablename__='poland_route_knowledge'
+    __table_args__=(UniqueConstraint('owner_id','path_key'),)
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    owner_id:Mapped[int]=mapped_column(ForeignKey('users.id',ondelete='CASCADE'),index=True)
+    path_key:Mapped[str]=mapped_column(String(64))
+    payload_json:Mapped[str]=mapped_column(Text().with_variant(MEDIUMTEXT(),'mysql'))
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc)

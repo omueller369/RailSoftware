@@ -274,6 +274,11 @@
     "en": "/locales/poland_rail/en.json",
     "pl": "/locales/poland_rail/pl.json"
   },
+  "poland_stk": {
+    "de": "/locales/poland_stk/de.json",
+    "en": "/locales/poland_stk/en.json",
+    "pl": "/locales/poland_stk/pl.json"
+  },
   "portal_access": {
     "de": "/locales/portal_access/de.json",
     "en": "/locales/portal_access/en.json",

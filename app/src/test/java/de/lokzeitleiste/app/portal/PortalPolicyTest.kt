@@ -20,6 +20,15 @@ class PortalPolicyTest {
         assertNull(policy.asset("/tf/poland-rail-data/../account.js"))
         assertNull(policy.asset("/tf/poland-rail-data/manifest.json"))
     }
+    @Test fun polishGraphIsPublicOfflineReferenceWithStrictPaths() {
+        assertEquals("poland-stk.js",policy.asset("/tf/poland-stk.js"))
+        assertEquals("poland-stk-worker.js",policy.asset("/tf/poland-stk-worker.js"))
+        assertEquals("poland-stk-data/topology.json",policy.asset("/tf/poland-stk-data/topology.json"))
+        assertEquals("poland-stk-data/geometry-372.json",policy.asset("/tf/poland-stk-data/geometry-372.json"))
+        assertNull(policy.asset("/tf/poland-stk-data/geometry-1000.json"))
+        assertNull(policy.asset("/tf/poland-stk-data/../account.json"))
+        assertNull(policy.asset("/api/v1/tf/poland-route-knowledge/manual"))
+    }
     @Test fun standaloneStkModuleUsesBundledEditorAndTables() {
         assertEquals("tf-portal.html",policy.asset("/tf/stk-anlegen"))
         assertEquals("route-table.js",policy.asset("/tf/route-table.js"))

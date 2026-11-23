@@ -202,7 +202,7 @@ class TfPortalActivity : ComponentActivity() {
                 return try {
                     var bytes=assets.open("tf-portal/$name").use { it.readBytes() }
                     if(name.endsWith(".html")) bytes=String(bytes,Charsets.UTF_8).replace("<head>","<head><script src=\"/map-gestures.js\"></script><script src=\"/android-offline.js\"></script><script src=\"/android-portal.js\"></script>").toByteArray(Charsets.UTF_8)
-                    val mime=when { name.endsWith(".html")->"text/html";name.endsWith(".css")->"text/css";name.endsWith(".png")->"image/png";name.endsWith(".wasm")->"application/wasm";name.endsWith(".bcmap")||name.endsWith(".pfb")||name.endsWith(".ttf")->"application/octet-stream";else->"text/javascript" }
+                    val mime=when { name.endsWith(".html")->"text/html";name.endsWith(".json")->"application/json";name.endsWith(".css")->"text/css";name.endsWith(".png")->"image/png";name.endsWith(".wasm")->"application/wasm";name.endsWith(".bcmap")||name.endsWith(".pfb")||name.endsWith(".ttf")->"application/octet-stream";else->"text/javascript" }
                     WebResourceResponse(mime,"UTF-8",200,"OK",mapOf("Cache-Control" to "no-store","Content-Security-Policy" to (if(name=="tf-portal.html") "frame-src ${policy.origin}/tf/bremszettel ${policy.origin}/tf/arbeitsbericht; object-src 'none'" else "frame-src ${policy.origin}/tf/arbeitsbericht; object-src 'none'")),ByteArrayInputStream(bytes))
                 } catch(_:Exception) { WebResourceResponse("text/plain","UTF-8",500,"Missing portal asset",emptyMap(),ByteArrayInputStream(byteArrayOf())) }
             }
