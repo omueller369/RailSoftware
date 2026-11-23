@@ -47,6 +47,7 @@ class ManualStop(BaseModel):
         return self
 
 class Recording(BaseModel):
+    vehicle_id:int|None=Field(default=None,ge=1,strict=True)
     stop_minutes:Literal[1,2,4,5,10,15]|None=None
     train_number:str=Field(pattern=r'^[A-Za-z0-9]{1,12}$')
     points:list[Point]=Field(default_factory=list,max_length=20000)
@@ -257,6 +258,14 @@ def create_router(require_account):
         restarted=bool(previous.get('ended') and not data.ended and data.points and (not previous.get('points') or data.points[0].t>previous['points'][-1]['t']))
         if row and not restarted and data.stop_minutes is not None and data.stop_minutes!=previous.get('stop_minutes'):raise HTTPException(409,_text_source('server_gps.text_e9455228bddf'))
         payload['stop_minutes']=data.stop_minutes if not row or restarted else previous.get('stop_minutes')
+        from .models import RailwayVehicle
+        if row and not restarted and 'vehicle_id' not in data.model_fields_set:payload['vehicle_id']=previous.get('vehicle_id')
+        if row and previous.get('points') and not restarted and payload.get('vehicle_id')!=previous.get('vehicle_id'):
+            raise HTTPException(409,_text_source('gps_vehicle.text_986946b18839'))
+        vehicle=db.get(RailwayVehicle,payload['vehicle_id']) if payload.get('vehicle_id') else None
+        if payload.get('vehicle_id') and vehicle is None:raise HTTPException(422,_text_source('gps_vehicle.text_e3e15d259550'))
+        payload['vehicle_number']=vehicle.vehicle_number if vehicle else ''
+
         payload['detection_version']=5
         for point in payload['points']:
             if not point.get('break_before'):point.pop('break_before',None)
@@ -315,6 +324,8 @@ def create_router(require_account):
         row.payload_json=json.dumps(payload,ensure_ascii=False);row.revision+=1
         from .location_knowledge import renew_from_gps
         renew_from_gps(db,user.id,payload)
+        from .vehicle_gps import sync_journey
+        sync_journey(db,user,str(journey_id),payload)
         db.commit();return view(row)
     @router.delete('/api/v1/tf/gps/{journey_id}')
     def remove(journey_id:UUID,user:User=Depends(driver),db:Session=Depends(database_session)):
@@ -368,5 +379,7 @@ def create_router(require_account):
         row.payload_json=json.dumps(payload,ensure_ascii=False);row.revision+=1
         from .location_knowledge import renew_from_gps
         renew_from_gps(db,user.id,payload)
+        from .vehicle_gps import sync_journey
+        sync_journey(db,user,str(journey_id),payload)
         db.commit();return view(row)
     return router

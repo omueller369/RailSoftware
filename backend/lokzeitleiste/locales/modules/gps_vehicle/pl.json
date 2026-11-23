@@ -1,0 +1,19 @@
+{
+  "text_57938b216e59": "Pojazd trakcyjny (opcjonalnie)",
+  "text_3d7a926ad610": "Bez przypisania pojazdu",
+  "text_1b2fdda016ce": "Przejazdy GPS",
+  "text_397280125ce1": "Data",
+  "text_724da0f6c5d1": "Godzina",
+  "text_ed281e51f36f": "Numer maszynisty",
+  "text_e4511f0803c3": "Od (DS100)",
+  "text_f37cab727482": "Do (DS100)",
+  "text_47e40427cf4c": "Łącznie km",
+  "text_ffa486bc5118": "Zamknij",
+  "text_7e55a2489ae9": "Wstecz",
+  "text_222eb2f43edd": "Dalej",
+  "text_9d02821e0323": "Brak zakończonych przejazdów GPS.",
+  "text_f54733d66afc": "Lista pojazdów jest obecnie niedostępna. Możesz nagrywać GPS bez wyboru.",
+  "text_e3e15d259550": "Wybrany pojazd nie istnieje.",
+  "text_986946b18839": "Pojazd można wybrać tylko przed rozpoczęciem nowego nagrania GPS.",
+  "text_c746b75f5259": "Przed rozpoczęciem GPS możesz opcjonalnie wybrać istniejący pojazd trakcyjny. Bez wyboru nagrywanie działa jak dotychczas. Po rozpoczęciu przypisanie pozostaje stałe. Android zapisuje wybór offline razem z GPS; wcześniej pobrana lista pojazdów jest dostępna lokalnie. Synchronizacja zakończonego nagrania zapisuje przejazd w administracji przy pojeździe, bez duplikatów przy ponownej synchronizacji. Data i godzina dotyczą pierwszego użytecznego punktu GPS w czasie niemieckim. Kilometry są szacunkiem z punktów GPS, z prostymi połączeniami przez luki sygnału, bez łączenia celowo wstrzymanych odcinków. Nie zastępują licznika i nie zmieniają danych przebiegu pojazdu. Zakończone wpisy pozostają po późniejszym usunięciu surowych punktów GPS."
+}

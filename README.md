@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.15
+# LokZeitleiste v0.28.16
+
+**0.28.16 / Android 0.28.16.21:** Optionale Tfz-Auswahl vor dem GPS-Start mit Offline-Zuordnung. Abgeschlossene synchronisierte Fahrten werden getrennt verdichtet und in der Verwaltung beim Tfz über „GPS-Fahrten“ angezeigt: Datum, Uhrzeit, Tf-Nummer, Von/Bis (DS100), Gesamt km. Die GPS-Schätzung verändert keinen Stammdaten-Kilometerstand. Zuerst den Server aktualisieren, damit Zuordnung und neue Tabelle unterstützt werden.
 
 **0.28.15 / Android 0.28.15.20:** Monatsberichte als erster Reiter, kompakter Dienstbeginn-/Dienstende-/Pausenhinweis bei Zugfahrten und 8h-Ausbleibe als DS-Vorauswahl. Polnisches Streckennetz unabhängig von der Sprache per Schalter anzeigen; polnische Startorte suchen, dorthin zoomen und Verläufe punktweise zeichnen, speichern und bearbeiten.
 

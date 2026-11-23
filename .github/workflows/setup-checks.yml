@@ -37,6 +37,8 @@ jobs:
         run: |
           for test in backend/tests/*.cjs; do node "$test" || exit 1; done
           node backend/tests/test_brake_sheet_ui.cjs --overlay
+      - name: Optional GPS vehicle assignment and administrative journey table
+        run: python backend/tests/check_vehicle_gps_ui.py --output-dir "$RUNNER_TEMP/vehicle-gps-ui"
       - name: Required fields and explicit GPS destination renewal
         run: |
           python backend/tests/check_required_fields_ui.py --output-dir "$RUNNER_TEMP/required-fields-ui"

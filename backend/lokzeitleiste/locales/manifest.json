@@ -209,6 +209,11 @@
     "en": "/locales/gps_stop_suggestions/en.json",
     "pl": "/locales/gps_stop_suggestions/pl.json"
   },
+  "gps_vehicle": {
+    "de": "/locales/gps_vehicle/de.json",
+    "en": "/locales/gps_vehicle/en.json",
+    "pl": "/locales/gps_vehicle/pl.json"
+  },
   "infra_go": {
     "de": "/locales/infra_go/de.json",
     "en": "/locales/infra_go/en.json",

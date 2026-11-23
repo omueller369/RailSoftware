@@ -1,0 +1,19 @@
+{
+  "text_57938b216e59": "Tfz (optional)",
+  "text_3d7a926ad610": "Ohne Tfz-Zuordnung",
+  "text_1b2fdda016ce": "GPS-Fahrten",
+  "text_397280125ce1": "Datum",
+  "text_724da0f6c5d1": "Uhrzeit",
+  "text_ed281e51f36f": "Tf-Nummer",
+  "text_e4511f0803c3": "Von (DS100)",
+  "text_f37cab727482": "Bis (DS100)",
+  "text_47e40427cf4c": "Gesamt km",
+  "text_ffa486bc5118": "Schließen",
+  "text_7e55a2489ae9": "Zurück",
+  "text_222eb2f43edd": "Weiter",
+  "text_9d02821e0323": "Keine abgeschlossenen GPS-Fahrten vorhanden.",
+  "text_f54733d66afc": "Tfz-Liste momentan nicht verfügbar. Die GPS-Aufzeichnung ist ohne Auswahl möglich.",
+  "text_e3e15d259550": "Das gewählte Tfz ist nicht vorhanden.",
+  "text_986946b18839": "Das Tfz kann nur vor dem Start einer neuen GPS-Aufzeichnung gewählt werden.",
+  "text_c746b75f5259": "Vor GPS starten kannst Du optional ein Tfz aus den vorhandenen Fahrzeugen wählen. Ohne Auswahl funktioniert die Aufzeichnung wie bisher. Nach dem Start bleibt die Zuordnung für diese Aufzeichnung fest. Android speichert die Auswahl mit den GPS-Daten auch offline; eine zuvor geladene Fahrzeugliste steht lokal zur Verfügung. Erst das Synchronisieren einer abgeschlossenen Aufzeichnung übernimmt die Fahrt in die Verwaltungsübersicht beim Tfz. Wiederholtes Synchronisieren erzeugt keine doppelte Fahrt. Datum und Uhrzeit beziehen sich auf den ersten brauchbaren GPS-Punkt in deutscher Ortszeit. Die Kilometer sind die aus brauchbaren GPS-Punkten geschätzte Strecke, einschließlich direkter Verbindungen über Signallücken; ausdrücklich pausierte Abschnitte werden nicht verbunden. Die Übersicht ersetzt keinen Kilometerzähler und verändert keinen Tfz-Stammdatenwert. Abgeschlossene Fahrteinträge bleiben bei einer späteren Bereinigung der GPS-Rohpunkte erhalten."
+}

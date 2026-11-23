@@ -1,0 +1,19 @@
+{
+  "text_57938b216e59": "Traction unit (optional)",
+  "text_3d7a926ad610": "No traction unit assigned",
+  "text_1b2fdda016ce": "GPS journeys",
+  "text_397280125ce1": "Date",
+  "text_724da0f6c5d1": "Time",
+  "text_ed281e51f36f": "Driver number",
+  "text_e4511f0803c3": "From (DS100)",
+  "text_f37cab727482": "To (DS100)",
+  "text_47e40427cf4c": "Total km",
+  "text_ffa486bc5118": "Close",
+  "text_7e55a2489ae9": "Previous",
+  "text_222eb2f43edd": "Next",
+  "text_9d02821e0323": "No completed GPS journeys available.",
+  "text_f54733d66afc": "Traction unit list is currently unavailable. GPS recording is available without selecting a vehicle.",
+  "text_e3e15d259550": "The selected traction unit does not exist.",
+  "text_986946b18839": "The traction unit can only be selected before starting a new GPS recording.",
+  "text_c746b75f5259": "Before starting GPS you can optionally select an existing traction unit. Recording works as before without a selection. The assignment stays fixed after recording starts. Android stores it with the GPS data offline; a previously loaded vehicle list is available locally. Synchronizing a completed recording adds its journey to the vehicle overview in administration. Repeated synchronization does not duplicate the journey. Date and time refer to the first usable GPS fix in German local time. Kilometres estimate the path from usable fixes, including straight connections across signal gaps; explicitly paused sections are not bridged. This is not an odometer and does not change vehicle master mileage. Completed journey entries remain after later raw GPS cleanup."
+}

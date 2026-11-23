@@ -3,17 +3,17 @@
 from .localization import source as _text_source
 import re
 from decimal import Decimal
-from datetime import date
+from datetime import date,datetime,timezone
 from pathlib import Path
 from typing import Literal
 from fastapi import APIRouter,Depends,HTTPException,Query
 from fastapi.responses import FileResponse
 from pydantic import BaseModel,Field,field_validator,model_validator
-from sqlalchemy import select,or_
+from sqlalchemy import select,or_,func
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session,object_session
 from .db import database_session
-from .models import VehicleTechnicalData,RailwayVehicle,VehicleRetirement,VehicleLeasing,LeasingCompany,now_utc
+from .models import VehicleTechnicalData,RailwayVehicle,VehicleRetirement,VehicleLeasing,LeasingCompany,now_utc,VehicleGpsJourney
 from .leasing import assigned_company,view as company_view
 
 VEHICLE_STATUSES={
@@ -106,13 +106,29 @@ def create_router(require_admin):
 
     @router.get('/api/v1/admin/vehicles',dependencies=[Depends(require_admin)])
     def listing(q:str=Query(default='',max_length=200),status:Literal['ready','unavailable','limited']|None=None,db:Session=Depends(database_session)):
-        return [vehicle_view(row) for row in find_vehicles(db,q,status)]
+        rows=find_vehicles(db,q,status)
+        ids=set(db.scalars(select(VehicleGpsJourney.vehicle_id).where(VehicleGpsJourney.vehicle_id.in_([v.id for v in rows])).distinct())) if rows else set()
+        return [dict(vehicle_view(row),has_gps_journeys=row.id in ids) for row in rows]
 
     @router.get('/api/v1/admin/vehicles/{vehicle_id}',dependencies=[Depends(require_admin)])
     def details(vehicle_id:int,db:Session=Depends(database_session)):
         row=db.get(RailwayVehicle,vehicle_id)
         if not row:raise HTTPException(404,_text_source('server_vehicles.text_d0713be2fe85'))
         return vehicle_view(row)
+
+    @router.get('/api/v1/admin/vehicles/{vehicle_id}/gps-journeys',dependencies=[Depends(require_admin)])
+    def gps_journeys(vehicle_id:int,offset:int=Query(0,ge=0),db:Session=Depends(database_session)):
+        from zoneinfo import ZoneInfo
+        vehicle=db.get(RailwayVehicle,vehicle_id)
+        if not vehicle:raise HTTPException(404,_text_source('server_vehicles.text_d0713be2fe85'))
+        condition=VehicleGpsJourney.vehicle_id==vehicle_id
+        total=db.scalar(select(func.count()).select_from(VehicleGpsJourney).where(condition))
+        rows=db.scalars(select(VehicleGpsJourney).where(condition).order_by(VehicleGpsJourney.started_ms.desc(),VehicleGpsJourney.id.desc()).offset(offset).limit(10))
+        items=[]
+        for row in rows:
+            captured=datetime.fromtimestamp(row.started_ms/1000,timezone.utc).astimezone(ZoneInfo('Europe/Berlin'))
+            items.append(dict(date=captured.strftime('%d.%m.%Y'),time=captured.strftime('%H.%M'),tf_number=row.tf_number,from_code=row.from_code,to_code=row.to_code,total_km=round(row.distance_m/1000,3)))
+        return dict(vehicle_id=vehicle.id,vehicle_number=vehicle.vehicle_number,items=items,total=total,offset=offset,next_offset=offset+10 if offset+10<total else None)
 
     def assign(db,row,company_id):
         company=db.get(LeasingCompany,company_id) if company_id else None
