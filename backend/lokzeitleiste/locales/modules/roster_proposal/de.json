@@ -7,7 +7,7 @@
   "text_1228c7877b77": "P-Abf(HH:MM)",
   "text_0acb9b027823": "P-Ank(HH:MM)",
   "text_b14ef3640266": "Tfz",
-  "text_c1928742521d": "U-Name",
+  "text_c1928742521d": "Umlaufname",
   "text_de22b3e4193a": "Hinweis",
   "text_5b0466f99b8d": "Als Vorschlag für den Arbeitsbericht öffnen",
   "text_5c1c93ed3826": "Plandaten als Vorschlag übernehmen",
@@ -16,13 +16,13 @@
   "text_10154c8513c8": "Aktueller Arbeitsbericht-Entwurf",
   "text_5cd750b403a3": "Neuen Arbeitsbericht-Entwurf vorbereiten",
   "text_14a872ed91ec": "Dienstbeginn und Dienstende übernehmen",
-  "text_1b2e9cf12694": "Zugfahrt als zusätzlichen Entwurf anlegen: S-/Z-Bhf, P-Abf/P-Ank und U-Name",
+  "text_1b2e9cf12694": "Zugfahrt als zusätzlichen Entwurf anlegen: S-/Z-Bhf, P-Abf/P-Ank und Umlaufname",
   "text_37cf764f5a91": "Auswahl als Vorschlag übernehmen",
   "text_c82f43e1cd45": "Abbrechen",
   "text_8dbd9458ced8": "Beende zuerst eine laufende GPS-Aufzeichnung und speichere offene Änderungen am synchronisierten Bericht. Danach kannst Du die Plandaten übernehmen.",
-  "text_cfe3bd6b67cc": "Bitte wähle verfügbare Plandaten und einen bearbeitbaren Entwurf. Prüfe außerdem die Dienstgrenzen und den U-Namen (höchstens 200 Zeichen).",
+  "text_cfe3bd6b67cc": "Bitte wähle verfügbare Plandaten und einen bearbeitbaren Entwurf. Prüfe außerdem die Dienstgrenzen und den Umlaufnamen (höchstens 200 Zeichen).",
   "text_e4cbebe9734c": "Plandaten als Vorschlag übernommen. Ergänze die Zugnummer und prüfe alle Zeiten vor dem Zwischenspeichern oder Synchronisieren.",
   "text_045c329d1843": "Vorhandene Dienstzeiten im aktuellen Entwurf werden durch Deine bestätigte Auswahl ersetzt. Vorhandene Zugfahrten bleiben erhalten; die vorgeschlagene Zugfahrt wird zusätzlich angelegt.",
   "text_efeaf6a3291f": "Diese geplante Zugfahrt ist bereits im Entwurf vorhanden.",
-  "text_5f28db9a6f5d": "Der Dienstplan zeigt Dienstbeginn und Dienstende als DD.MM.YY-HH:MM. P-Abf und P-Ank zeigen nur HH:MM. Öffnest Du den Dienstplan aus dem Arbeitsbericht, kannst Du eine Zeile anklicken. Prüfe im Vorschlagsfenster die Angaben und wähle Dienstzeiten, eine zusätzliche Zugfahrt und den aktuellen oder einen neuen Entwurf. Erst Auswahl als Vorschlag übernehmen füllt Deinen Entwurf. Vorhandene Zugfahrten bleiben erhalten; ein neuer Entwurf sichert Deinen bisherigen Entwurf zuvor lokal. Die Zugnummer ergänzt Du selbst. Der optionale U-Name steht direkt unter der Zugnummer und bleibt beim Zwischenspeichern und Synchronisieren erhalten. Eine laufende GPS-Aufzeichnung oder offene Änderungen an einem synchronisierten Bericht sperren die Übernahme. Abbrechen verändert nichts."
+  "text_5f28db9a6f5d": "Der Dienstplan zeigt Dienstbeginn und Dienstende als DD.MM.YY-HH:MM. P-Abf und P-Ank zeigen nur HH:MM. Öffnest Du den Dienstplan aus dem Arbeitsbericht, kannst Du eine Zeile anklicken. Prüfe im Vorschlagsfenster die Angaben und wähle Dienstzeiten, eine zusätzliche Zugfahrt und den aktuellen oder einen neuen Entwurf. Erst Auswahl als Vorschlag übernehmen füllt Deinen Entwurf. Vorhandene Zugfahrten bleiben erhalten; ein neuer Entwurf sichert Deinen bisherigen Entwurf zuvor lokal. Die Zugnummer ergänzt Du selbst. Der optionale Umlaufname steht neben der Zugnummer und bleibt beim Zwischenspeichern und Synchronisieren erhalten. Eine laufende GPS-Aufzeichnung oder offene Änderungen an einem synchronisierten Bericht sperren die Übernahme. Abbrechen verändert nichts."
 }

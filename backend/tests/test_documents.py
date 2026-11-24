@@ -240,7 +240,7 @@ class DocumentsTest(unittest.TestCase):
         self.create(data);file=next(f for f in self.listing()['files'] if f['name'].endswith('-Arbeitsbericht.pdf'))
         pdf=self.driver.get('/api/v1/documents/download',params={'path':file['path']}).content
         text='\n'.join(page.extract_text() for page in PdfReader(io.BytesIO(pdf)).pages)
-        self.assertIn('Umlauf 4711',' '.join(text.split()));self.assertIn('U-Name',text)
+        self.assertIn('Umlauf 4711',' '.join(text.split()));self.assertIn('Umlaufname',text)
 
     def test_pdf_times_only_label_date_changes_in_overnight_duties(self):
         from lokzeitleiste.documents.archive import report_time

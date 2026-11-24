@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.20
+# LokZeitleiste v0.28.21
+
+**0.28.21 / Android 0.28.21.28:** Zugnummer und optionaler Umlaufname stehen nebeneinander. Die Beschriftung „U-Name“ heißt jetzt „Umlaufname“ in Erfassung, Dienstplan, Vorschau, Hilfe und PDF. Gespeicherte Umlaufnamen bleiben erhalten.
 
 **0.28.20 / Android 0.28.20.27:** Dienstplan mit fester kompakter Spaltenfolge und kurzen Bezeichnungen. Dienstbeginn/-ende verwenden DD.MM.YY-HH:MM, P-Abf/P-Ank nur HH:MM. Aus dem Arbeitsbericht öffnet ein Zeilenklick eine bestätigungspflichtige Vorschau für Dienstzeiten und eine zusätzliche Zugfahrt im aktuellen oder neuen Entwurf. Eine Übernahme sendet keinen Arbeitsbericht; bestehende Zugfahrten und vorherige Entwürfe bleiben erhalten. Der optionale U-Name steht unter der Zugnummer und wird lokal, im synchronisierten Bericht und im PDF gespeichert. Während aktiver GPS-Erfassung bleibt die Planübernahme gesperrt.
 
