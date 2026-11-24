@@ -13,7 +13,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from .db import database_session
-from .models import User,RailwayStation,RailwayStationCoordinates,TrainGpsRecording,GpsDemoShare,GpsStationCache,now_utc
+from .models import User,DutyReport,RailwayStation,RailwayStationCoordinates,TrainGpsRecording,GpsDemoShare,GpsStationCache,now_utc
 from .tf_portal import driver_dependency
 from .gps_analysis import analyse,distance
 
@@ -246,6 +246,15 @@ def create_router(require_account):
         stations=station_data(db,lat,lon,nearby=True)
         result=[dict(r,distance_m=round(distance(dict(lat=lat,lon=lon),r))) for r in stations if distance(dict(lat=lat,lon=lon),r)<=5000]
         return dict(radius_m=5000,stations=sorted(result,key=lambda r:r['distance_m']))
+    @router.get('/api/v1/tf/gps/{journey_id}/work-report')
+    def report_for_recording(journey_id:UUID,user:User=Depends(driver),db:Session=Depends(database_session)):
+        owned(db,user,journey_id)
+        # Ausschließlich Berichte dieses TF durchsuchen; GPS-Punkte werden nicht übertragen.
+        for report in db.scalars(select(DutyReport).where(DutyReport.tf_user_id==user.id).order_by(DutyReport.id.desc())):
+            payload=json.loads(report.payload_json)
+            if any(str(train.get('id'))==str(journey_id) for train in payload.get('train_journeys',[])):
+                return dict(report_id=report.id,client_id=report.client_id)
+        raise HTTPException(404,_text_source('coordination.text_0ffb4a14e4a5'))
     @router.get('/api/v1/tf/gps/{journey_id}')
     def get(journey_id:UUID,user:User=Depends(driver),db:Session=Depends(database_session)):return view(owned(db,user,journey_id))
     @router.put('/api/v1/tf/gps/{journey_id}')

@@ -9,11 +9,11 @@ from uuid import uuid4
 from fastapi import APIRouter,Depends,HTTPException,Query
 from fastapi.responses import FileResponse
 from pydantic import BaseModel,Field,field_validator
-from sqlalchemy import select
+from sqlalchemy import select,delete
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from .db import database_session
-from .models import AppDefaultValue as Value,AppDefaultSeed,DutyReport,TrainGpsRecording
+from .models import AppDefaultValue as Value,AppDefaultSeed,DutyReport,TrainGpsRecording,AppCauseReason,AppCauseReasonSeed
 from .tf_portal import driver_dependency
 from .default_order import ordered
 
@@ -36,6 +36,7 @@ def ensure_defaults(db):
     _ensure_defaults(db)
     from .infra_go import migrate
     migrate(db)
+    ensure_relations(db)
 
 def _ensure_defaults(db):
     if db.get(AppDefaultSeed,1):
@@ -61,6 +62,30 @@ def _ensure_defaults(db):
     except IntegrityError:
         db.rollback()
         if not db.get(AppDefaultSeed,1):raise
+
+
+def ensure_relations(db):
+    if db.get(AppCauseReasonSeed,1):return
+    # Der bisher freie Bestand startet mit allen Kombinationen; keine Auswahl wird gelöscht.
+    rows=list(db.scalars(select(Value)));db.add(AppCauseReasonSeed(id=1))
+    db.add_all([AppCauseReason(cause_id=c.id,reason_id=r.id) for c in rows if c.category=='cause' for r in rows if r.category=='reason'])
+    try:db.commit()
+    except IntegrityError:
+        db.rollback()
+        if not db.get(AppCauseReasonSeed,1):raise
+
+def use_pair(db,cause,reason,previous=None,loc=None,context=None):
+    from .infra_go import canonical,alias_map
+    aliases=alias_map(db);cause=canonical(cause,aliases)
+    if cause==_text_source('server_app_defaults.text_2087c99eb939'):cause='CTL'
+    prior_cause=canonical((previous or {}).get('cause') or '',aliases)
+    if prior_cause==_text_source('server_app_defaults.text_2087c99eb939'):prior_cause='CTL'
+    if previous and prior_cause==cause and previous.get('reason')==reason:return
+    c=db.scalar(select(Value).where(Value.category=='cause',Value.value==cause));r=db.scalar(select(Value).where(Value.category=='reason',Value.value==reason))
+    if not c or not r or not db.get(AppCauseReason,(c.id,r.id)):
+        text=_text_source('coordination.text_023ab76c7da5')
+        if loc is not None:raise FieldError(text,loc,context)
+        raise HTTPException(422,text)
 
 
 def use_value(db,category,value,previous=None,loc=None,context=None,aliases=None):
@@ -95,8 +120,9 @@ def use_journeys(db,journeys,previous=()):
             selections += [(category,getattr(event,category),prior.get(category),['train_journeys',ti,'events',ei,category],dict(journey_id=str(train.id),event_id=str(event.id))) for category in ('cause','reason')]
     labels={}
     for category,value,previous_value,loc,context in sorted(selections,key=lambda item:(item[0],item[1])):labels[category,value]=use_value(db,category,value,previous_value,loc,context,aliases).label
-    for train in journeys:
-        for event in train.events:
+    for ti,train in enumerate(journeys):
+        for ei,event in enumerate(train.events):
+            use_pair(db,event.cause,event.reason,old.get((str(train.id),str(event.id))),['train_journeys',ti,'events',ei,'reason'],dict(journey_id=str(train.id),event_id=str(event.id)))
             prior=old.get((str(train.id),str(event.id)),{})
             for category in ('reason','cause'):
                 label=prior.get(category+'_label') if prior.get(category)==getattr(event,category) else None
@@ -115,7 +141,15 @@ class ValueUpdate(ValueInput):
     expected_revision:int=Field(ge=1)
 
 
-def view(row):return dict(id=row.id,category=row.category,value=row.value,label=row.label,active=row.active,used=row.ever_used,revision=row.revision)
+def view(row):
+    from sqlalchemy.orm import object_session
+    db=object_session(row);extra={}
+    if db and row.category=='cause':extra['reason_values']=list(db.scalars(select(Value.value).join(AppCauseReason,AppCauseReason.reason_id==Value.id).where(AppCauseReason.cause_id==row.id)))
+    return dict(**extra,id=row.id,category=row.category,value=row.value,label=row.label,active=row.active,used=row.ever_used,revision=row.revision)
+
+class RelationsInput(BaseModel):
+    expected_revision:int=Field(ge=1)
+    reason_ids:list[int]=Field(default_factory=list,max_length=2000)
 
 
 def create_router(require_admin,require_account):
@@ -136,6 +170,15 @@ def create_router(require_admin,require_account):
         from .infra_go import alias_map,CANONICAL
         aliases=list(alias_map(db))
         return [dict(view(row),**({'aliases':aliases} if row.category=='cause' and row.value==CANONICAL else {})) for category in ('reason','cause') for row in ordered(db,category,db.scalars(select(Value).where(Value.category==category).order_by(Value.id)))]
+    @router.put('/api/v1/admin/app-defaults/cause/{cause_id}/reasons',dependencies=[Depends(require_admin)])
+    def relations(cause_id:int,data:RelationsInput,db:Session=Depends(database_session)):
+        ensure_defaults(db);cause=db.scalar(select(Value).where(Value.id==cause_id,Value.category=='cause').with_for_update())
+        if not cause:raise HTTPException(404,_text_source('coordination.text_90823a0948b5'))
+        if cause.revision!=data.expected_revision:raise HTTPException(409,_text_source('coordination.text_fbf634cb29dd'))
+        wanted=set(data.reason_ids);found=set(db.scalars(select(Value.id).where(Value.category=='reason',Value.id.in_(wanted)))) if wanted else set()
+        if wanted!=found:raise HTTPException(422,_text_source('coordination.text_90823a0948b5'))
+        db.execute(delete(AppCauseReason).where(AppCauseReason.cause_id==cause.id))
+        db.add_all([AppCauseReason(cause_id=cause.id,reason_id=i) for i in sorted(wanted)]);cause.revision+=1;db.commit();return view(cause)
     def commit(db,row):
         try:db.commit()
         except IntegrityError as exc:

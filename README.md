@@ -1,4 +1,12 @@
-# LokZeitleiste v0.28.17
+# LokZeitleiste v0.28.18
+
+**0.28.18 / Android 0.28.18.23:** Art–Grund-Zuordnungen als n:m-Beziehung in den Stammdaten mit gefilterter Auswahl im Arbeitsbericht. Offene Übertragungen zeigen die tatsächlichen lokalen Berichte/GPS-Aufzeichnungen und öffnen den zugehörigen Bericht; die Betatest-Diagnose erscheint nur für TF 787117. Kurznachrichten mit Chatansicht, Suche, Lesebestätigung, Anhängen und lokalen Textentwürfen. Neues Dienstplan-Modul für Personalplanung und TF: Excel-Vorschau, bestätigte Spalten-/TF-Zuordnung und private Anzeige der geplanten Dienste, auch als Fenster im Arbeitsbericht. Bestehende Berichte und Stammdaten bleiben erhalten.
+
+### Dienstplan und Art–Grund-Zuordnung
+
+Die Verwaltung öffnet **Dienstplan** mit den vorhandenen Planungsrechten (Import ab Schreibrecht). Importiere `.xls` oder `.xlsx`, wähle Tabellenblatt und Kopfzeile; `0` erkennt die mitgelieferte CTL-Struktur automatisch. Die Spaltenzuordnung ist vor dem Bestätigen prüfbar. Bei dieser Struktur werden A, B, O, Q, S und T nicht übernommen. Zugart/Pause, betriebliche Bahnhöfe, Vor-/Abschlusscodes, Zeiten, Tfz, Umlaufname und Kommentar bleiben erhalten. Baureihennummern zwischen Nachname und Vorname werden nur für den Namensabgleich entfernt; eindeutige Kontotreffer sind sichtbare Vorschläge, mehrdeutige Treffer bleiben unzugeordnet. Erst **Import bestätigen** veröffentlicht die ausgewählten Zeilen für die zugeordneten TF. Es entstehen keine tatsächlichen Arbeitsberichte. Wiederholung desselben bestätigten Imports erzeugt keine Duplikate. Die persönliche Beispieldatei gehört nicht ins Repository oder in die APK.
+
+TF öffnen **Dienstplan** über die eigene Kachel oder im Arbeitsbericht als Fenster. Vor-/Abschlusscodes erscheinen mit CTL; „keiner“ und „weiter“ bleiben Hinweise. Bereits geladene Pläne sind in Android offline lesbar. In den **Stammdaten** ordnest Du je Art beliebig viele Gründe zu; derselbe Grund darf zu mehreren Arten gehören. Zur bestandsschonenden Einführung bleiben zunächst alle bisherigen Kombinationen zugeordnet. Neue Stammdaten ordnest Du ausdrücklich zu. Gespeicherte historische Kombinationen bleiben bearbeitbar.
 
 **0.28.17 / Android 0.28.17.22:** Der Standzeiten-Hinweis zeigt den aus Mein Konto übernommenen Schwellwert der Aufzeichnung statt einer festen Zwei-Minuten-Angabe. „Start Stand“ ist im Hinweis grün hervorgehoben. Die Erfassungsregeln werden dadurch nicht verändert.
 

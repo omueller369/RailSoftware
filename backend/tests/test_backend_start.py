@@ -61,9 +61,11 @@ class BackendStartTest(unittest.TestCase):
     def test_planning_reader_does_not_receive_staff_or_stammdaten(self):
         _,staff=self.active_staff({'planning':1},'start-planning')
         rows=staff.get('/api/v1/admin/start').json()['modules'];ids={r['id'] for r in rows}
-        self.assertEqual(ids,{'tf','planning','overview','roster','messages','documents','password','own_time'})
+        self.assertEqual(ids,{'tf','planning','duty_rosters','overview','roster','messages','documents','password','own_time'})
         self.assertTrue(all(row['level']==1 for row in rows if row['group']!='Mein Bereich'))
         self.assertEqual(staff.get('/api/v1/admin/app-defaults').status_code,403)
+        self.assertEqual(staff.get('/api/v1/admin/duty-rosters/recipients').status_code,200)
+        self.assertEqual(staff.post('/api/v1/admin/duty-rosters/preview').status_code,403)
 
     def test_specific_permissions_show_only_the_matching_tiles(self):
         _,staff=self.active_staff({'vehicles':1,'app_defaults':2},'start-data')

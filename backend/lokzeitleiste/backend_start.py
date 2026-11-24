@@ -24,6 +24,7 @@ def start_modules(user,p):
         ('tf',_text_source('admin_work_reports.text_205f153c67b5'),'/admin/tf',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('employees',0) or int(employees)),
         ('staff',_text_source('server_backend_start.text_20e987b4a823'),'/admin/staff',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('staff',0)),
         ('directory',_text_source('server_backend_start.text_143327b1cce7'),'/admin/directory',_text_source('server_backend_start.text_2456bb8ed72f'),p.get('directory',0)),
+        ('duty_rosters',_text_source('coordination.text_b6ab569e0eec'),'/admin/dienstplan',_text_source('server_backend_start.text_b702020127a6'),p.get('planning',0)),
         ('planning',_text_source('server_backend_start.text_67f08af53537'),'/admin/planning',_text_source('server_backend_start.text_b702020127a6'),p.get('planning',0)),
         ('overview',_text_source('server_backend_start.text_8d19db2dc6b2'),'/admin/rest-plans',_text_source('server_backend_start.text_b702020127a6'),p.get('planning',0)),
         ('shifts',_text_source('server_backend_start.text_77ecaf5660bb'),'/admin/shifts',_text_source('server_backend_start.text_b702020127a6'),p.get('shifts',0)),

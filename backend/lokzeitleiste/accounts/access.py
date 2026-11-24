@@ -78,6 +78,8 @@ def authorize_route(db, user, request):
         return demand(db,user,'leasing',1 if method=='GET' else 2)
     if path=='/api/v1/admin/loco-handover' or path.startswith('/api/v1/admin/loco-handover/'):
         return demand(db,user,'loco_handover',1 if method=='GET' else 2)
+    if path.startswith('/api/v1/admin/duty-rosters/'):
+        return demand(db,user,'planning',1 if method=='GET' else 2)
     if path.startswith('/api/v1/admin/planning/collective/'):
         return demand(db,user,'planning',2)
     if path=='/api/v1/admin/app-defaults' or path.startswith('/api/v1/admin/app-defaults/'):

@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 import test_train_journeys,test_accounts
 from lokzeitleiste.main import app
-from lokzeitleiste.models import AppDefaultValue,AppDefaultSeed,DutyReport,TrainGpsRecording
+from lokzeitleiste.models import AppDefaultValue,AppDefaultSeed,DutyReport,TrainGpsRecording,AppCauseReason,AppCauseReasonSeed
 from lokzeitleiste.app_defaults import ensure_defaults
 
 BASE='/api/v1/admin/app-defaults'
@@ -31,6 +31,25 @@ class AppDefaultsTest(unittest.TestCase):
     def change_value(self,row,**changes):
         response=self.client.put(BASE+'/value/'+str(row['id']),json={**dict(label=row['label'],active=row['active'],expected_revision=row['revision']),**changes});return response
     def remove(self,row):return self.client.delete(BASE+'/value/'+str(row['id']),params={'expected_revision':row['revision']})
+
+    def test_many_to_many_restrictions_preserve_reports_and_values(self):
+        original=self.create(self.data());rows=self.catalogue();cause=next(r for r in rows if r['value']=='CTL');other=next(r for r in rows if r['value']=='DB-InfraGo');reason=next(r for r in rows if r['value']=='Zugfolge')
+        def assign(c,ids,revision=None):return self.client.put(BASE+'/cause/'+str(c['id'])+'/reasons',json={'expected_revision':revision or c['revision'],'reason_ids':ids})
+        changed=assign(cause,[reason['id']]);self.assertEqual(changed.status_code,200,changed.text)
+        self.assertEqual(changed.json()['reason_values'],['Zugfolge'])
+        self.assertEqual(assign(other,[reason['id']]).status_code,200)
+        self.assertEqual(assign(cause,[]).status_code,409)
+        self.assertEqual(len(self.catalogue()),len(rows))
+        # Unveränderte historische Kombinationen bleiben gültig, neue Kombinationen nicht.
+        trains=original['train_journeys'];trains[0]['events'][0]['end_at']='2026-10-12T10:25'
+        self.assertEqual(self.update(original['id'],trains).status_code,200)
+        fresh=self.data();r=self.driver.post('/api/v1/tf/work-reports',json=fresh);self.assertEqual(r.status_code,422,r.text)
+        self.assertEqual(r.json()['errors'][0]['loc'][-1],'reason')
+        fresh['train_journeys'][0]['events'][0]['reason']='Zugfolge';fresh['client_id']=original['client_id'];self.assertEqual(self.update(original['id'],fresh['train_journeys'],revision=1).status_code,200)
+        self.assertEqual(assign(cause,[other['id']],changed.json()['revision']).status_code,422)
+        disabled=self.change_value(reason,active=False);self.assertEqual(disabled.status_code,200)
+        fresh=self.data();fresh['train_journeys'][0]['events'][0]['reason']='Zugfolge'
+        self.assertEqual(self.driver.post('/api/v1/tf/work-reports',json=fresh).status_code,422)
 
     def test_initial_defaults_and_delete_not_recreated_by_update(self):
         rows=self.catalogue();self.assertEqual(len(rows),21)
@@ -64,6 +83,8 @@ class AppDefaultsTest(unittest.TestCase):
 
     def test_used_values_block_delete_allow_disable_and_preserve_old_events(self):
         reason=self.add('reason','Signalprüfung');cause=self.add('cause','Infrastrukturpartner')
+        response=self.client.put(BASE+'/cause/'+str(cause['id'])+'/reasons',json={'expected_revision':cause['revision'],'reason_ids':[reason['id']]});self.assertEqual(response.status_code,200,response.text)
+        cause=response.json()
         data=self.data();event=data['train_journeys'][0]['events'][0];event.update(reason=reason['value'],cause=cause['value'],reason_label='spoofed',cause_label='spoofed')
         report=self.create(data);saved=report['train_journeys'][0]['events'][0]
         self.assertEqual((saved['reason_label'],saved['cause_label']),('Signalprüfung','Infrastrukturpartner'))
@@ -83,7 +104,7 @@ class AppDefaultsTest(unittest.TestCase):
     def test_update_migrates_historical_reports_and_gps_without_rewriting(self):
         report=self.create(self.data())
         with Session(self.engine) as db:
-            db.query(AppDefaultValue).delete();db.query(AppDefaultSeed).delete()
+            db.query(AppCauseReason).delete();db.query(AppCauseReasonSeed).delete();db.query(AppDefaultValue).delete();db.query(AppDefaultSeed).delete()
             original=db.get(DutyReport,report['id']).payload_json
             db.add(TrainGpsRecording(owner_id=self.tf,journey_id=str(uuid4()),payload_json=json.dumps({'points':[],'reasons':{'s0':{'reason':'Legacy GPS'}}}),revision=1));db.commit()
             ensure_defaults(db)

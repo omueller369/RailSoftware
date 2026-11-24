@@ -4,6 +4,15 @@ import org.junit.Assert.*
 import org.junit.Test
 class PortalPolicyTest {
     private val policy=PortalPolicy("https://ctl-software.io-goerlitz.eu")
+    @Test fun dutyRosterAndChatUsePublicAssetsOnly() {
+        assertEquals("duty-rosters.html",policy.asset("/tf/dienstplan"))
+        assertEquals("duty-rosters.js",policy.asset("/tf/duty-rosters.js"))
+        assertEquals("tf-chat.js",policy.asset("/tf/chat.js"))
+        assertEquals("tf-chat.css",policy.asset("/tf/chat.css"))
+        assertNull(policy.asset("/admin/dienstplan"))
+        assertNull(policy.asset("/api/v1/tf/duty-rosters"))
+        assertNull(policy.asset("/api/v1/admin/duty-rosters/preview"))
+    }
     @Test fun laReaderAndOnlyPublicRendererAssetsArePackaged() {
         assertEquals("tf-portal.html",policy.asset("/tf/la-anweisungen"))
         assertEquals("la-instructions.js",policy.asset("/tf/la-instructions.js"))

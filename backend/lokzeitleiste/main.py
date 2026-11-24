@@ -806,3 +806,6 @@ app.include_router(poland_stk_router(require_account,require_admin))
 
 from .quality import create_router as quality_router
 app.include_router(quality_router(require_account,require_admin))
+
+from .duty_rosters import create_router as duty_rosters_router
+app.include_router(duty_rosters_router(require_admin,require_account))

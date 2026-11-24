@@ -6,7 +6,7 @@ from pathlib import Path,PurePosixPath
 from fastapi import APIRouter,Depends,File,Form,UploadFile,HTTPException,Query
 from fastapi.responses import FileResponse,Response
 from pydantic import BaseModel,Field,ValidationError,field_validator
-from sqlalchemy import select,func
+from sqlalchemy import select,func,or_,and_,case
 from sqlalchemy.orm import Session
 from PIL import Image
 from .db import database_session
@@ -84,10 +84,43 @@ def create_router(require_account):
         content=content.replace('TF-Portal',_text_source('server_tf_messages.text_2456bb8ed72f')).replace('<header><h1>Verwaltung</h1></header>','<header><a href="/admin/start">Verwaltung</a></header>').replace('</body>','<script src="/admin/backend-nav.js"></script></body>')
         from fastapi.responses import HTMLResponse
         return HTMLResponse(content,headers={'Cache-Control':'no-store'})
+    @router.get('/tf/chat.js')
+    def chat_script():return FileResponse(Path(__file__).parent/'static'/'tf-chat.js',media_type='text/javascript')
+    @router.get('/tf/chat.css')
+    def chat_styles():return FileResponse(Path(__file__).parent/'static'/'tf-chat.css',media_type='text/css')
     @router.get('/tf/messages.js')
     def script():return FileResponse(Path(__file__).parent/'static'/'tf-messages.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
     @router.get('/api/v1/tf/messages/recipients')
     def choices(user=Depends(driver),db:Session=Depends(database_session)):return [dict(id=u.id,name=p,group='TF' if u.role=='tf' else _text_source('server_tf_messages.text_3587543eb803')) for u,p in recipients(db)]
+    def direct_query(user_id,peer=None):
+        # Gruppennachrichten bleiben im Posteingang und werden nicht als private Chats ausgegeben.
+        count=select(func.count()).select_from(Delivery).where(Delivery.message_id==Message.id).correlate(Message).scalar_subquery()
+        query=select(Message,Delivery).join(Delivery,Delivery.message_id==Message.id).where(count==1)
+        incoming=and_(Delivery.recipient_id==user_id,Delivery.deleted_at.is_(None))
+        outgoing=Message.sender_id==user_id
+        if peer is not None:
+            incoming=and_(incoming,Message.sender_id==peer);outgoing=and_(outgoing,Delivery.recipient_id==peer)
+        return query.where(or_(incoming,outgoing))
+    @router.get('/api/v1/tf/messages/chats')
+    def chats(user=Depends(driver),db:Session=Depends(database_session)):
+        query=direct_query(user.id).with_only_columns(Message.id,Message.sender_id,Delivery.recipient_id,Delivery.read_at,Message.created_at).subquery()
+        peer=func.coalesce(func.nullif(query.c.sender_id,user.id),query.c.recipient_id)
+        rows=db.execute(select(peer.label('peer'),func.max(query.c.created_at).label('last_at'),func.count().label('count'),func.sum(case((and_(query.c.recipient_id==user.id,query.c.read_at.is_(None)),1),else_=0)).label('unread')).group_by(peer)).all()
+        active={u.id:label for u,label in recipients(db)}
+        return [dict(peer_id=r.peer,name=active.get(r.peer,_text_source('server_tf_messages.text_4b42c6690ebe')),unread=r.unread,last_at=r.last_at.isoformat()+'Z',count=r.count) for r in rows if r.peer!=user.id]
+    @router.get('/api/v1/tf/messages/chats/{peer_id}')
+    def conversation(peer_id:int,before:int|None=Query(default=None,ge=1),q:str=Query(default='',max_length=200),user=Depends(driver),db:Session=Depends(database_session)):
+        if not db.get(User,peer_id):raise HTTPException(404,_text_source('server_tf_messages.text_a8c327fb1b2a'))
+        query=direct_query(user.id,peer_id)
+        if before:query=query.where(Message.id<before)
+        if q:query=query.where(Message.body.contains(q,autoescape=True))
+        rows=db.execute(query.order_by(Message.id.desc()).limit(51)).all();more=len(rows)>50;items=[]
+        for message,delivery in reversed(rows[:50]):
+            mine=message.sender_id==user.id
+            if not mine and delivery.read_at is None:delivery.read_at=now_utc()
+            value=sent_view(db,message,True) if mine else view(db,message,delivery,True)
+            value.update(mine=mine,read=delivery.read_at is not None);items.append(value)
+        db.commit();return dict(messages=items,more=more)
     @router.get('/api/v1/tf/messages/unread')
     def unread(user=Depends(driver),db:Session=Depends(database_session)):
         return dict(count=db.scalar(select(func.count()).select_from(Delivery).join(Message,Message.id==Delivery.message_id).where(Delivery.recipient_id==user.id,Message.sender_id!=user.id,Delivery.read_at.is_(None),Delivery.deleted_at.is_(None))))

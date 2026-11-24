@@ -49,6 +49,8 @@ jobs:
         run: python backend/tests/check_stk_csv_fold_ui.py --output-dir "$RUNNER_TEMP/stk-csv-fold-ui"
       - name: Standalone STK module and sortable paged tables
         run: python backend/tests/check_stk_module_ui.py --output-dir "$RUNNER_TEMP/stk-module-ui"
+      - name: Chat, duty roster confirmation and assigned reasons
+        run: python backend/tests/check_coordination_ui.py --output-dir "$RUNNER_TEMP/coordination-ui"
       - name: Administrative quality and report review
         run: python backend/tests/check_quality_admin_ui.py --output-dir "$RUNNER_TEMP/quality-admin-ui"
       - name: Synchronization status and private beta diagnostics

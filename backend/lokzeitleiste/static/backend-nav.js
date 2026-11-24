@@ -28,6 +28,7 @@ const modules=[
  ['tfNew',globalThis.CtlText.source("admin_work_reports.text_01257fa9a38b"),'/admin/tf/new',p.employees===3],
  ['staff',globalThis.CtlText.source("backend_backend_nav.text_20e987b4a823"),'/admin/staff',!!p.staff],
  ['staffNew',globalThis.CtlText.source("backend_backend_nav.text_0f51c3a734c4"),'/admin/staff/new',p.staff===3],
+ ['duty_rosters',globalThis.CtlText.source('coordination.text_b6ab569e0eec'),'/admin/dienstplan',!!p.planning],
  ['planning',globalThis.CtlText.source("backend_backend_nav.text_67f08af53537"),'/admin/planning',!!p.planning],
  ['shifts',globalThis.CtlText.source("backend_backend_nav.text_77ecaf5660bb"),'/admin/shifts',!!p.shifts],
  ['overview',globalThis.CtlText.source("backend_backend_nav.text_8d19db2dc6b2"),'/admin/rest-plans',!!p.planning],
@@ -52,7 +53,7 @@ const management=group(globalThis.CtlText.source("backend_backend_nav.text_2456b
 moduleLink(management,'quality');moduleLink(management,'la');moduleLink(management,'work_reports');moduleLink(management,'knowledge');moduleLink(management,'tracking');moduleLink(employees,'dispatchers');moduleLink(employees,'wgm');
 const drivers=group(globalThis.CtlText.source("admin_work_reports.text_205f153c67b5"),employees,'/admin/tf',hasEmployees);moduleLink(drivers,'tfNew',globalThis.CtlText.source("backend_backend_nav.text_5c1058aea6bf"));
 const office=group(globalThis.CtlText.source("backend_backend_nav.text_2456bb8ed72f"),employees,'/admin/staff',!!p.staff);moduleLink(office,'staffNew',globalThis.CtlText.source("backend_backend_nav.text_5c1058aea6bf"));
-const planning=group(globalThis.CtlText.source("backend_backend_nav.text_b702020127a6"));for(const id of ['planning','shifts','overview'])moduleLink(planning,id);
+const planning=group(globalThis.CtlText.source("backend_backend_nav.text_b702020127a6"));for(const id of ['planning','duty_rosters','shifts','overview'])moduleLink(planning,id);
 const other=group(globalThis.CtlText.source("backend_backend_nav.text_9f3d5f8d94cf")),master=group(globalThis.CtlText.source("backend_backend_nav.text_c78f95997238"),other);moduleLink(other,'messages');moduleLink(master,'leasing');moduleLink(master,'vehicles');moduleLink(master,'app_defaults');
 for(const id of ['loco_handover','directory','roster','hours','worktime','email','documents','password',...(me.role==='staff'?['ownTime']:[])])moduleLink(other,id);
 const logoutItem=document.createElement('li'),logout=document.createElement('button');logout.type='button';logout.textContent=globalThis.CtlText.source("backend_backend_nav.text_545f8be33bf0");logout.onclick=async()=>{logout.disabled=true;try{const result=await fetch('/api/v1/admin/logout',{method:'POST',credentials:'same-origin'});if(!result.ok)throw Error(globalThis.CtlText.source("backend_backend_nav.text_bb4cafe08860"));location.href='/admin';}catch(error){logout.disabled=false;alert(error.message);}};logoutItem.className='menu-logout';logoutItem.append(logout);list.append(logoutItem);

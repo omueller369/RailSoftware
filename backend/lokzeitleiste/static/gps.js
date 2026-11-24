@@ -3,10 +3,15 @@
 const t=s=>window.I18n?.t(s)||s,node=(tag,text)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;return e;};
 const vehicleKeys={"choose":"text_57938b216e59","none":"text_3d7a926ad610","trips":"text_1b2fdda016ce","date":"text_397280125ce1","time":"text_724da0f6c5d1","tf":"text_ed281e51f36f","from":"text_e4511f0803c3","to":"text_f37cab727482","km":"text_47e40427cf4c","close":"text_ffa486bc5118","previous":"text_7e55a2489ae9","next":"text_222eb2f43edd","empty":"text_9d02821e0323","unavailable":"text_f54733d66afc","invalid":"text_e3e15d259550","locked":"text_986946b18839","help":"text_c746b75f5259"},vehicleText=key=>t(globalThis.CtlText.source('gps_vehicle.'+vehicleKeys[key]));
 let active=null,manualActive=null,dbPromise,androidFlushing=false;const mounted=new Set();let androidChanges=0,androidScanned=-1,androidOwner=null,androidPending=[];
+// Die Statusleiste benötigt keine wiederholten Kopien sämtlicher GPS-Punkte.
+const transferIndexes=new Map();
+const transferSummary=(key,value)=>({journey_id:key.slice(key.indexOf('.')+1),dirty:value.dirty,ended:value.ended,train_number:value.train_number,start:value.points?.[0]?.t||value.manual_stops?.[0]?.start});
+function updateTransferIndex(key,value){const owner=key.split('.')[0],index=transferIndexes.get(owner);try{localStorage.setItem('railsoftware.gps-transfer-change.'+owner,Date.now()+':'+Math.random());}catch{}if(!index)return;index.changed.add(key);if(value===null)index.rows.delete(key);else index.rows.set(key,transferSummary(key,value));}
+async function pendingTransfers(userId){const owner=String(userId);let index=transferIndexes.get(owner);if(!index){index={rows:new Map(),changed:new Set()};transferIndexes.set(owner,index);index.ready=localSummaries(userId,r=>({key:owner+'.'+r.journey_id,...transferSummary(owner+'.'+r.journey_id,r)})).then(rows=>{for(const row of rows)if(!index.changed.has(row.key))index.rows.set(row.key,row);}).catch(error=>{transferIndexes.delete(owner);throw error;});}await index.ready;return [...index.rows.values()].filter(r=>r.dirty);}
 function changedAndroidTrack(key,value){if(!window.AndroidPortal||value!==null&&!value?.ended)return;androidChanges++;try{localStorage.setItem('railsoftware.gps-ended-change.'+key.split('.')[0],Date.now()+':'+Math.random());}catch{}}
-window.addEventListener('storage',event=>{if(event.key?.startsWith('railsoftware.gps-ended-change.'))androidChanges++;});
+window.addEventListener('storage',event=>{if(event.key?.startsWith('railsoftware.gps-transfer-change.'))transferIndexes.delete(event.key.slice('railsoftware.gps-transfer-change.'.length));if(event.key?.startsWith('railsoftware.gps-ended-change.')){androidChanges++;transferIndexes.delete(event.key.slice('railsoftware.gps-ended-change.'.length));}});
 function db(){if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open('lokzeitleiste.gps',1);r.onupgradeneeded=()=>r.result.createObjectStore('tracks',{keyPath:'key'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});return dbPromise;}
-async function local(key,value){if(value!=null)value=window.InfraGo?.normalize(value)||value;const database=await db();return new Promise((resolve,reject)=>{const transaction=database.transaction('tracks',value===undefined?'readonly':'readwrite'),store=transaction.objectStore('tracks'),request=value===undefined?store.get(key):value===null?store.delete(key):store.put({key,value});transaction.oncomplete=()=>{if(value!==undefined)changedAndroidTrack(key,value);resolve(value===undefined?(window.InfraGo?.normalize(request.result?.value)||request.result?.value):value);};transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error);});}
+async function local(key,value){if(value!=null)value=window.InfraGo?.normalize(value)||value;const database=await db();return new Promise((resolve,reject)=>{const transaction=database.transaction('tracks',value===undefined?'readonly':'readwrite'),store=transaction.objectStore('tracks'),request=value===undefined?store.get(key):value===null?store.delete(key):store.put({key,value});transaction.oncomplete=()=>{if(value!==undefined){updateTransferIndex(key,value);changedAndroidTrack(key,value);}resolve(value===undefined?(window.InfraGo?.normalize(request.result?.value)||request.result?.value):value);};transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error);});}
 async function api(path,options={}){const r=await fetch(path,{credentials:'same-origin',cache:'no-store',...options});if(r.status===404)return null;const data=await r.json().catch(()=>({}));if(!r.ok){const error=Error(typeof data.detail==='string'?data.detail:t(globalThis.CtlText.source("portal_gps.text_03169f7c2fb3")));error.status=r.status;throw error;}return window.InfraGo?.normalize(data)||data;}
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const berlinDate=ms=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(ms));
@@ -606,10 +611,11 @@ class Recorder{
   thead.append(head);
   table.append(thead, body);
   const other = globalThis.CtlText.source("portal_gps.text_69384a6be550");
-  const choices = new Map((window.TrainJourneyReasons || []).filter(value => value !== other)
-      .map(value => [t(window.TrainJourneyReasonLabel?.(value) || value), value]));
   for (const row of stops) {
    const draft = this.stopDraft(row);
+   const allowed=window.TrainJourneyAllowedReasons?.(draft.cause||'DB-InfraGo')||window.TrainJourneyReasons||[];
+   const available=[...new Set([...allowed,...(draft.reason?[draft.reason]:[])])];
+   const choices=new Map(available.filter(value=>value!==other).map(value=>[t(window.TrainJourneyReasonLabel?.(value)||value),value]));
    const tr = node('tr'), station = node('input'), list = node('datalist');
    const reason = node('input'), reasonList = node('datalist'), end = node('input'), check = node('input');
    const take = stopAction(globalThis.CtlText.source("portal_gps.text_936378b371b9"), 'M12 16V4m-5 5 5-5 5 5M4 15v5h16v-5');
@@ -644,6 +650,7 @@ class Recorder{
    const reasonData = () => {
     if (!reasonEdited && draft.reason) return {reason: draft.reason, detail: draft.detail || ''};
     const value = reason.value.trim(), choice = choices.get(value);
+    if(value&&!choice&&!allowed.includes(other)){window.CtlValidation?.mark(reason,globalThis.CtlText.source('coordination.text_023ab76c7da5'));throw Error(t(globalThis.CtlText.source('coordination.text_023ab76c7da5')));}
     return {reason: choice || (value ? other : ''), detail: choice ? '' : value};
    };
    let endTouched = false, editedEnd = null;
@@ -753,6 +760,6 @@ async function localSummaries(userId,project){
  });
 }
 
-window.GpsRecorder={flushAndroid,localSummaries,localRecord:(userId,journeyId)=>local(userId+'.'+journeyId),async normalizeVocabulary(userId){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('tracks','readwrite'),request=tx.objectStore('tracks').openCursor();request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;const row=cursor.value;if(row.key.startsWith(userId+'.')){const normalized=window.InfraGo?.normalize(row.value)||row.value;if(normalized!==row.value)cursor.update({...row,value:normalized});}cursor.continue();};tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);});},async localRecords(userId){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('tracks','readonly'),request=tx.objectStore('tracks').getAll();tx.oncomplete=()=>resolve(request.result.filter(row=>row.key.startsWith(userId+'.')).map(row=>({journey_id:row.key.slice(String(userId).length+1),...row.value})));tx.onerror=()=>reject(tx.error);});},liveStops,firstDeparture,berlinTime,berlinInput,removeLocal:(userId,journeyId)=>local(userId+'.'+journeyId,null),mount:options=>new Recorder(options),isActive:()=>!!(active||manualActive),activeFor:id=>active?.o.journeyId===id||manualActive?.o.journeyId===id};
+window.GpsRecorder={pendingTransfers,flushAndroid,localSummaries,localRecord:(userId,journeyId)=>local(userId+'.'+journeyId),async normalizeVocabulary(userId){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('tracks','readwrite'),request=tx.objectStore('tracks').openCursor();request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;const row=cursor.value;if(row.key.startsWith(userId+'.')){const normalized=window.InfraGo?.normalize(row.value)||row.value;if(normalized!==row.value)cursor.update({...row,value:normalized});}cursor.continue();};tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);});},async localRecords(userId){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('tracks','readonly'),request=tx.objectStore('tracks').getAll();tx.oncomplete=()=>resolve(request.result.filter(row=>row.key.startsWith(userId+'.')).map(row=>({journey_id:row.key.slice(String(userId).length+1),...row.value})));tx.onerror=()=>reject(tx.error);});},liveStops,firstDeparture,berlinTime,berlinInput,removeLocal:(userId,journeyId)=>local(userId+'.'+journeyId,null),mount:options=>new Recorder(options),isActive:()=>!!(active||manualActive),activeFor:id=>active?.o.journeyId===id||manualActive?.o.journeyId===id};
 window.addEventListener('pagehide',()=>{active?.persist().catch(()=>{});manualActive?.persist().catch(()=>{});});
 })();

@@ -26,6 +26,23 @@ class TfMessagesTest(unittest.TestCase):
         body=dict(recipients=[self.other_id],subject='Testnachricht',body='Zeile 1\nZeile 2');body.update(changes)
         result=self.sender.post('/api/v1/tf/messages',data={'payload':json.dumps(body)})
         self.assertEqual(result.status_code,201,result.text);return result.json()['id']
+    def test_direct_chat_privacy_receipts_search_and_paging(self):
+        mid=self.send(body='Direkter Chat 100%_ Text')
+        sender_id=next(r['id'] for r in self.other.get('/api/v1/tf/messages/recipients').json() if r['id']!=self.other_id and r['group']=='TF')
+        # Ein Gruppenversand gehört nicht zu einem privaten Gespräch.
+        self.send(recipients=[self.other_id,sender_id],body='Gruppentext')
+        chats=self.other.get('/api/v1/tf/messages/chats');self.assertEqual(chats.status_code,200,chats.text);self.assertEqual(len(chats.json()),1)
+        url='/api/v1/tf/messages/chats/'+str(sender_id)
+        r=self.other.get(url);self.assertEqual(r.status_code,200,r.text);self.assertEqual([m['id'] for m in r.json()['messages']],[mid]);self.assertFalse(r.json()['messages'][0]['mine'])
+        self.assertEqual(self.sender.get('/api/v1/tf/messages/chats/'+str(self.other_id)).json()['messages'][0]['read'],True)
+        self.assertEqual(self.other.get(url,params={'q':'100%_'}).json()['messages'][0]['id'],mid)
+        self.assertEqual(self.other.get(url,params={'q':'no match'}).json()['messages'],[])
+        self.assertEqual(self.other.get(url,params={'before':mid}).json()['messages'],[])
+        self.assertNotIn('username',chats.text);self.assertNotIn('787100',chats.text)
+        self.assertEqual(self.other.delete('/api/v1/tf/messages/'+str(mid)).status_code,200)
+        self.assertEqual(self.other.get(url).json()['messages'],[])
+        self.assertEqual(len(self.sender.get('/api/v1/tf/messages/chats/'+str(self.other_id)).json()['messages']),1)
+
     def test_private_recipient_names_and_inbox_read_delete(self):
         choices=self.sender.get('/api/v1/tf/messages/recipients').json()
         self.assertTrue(all(set(r)=={'id','name','group'} for r in choices));self.assertNotIn('787222',json.dumps(choices));self.assertNotIn('787100',json.dumps(choices))

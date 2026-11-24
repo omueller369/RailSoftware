@@ -2,7 +2,7 @@
 from datetime import date, datetime, timezone
 
 from sqlalchemy import BigInteger, Boolean, CheckConstraint, Date, DateTime, Double, ForeignKey, Index, Integer, LargeBinary, String, Text, UniqueConstraint
-from sqlalchemy.dialects.mysql import LONGBLOB, MEDIUMTEXT
+from sqlalchemy.dialects.mysql import LONGBLOB, MEDIUMTEXT, LONGTEXT
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .db import Base
@@ -1150,3 +1150,35 @@ class VehicleGpsJourney(Base):
     from_code:Mapped[str]=mapped_column(String(10),default='',nullable=False)
     to_code:Mapped[str]=mapped_column(String(10),default='',nullable=False)
     distance_m:Mapped[float]=mapped_column(Double,nullable=False)
+
+
+class AppCauseReasonSeed(Base):
+    __tablename__='app_cause_reason_seed'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+
+class AppCauseReason(Base):
+    __tablename__='app_cause_reasons'
+    cause_id:Mapped[int]=mapped_column(ForeignKey('app_default_values.id',ondelete='CASCADE'),primary_key=True)
+    reason_id:Mapped[int]=mapped_column(ForeignKey('app_default_values.id',ondelete='CASCADE'),primary_key=True)
+
+
+class DutyRosterImport(Base):
+    __tablename__='duty_roster_imports'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    uploader_id:Mapped[int]=mapped_column(ForeignKey('users.id'),nullable=False,index=True)
+    filename:Mapped[str]=mapped_column(String(200),nullable=False)
+    source_sha256:Mapped[str]=mapped_column(String(64),nullable=False)
+    preview_json:Mapped[str]=mapped_column(Text().with_variant(LONGTEXT(),'mysql'),nullable=False)
+    confirmation_sha256:Mapped[str|None]=mapped_column(String(64),unique=True)
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
+
+
+class DutyRosterEntry(Base):
+    __tablename__='duty_roster_entries'
+    __table_args__=(UniqueConstraint('import_id','source_row'),)
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    import_id:Mapped[int]=mapped_column(ForeignKey('duty_roster_imports.id'),nullable=False)
+    source_row:Mapped[int]=mapped_column(Integer,nullable=False)
+    tf_user_id:Mapped[int]=mapped_column(ForeignKey('users.id'),nullable=False,index=True)
+    date:Mapped[str]=mapped_column(String(10),nullable=False,index=True)
+    payload_json:Mapped[str]=mapped_column(Text,nullable=False)
