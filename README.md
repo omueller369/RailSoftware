@@ -1,6 +1,6 @@
 # LokZeitleiste v0.28.18
 
-**0.28.18 / Android 0.28.18.23:** Art–Grund-Zuordnungen als n:m-Beziehung in den Stammdaten mit gefilterter Auswahl im Arbeitsbericht. Offene Übertragungen zeigen die tatsächlichen lokalen Berichte/GPS-Aufzeichnungen und öffnen den zugehörigen Bericht; die Betatest-Diagnose erscheint nur für TF 787117. Kurznachrichten mit Chatansicht, Suche, Lesebestätigung, Anhängen und lokalen Textentwürfen. Neues Dienstplan-Modul für Personalplanung und TF: Excel-Vorschau, bestätigte Spalten-/TF-Zuordnung und private Anzeige der geplanten Dienste, auch als Fenster im Arbeitsbericht. Bestehende Berichte und Stammdaten bleiben erhalten.
+**0.28.18 / Android 0.28.18.24:** Art–Grund-Zuordnungen als n:m-Beziehung in den Stammdaten mit gefilterter Auswahl im Arbeitsbericht. Offene Übertragungen zeigen die tatsächlichen lokalen Berichte/GPS-Aufzeichnungen und öffnen den zugehörigen Bericht; die Betatest-Diagnose erscheint nur für TF 787117. Kurznachrichten mit Chatansicht, Suche, Lesebestätigung, Anhängen und lokalen Textentwürfen. Neues Dienstplan-Modul für Personalplanung und TF: Excel-Vorschau, bestätigte Spalten-/TF-Zuordnung und private Anzeige der geplanten Dienste, auch als Fenster im Arbeitsbericht. Bestehende Berichte und Stammdaten bleiben erhalten.
 
 ### Dienstplan und Art–Grund-Zuordnung
 
