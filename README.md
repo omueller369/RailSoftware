@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.19
+# LokZeitleiste v0.28.20
+
+**0.28.20 / Android 0.28.20.27:** Dienstplan mit fester kompakter Spaltenfolge und kurzen Bezeichnungen. Dienstbeginn/-ende verwenden DD.MM.YY-HH:MM, P-Abf/P-Ank nur HH:MM. Aus dem Arbeitsbericht öffnet ein Zeilenklick eine bestätigungspflichtige Vorschau für Dienstzeiten und eine zusätzliche Zugfahrt im aktuellen oder neuen Entwurf. Eine Übernahme sendet keinen Arbeitsbericht; bestehende Zugfahrten und vorherige Entwürfe bleiben erhalten. Der optionale U-Name steht unter der Zugnummer und wird lokal, im synchronisierten Bericht und im PDF gespeichert. Während aktiver GPS-Erfassung bleibt die Planübernahme gesperrt.
 
 **0.28.19 / Android 0.28.19.26:** Karten zeichnen Strecken und Betriebsstellen über räumliche Indizes im sichtbaren Ausschnitt. Zeichenpfade werden am Ausschnitt zugeschnitten, identische Ansichten wiederverwendet und manuelle Routenvorschläge bei reinen Kartenbewegungen nicht erneut aufgebaut. Unveränderte GPS-Daten verwenden eine bereits abgeschlossene Hintergrundauswertung erneut; geänderte Daten lösen eine neue Auswertung aus. Originalpunkte, Fahrtenzählung und bestätigte importierte Kenntnisse bleiben erhalten.
 

@@ -22,6 +22,22 @@ class TrainJourneysTest(unittest.TestCase):
     def update(self,report,trains,revision=0):
         return self.driver.put(f'/api/v1/tf/work-reports/{report}/train-journeys',json={'expected_revision':revision,'train_journeys':trains})
 
+    def test_optional_rotation_name_roundtrip_and_length(self):
+        data=self.data();data['train_journeys'][0]['rotation_name']='  Umlauf 4711  '
+        report=self.create(data);self.assertEqual(report['train_journeys'][0]['rotation_name'],'Umlauf 4711')
+        trains=report['train_journeys'];trains[0]['rotation_name']='Umlauf 4712'
+        changed=self.update(report['id'],trains);self.assertEqual(changed.status_code,200,changed.text);self.assertEqual(changed.json()['train_journeys'][0]['rotation_name'],'Umlauf 4712')
+        restored=self.driver.get('/api/v1/tf/work-reports/'+str(report['id'])).json();self.assertEqual(restored['train_journeys'][0]['rotation_name'],'Umlauf 4712')
+        trains[0]['rotation_name']='x'*201;self.assertEqual(self.update(report['id'],trains,revision=1).status_code,422)
+
+    def test_missing_historical_rotation_name_does_not_create_revision(self):
+        report=self.create(self.data())
+        with Session(self.engine) as db:
+            row=db.get(DutyReport,report['id']);payload=json.loads(row.payload_json);payload['train_journeys'][0].pop('rotation_name',None);original=json.dumps(payload);row.payload_json=original;db.commit()
+        trains=report['train_journeys'];trains[0]['rotation_name']=''
+        result=self.update(report['id'],trains);self.assertEqual(result.status_code,200,result.text);self.assertEqual(result.json()['train_revision'],0)
+        with Session(self.engine) as db:self.assertEqual(db.get(DutyReport,report['id']).payload_json,original)
+
     def test_digi_command_reason_and_operator_roundtrip(self):
         data=self.data();data['train_journeys'][0]['events'][0].update(reason='DB-Digi-Befehl',cause='DB InfraGo')
         report=self.create(data);event=report['train_journeys'][0]['events'][0]

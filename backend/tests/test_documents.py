@@ -233,6 +233,15 @@ class DocumentsTest(unittest.TestCase):
         self.assertEqual(sum(f['path'].endswith('-Arbeitsbericht.pdf') for f in files),1)
 
 
+    def test_work_report_pdf_includes_optional_rotation_name(self):
+        import io
+        from pypdf import PdfReader
+        data=self.payload();data['train_journeys']=[dict(id=str(uuid4()),train_number='TESTA',rotation_name='Umlauf 4711',start_station='BHF',end_station='LL',start_at=data['start_at'],end_at=data['end_at'],events=[])]
+        self.create(data);file=next(f for f in self.listing()['files'] if f['name'].endswith('-Arbeitsbericht.pdf'))
+        pdf=self.driver.get('/api/v1/documents/download',params={'path':file['path']}).content
+        text='\n'.join(page.extract_text() for page in PdfReader(io.BytesIO(pdf)).pages)
+        self.assertIn('Umlauf 4711',' '.join(text.split()));self.assertIn('U-Name',text)
+
     def test_pdf_times_only_label_date_changes_in_overnight_duties(self):
         from lokzeitleiste.documents.archive import report_time
         start='2026-10-12T21:00';end='2026-10-13T09:00'

@@ -94,6 +94,7 @@ class TrainEventIn(BaseModel):
 class TrainJourneyIn(BaseModel):
     id:UUID
     train_number:str=Field(min_length=1,max_length=12)
+    rotation_name:str=Field(default='',max_length=200)
     start_station:str=Field(max_length=10)
     start_station_name:str=Field(default='',max_length=255)
     end_station:str=Field(max_length=10)
@@ -116,6 +117,7 @@ class TrainJourneyIn(BaseModel):
 
     @model_validator(mode='after')
     def valid_journey(self):
+        self.rotation_name=self.rotation_name.strip()
         self.start_station_name=self.start_station_name.strip()
         self.end_station_name=self.end_station_name.strip()
         if not (self.start_station or self.start_station_name) or not (self.end_station or self.end_station_name):

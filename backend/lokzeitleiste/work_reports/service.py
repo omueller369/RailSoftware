@@ -144,7 +144,8 @@ def update_train_journeys(db,user,report,changes):
     use_journeys(db,data.train_journeys,current)
     resolve_train_stations(db,data.train_journeys)
     trains=[t.model_dump(mode='json') for t in data.train_journeys]
-    if trains==current:return report
+    # Ein fehlender alter U-Name entspricht dem leeren optionalen Feld, ohne eine neue Fassung auszulösen.
+    if [dict(t,rotation_name=t.get('rotation_name','')) for t in trains]==[dict(t,rotation_name=t.get('rotation_name','')) for t in current]:return report
     if changes.expected_revision!=revision:raise HTTPException(409,_text_source('server_work_reports_service.text_24dc80734f0d'))
     entry=db.scalar(select(WorkEntry).where(WorkEntry.id==report.entry_id).with_for_update())
     begin,end=interval(entry)

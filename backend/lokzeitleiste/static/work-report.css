@@ -265,3 +265,9 @@ html[data-theme="dark"] #reportSendCancel {
 .gps-vehicle-choice{display:flex;flex-direction:column;gap:.3rem;max-width:34em;margin:.7rem 0}.gps-vehicle-choice select{box-sizing:border-box;max-width:100%;min-height:44px;padding:.5rem;font:inherit}.gps-vehicle-choice small{font-size:.8rem}
 
 .gps-start-stand-hint{color:#008000!important;font-weight:700}html[data-theme=dark] .gps-start-stand-hint{color:#72e998!important}
+
+/* Zugnummer und optionaler Umlaufname bleiben auch auf schmalen Geräten untereinander. */
+#workReport .train-number-fields{grid-area:1/1/3/2;display:flex;flex-direction:column;gap:.4rem;min-width:0;align-self:start}
+#workReport .train-number-fields input{width:100%;box-sizing:border-box}
+@media(max-width:850px){#workReport .train-number-fields{grid-area:1/1/2/3}}
+@media(max-width:560px){#workReport .train-number-fields{grid-area:auto}}

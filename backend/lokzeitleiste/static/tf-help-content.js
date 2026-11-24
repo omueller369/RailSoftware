@@ -13,7 +13,7 @@
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
 window.TfHelpRevision="2026-11-24";
-window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{coordination.text_b3d95af9d0b9}}", "short": "{{coordination.text_852308fc34ca}}", "group": "{{coordination.text_b6ab569e0eec}}", "path": "/tf/dienstplan", "aliases": [], "sections": [{"title": "{{coordination.text_b3d95af9d0b9}}", "paragraphs": ["{{coordination.text_a309f1ce4d74}}", "{{coordination.text_62dd936a2c8e}}"], "steps": []}]},
+window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{coordination.text_b3d95af9d0b9}}", "short": "{{coordination.text_852308fc34ca}}", "group": "{{coordination.text_b6ab569e0eec}}", "path": "/tf/dienstplan", "aliases": [], "sections": [{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_b3d95af9d0b9}}", "paragraphs": ["{{coordination.text_a309f1ce4d74}}", "{{coordination.text_62dd936a2c8e}}"], "steps": []}]},
   {
     "id": "la-anweisungen",
     "path": "/tf/la-anweisungen",
@@ -562,7 +562,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
     "short": "{{portal_tf_help_content.text_1e1d4cb9cd4f}}",
     "path": "/tf/arbeitsbericht",
     "aliases": [],
-    "sections": [{"title": "{{coordination.text_d7f05b4da0fe}}", "paragraphs": ["{{coordination.text_4d17451b6e10}}", "{{coordination.text_e6857d142fe0}}"], "steps": []},
+    "sections": [{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_d7f05b4da0fe}}", "paragraphs": ["{{coordination.text_4d17451b6e10}}", "{{coordination.text_e6857d142fe0}}"], "steps": []},
       {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_30d3bf3d7fb2}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
  {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},

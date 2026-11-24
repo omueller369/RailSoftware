@@ -40,13 +40,13 @@ window.TrainJourneyEditor=class{
   options.button.onclick=()=>{try{this.add();}catch(error){this.o.message(error.message);}};
   window.addEventListener('languagechange',()=>{this.refreshTabs();this.items.forEach(item=>this.table(item));this.pauseSummary();});
  }
- add(){
+ add(proposal={}){
   if(this.o.readonly())return;
   if(this.items.length>=50){this.o.message(globalThis.CtlText.source("portal_train_journeys.text_42cb1ed44351"));return;}
-  const start=this.o.bounds().start;
-  const end=this.after(start,60);
-  const item=this.make({id:this.o.uuid(),train_number:'',start_at:start,end_at:end,events:[]});
-  this.items.push(item);this.activate(item.id);this.changed();item.fields.train_number.focus();
+  const start=proposal.start_at??this.o.bounds().start;
+  const end=proposal.end_at??this.after(start,60);
+  const item=this.make({...proposal,id:this.o.uuid(),train_number:proposal.train_number||'',start_at:start,end_at:end,events:[]});
+  this.items.push(item);this.activate(item.id);this.changed();item.fields.train_number.focus();return item;
  }
  after(value,n){const minute=this.o.minute(value);return Number.isFinite(minute)?new Date((minute+n)*60000).toISOString().slice(0,16):'';}
  field(parent,title,type='text',extra={}){
@@ -68,7 +68,8 @@ window.TrainJourneyEditor=class{
   item.tab.onclick=()=>this.activate(item.id);
   item.tab.onkeydown=event=>{let i=this.items.indexOf(item);if(event.key==='ArrowRight')i=(i+1)%this.items.length;else if(event.key==='ArrowLeft')i=(i+this.items.length-1)%this.items.length;else if(event.key===globalThis.CtlText.source("portal_train_journeys.text_3a78695388b3"))i=0;else if(event.key==='End')i=this.items.length-1;else return;event.preventDefault();this.activate(this.items[i].id);this.items[i].tab.focus();};
   item.header=node('form');item.header.onsubmit=event=>event.preventDefault();item.headerSet=node('fieldset');item.headerSet.append(node('legend',globalThis.CtlText.source("portal_train_journeys.text_9da7c77d68bf")));const grid=node('div');grid.className='report-grid train-data-grid';
-  const fields=item.fields={};fields.train_number=this.field(grid,globalThis.CtlText.source("portal_train_journeys.text_4fc94f436c13"),'text',{required:true,maxLength:12,size:12});fields.train_number.value=data.train_number||'';
+  const fields=item.fields={},numberFields=node('div');numberFields.className='train-number-fields';grid.append(numberFields);fields.train_number=this.field(numberFields,globalThis.CtlText.source("portal_train_journeys.text_4fc94f436c13"),'text',{required:true,maxLength:12,size:12});fields.train_number.value=data.train_number||'';
+  fields.rotation_name=this.field(numberFields,globalThis.CtlText.source('roster_proposal.text_c1928742521d'),'text',{maxLength:200});fields.rotation_name.value=data.rotation_name||'';
   fields.start_station=this.station(grid,globalThis.CtlText.source("portal_train_journeys.text_f34068f22589"),labelStation(data.start_station||'',data.start_station_name));
   fields.start_at=this.field(grid,globalThis.CtlText.source("portal_train_journeys.text_43cda2210cac"),'datetime-local',{required:true,step:'60'});fields.start_at.value=(data.start_at||'').slice(0,16);
   fields.end_station=this.station(grid,globalThis.CtlText.source("portal_train_journeys.text_e96c233d6638"),labelStation(data.end_station||'',data.end_station_name));
@@ -160,7 +161,7 @@ window.TrainJourneyEditor=class{
  restoreEditing(rows){for(const saved of rows||[]){const item=this.items.find(item=>item.id===saved.id);if(!item)continue;item.editing=saved.editing||null;item.suggestedTimes=saved.suggestedTimes||item.suggestedTimes;for(const [key,value]of Object.entries(saved.eventFields||{}))if(item.eventFields[key])item.eventFields[key].value=value;this.details(item);for(const [key,value]of Object.entries(saved.eventFields||{}))if(item.eventFields[key])item.eventFields[key].value=value;item.submit.textContent=item.editing?globalThis.CtlText.source("portal_train_journeys.text_f6b2ff39f540"):globalThis.CtlText.source("portal_train_journeys.text_0df8087370c1");item.cancel.hidden=!this.pendingEvent(item);item.deleteEvent.hidden=!item.editing;}}
  async checkpointGps(){await Promise.all(this.items.map(item=>item.gps?.checkpoint()));}
  async discardGps(){for(const item of this.items)await item.gps?.discard();}
- draft(){return this.items.map(item=>{const f=item.fields,a=this.draftPlace(f.start_station),b=this.draftPlace(f.end_station);return {id:item.id,train_number:f.train_number.value.trim(),start_station:a.code,start_station_name:a.name,start_at:f.start_at.value,end_station:b.code,end_station_name:b.name,end_at:f.end_at.value,events:chronological(item.events).map(e=>({...e}))};});}
+ draft(){return this.items.map(item=>{const f=item.fields,a=this.draftPlace(f.start_station),b=this.draftPlace(f.end_station);return {id:item.id,train_number:f.train_number.value.trim(),rotation_name:f.rotation_name.value.trim(),start_station:a.code,start_station_name:a.name,start_at:f.start_at.value,end_station:b.code,end_station_name:b.name,end_at:f.end_at.value,events:chronological(item.events).map(e=>({...e}))};});}
  pauseMinutes(){return this.items.reduce((n,item)=>n+item.events.reduce((a,e)=>a+(e.reason===globalThis.CtlText.source("portal_train_journeys.text_858e4ba7a29f")?this.o.minute(e.end_at)-this.o.minute(e.start_at):0),0),0);}
  pauseSummary(){this.summary.textContent=t(globalThis.CtlText.source("portal_train_journeys.text_f58f27a67f7d"))+': '+this.o.clock(this.pauseMinutes());this.summary.setAttribute('data-i18n-ignore','');}
  changed(){this.refreshSuggestions();this.pauseSummary();this.o.changed(this.draft());}

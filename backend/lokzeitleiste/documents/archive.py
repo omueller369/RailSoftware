@@ -164,7 +164,7 @@ def work_report_pdf(db,user,report):
     train_pages=[]
     for train in data.get('train_journeys',[]):
         header=[[t(v) for v in [_text_source('server_documents_archive.text_13574159d054'),_text_source('server_documents_archive.text_f34068f22589'),_text_source('server_documents_archive.text_43cda2210cac'),_text_source('server_documents_archive.text_e96c233d6638'),_text_source('server_documents_archive.text_f079711187a4')]],[train['train_number'],station(train,'start_station'),stamp(train['start_at']),station(train,'end_station'),stamp(train['end_at'],train['start_at'])]]
-        train_page=[(t(_text_source('server_documents_archive.text_52c5d4a0445b'))+' '+train['train_number'],header)]
+        train_page=[(t(_text_source('server_documents_archive.text_52c5d4a0445b'))+' '+train['train_number']+(' · '+t(_text_source('roster_proposal.text_c1928742521d'))+': '+train['rotation_name'] if train.get('rotation_name') else ''),header)]
         events=[[t(v) for v in [_text_source('server_documents_archive.text_b45f40c737c3'),_text_source('server_documents_archive.text_76b0a5929c12'),_text_source('server_documents_archive.text_05411091f811'),_text_source('server_documents_archive.text_640e86cbc244'),_text_source('server_documents_archive.text_078a815372af'),_text_source('server_documents_archive.text_668cbe316167')]]]
         previous_event=None;detail_rows=[]
         for event in sorted(train.get('events',[]),key=lambda e:(e['start_at'],e['end_at'],str(e.get('id','')))):

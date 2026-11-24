@@ -459,6 +459,11 @@
     "en": "/locales/report_rework/en.json",
     "pl": "/locales/report_rework/pl.json"
   },
+  "roster_proposal": {
+    "de": "/locales/roster_proposal/de.json",
+    "en": "/locales/roster_proposal/en.json",
+    "pl": "/locales/roster_proposal/pl.json"
+  },
   "route_age": {
     "de": "/locales/route_age/de.json",
     "en": "/locales/route_age/en.json",

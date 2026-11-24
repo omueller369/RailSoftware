@@ -16,6 +16,13 @@ class DraftTest(unittest.TestCase):
     base='/api/v1/tf/work-report-drafts'
     def save(self,data,revision=0,keys=None,client=None):
         return (client or self.driver).put(self.base+'/'+data['client_id'],json={'expected_revision':revision,'report':data,'receipt_keys':keys or []})
+    def test_rotation_name_survives_private_draft_backup(self):
+        data=self.payload();data['train_journeys']=[dict(id=str(uuid4()),train_number='123',rotation_name='Umlauf Entwurf',start_station='BHF',end_station='LL',start_at='2026-10-12T10:00',end_at='2026-10-12T11:00',events=[])]
+        saved=self.save(data);self.assertEqual(saved.status_code,200,saved.text)
+        restored=self.driver.get(self.base+'/'+data['client_id']);self.assertEqual(restored.status_code,200,restored.text)
+        self.assertEqual(restored.json()['report']['train_journeys'][0]['rotation_name'],'Umlauf Entwurf')
+        with Session(self.engine) as db:self.assertEqual(db.scalar(select(func.count()).select_from(DutyReport)),0)
+
     def test_second_device_edit_conflict_and_no_accounting_until_finalization(self):
         data=self.payload();first=self.save(data);self.assertEqual(first.status_code,200,first.text)
         with Session(self.engine) as db:
