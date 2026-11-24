@@ -184,7 +184,7 @@ class Recorder{
  async loadVehicles(){
  if(this.vehicleLoading||this.vehiclesLoaded)return;this.vehicleLoading=true;this.vehicleLoadMessage.textContent='';
  const cache='railsoftware.gps-vehicles.'+this.o.userId;let rows;
- try{rows=await api('/api/v1/tf/brake-sheets/vehicles');if(!Array.isArray(rows))throw Error();rows=rows.map(v=>({id:v.id,vehicle_number:v.vehicle_number,series:v.series||'',name:v.name||''}));try{localStorage.setItem(cache,JSON.stringify(rows));}catch{}this.vehiclesLoaded=true;}catch{try{rows=JSON.parse(localStorage.getItem(cache)||'[]');}catch{rows=[];}if(!Array.isArray(rows))rows=[];if(!rows.length)this.vehicleLoadMessage.textContent=t(globalThis.CtlText.source('gps_vehicle.text_f54733d66afc'));}
+ try{if(navigator.onLine===false)throw Error();rows=await api('/api/v1/tf/brake-sheets/vehicles');if(!Array.isArray(rows))throw Error();rows=rows.map(v=>({id:v.id,vehicle_number:v.vehicle_number,series:v.series||'',name:v.name||''}));try{localStorage.setItem(cache,JSON.stringify(rows));}catch{}this.vehiclesLoaded=true;}catch{try{rows=JSON.parse(localStorage.getItem(cache)||'[]');}catch{rows=[];}if(!Array.isArray(rows))rows=[];if(!rows.length)this.vehicleLoadMessage.textContent=t(globalThis.CtlText.source('gps_vehicle.text_f54733d66afc'));}
  this.vehicleSelect.replaceChildren();const empty=node('option',vehicleText('none'));empty.value='';this.vehicleSelect.append(empty);for(const row of rows){const option=node('option',row.vehicle_number+(row.series?' · '+row.series:'')+(row.name?' · '+row.name:''));option.value=String(row.id);option.setAttribute('data-i18n-ignore','');this.vehicleSelect.append(option);}this.vehicleLoading=false;this.refreshVehicle();
  }
  assignVehicle(){
