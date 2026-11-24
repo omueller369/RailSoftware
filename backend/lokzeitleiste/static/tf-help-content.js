@@ -39,7 +39,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
     "group": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "title": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "short": "{{knowledge_tabs.text_1308485034f1}}",
-    "sections": [
+    "sections": [{"title": "{{map_redraw.text_cb5c2e4541a5}}", "paragraphs": ["{{map_redraw.text_1a656d176dab}}"], "steps": []},
       {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_aa7aba73e8af}}"],"steps":[]},
       {"title":"{{location_arrival.text_b2723732fa72}}","paragraphs":["{{location_arrival.text_f644177310eb}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
@@ -128,7 +128,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
     "group": "{{knowledge_tabs.text_ffad8a8eb545}}",
     "title": "{{manual_route.text_2e35159db647}}",
     "short": "{{route_module.text_a8e535e7a6ec}}",
-    "sections": [
+    "sections": [{"title": "{{map_redraw.text_cb5c2e4541a5}}", "paragraphs": ["{{map_redraw.text_1a656d176dab}}"], "steps": []},
       {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_aa7aba73e8af}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
       {"title":"{{poland_stk.text_18c24e681e53}}","paragraphs":["{{poland_stk.text_0b4e24dce2c7}}"],"steps":[]},

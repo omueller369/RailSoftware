@@ -1,0 +1,4 @@
+{
+  "text_cb5c2e4541a5": "Faster map rendering",
+  "text_1a656d176dab": "When panning and zooming, the map draws only the required tracks and operating points within the viewport. Prepared views and unchanged GPS analyses are reused. Changing journeys or knowledge rebuilds the affected display. Saved GPS points, passage counts and the priority of confirmed imports are retained."
+}

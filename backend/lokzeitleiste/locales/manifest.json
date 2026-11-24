@@ -279,6 +279,11 @@
     "en": "/locales/map_recovery/en.json",
     "pl": "/locales/map_recovery/pl.json"
   },
+  "map_redraw": {
+    "de": "/locales/map_redraw/de.json",
+    "en": "/locales/map_redraw/en.json",
+    "pl": "/locales/map_redraw/pl.json"
+  },
   "offline_basemap": {
     "de": "/locales/offline_basemap/de.json",
     "en": "/locales/offline_basemap/en.json",

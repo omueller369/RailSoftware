@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.18
+# LokZeitleiste v0.28.19
+
+**0.28.19 / Android 0.28.19.26:** Karten zeichnen Strecken und Betriebsstellen über räumliche Indizes im sichtbaren Ausschnitt. Zeichenpfade werden am Ausschnitt zugeschnitten, identische Ansichten wiederverwendet und manuelle Routenvorschläge bei reinen Kartenbewegungen nicht erneut aufgebaut. Unveränderte GPS-Daten verwenden eine bereits abgeschlossene Hintergrundauswertung erneut; geänderte Daten lösen eine neue Auswertung aus. Originalpunkte, Fahrtenzählung und bestätigte importierte Kenntnisse bleiben erhalten.
 
 **0.28.18 / Android 0.28.18.25:** Art–Grund-Zuordnungen als n:m-Beziehung in den Stammdaten mit gefilterter Auswahl im Arbeitsbericht. Offene Übertragungen zeigen die tatsächlichen lokalen Berichte/GPS-Aufzeichnungen und öffnen den zugehörigen Bericht; die Betatest-Diagnose erscheint nur für TF 787117. Kurznachrichten mit Chatansicht, Suche, Lesebestätigung, Anhängen und lokalen Textentwürfen. Neues Dienstplan-Modul für Personalplanung und TF: Excel-Vorschau, bestätigte Spalten-/TF-Zuordnung und private Anzeige der geplanten Dienste, auch als Fenster im Arbeitsbericht. Bestehende Berichte und Stammdaten bleiben erhalten. Die optionale Tfz-Auswahl liest offline den lokalen Bestand ohne Netzabfrage.
 
