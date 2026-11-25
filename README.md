@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.22
+# LokZeitleiste v0.28.23
+
+**0.28.23 / Android 0.28.23.30:** Dienstplanimporte überspringen Pause-Zeilen in Z-Art/P. Die Vorschau nennt die Anzahl. Beim normalen Serverupdate werden vorhandene Pause-Zeilen ausschließlich aus dem Dienstplanbestand entfernt; erfasste Pausen in Arbeitsberichten bleiben erhalten. Wiederholte Importe derselben Datei verdoppeln die verbliebenen Leistungen nicht. Ältere offline gespeicherte Pause-Zeilen werden ausgeblendet.
 
 **0.28.22 / Android 0.28.22.29:** Beim Aufruf des Dienstplans aus dem aktuellen Arbeitsbericht fragt ein Zeilenklick ausdrücklich nach dem Hinzufügen einer NEUEN Zugfahrt. Ja übernimmt geplante Abfahrt/Ankunft mit Datum, Start/Ziel und Umlaufname; der TF ergänzt die Zugnummer. Das Dienstende wird bei Bedarf als Vorschlag bis zum geplanten Dienstende, mindestens bis zur Ankunft, verlängert. Ein späteres vorhandenes Ende bleibt bestehen. Die Verlängerung steht vor Bestätigung in der Vorschau. Dienstbeginn und vorhandene Zugfahrten bleiben erhalten; es entsteht kein neuer Bericht. Nein verändert nichts. Synchronisierte Dienstzeiten bleiben gegen diese direkte Verlängerung geschützt.
 

@@ -1,0 +1,5 @@
+{
+  "text_cfccd6045601": "Pause-Zeilen übersprungen",
+  "text_e1439f29cebd": "Keine importierbaren Leistungen vorhanden.",
+  "text_1f09c99ca653": "Beim Dienstplan-Import werden Zeilen mit dem Wert Pause in Z-Art/P übersprungen. Die Vorschau zeigt Dir die Anzahl. Das gilt auch, wenn Du eine anders benannte Spalte als Zugart zuordnest. Bereits gespeicherte Pause-Zeilen werden beim Serverupdate aus dem Dienstplan entfernt. Auch offline werden solche älteren Dienstplanzeilen nicht mehr angezeigt. Erfasste Pausen in Deinen Arbeitsberichten bleiben erhalten."
+}

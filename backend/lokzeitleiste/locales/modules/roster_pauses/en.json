@@ -1,0 +1,5 @@
+{
+  "text_cfccd6045601": "Break rows skipped",
+  "text_e1439f29cebd": "No duties available to import.",
+  "text_1f09c99ca653": "Duty-roster imports skip rows whose journey type is Pause. The preview shows the count. This also applies when a differently named column is mapped as journey type. Existing Pause entries are removed from the roster during the server update and are hidden offline too. Recorded breaks in your work reports are retained."
+}

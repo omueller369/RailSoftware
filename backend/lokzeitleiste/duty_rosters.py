@@ -19,6 +19,23 @@ MAX_FILE=10*1024*1024
 
 def invalid(status=422):return HTTPException(status,source('coordination.text_54326bbe8493'))
 
+def is_pause(value):
+    return str(value or '').strip().casefold()=='pause'
+
+def activity_column(columns):
+    names={'typ der zugfahrt','z-art/p','zugart/pause','zugart'}
+    return next((i for i,value in enumerate(columns) if str(value).strip().casefold() in names),None)
+
+def remove_pause_entries(db):
+    # Nur veröffentlichte Dienstplanzeilen löschen. Erfasste Arbeitsberichtspausen bleiben unberührt.
+    ids=[]
+    for entry_id,raw in db.execute(select(DutyRosterEntry.id,DutyRosterEntry.payload_json)).yield_per(200):
+        try:payload=json.loads(raw)
+        except (TypeError,ValueError):continue
+        if isinstance(payload,dict) and is_pause(payload.get('activity')):ids.append(entry_id)
+    for offset in range(0,len(ids),500):db.execute(delete(DutyRosterEntry).where(DutyRosterEntry.id.in_(ids[offset:offset+500])))
+    return len(ids)
+
 def cell_text(value):
     if value is None:return ''
     if isinstance(value,(datetime,date,time)):return value.isoformat()
@@ -67,7 +84,10 @@ def workbook(content,filename,sheet,header):
     # Wiederholte Druckkopfzeilen sind keine geplanten Dienste.
     header_columns=[i for i,value in enumerate(columns) if value.strip()]
     if len(header_columns)>=2:rows=[r for r in rows if not all(r['values'][i].strip()==columns[i].strip() for i in header_columns)]
-    return dict(sheets=names,sheet=sheet,header=header,columns=columns,rows=rows)
+    column=activity_column(columns);skipped=0
+    if column is not None:
+        kept=[row for row in rows if not is_pause(row['values'][column])];skipped=len(rows)-len(kept);rows=kept
+    return dict(sheets=names,sheet=sheet,header=header,columns=columns,rows=rows,skipped_pauses=skipped)
 
 def parse_date(value):
     if not value:return None
@@ -131,28 +151,44 @@ def create_router(require_admin,require_account):
         if not set(mapping)&{'date','duty_start','departure'}:raise invalid()
         selection={a.row:a.tf_user_id for a in data.assignments}
         if len(selection)!=len(data.assignments):raise invalid()
-        eligible=set(db.scalars(select(User.id).where(User.role=='tf',User.active==True)))
-        if not set(selection.values())<=eligible:raise invalid()
-        fingerprint=hashlib.sha256(json.dumps([batch.source_sha256,preview['sheet'],preview['header'],sorted(mapping.items()),sorted(selection.items())],sort_keys=True).encode()).hexdigest()
-        existing=db.scalar(select(DutyRosterImport).where(DutyRosterImport.confirmation_sha256==fingerprint))
-        if existing:return dict(count=len(selection),already_imported=True)
-        if batch.confirmation_sha256:raise invalid(409)
         available={r['row']:r['values'] for r in preview['rows']}
         if not set(selection)<=set(available):raise invalid()
+        original_selection=dict(selection);column=mapping.get('activity',activity_column(preview['columns']))
+        if column is not None:selection={row:owner for row,owner in selection.items() if not is_pause(available[row][column])}
+        skipped=int(preview.get('skipped_pauses',0))+len(original_selection)-len(selection)
+        eligible=set(db.scalars(select(User.id).where(User.role=='tf',User.active==True)))
+        if not set(selection.values())<=eligible:raise invalid()
+        def fingerprint_for(assignments):return hashlib.sha256(json.dumps([batch.source_sha256,preview['sheet'],preview['header'],sorted(mapping.items()),sorted(assignments.items())],sort_keys=True).encode()).hexdigest()
+        fingerprint=fingerprint_for(selection);legacy_fingerprint=fingerprint_for(original_selection)
+        existing=db.scalar(select(DutyRosterImport).where(DutyRosterImport.confirmation_sha256.in_({fingerprint,legacy_fingerprint})))
+        if existing:return dict(count=len(selection),skipped_pauses=skipped,already_imported=True)
+        if batch.confirmation_sha256:raise invalid(409)
+        # Nach der Bereinigung darf dieselbe Datei die verbliebenen Leistungen nicht nochmals anlegen.
+        matching=[]
+        for previous in db.scalars(select(DutyRosterImport).where(DutyRosterImport.source_sha256==batch.source_sha256,DutyRosterImport.confirmation_sha256.is_not(None))):
+            try:meta=json.loads(previous.preview_json)
+            except (TypeError,ValueError):continue
+            if meta.get('sheet')==preview['sheet'] and meta.get('header')==preview['header']:matching.append(previous.id)
+        def entry_key(row,owner,payload):return (row,owner,json.dumps(payload,sort_keys=True,ensure_ascii=False))
+        known=set()
+        if matching:
+            for previous in db.scalars(select(DutyRosterEntry).where(DutyRosterEntry.import_id.in_(matching))):
+                try:known.add(entry_key(previous.source_row,previous.tf_user_id,json.loads(previous.payload_json)))
+                except (TypeError,ValueError):continue
         entries=[]
         for index,owner in selection.items():
             values=available[index];payload={field:values[col] for field,col in mapping.items()};dates={key:parse_date(payload.get(key)) for key in DATE_FIELDS if payload.get(key)}
             main=dates.get('duty_start') or dates.get('departure') or dates.get('date')
             if not main:raise invalid()
             if dates.get('duty_end') and dates.get('duty_start') and dates['duty_end']<dates['duty_start']:raise invalid()
-            entries.append(DutyRosterEntry(import_id=batch.id,source_row=index,tf_user_id=owner,date=main.date().isoformat(),payload_json=json.dumps(payload,ensure_ascii=False)))
+            if entry_key(index,owner,payload) not in known:entries.append(DutyRosterEntry(import_id=batch.id,source_row=index,tf_user_id=owner,date=main.date().isoformat(),payload_json=json.dumps(payload,ensure_ascii=False)))
         db.add_all(entries);batch.confirmation_sha256=fingerprint
         try:db.commit()
         except IntegrityError:
             db.rollback()
-            if db.scalar(select(DutyRosterImport.id).where(DutyRosterImport.confirmation_sha256==fingerprint)):return dict(count=len(selection),already_imported=True)
+            if db.scalar(select(DutyRosterImport.id).where(DutyRosterImport.confirmation_sha256==fingerprint)):return dict(count=len(selection),skipped_pauses=skipped,already_imported=True)
             raise invalid(409)
-        return dict(count=len(entries),already_imported=False)
+        return dict(count=len(selection),skipped_pauses=skipped,already_imported=bool(selection) and not entries)
     @router.get('/api/v1/tf/duty-rosters')
     def own(start:str=Query(default='',max_length=10),end:str=Query(default='',max_length=10),user=Depends(driver),db:Session=Depends(database_session)):
         query=select(DutyRosterEntry).where(DutyRosterEntry.tf_user_id==user.id)

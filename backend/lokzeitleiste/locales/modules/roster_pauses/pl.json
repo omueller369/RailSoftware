@@ -1,0 +1,5 @@
+{
+  "text_cfccd6045601": "Pominięte wiersze przerw",
+  "text_e1439f29cebd": "Brak zadań do zaimportowania.",
+  "text_1f09c99ca653": "Podczas importu grafiku wiersze z wartością Pause w rodzaju przejazdu są pomijane. Podgląd pokazuje ich liczbę. Dotyczy to także kolumny o innej nazwie przypisanej jako rodzaj przejazdu. Zapisane wcześniej wiersze Pause są usuwane z grafiku podczas aktualizacji serwera i nie są już pokazywane offline. Zarejestrowane przerwy w raportach pracy pozostają zachowane."
+}
