@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.21
+# LokZeitleiste v0.28.22
+
+**0.28.22 / Android 0.28.22.29:** Beim Aufruf des Dienstplans aus dem aktuellen Arbeitsbericht fragt ein Zeilenklick ausdrücklich nach dem Hinzufügen einer NEUEN Zugfahrt. Ja übernimmt geplante Abfahrt/Ankunft mit Datum, Start/Ziel und Umlaufname; der TF ergänzt die Zugnummer. Das Dienstende wird bei Bedarf als Vorschlag bis zum geplanten Dienstende, mindestens bis zur Ankunft, verlängert. Ein späteres vorhandenes Ende bleibt bestehen. Die Verlängerung steht vor Bestätigung in der Vorschau. Dienstbeginn und vorhandene Zugfahrten bleiben erhalten; es entsteht kein neuer Bericht. Nein verändert nichts. Synchronisierte Dienstzeiten bleiben gegen diese direkte Verlängerung geschützt.
 
 **0.28.21 / Android 0.28.21.28:** Zugnummer und optionaler Umlaufname stehen nebeneinander. Die Beschriftung „U-Name“ heißt jetzt „Umlaufname“ in Erfassung, Dienstplan, Vorschau, Hilfe und PDF. Gespeicherte Umlaufnamen bleiben erhalten.
 

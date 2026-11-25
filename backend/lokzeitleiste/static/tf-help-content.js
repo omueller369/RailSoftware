@@ -13,7 +13,7 @@
 /* Zugfahrtdetails: Angaben links, Zeiten und Eintragen rechts. */
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
-window.TfHelpRevision="2026-11-24";
+window.TfHelpRevision="2026-11-25";
 window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{coordination.text_b3d95af9d0b9}}", "short": "{{coordination.text_852308fc34ca}}", "group": "{{coordination.text_b6ab569e0eec}}", "path": "/tf/dienstplan", "aliases": [], "sections": [{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_b3d95af9d0b9}}", "paragraphs": ["{{coordination.text_a309f1ce4d74}}", "{{coordination.text_62dd936a2c8e}}"], "steps": []}]},
   {
     "id": "la-anweisungen",
