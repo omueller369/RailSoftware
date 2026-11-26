@@ -1,10 +1,8 @@
 <!doctype html><!-- Seitenaufbau für gemeinsame Portaloberfläche. Persönliche Werte werden erst über die geschützten Fachrouten geladen. -->
-<html lang="de"><head><script src="/locales/messages.js?v=0.28.23"></script><script src="/plan-colors.js?v=20261025-6"></script><script src="/auth-session.js?v=0.28.23"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{portal_tf_portal.text_875e458a5abb}}</title><link rel="stylesheet" href="/tf/portal.css?v=0.26.59"><link rel="stylesheet" href="/tf/work-report.css?v=0.28.21"><link rel="stylesheet" href="/responsive.css?v=20261025-plan-layout-1"><script src="/i18n.js?v=20261104-reload-2" defer></script><link rel="stylesheet" href="/tf/la-instructions.css?v=0.27.7"></head><body>
+<html lang="de"><head><script src="/locales/messages.js?v=0.28.24"></script><script src="/plan-colors.js?v=20261025-6"></script><script src="/auth-session.js?v=0.28.24"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{portal_tf_portal.text_875e458a5abb}}</title><link rel="stylesheet" href="/tf/portal.css?v=0.26.59"><link rel="stylesheet" href="/tf/work-report.css?v=0.28.21"><link rel="stylesheet" href="/responsive.css?v=20261025-plan-layout-1"><script src="/i18n.js?v=20261104-reload-2" defer></script><link rel="stylesheet" href="/tf/la-instructions.css?v=0.27.7"></head><body>
 <header><a class="brand" href="/tf">{{portal_tf_portal.text_8c5b14a82fad}}</a></header>
 <main><p id="message" role="status" aria-live="polite"></p>
-<section id="landing" hidden><h1>{{portal_tf_portal.text_6724bcaedb08}}</h1><p>{{portal_tf_portal.text_45450cf9d932}}</p><div class="modules"><a class="module" href="/tf/dienstplan"><span class="module-number">17</span><h2>{{coordination.text_b6ab569e0eec}}</h2><p>{{coordination.text_10ad3c3704d2}}</p></a>
-<a class="module" href="/tf/la-anweisungen"><span class="module-number">La</span><h2>{{la_instructions.text_aaf232064610}}</h2><p>{{la_instructions.text_c432b372e0e3}}</p></a>
-<a class="module" href="/tf/arbeitsbericht">
+<section id="landing" hidden><h1>{{portal_tf_portal.text_6724bcaedb08}}</h1><p>{{portal_tf_portal.text_45450cf9d932}}</p><div class="modules"><a class="module" href="/tf/arbeitsbericht">
   <span class="module-number">1</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 4H6a2 2 0 0 0-2 2v14h8M15 4h3a2 2 0 0 1 2 2v4"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M8 10h4"/><circle cx="17" cy="16" r="5"/><path d="M17 13v3l2 1"/></svg>
@@ -12,8 +10,10 @@
   </h2>
   <p>{{portal_tf_portal.text_eb7df60a14e3}}</p>
 </a>
+<a class="module" href="/tf/dienstplan"><span class="module-number">2</span><h2>{{coordination.text_b6ab569e0eec}}</h2><p>{{coordination.text_10ad3c3704d2}}</p></a>
+<a class="module" href="/tf/la-anweisungen"><span class="module-number">La</span><h2>{{la_instructions.text_aaf232064610}}</h2><p>{{la_instructions.text_c432b372e0e3}}</p></a>
 <a class="module" href="/tf/loco-handover">
-  <span class="module-number">2</span>
+  <span class="module-number">3</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M12 3v8M8 18l-2 3m10-3 2 3M8 15h1m6 0h1"/></svg>
     <span>{{portal_tf_portal.text_2f571b7ba8ad}}</span>
@@ -21,7 +21,7 @@
   <p>{{portal_tf_portal.text_3f6f95927188}}</p>
 </a>
 <a class="module" href="/tf/arbeitsplan">
-  <span class="module-number">3</span>
+  <span class="module-number">4</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18M7 14h2m4 0h2m-8 3h2m4 0h2"/></svg>
     <span>{{portal_tf_portal.text_dc27cf1a64cb}}</span>
@@ -29,7 +29,7 @@
   <p>{{portal_tf_portal.text_5c8195cc1c72}}</p>
 </a>
 <a class="module" href="/documents">
-  <span class="module-number">4</span>
+  <span class="module-number">5</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2ZM3 10h18"/></svg>
     <span>{{portal_tf_portal.text_9f563d69ed14}}</span>
@@ -37,7 +37,7 @@
   <p>{{portal_tf_portal.text_0d1b67eefb65}}</p>
 </a>
 <a class="module" href="/tf/bahnhoefe">
-  <span class="module-number">5</span>
+  <span class="module-number">6</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
     <span>{{portal_tf_portal.text_1d23894f82ca}}</span>
@@ -45,7 +45,7 @@
   <p>{{portal_tf_portal.text_0cea7dae1a64}}</p>
 </a>
 <a class="module" href="/tf/nachrichten">
-  <span class="module-number">6</span>
+  <span class="module-number">7</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
     <span>{{portal_tf_portal.text_73e0cf4b6d15}}</span>
@@ -53,7 +53,7 @@
   <p>{{portal_tf_portal.text_99c6b5f1bf66}}</p>
 </a>
 <a class="module" href="/tf/me">
-  <span class="module-number">7</span>
+  <span class="module-number">8</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2"/></svg>
     <span>{{portal_tf_portal.text_b4d616199968}}</span>
@@ -61,7 +61,7 @@
   <p>{{portal_tf_portal.text_f7ee7fe0b813}}</p>
 </a>
 <a class="module" href="/tf/bremszettel">
-  <span class="module-number">8</span>
+  <span class="module-number">9</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
     <span>{{portal_tf_portal.text_144db46d8a03}}</span>
@@ -69,7 +69,7 @@
   <p>{{portal_tf_portal.text_921173cb3bb8}}</p>
 </a>
 <a class="module" href="/tf/bremszettel-de">
-  <span class="module-number">9</span>
+  <span class="module-number">10</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v13H5V3Zm7 0v5h5m-11 7 3 3 5-6"/></svg>
     <span>{{portal_tf_portal.text_f65c79ef7d2c}}</span>
@@ -77,7 +77,7 @@
   <p>{{portal_tf_portal.text_801539378db0}}</p>
 </a>
 <a class="module" href="/tf/hilfe">
-  <span class="module-number">10</span>
+  <span class="module-number">11</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1.5 1-1.5 1.5-1.5 2.5m0 3.5h.01"/></svg>
     <span>{{portal_tf_portal.text_b9815ac3d6be}}</span>
@@ -85,7 +85,7 @@
   <p>{{portal_tf_portal.text_e9970c427a5b}}</p>
 </a>
 <a class="module" href="/tf/notizen">
-  <span class="module-number">11</span>
+  <span class="module-number">12</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4h16v12l-5 5H4Zm16 12h-5v5M8 8h8m-8 4h8m-8 4h3"/></svg>
     <span>{{portal_tf_portal.text_7800bd538c37}}</span>
@@ -93,15 +93,15 @@
   <p>{{portal_tf_portal.text_9a5121f708e0}}</p>
 </a>
 <a class="module" href="https://db.de/dibe">
-  <span class="module-number">12</span>
+  <span class="module-number">13</span>
   <h2>
     <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v13H5V3Zm7 0v5h5m-6 2-4 5h4l-2 4"/></svg>
     <span>{{portal_tf_portal.text_8401b6977318}}</span>
   </h2>
   <p>{{portal_tf_portal.text_6e222a33b3c1}}</p>
 </a>
-<a class="module" href="/tf/gps-demo"><span class="module-number">13</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 7 7 5-7 5Z"/></svg><span>{{portal_gps_demo.text_d2a6f5151788}}</span></h2><p>{{portal_gps_demo.text_d409cda4d38e}}</p></a>
-<a class="module" href="/tf/updates"><span class="module-number">14</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M5 8a8 8 0 0 1 13-3l2 2M19 16A8 8 0 0 1 6 19l-2-2"/></svg><span>{{portal_updates.text_5e791fe0d244}}</span></h2><p>{{portal_updates.text_65f3a60cb1c7}}</p></a><a class="module" href="/tf/streckenkenntnisse"><span class="module-number">15</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Zm6-3v15m6-12v15"/></svg><span>{{knowledge_tabs.text_ffad8a8eb545}}</span></h2><p>{{knowledge_tabs.text_1308485034f1}}</p></a><a class="module" href="/tf/stk-anlegen"><span class="module-number">16</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L21 6l-4-4L4 15Z"/></svg><span>{{manual_route.text_2e35159db647}}</span></h2><p>{{route_module.text_a8e535e7a6ec}}</p></a>
+<a class="module" href="/tf/gps-demo"><span class="module-number">14</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 7 7 5-7 5Z"/></svg><span>{{portal_gps_demo.text_d2a6f5151788}}</span></h2><p>{{portal_gps_demo.text_d409cda4d38e}}</p></a>
+<a class="module" href="/tf/updates"><span class="module-number">15</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M5 8a8 8 0 0 1 13-3l2 2M19 16A8 8 0 0 1 6 19l-2-2"/></svg><span>{{portal_updates.text_5e791fe0d244}}</span></h2><p>{{portal_updates.text_65f3a60cb1c7}}</p></a><a class="module" href="/tf/streckenkenntnisse"><span class="module-number">16</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Zm6-3v15m6-12v15"/></svg><span>{{knowledge_tabs.text_ffad8a8eb545}}</span></h2><p>{{knowledge_tabs.text_1308485034f1}}</p></a><a class="module" href="/tf/stk-anlegen"><span class="module-number">17</span><h2><svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L21 6l-4-4L4 15Z"/></svg><span>{{manual_route.text_2e35159db647}}</span></h2><p>{{route_module.text_a8e535e7a6ec}}</p></a>
 </div></section>
 <section id="manualRouteModule" hidden><h1>{{manual_route.text_2e35159db647}}</h1><div id="manualRouteWorkspace"></div><div id="manualRouteReferenceWorkspace" hidden aria-hidden="true"></div></section>
 <section id="routeKnowledge" hidden><h1>{{knowledge_tabs.text_ffad8a8eb545}}</h1><p>{{knowledge_tabs.text_1308485034f1}}</p><div class="train-tab-bar knowledge-tab-bar"><div class="train-tabs report-tabs" role="tablist" aria-label="{{knowledge_tabs.text_ffad8a8eb545}}"><button id="knowledgeTab-routes" type="button" role="tab" aria-controls="knowledgePanel-routes" aria-selected="true" tabindex="0">{{knowledge_tabs.text_681c646b05be}}</button><button id="knowledgeTab-places" type="button" role="tab" aria-controls="knowledgePanel-places" aria-selected="false" tabindex="-1">{{knowledge_tabs.text_4aa4e3a2fe55}}</button><button id="knowledgeTab-classes" type="button" role="tab" aria-controls="knowledgePanel-classes" aria-selected="false" tabindex="-1">{{knowledge_tabs.text_be3484f014fc}}</button></div></div><section id="knowledgePanel-routes" class="train-panel" role="tabpanel" aria-labelledby="knowledgeTab-routes"><p>{{portal_beta60.text_a6fd4b95ede8}}</p><div id="routeKnowledgeWorkspace"></div></section><section id="knowledgePanel-places" class="train-panel" role="tabpanel" aria-labelledby="knowledgeTab-places" hidden><h2>{{knowledge_tabs.text_4aa4e3a2fe55}}</h2><p>{{knowledge_tabs.text_24780c3c9616}}</p><div id="knowledgePlacesWorkspace"></div></section><section id="knowledgePanel-classes" class="train-panel" role="tabpanel" aria-labelledby="knowledgeTab-classes" hidden><h2>{{knowledge_tabs.text_be3484f014fc}}</h2><p>{{knowledge_tabs.text_376cf04ec77f}}</p><div id="knowledgeClassesWorkspace"></div></section></section>
@@ -136,10 +136,10 @@
 <section id="yearPlanContent" class="card" hidden><h2 id="yearPlanTitle">{{portal_tf_portal.text_fe1afa505aea}}</h2><div class="tablewrap year-fit" id="tfYearPlan"></div></section>
 <section id="planDayDetails" class="card" hidden aria-live="polite"><h2 id="planDayTitle"></h2><dl id="planDayValues" class="tf-plan-details"></dl></section></section>
 <section id="workReport" hidden><button type="button" id="dutyRosterOpen">{{coordination.text_b6ab569e0eec}}</button><h1>{{portal_tf_portal.text_363b42b18514}}</h1><p id="reportMessage" role="status" aria-live="polite"></p>
-<div class="train-tab-bar report-tab-bar"><div class="train-tabs report-tabs" role="tablist" aria-label="{{portal_report_tabs.text_8f92cd7b253a}}"><button id="reportTab-month" type="button" role="tab" aria-controls="reportPanel-month" aria-selected="true" tabindex="0">{{portal_report_tabs.text_ec894618c28f}}</button><button id="reportTab-duty" type="button" role="tab" aria-controls="reportPanel-duty" aria-selected="false" tabindex="-1">{{portal_report_tabs.text_93d8ea5640b6}}</button><button id="reportTab-train" type="button" role="tab" aria-controls="reportPanel-train" aria-selected="false" tabindex="-1">{{portal_report_tabs.text_1b29268bef00}}</button></div></div>
+<div class="train-tab-bar report-tab-bar"><div class="train-tabs report-tabs" role="tablist" aria-label="{{portal_report_tabs.text_8f92cd7b253a}}"><button id="reportTab-month" type="button" role="tab" aria-controls="reportPanel-month" aria-selected="true" tabindex="0">{{portal_report_tabs.text_ec894618c28f}}</button><button id="reportTab-duty" type="button" role="tab" aria-controls="reportPanel-duty" aria-selected="false" tabindex="-1">{{portal_report_tabs.text_93d8ea5640b6}}</button><button id="reportTab-train" hidden type="button" role="tab" aria-controls="reportPanel-train" aria-selected="false" tabindex="-1">{{portal_report_tabs.text_1b29268bef00}}</button></div></div>
 <div class="card controls"><button id="newReport" type="button">{{portal_tf_portal.text_0cfc44425504}}</button><button id="toggleMonthPlan" class="report-icon-button" type="button" aria-label="{{portal_tf_portal.text_70abb91638f2}}" title="{{portal_tf_portal.text_70abb91638f2}}" aria-controls="monthPlanStrip" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v17H5z M8 2v5 M16 2v5 M5 9h14 M8 12h2 M14 12h2 M8 16h2 M14 16h2"/></svg></button></div>
 <section id="monthPlanStrip" hidden class="card month-plan-strip" aria-labelledby="monthPlanTitle"><h2 id="monthPlanTitle">{{portal_tf_portal.text_baa02c902bd0}}</h2><p id="monthPlanCaption"></p><div id="monthPlanDays" class="month-plan-days" role="group" aria-label="{{portal_tf_portal.text_3b78614ee4bf}}"></div><p class="month-plan-legend">{{portal_tf_portal.text_94753c322d88}}</p><p id="monthPlanDetail" role="status" aria-live="polite"></p></section><div id="reportDetails" hidden><section id="reportPanel-duty" role="tabpanel" aria-labelledby="reportTab-duty" tabindex="0">
-<form id="reportForm"><fieldset id="dutyFields" class="card"><legend>{{portal_tf_portal.text_19293a6f276e}}<button id="toggleDutyNote" class="report-icon-button" type="button" aria-label="{{portal_tf_portal.text_a1b7c0d9f235}}" title="{{portal_tf_portal.text_a1b7c0d9f235}}" aria-controls="overrunBox" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 3h14v18H5z M8 7h8 M8 11h8 M8 15h5"/></svg></button></legend>
+<form id="reportForm"><fieldset id="dutyFields" hidden class="card"><legend>{{portal_tf_portal.text_19293a6f276e}}<button id="toggleDutyNote" class="report-icon-button" type="button" aria-label="{{portal_tf_portal.text_a1b7c0d9f235}}" title="{{portal_tf_portal.text_a1b7c0d9f235}}" aria-controls="overrunBox" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 3h14v18H5z M8 7h8 M8 11h8 M8 15h5"/></svg></button></legend>
 <div class="duty-overview"><div class="duty-overview-left"><label class="duty-begin">{{portal_tf_portal.text_a2aa8e0a6145}}<input id="dutyStart" type="datetime-local" step="60" min="2000-01-01T00:00" max="2100-12-31T23:59" required></label>
 <label class="duty-end">{{portal_tf_portal.text_009cfe3d0e99}}<input id="dutyEnd" type="datetime-local" step="60" min="2000-01-01T00:00" max="2100-12-31T23:59" required></label><div id="dutyMetrics" class="metrics duty-summary-group" role="group" aria-label="{{portal_tf_portal.text_ae5812781b42}}" aria-live="polite"><div class="duty-metric" title="{{portal_tf_portal.text_4a393fe4e7b6}}"><span data-i18n-ignore>{{portal_tf_portal.text_9cd49c5e9577}}</span><strong id="dutyDuration" aria-label="{{portal_tf_portal.text_4a393fe4e7b6}}" data-i18n-ignore>—</strong></div><div class="duty-metric" title="{{portal_tf_portal.text_10db5b590be0}}"><span data-i18n-ignore>{{portal_tf_portal.text_bb3272f3e85f}}</span><strong id="documentedPauseTotal" aria-label="{{portal_tf_portal.text_10db5b590be0}}" data-i18n-ignore>—</strong></div></div><p id="kindHint" role="status"></p></div><div class="duty-overview-right"><div id="dutyKinds" class="duty-kinds duty-summary-group" role="radiogroup" aria-label="{{portal_tf_portal.text_f6ffe691f447}}"><label title="{{portal_tf_portal.text_d6b95aa24371}}"><span data-i18n-ignore>{{portal_tf_portal.text_0b88c9d59ad1}}</span><input type="radio" aria-label="{{portal_tf_portal.text_d6b95aa24371}}" name="dutyKind" value="Sonstige Erfassung" checked></label><label title="{{portal_tf_portal.text_a88b0d6dfef3}}"><span data-i18n-ignore>{{portal_tf_portal.text_1980e84621c5}}</span><input type="radio" aria-label="{{portal_tf_portal.text_a88b0d6dfef3}}" name="dutyKind" value="Bereitschaft"></label><label title="{{portal_tf_portal.text_bfe022ddd1f8}}"><span data-i18n-ignore>{{portal_tf_portal.text_fc457e7f7a6a}}</span><input type="radio" aria-label="{{portal_tf_portal.text_bfe022ddd1f8}}" name="dutyKind" value="Rufbereitschaft"></label><label title="{{portal_tf_portal.text_98a9c4972272}}"><span data-i18n-ignore>{{portal_tf_portal.text_de148153b07d}}</span><input type="radio" aria-label="{{portal_tf_portal.text_98a9c4972272}}" name="dutyKind" value="Ausfallschicht"></label><label title="{{portal_tf_portal.text_35d3a889824d}}"><span data-i18n-ignore>{{portal_tf_portal.text_a25513c7e0f6}}</span><input type="radio" aria-label="{{portal_tf_portal.text_35d3a889824d}}" name="dutyKind" value="Urlaub"></label><label title="{{portal_tf_portal.text_be1600b499c6}}"><span data-i18n-ignore>{{portal_tf_portal.text_86be9a55762d}}</span><input type="radio" aria-label="{{portal_tf_portal.text_be1600b499c6}}" name="dutyKind" value="Krank"></label></div><fieldset id="absenceAllowance" class="duty-summary-group"><legend>{{portal_tf_portal.text_e9d947cd1cae}}</legend><div class="absence-allowance"><label><span>{{portal_tf_portal.text_73ca9c97d3f5}}</span><input type="checkbox" name="absenceAllowance" value="8h"></label><label><span>{{portal_tf_portal.text_0b509e6d4c97}}</span><input type="checkbox" name="absenceAllowance" value="24h"></label><label><span>{{portal_tf_portal.text_5ba226269582}}</span><input type="checkbox" name="absenceAllowance" value="8'h"></label><label><span>{{portal_tf_portal.text_e04316f259ec}}</span><input type="checkbox" name="absenceAllowance" value="24'h"></label></div></fieldset></div></div>
 <label class="hotel-check"><input id="inHotel" type="checkbox"><span>{{portal_tf_portal.text_6d6dcf391265}}</span></label><label id="hotelLocationBox" hidden>{{portal_tf_portal.text_9b569818f32d}}<input id="hotelLocation" maxlength="270" list="hotelStations" autocomplete="off" placeholder="{{portal_tf_portal.text_60edb59b1118}}"><datalist id="hotelStations"></datalist></label><label id="hotelNameBox" hidden>{{portal_tf_portal.text_54161fa6c2f5}}<input id="hotelName" type="text" maxlength="200" autocomplete="organization"></label><p id="pauseHint"></p><label id="overrunBox" hidden>{{portal_tf_portal.text_5e53a8b0d1c4}}<textarea id="overrunReason" maxlength="1000" rows="3"></textarea></label><button id="toggleGuests" type="button" aria-controls="guestSection" aria-expanded="false">{{portal_tf_portal.text_e881923b9f75}}</button></fieldset></form>
@@ -177,4 +177,4 @@
     <button type="submit" value="send">{{portal_tf_portal.text_d7e8a01d49de}}</button>
   </form>
 </dialog>
-<footer></footer></main><script src="/tf/infra-go.js?v=0.27.12"></script><script src="/tf/station-catalog-data.js?v=0.27.1"></script><script src="/tf/station-catalog.js?v=0.28.12"></script><script src="/tf/station-contributions.js?v=0.26.59"></script><script src="/tf/station-picker.js?v=0.28.12"></script><script src="/tf/train-workspace.js?v=0.26.60"></script><script src="/tf/work-report-feedback.js?v=0.28.12"></script><script src="/tf/gps-settings.js?v=0.27.13"></script><script src="/tf/m1-basemap-data.js?v=0.28.7"></script><script src="/tf/m1-map.js?v=0.28.19"></script><script src="/tf/gps-route-tools.js?v=0.28.5"></script><script src="/tf/route-table.js?v=0.28.8"></script><script src="/tf/route-editor.js?v=0.28.19"></script><script src="/tf/gps.js?v=0.28.18"></script><script src="/tf/train-journeys.js?v=0.28.20"></script><script src="/tf/report-tabs.js?v=0.28.15"></script><script src="/tf/work-report.js?v=0.28.22"></script><script src="/tf/station-sharing.js?v=20261022-return-7"></script><script src="/tf/stations.js?v=0.26.56"></script><script src="/tf/notes.js?v=20261103-1"></script><script src="/tf/route-coverage.js?v=0.28.19"></script><script src="/tf/poland-rail.js?v=0.28.15"></script><script src="/tf/rail-network.js?v=0.28.19"></script><script src="/tf/route-csv.js?v=0.28.10"></script><script src="/tf/route-imports.js?v=0.28.19"></script><script src="/tf/location-editor.js?v=0.27.4"></script><script src="/tf/knowledge-inventory.js?v=0.27.4"></script><script src="/tf/poland-stk-worker.js?v=0.28.12"></script><script src="/tf/poland-stk.js?v=0.28.15"></script><script src="/tf/route-knowledge.js?v=0.28.19"></script><script src="/tf/gps-demo.js?v=0.27.12"></script><script src="/tf/la-instructions.js?v=0.27.7"></script><script src="/tf/updates.js?v=0.27.4"></script><script src="/tf/gps-demo-visibility.js?v=0.27.9"></script><script src="/tf/portal.js?v=0.28.11"></script><script src="/tf/duty-rosters.js?v=0.28.23"></script></body></html>
+<footer></footer></main><script src="/tf/infra-go.js?v=0.27.12"></script><script src="/tf/station-catalog-data.js?v=0.27.1"></script><script src="/tf/station-catalog.js?v=0.28.12"></script><script src="/tf/station-contributions.js?v=0.26.59"></script><script src="/tf/station-picker.js?v=0.28.12"></script><script src="/tf/train-workspace.js?v=0.26.60"></script><script src="/tf/work-report-feedback.js?v=0.28.12"></script><script src="/tf/gps-settings.js?v=0.27.13"></script><script src="/tf/m1-basemap-data.js?v=0.28.7"></script><script src="/tf/m1-map.js?v=0.28.19"></script><script src="/tf/gps-route-tools.js?v=0.28.5"></script><script src="/tf/route-table.js?v=0.28.8"></script><script src="/tf/route-editor.js?v=0.28.19"></script><script src="/tf/gps.js?v=0.28.18"></script><script src="/tf/train-journeys.js?v=0.28.20"></script><script src="/tf/report-tabs.js?v=0.28.24"></script><script src="/tf/work-report.js?v=0.28.24"></script><script src="/tf/station-sharing.js?v=20261022-return-7"></script><script src="/tf/stations.js?v=0.26.56"></script><script src="/tf/notes.js?v=20261103-1"></script><script src="/tf/route-coverage.js?v=0.28.19"></script><script src="/tf/poland-rail.js?v=0.28.15"></script><script src="/tf/rail-network.js?v=0.28.19"></script><script src="/tf/route-csv.js?v=0.28.10"></script><script src="/tf/route-imports.js?v=0.28.19"></script><script src="/tf/location-editor.js?v=0.27.4"></script><script src="/tf/knowledge-inventory.js?v=0.27.4"></script><script src="/tf/poland-stk-worker.js?v=0.28.12"></script><script src="/tf/poland-stk.js?v=0.28.15"></script><script src="/tf/route-knowledge.js?v=0.28.19"></script><script src="/tf/gps-demo.js?v=0.27.12"></script><script src="/tf/la-instructions.js?v=0.27.7"></script><script src="/tf/updates.js?v=0.27.4"></script><script src="/tf/gps-demo-visibility.js?v=0.27.9"></script><script src="/tf/portal.js?v=0.28.11"></script><script src="/tf/duty-rosters.js?v=0.28.23"></script></body></html>

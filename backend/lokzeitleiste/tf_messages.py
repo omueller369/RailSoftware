@@ -10,7 +10,7 @@ from sqlalchemy import select,func,or_,and_,case
 from sqlalchemy.orm import Session
 from PIL import Image
 from .db import database_session
-from .models import StaffProfile,User,TfProfile,TfMessage as Message,TfMessageDelivery as Delivery,TfMessageAttachment as Attachment,now_utc
+from .models import StaffProfile,User,TfProfile,TfMessage as Message,TfMessageDelivery as Delivery,TfMessageAttachment as Attachment,TfChatGroup as ChatGroup,TfChatMember as Member,TfChatMessage as GroupMessage,now_utc
 from .security import account_active
 from .accounts.access import ready
 
@@ -18,7 +18,12 @@ MAX_FILE=10*1024*1024
 class Recipients(BaseModel):
     recipients:list[int]=Field(default_factory=list,max_length=5000)
     all_tf:bool=False
+class GroupIn(BaseModel):
+    name:str=Field(min_length=1,max_length=100)
+    members:list[int]=Field(min_length=1,max_length=499)
+
 class MessageIn(Recipients):
+    group_id:int|None=Field(default=None,ge=1)
     subject:str=Field(min_length=1,max_length=200)
     body:str=Field(min_length=1,max_length=1000)
     @field_validator('subject','body')
@@ -95,12 +100,48 @@ def create_router(require_account):
     def direct_query(user_id,peer=None):
         # Gruppennachrichten bleiben im Posteingang und werden nicht als private Chats ausgegeben.
         count=select(func.count()).select_from(Delivery).where(Delivery.message_id==Message.id).correlate(Message).scalar_subquery()
-        query=select(Message,Delivery).join(Delivery,Delivery.message_id==Message.id).where(count==1)
+        query=select(Message,Delivery).join(Delivery,Delivery.message_id==Message.id).where(count==1,~select(GroupMessage.message_id).where(GroupMessage.message_id==Message.id).exists())
         incoming=and_(Delivery.recipient_id==user_id,Delivery.deleted_at.is_(None))
         outgoing=Message.sender_id==user_id
         if peer is not None:
             incoming=and_(incoming,Message.sender_id==peer);outgoing=and_(outgoing,Delivery.recipient_id==peer)
         return query.where(or_(incoming,outgoing))
+    def group_owned(db,user,group_id):
+        group=db.get(ChatGroup,group_id)
+        if not group or not db.get(Member,(group_id,user.id)):
+            raise HTTPException(404,_text_source('chat_groups.text_4a47ee5a8057'))
+        return group
+    @router.post('/api/v1/tf/messages/groups',status_code=201)
+    def create_group(data:GroupIn,user=Depends(driver),db:Session=Depends(database_session)):
+        label=data.name.strip();members=set(data.members)|{user.id}
+        active={u.id for u,_ in recipients(db)}
+        if not label or len(members)<2 or not members<=active:
+            raise HTTPException(422,_text_source('chat_groups.text_4a47ee5a8057'))
+        group=ChatGroup(name=label,creator_id=user.id);db.add(group);db.flush()
+        for member in members:db.add(Member(group_id=group.id,user_id=member))
+        db.commit();return dict(id=group.id,name=group.name,kind='group',unread=0)
+    @router.get('/api/v1/tf/messages/groups')
+    def groups(user=Depends(driver),db:Session=Depends(database_session)):
+        result=[]
+        for group in db.scalars(select(ChatGroup).join(Member,Member.group_id==ChatGroup.id).where(Member.user_id==user.id)):
+            row=db.execute(select(func.max(Message.created_at),func.count(Message.id),func.sum(case((and_(Delivery.read_at.is_(None),Message.sender_id!=user.id),1),else_=0))).select_from(GroupMessage).join(Message,Message.id==GroupMessage.message_id).outerjoin(Delivery,and_(Delivery.message_id==Message.id,Delivery.recipient_id==user.id,Delivery.deleted_at.is_(None))).where(GroupMessage.group_id==group.id,or_(Message.sender_id==user.id,Delivery.id.is_not(None)))).one()
+            result.append(dict(id=group.id,name=group.name,kind='group',last_at=(row[0] or group.created_at).isoformat()+'Z',count=row[1],unread=int(row[2] or 0)))
+        return result
+    @router.get('/api/v1/tf/messages/groups/{group_id}')
+    def group_conversation(group_id:int,before:int|None=Query(default=None,ge=1),q:str=Query(default='',max_length=200),user=Depends(driver),db:Session=Depends(database_session)):
+        group_owned(db,user,group_id)
+        query=select(Message,Delivery).join(GroupMessage,GroupMessage.message_id==Message.id).outerjoin(Delivery,and_(Delivery.message_id==Message.id,Delivery.recipient_id==user.id)).where(GroupMessage.group_id==group_id,or_(Message.sender_id==user.id,and_(Delivery.id.is_not(None),Delivery.deleted_at.is_(None))))
+        if before:query=query.where(Message.id<before)
+        if q:query=query.where(Message.body.contains(q,autoescape=True))
+        rows=db.execute(query.order_by(Message.id.desc()).limit(51)).all();items=[]
+        for message,delivery in reversed(rows[:50]):
+            mine=message.sender_id==user.id
+            if not mine and delivery.read_at is None:delivery.read_at=now_utc()
+            value=sent_view(db,message,True) if mine else view(db,message,delivery,True)
+            # Eine Gruppen-Lesebestätigung gilt erst, wenn alle Empfänger gelesen haben.
+            unread=db.scalar(select(func.count()).select_from(Delivery).where(Delivery.message_id==message.id,Delivery.read_at.is_(None),Delivery.deleted_at.is_(None))) if mine else 0
+            value.update(mine=mine,read=not unread);items.append(value)
+        db.commit();return dict(messages=items,more=len(rows)>50)
     @router.get('/api/v1/tf/messages/chats')
     def chats(user=Depends(driver),db:Session=Depends(database_session)):
         query=direct_query(user.id).with_only_columns(Message.id,Message.sender_id,Delivery.recipient_id,Delivery.read_at,Message.created_at).subquery()
@@ -149,6 +190,10 @@ def create_router(require_account):
     async def send(payload:str=Form(max_length=50000),file:UploadFile|None=File(default=None),user=Depends(driver),db:Session=Depends(database_session)):
         try:data=MessageIn.model_validate_json(payload)
         except ValidationError as exc:raise HTTPException(422,_text_source('server_tf_messages.text_35b72faaf4be')) from exc
+        if data.group_id:
+            group_owned(db,user,data.group_id)
+            data.recipients=list(db.scalars(select(Member.user_id).where(Member.group_id==data.group_id,Member.user_id!=user.id)))
+            data.all_tf=False
         selected=targets(db,data);attachment=None
         if file:
             try:content=await file.read(MAX_FILE+1)
@@ -163,10 +208,13 @@ def create_router(require_account):
                     if image.format in ('JPEG','PNG','GIF','WEBP'):mime=Image.MIME[image.format]
             except Exception:pass
             if content.startswith(b'%PDF-'):mime='application/pdf'
+            elif len(content)>12 and content[4:8]==b'ftyp':mime='video/mp4'
+            elif content.startswith(b'\x1a\x45\xdf\xa3') and b'webm' in content[:4096]:mime='video/webm'
             attachment=Attachment(filename=filename,mime_type=mime,content=content);db.add(attachment);db.flush()
         profile=db.get(TfProfile,user.id)
         message=Message(sender_id=user.id,sender_name=identity(db,user),subject=data.subject,body=data.body,attachment_id=attachment.id if attachment else None);db.add(message);db.flush()
         for target in selected:db.add(Delivery(message_id=message.id,recipient_id=target))
+        if data.group_id:db.add(GroupMessage(message_id=message.id,group_id=data.group_id))
         db.commit();return dict(id=message.id,sent=len(selected))
     @router.post('/api/v1/tf/messages/{message_id}/reply',status_code=201)
     async def reply(message_id:int,payload:str=Form(max_length=50000),file:UploadFile|None=File(default=None),user=Depends(driver),db:Session=Depends(database_session)):
@@ -174,6 +222,7 @@ def create_router(require_account):
         try:data=MessageIn.model_validate_json(payload)
         except ValidationError as exc:raise HTTPException(422,_text_source('server_tf_messages.text_14ae4d309870')) from exc
         data.recipients=[original.sender_id];data.all_tf=False
+        data.group_id=db.scalar(select(GroupMessage.group_id).where(GroupMessage.message_id==original.id))
         return await send(data.model_dump_json(),file,user,db)
     @router.get('/api/v1/tf/messages/{message_id}')
     def detail(message_id:int,user=Depends(driver),db:Session=Depends(database_session)):

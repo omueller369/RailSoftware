@@ -790,6 +790,25 @@ class TfMessageDelivery(Base):
     deleted_at:Mapped[datetime|None]=mapped_column(DateTime,nullable=True)
 
 
+# Gruppenmitgliedschaft und Chatzuordnung bleiben getrennt von privaten Nachrichten.
+class TfChatGroup(Base):
+    __tablename__='tf_chat_groups'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    name:Mapped[str]=mapped_column(String(100),nullable=False)
+    creator_id:Mapped[int]=mapped_column(ForeignKey('users.id'),nullable=False)
+    created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
+
+class TfChatMember(Base):
+    __tablename__='tf_chat_members'
+    group_id:Mapped[int]=mapped_column(ForeignKey('tf_chat_groups.id'),primary_key=True)
+    user_id:Mapped[int]=mapped_column(ForeignKey('users.id'),primary_key=True)
+
+class TfChatMessage(Base):
+    __tablename__='tf_chat_messages'
+    message_id:Mapped[int]=mapped_column(ForeignKey('tf_messages.id'),primary_key=True)
+    group_id:Mapped[int]=mapped_column(ForeignKey('tf_chat_groups.id'),nullable=False,index=True)
+
+
 class StaffPersonnelNumber(Base):
     __tablename__ = 'staff_personnel_numbers'
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'),primary_key=True)

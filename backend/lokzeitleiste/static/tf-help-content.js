@@ -13,7 +13,7 @@
 /* Zugfahrtdetails: Angaben links, Zeiten und Eintragen rechts. */
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
-window.TfHelpRevision="2026-11-25";
+window.TfHelpRevision="2026-11-26";
 window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{coordination.text_b3d95af9d0b9}}", "short": "{{coordination.text_852308fc34ca}}", "group": "{{coordination.text_b6ab569e0eec}}", "path": "/tf/dienstplan", "aliases": [], "sections": [{"title": "{{roster_pauses.text_cfccd6045601}}", "paragraphs": ["{{roster_pauses.text_1f09c99ca653}}"], "steps": []},{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_b3d95af9d0b9}}", "paragraphs": ["{{coordination.text_a309f1ce4d74}}", "{{coordination.text_62dd936a2c8e}}"], "steps": []}]},
   {
     "id": "la-anweisungen",
@@ -563,7 +563,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
     "short": "{{portal_tf_help_content.text_1e1d4cb9cd4f}}",
     "path": "/tf/arbeitsbericht",
     "aliases": [],
-    "sections": [{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_d7f05b4da0fe}}", "paragraphs": ["{{coordination.text_4d17451b6e10}}", "{{coordination.text_e6857d142fe0}}"], "steps": []},
+    "sections": [{"title": "{{portal_report_tabs.text_8f92cd7b253a}}", "paragraphs": ["{{chat_groups.text_f311dfebf58e}}"], "steps": []},{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_d7f05b4da0fe}}", "paragraphs": ["{{coordination.text_4d17451b6e10}}", "{{coordination.text_e6857d142fe0}}"], "steps": []},
       {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_30d3bf3d7fb2}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
  {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},
@@ -1288,7 +1288,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
     "short": "{{portal_tf_help_content.text_f867b96a12d1}}",
     "path": "/tf/nachrichten",
     "aliases": [],
-    "sections": [{"title": "{{coordination.text_14c1f5280f92}}", "paragraphs": ["{{coordination.text_a223ce7aab55}}"], "steps": []},
+    "sections": [{"title": "{{chat_groups.text_78b8a31f4794}}", "paragraphs": ["{{chat_groups.text_c2992bcdb4ac}}"], "steps": []},{"title": "{{coordination.text_14c1f5280f92}}", "paragraphs": ["{{coordination.text_a223ce7aab55}}"], "steps": []},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
       {
         "title": "{{portal_tf_help_content.text_f0cc7ba215b0}}",

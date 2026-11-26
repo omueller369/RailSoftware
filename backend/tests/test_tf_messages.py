@@ -26,6 +26,58 @@ class TfMessagesTest(unittest.TestCase):
         body=dict(recipients=[self.other_id],subject='Testnachricht',body='Zeile 1\nZeile 2');body.update(changes)
         result=self.sender.post('/api/v1/tf/messages',data={'payload':json.dumps(body)})
         self.assertEqual(result.status_code,201,result.text);return result.json()['id']
+    def test_named_group_membership_delivery_reads_and_direct_isolation(self):
+        third_id=self.create_tf('787333','MSG-THIRD').json()['id'];third=self.login('787333')
+        response=self.sender.post('/api/v1/tf/messages/groups',json={'name':'  Einsatz Nord  ','members':[self.other_id,self.other_id]})
+        self.assertEqual(response.status_code,201,response.text);group=response.json();gid=group['id'];base='/api/v1/tf/messages/groups'
+        self.assertEqual(group['name'],'Einsatz Nord');self.assertEqual(len(self.other.get(base).json()),1)
+        self.assertEqual(third.get(base).json(),[]);self.assertEqual(third.get(base+'/'+str(gid)).status_code,404)
+        rejected=third.post('/api/v1/tf/messages',data={'payload':json.dumps({'group_id':gid,'subject':'Chat','body':'Fremdzugriff','recipients':[self.tf]})})
+        self.assertEqual(rejected.status_code,404)
+        mid=self.send(group_id=gid,recipients=[third_id],all_tf=True,body='Gruppenstart 100%_')
+        self.assertEqual(third.get('/api/v1/tf/messages/unread').json()['count'],0,'Client-supplied recipients never expand group membership')
+        self.assertEqual(self.other.get(base).json()[0]['unread'],1)
+        self.assertEqual(self.other.get('/api/v1/tf/messages/chats').json(),[],'Two-member groups are not direct chats')
+        rows=self.other.get(base+'/'+str(gid),params={'q':'100%_'}).json()['messages'];self.assertEqual([r['id'] for r in rows],[mid])
+        self.assertEqual(self.other.get(base).json()[0]['unread'],0)
+        self.assertTrue(self.sender.get(base+'/'+str(gid)).json()['messages'][0]['read'])
+        reply=self.other.post('/api/v1/tf/messages/'+str(mid)+'/reply',data={'payload':json.dumps({'subject':'Chat','body':'Antwort','recipients':[third_id]})})
+        self.assertEqual(reply.status_code,201,reply.text)
+        self.assertEqual(self.sender.get(base).json()[0]['unread'],1)
+        self.assertEqual(len(self.sender.get(base+'/'+str(gid)).json()['messages']),2)
+        self.assertEqual(self.other.get(base+'/'+str(gid),params={'before':mid}).json()['messages'],[])
+        self.assertNotIn('787100',json.dumps(rows));self.assertNotIn('username',json.dumps(rows))
+        self.other.delete('/api/v1/tf/messages/'+str(mid))
+        self.assertNotIn(mid,[r['id'] for r in self.other.get(base+'/'+str(gid)).json()['messages']])
+        self.assertIn(mid,[r['id'] for r in self.sender.get(base+'/'+str(gid)).json()['messages']])
+
+    def test_group_read_receipt_requires_every_recipient(self):
+        third_id=self.create_tf('787333','MSG-THIRD').json()['id'];third=self.login('787333')
+        group=self.sender.post('/api/v1/tf/messages/groups',json={'name':'Dreiergruppe','members':[self.other_id,third_id]}).json()
+        base='/api/v1/tf/messages/groups/'+str(group['id']);mid=self.send(group_id=group['id'])
+        self.other.get(base)
+        self.assertFalse(self.sender.get(base).json()['messages'][0]['read'],'One unread member keeps the group receipt open')
+        self.assertEqual(third.get('/api/v1/tf/messages/groups').json()[0]['unread'],1)
+        third.get(base)
+        self.assertTrue(self.sender.get(base).json()['messages'][0]['read'])
+        self.assertEqual(self.other.get('/api/v1/tf/messages/chats').json(),[])
+
+    def test_group_validation(self):
+        for value in [{'name':' ','members':[self.other_id]},{'name':'Gruppe','members':[]},{'name':'Gruppe','members':[self.tf]},{'name':'Gruppe','members':[999999]}]:
+            self.assertEqual(self.sender.post('/api/v1/tf/messages/groups',json=value).status_code,422)
+        self.assertEqual(self.sender.get('/api/v1/tf/messages/groups/999999').status_code,404)
+
+    def test_chat_video_attachment_mime_and_download_permissions(self):
+        mp4=b'\x00\x00\x00\x18ftypisom'+b'\x00'*24
+        webm=b'\x1a\x45\xdf\xa3'+b'\x42\x82\x84webm'+b'\x00'*16
+        for content,mime,filename in [(mp4,'video/mp4','clip.mp4'),(webm,'video/webm','clip.webm')]:
+            response=self.sender.post('/api/v1/tf/messages',data={'payload':json.dumps({'recipients':[self.other_id],'subject':'Chat','body':filename})},files={'file':(filename,content,'application/octet-stream')})
+            self.assertEqual(response.status_code,201,response.text);mid=response.json()['id'];url=f'/api/v1/tf/messages/{mid}'
+            value=self.other.get(url).json();self.assertEqual(value['attachment']['mime_type'],mime)
+            download=self.other.get(value['attachment']['url']);self.assertEqual(download.content,content);self.assertEqual(download.headers['content-type'],mime);self.assertIn('attachment',download.headers['content-disposition'])
+            self.assertEqual(self.sender.get(value['attachment']['url']).status_code,404)
+            self.assertEqual(self.sender.get(f'/api/v1/tf/messages/sent/{mid}/attachment').content,content)
+
     def test_direct_chat_privacy_receipts_search_and_paging(self):
         mid=self.send(body='Direkter Chat 100%_ Text')
         sender_id=next(r['id'] for r in self.other.get('/api/v1/tf/messages/recipients').json() if r['id']!=self.other_id and r['group']=='TF')

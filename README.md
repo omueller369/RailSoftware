@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.23
+# LokZeitleiste v0.28.24
+
+**0.28.24 / Android 0.28.24.31:** Dienstzeiten und der GPS-Zugfahrtenreiter erscheinen nach Öffnen, Laden oder Neuanlage eines Arbeitsberichts. Dienstplan ist Kachel 2 direkt nach Arbeitsbericht. Kurznachrichten unterstützen benannte Gruppenchats mit ausgewählten Mitgliedern, farbige bestehende Chats und Ungelesen-Zähler bis 99 oben rechts. Bilder und kurze MP4-/WebM-Videos bis 10 MB je Anhang lassen sich im Chat ansehen und herunterladen; eine Nachricht kann auch nur einen Anhang enthalten. Die zusätzlichen Gruppentabellen werden beim regulären Serverupdate angelegt.
 
 **0.28.23 / Android 0.28.23.30:** Dienstplanimporte überspringen Pause-Zeilen in Z-Art/P. Die Vorschau nennt die Anzahl. Beim normalen Serverupdate werden vorhandene Pause-Zeilen ausschließlich aus dem Dienstplanbestand entfernt; erfasste Pausen in Arbeitsberichten bleiben erhalten. Wiederholte Importe derselben Datei verdoppeln die verbliebenen Leistungen nicht. Ältere offline gespeicherte Pause-Zeilen werden ausgeblendet.
 
