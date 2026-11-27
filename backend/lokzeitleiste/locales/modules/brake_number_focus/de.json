@@ -1,0 +1,3 @@
+{
+  "text_80633b5922dc": "Gib die DE-Zugnummer vollständig ein. Während Du tippst, bleibt Deine Eingabe lokal gespeichert. Die automatische Prüfung beginnt erst, wenn Du das Feld verlässt. Das gilt auch im Bremszettel-Overlay und bei importierten Wagen. Neue Bremszettel starten in Spalte 1 mit DE/G und in Spalte 2 mit PL/G, jeweils 100 km/h. Dazu gelten G, D4 für DE, D für PL und 59 Mindestbremshundertstel. Du kannst diese Vorschläge ändern. Beim Laden bleiben Deine gespeicherten Werte erhalten."
+}

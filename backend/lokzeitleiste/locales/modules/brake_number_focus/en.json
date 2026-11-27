@@ -1,0 +1,3 @@
+{
+  "text_80633b5922dc": "Enter the complete DE train number. While you type, your input is saved locally. Automatic validation starts only after you leave the field, including the brake sheet overlay and imported wagons. New sheets start with DE/G in column 1 and PL/G in column 2, both at 100 km/h. The matching defaults are G, D4 for DE, D for PL and a required brake percentage of 59. You can change these suggestions. Loading preserves your saved values."
+}

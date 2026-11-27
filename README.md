@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.24
+# LokZeitleiste v0.28.25
+
+**0.28.25 / Android 0.28.25.32:** Im internationalen Bremszettel werden Zugnummern erst nach Verlassen des Feldes automatisch geprüft. Während der Eingabe bleiben Teilwerte lokal gespeichert; verspätete Berechnungsantworten öffnen keine Fehlermeldung beim Tippen. Neue Bremszettel erhalten DE/G in Spalte 1 und PL/G in Spalte 2, jeweils 100 km/h, mit G, Streckenklasse D4/D und 59 Mindestbremshundertsteln. Gespeicherte und manuell geänderte Werte bleiben erhalten.
 
 **0.28.24 / Android 0.28.24.31:** Dienstzeiten und der GPS-Zugfahrtenreiter erscheinen nach Öffnen, Laden oder Neuanlage eines Arbeitsberichts. Dienstplan ist Kachel 2 direkt nach Arbeitsbericht. Kurznachrichten unterstützen benannte Gruppenchats mit ausgewählten Mitgliedern, farbige bestehende Chats und Ungelesen-Zähler bis 99 oben rechts. Bilder und kurze MP4-/WebM-Videos bis 10 MB je Anhang lassen sich im Chat ansehen und herunterladen; eine Nachricht kann auch nur einen Anhang enthalten. Die zusätzlichen Gruppentabellen werden beim regulären Serverupdate angelegt.
 

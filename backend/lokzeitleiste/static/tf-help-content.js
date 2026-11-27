@@ -13,7 +13,7 @@
 /* Zugfahrtdetails: Angaben links, Zeiten und Eintragen rechts. */
 /* GPS: Android-Kartenkacheln, Dienstzeitraum über Mitternacht, Gesamtzeit seit Abfahrt. */
 /* PDF-Downloads: Dateiname und Endung erhalten. Android-Updates: öffentliche RailSoftware-Releases. Monatsliste: dynamische Tabellenbreite. Gemeinsamer Hilfekatalog für alle TF-Module. Internationaler Bremszettel: editierbare Vorschläge bei DE/G in Spalte 1. */
-window.TfHelpRevision="2026-11-26";
+window.TfHelpRevision="2026-11-27";
 window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{coordination.text_b3d95af9d0b9}}", "short": "{{coordination.text_852308fc34ca}}", "group": "{{coordination.text_b6ab569e0eec}}", "path": "/tf/dienstplan", "aliases": [], "sections": [{"title": "{{roster_pauses.text_cfccd6045601}}", "paragraphs": ["{{roster_pauses.text_1f09c99ca653}}"], "steps": []},{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_b3d95af9d0b9}}", "paragraphs": ["{{coordination.text_a309f1ce4d74}}", "{{coordination.text_62dd936a2c8e}}"], "steps": []}]},
   {
     "id": "la-anweisungen",
@@ -1375,7 +1375,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
     "short": "{{portal_tf_help_content.text_5d0286b2386c}}",
     "path": "/tf/bremszettel",
     "aliases": [],
-    "sections": [
+    "sections": [{"title": "{{portal_brake_sheet.text_eec21d1fe37f}}", "paragraphs": ["{{brake_number_focus.text_80633b5922dc}}"], "steps": []},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
       {
         "title": "{{portal_tf_help_content.text_c8b5e562a158}}",

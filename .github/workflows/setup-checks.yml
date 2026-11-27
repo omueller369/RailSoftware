@@ -53,6 +53,8 @@ jobs:
         run: python backend/tests/check_roster_proposal_ui.py --output-dir "$RUNNER_TEMP/roster-proposal-ui"
       - name: Chat, duty roster confirmation and assigned reasons
         run: python backend/tests/check_coordination_ui.py --output-dir "$RUNNER_TEMP/coordination-ui"
+      - name: International brake train number focus and country defaults
+        run: python backend/tests/check_brake_number_focus_ui.py --output-dir "$RUNNER_TEMP/brake-number-focus-ui"
       - name: Chat groups, unread badges and media previews
         run: python backend/tests/check_chat_groups_ui.py --output-dir "$RUNNER_TEMP/chat-groups-ui"
       - name: Administrative quality and report review

@@ -14,7 +14,7 @@ window.loadTfHelp=()=>{
  helpTask=new Promise((resolve,reject)=>{
   if(!document.getElementById('tfHelpStyles')){const css=document.createElement('link');css.id='tfHelpStyles';css.rel='stylesheet';css.href='/tf/help.css?v=20261108-validation-02619';document.head.append(css);}
   const load=path=>new Promise((done,fail)=>{const script=document.createElement('script');script.src=path;script.onload=done;script.onerror=()=>{script.remove();fail(Error(globalThis.CtlText.source("backend_auth_session.text_6227b32686e3")));};document.head.append(script);});
-  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261126-chat-groups-02824')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
+  (window.TfHelpPages?Promise.resolve():load('/tf/help-content.js?v=20261127-brake-focus-02825')).then(()=>load('/tf/help.js?v=20261108-validation-02619')).then(()=>resolve(window.TfHelp),reject);
  }).catch(error=>{helpTask=null;throw error;});return helpTask;
 };
 // Downloads brauchen dieselbe Tab-Anmeldung wie API-Aufrufe.

@@ -1,0 +1,3 @@
+{
+  "text_80633b5922dc": "Wpisz cały niemiecki numer pociągu. Podczas pisania dane są zapisywane lokalnie. Automatyczna kontrola rozpoczyna się dopiero po opuszczeniu pola, także w nakładce karty hamulcowej i przy importowanych wagonach. Nowe karty mają w kolumnie 1 DE/G, a w kolumnie 2 PL/G, w obu po 100 km/h. Pozostałe wartości to G, D4 dla DE, D dla PL i minimalny procent masy hamującej 59. Możesz je zmienić. Wczytanie zachowuje zapisane wartości."
+}
