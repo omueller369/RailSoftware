@@ -27,7 +27,7 @@ def fixture():
     source = re.sub(r'\}\)\(\);\s*$', '''window.LayoutReport={fill(editor,day){
         setupReportToggles();limitReportLists(el('workReport'));trainEditor=editor;user={id:1};key='layout-test';trips=[];
         state={kind:'Sonstige Erfassung',client_id:'layout',legacy_pause:30,ausbleibe:[]};
-        el('dutyStart').value=day+'T08:00';el('dutyEnd').value=day+'T16:00';totals();
+        el('dutyStart').value=day+'T08:00';el('dutyEnd').value=day+'T16:00';totals();reportFields(true);
     },monthly(day){
         const period=day.slice(0,7);el('reportPeriod').value=period;
         monthCache[period]={days:[],work_minutes:450,guest_minutes:30,pause_minutes:30,reports:[{
