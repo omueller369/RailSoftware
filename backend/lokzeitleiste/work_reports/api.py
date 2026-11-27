@@ -1,6 +1,6 @@
 # Gemeinsame Verarbeitung für Anmeldung und fachliche Server-Endpunkte.
 from ..localization import source as _text_source
-from fastapi import APIRouter,BackgroundTasks,Depends,HTTPException,UploadFile,File,Query,Header
+from fastapi import APIRouter,BackgroundTasks,Depends,Request,HTTPException,UploadFile,File,Query,Header
 from fastapi.responses import Response,FileResponse
 from pathlib import Path
 from sqlalchemy import select,func,or_,case
@@ -28,6 +28,17 @@ def create_router(require_account):
         report=db.scalar(query.with_for_update() if lock else query)
         if not report:raise HTTPException(404,_text_source('server_work_reports_api.text_4b663dc2def6'))
         return report
+
+    @router.post('/api/v1/tf/work-reports/preview')
+    async def preview(request:Request,user=Depends(driver),db:Session=Depends(database_session)):
+        raw=bytearray()
+        async for chunk in request.stream():
+            raw.extend(chunk)
+            if len(raw)>180000:raise HTTPException(413)
+        try:
+            from .preview import render
+            return Response(json.dumps(render(db,user,json.loads(raw))),media_type='application/json',headers={'Cache-Control':'private, no-store'})
+        except (ValueError,TypeError,KeyError,AttributeError) as error:raise HTTPException(422) from error
 
     @router.get('/tf/work-report-feedback.js')
     def feedback_script():return FileResponse(Path(__file__).parent.parent/'static'/'work-report-feedback.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})

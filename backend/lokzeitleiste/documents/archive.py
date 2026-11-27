@@ -64,7 +64,7 @@ def needs_render(db,row):
     return not state or state.format_version<FORMAT_VERSION
 
 
-def pdf_document(title,lines,rows=None,sections=None,wide=False,paired_head=False,train_pages=None):
+def pdf_document(title,lines,rows=None,sections=None,wide=False,paired_head=False,train_pages=None,draft_label=None):
     register_fonts('DocumentSans')
     width,height=landscape(A4) if wide else A4
     usable=width-68-12  # SimpleDocTemplate frame has 6 pt padding on each side.
@@ -120,7 +120,9 @@ def pdf_document(title,lines,rows=None,sections=None,wide=False,paired_head=Fals
             if required<=available:break
         story += [PageBreak(),KeepInFrame(usable,available,content,mode='shrink',hAlign='LEFT',vAlign='TOP')]
     def footer(canvas,doc):
-        canvas.saveState();canvas.setFont('DocumentSans',8);canvas.setFillColor(colors.HexColor('#546b7b'));canvas.drawRightString(width-34,16,str(doc.page));canvas.restoreState()
+        canvas.saveState();canvas.setFont('DocumentSans',8);canvas.setFillColor(colors.HexColor('#546b7b'));canvas.drawRightString(width-34,16,str(doc.page));
+        if draft_label:canvas.drawString(34,16,draft_label)
+        canvas.restoreState()
     stream=io.BytesIO();SimpleDocTemplate(stream,pagesize=(width,height),leftMargin=34,rightMargin=34,topMargin=30,bottomMargin=32,title=title).build(story,onFirstPage=footer,onLaterPages=footer)
     return stream.getvalue()
 
@@ -132,18 +134,33 @@ def report_time(value,start,end,previous=None):
     return value.strftime('%d.%m.%Y %H:%M' if changed else '%H:%M')
 
 
-def work_report_pdf(db,user,report):
+def work_report_layout(db,user,report,*,preview=False):
     data=json.loads(report.payload_json);profile=db.get(TfProfile,user.id);lang=user_language(db,user.id);t=lambda s:translate(s,lang)
     from ..work_reports.schemas import train_pause_minutes,minutes
     from ..work_reports.service import report_view
-    view=report_view(db,report);credited=view['credited_minutes']
-    stamp=lambda value,previous=None:report_time(value,data['start_at'],data['end_at'],previous)
+    if preview:
+        from ..work_reports.preview import preview_metrics
+        view=preview_metrics(db,user,data)
+    else:view=report_view(db,report)
+    credited=view['credited_minutes']
+    normal_clock=globals()['clock']
+    clock=lambda n:normal_clock(n) if n is not None else '—'
+    def duration(start,end):
+        if not preview:return minutes(datetime.fromisoformat(start),datetime.fromisoformat(end))
+        from ..work_reports.preview import duration as preview_duration
+        return preview_duration(start,end)
+    def stamp(value,previous=None):
+        if not preview:return report_time(value,data['start_at'],data['end_at'],previous)
+        try:return report_time(value,data['start_at'],data['end_at'],previous)
+        except (TypeError,ValueError):
+            try:return datetime.fromisoformat(value).strftime('%d.%m.%Y %H:%M')
+            except (TypeError,ValueError):return str(value or '—')
     station=lambda row,key:(' '.join([row.get(key,''),row.get(key+'_name','')])).strip() or '-'
     lines=[(t(_text_source('server_documents_archive.text_d2d77b6ffa70'))+' / '+t(_text_source('server_documents_archive.text_b25358edd497')),f'{profile.first_name} {profile.last_name}'),
         (t(_text_source('server_documents_archive.text_363b42b18514')),report.id),(t(_text_source('server_documents_archive.text_dd167905de0d')),report_version(data)),
         (t(_text_source('server_documents_archive.text_f6ffe691f447')),t(_text_source('server_documents_archive.text_d6b95aa24371') if data.get('kind',_text_source('server_documents_archive.text_f31b8681bfca'))==_text_source('server_documents_archive.text_f31b8681bfca') else data['kind'])),
         (t(_text_source('server_documents_archive.text_c36eeb4a54c9')),stamp(data['start_at'])),(t(_text_source('server_documents_archive.text_5a6948869044')),stamp(data['end_at'],data['start_at'])),(t(_text_source('server_documents_archive.text_b574d367e922')),clock(credited)),
-        (t(_text_source('server_documents_archive.text_10db5b590be0')),str(data['actual_pause']+train_pause_minutes(data.get('train_journeys',[])))+_text_source('server_documents_archive.text_2e75737a6b58')),
+        (t(_text_source('server_documents_archive.text_10db5b590be0')),str(view['documented_pause_minutes'] if preview else data['actual_pause']+train_pause_minutes(data.get('train_journeys',[])))+_text_source('server_documents_archive.text_2e75737a6b58')),
         (t(_text_source('server_documents_archive.text_e9d947cd1cae')),', '.join(data.get('ausbleibe',[])) or '-')]
     if data.get('in_hotel'):
         lines.append((t(_text_source('server_documents_archive.text_6d6dcf391265')),t(_text_source('server_documents_archive.text_cde9e58a9a4e'))))
@@ -155,7 +172,7 @@ def work_report_pdf(db,user,report):
     guests=[[t(v) for v in [_text_source('server_documents_archive.text_640e86cbc244'),_text_source('server_documents_archive.text_0ea77701f68c'),_text_source('server_documents_archive.text_0d95fd6a769f'),_text_source('server_documents_archive.text_2ddcd606c872'),_text_source('server_documents_archive.text_668cbe316167'),_text_source('server_documents_archive.text_e5881251f1ac'),'Sz']]]
     previous_guest=None
     for trip in data['trips']:
-        guests.append([station(trip,'start_station'),station(trip,'end_station'),stamp(trip['start_at'],previous_guest),stamp(trip['end_at'],trip['start_at']),clock(minutes(datetime.fromisoformat(trip['start_at']),datetime.fromisoformat(trip['end_at']))),t(transport[trip['transport']])+(' / '+trip['transport_detail'] if trip.get('transport_detail') else ''),'✓' if trip.get('self_payer') else '-'])
+        guests.append([station(trip,'start_station'),station(trip,'end_station'),stamp(trip['start_at'],previous_guest),stamp(trip['end_at'],trip['start_at']),clock(duration(trip['start_at'],trip['end_at'])),t(transport.get(trip['transport'],trip['transport']))+(' / '+trip['transport_detail'] if trip.get('transport_detail') else ''),'✓' if trip.get('self_payer') else '-'])
         previous_guest=trip['end_at']
     if len(guests)==1:guests.append(['-']*7)
     if not any(trip.get('self_payer') for trip in data['trips']):guests=[row[:-1] for row in guests]
@@ -168,7 +185,7 @@ def work_report_pdf(db,user,report):
         events=[[t(v) for v in [_text_source('server_documents_archive.text_b45f40c737c3'),_text_source('server_documents_archive.text_76b0a5929c12'),_text_source('server_documents_archive.text_05411091f811'),_text_source('server_documents_archive.text_640e86cbc244'),_text_source('server_documents_archive.text_078a815372af'),_text_source('server_documents_archive.text_668cbe316167')]]]
         previous_event=None;detail_rows=[]
         for event in sorted(train.get('events',[]),key=lambda e:(e['start_at'],e['end_at'],str(e.get('id','')))):
-            events.append([t(event.get('reason_label') or event['reason']),t(event.get('cause_label') or event['cause']),station(event,'station'),stamp(event['start_at'],previous_event),stamp(event['end_at'],event['start_at']),clock(minutes(datetime.fromisoformat(event['start_at']),datetime.fromisoformat(event['end_at'])))])
+            events.append([t(event.get('reason_label') or event['reason']),t(event.get('cause_label') or event['cause']),station(event,'station'),stamp(event['start_at'],previous_event),stamp(event['end_at'],event['start_at']),clock(duration(event['start_at'],event['end_at']))])
             details=[]
             if event.get('reason_detail'):details.append(t(_text_source('server_documents_archive.text_b45f40c737c3'))+': '+event['reason_detail'])
             if event.get('cause_detail'):details.append(t(_text_source('server_documents_archive.text_76b0a5929c12'))+': '+event['cause_detail'])
@@ -177,7 +194,17 @@ def work_report_pdf(db,user,report):
             previous_event=event['end_at']
         if len(events)==1:events.append(['-']*6)
         train_page.append((t(_text_source('server_documents_archive.text_52c5d4a0445b')),events,.12,None,detail_rows));train_pages.append(train_page)
-    return pdf_document(t(_text_source('server_documents_archive.text_498192e57606'))+' '+datetime.fromisoformat(data['start_at']).strftime('%d.%m.%Y'),lines,sections=sections,paired_head=True,train_pages=train_pages)
+    try:day=datetime.fromisoformat(data['start_at']).strftime('%d.%m.%Y')
+    except (TypeError,ValueError):day='—'
+    title=t(_text_source('server_documents_archive.text_498192e57606'))+' '+day
+    if preview:
+        from ..localization import source
+        draft=t(source('report_preview.text_2401b34f7275'))
+    return dict(title=title,lines=lines,sections=sections,paired_head=True,train_pages=train_pages,**(dict(draft_label=draft) if preview else {}))
+
+
+def work_report_pdf(db,user,report):
+    return pdf_document(**work_report_layout(db,user,report))
 
 
 def archive_report(db,user,report,queue_email=False,include_months=True):

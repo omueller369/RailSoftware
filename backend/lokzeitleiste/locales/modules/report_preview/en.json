@@ -32,5 +32,8 @@
   "text_a80f0ee6918d": "Yes",
   "text_c8b0e451a44b": "No",
   "text_2f06036b35f8": "Could not open the print dialog.",
-  "text_34b891cf105f": "Open or create your work report. Shift preview shows current local input. Missing details are marked as missing; unchecked or inconsistent values do not block the preview. Edits not yet entered in the list appear separately below. Preview is a draft and synchronizes nothing. Choose Print / Save PDF, then your printer or Save as PDF. This also works offline and during GPS recording. Final synchronization still requires all checks."
+  "text_34b891cf105f": "Open your report and choose Shift preview. When connected, the same PDF generator as for synchronized reports is used: portrait A4, tabular header, passenger journeys and a separate page per train journey. Preview remains an unchecked draft and is neither saved nor synchronized. Missing, inconsistent and unentered details are included. Save PDF downloads this exact preview; Print opens the print dialog. Offline, a local A4 table preview with the same columns is available; its print layout may differ from the server PDF. Final validation remains unchanged.",
+  "text_6a37df9cd9c9": "Save PDF",
+  "text_1d1e5dcfcf26": "Creating PDF preview using the final report layout …",
+  "text_08201887a357": "Local A4 table preview. A connection is needed for the preview produced by the final PDF renderer."
 }

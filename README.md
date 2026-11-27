@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.26
+# LokZeitleiste v0.28.27
+
+**0.28.27 / Android 0.28.27.34:** Schichtvorschau mit derselben PDF-Erzeugung wie die Endfassung: A4 hochkant, tabellarischer Berichtskopf, Gastfahrten und eine eigene Seite je Zugfahrt. Die Vorschau erzeugt keine Berichte oder Dokumenteinträge. Unvollständige und unstimmige Rohwerte bleiben zulässig; das PDF trägt einen Entwurfshinweis. PDF-Download und Android-Druck verwenden dieselben Originalbytes. Ohne Verbindung bleibt eine lokale A4-Tabellenvorschau mit denselben Spalten verfügbar; deren Satz kann vom serverseitigen PDF abweichen.
 
 **0.28.26 / Android 0.28.26.33:** Schichtvorschau im geöffneten Arbeitsbericht: aktueller lokaler Stand einschließlich unvollständiger und unstimmiger Angaben sowie noch nicht eingetragener Bearbeitungen. Als ungeprüfter Entwurf gekennzeichnet; ohne Versand, ohne Serverberechnung und auch offline. Drucken / PDF speichern öffnet den Browser- beziehungsweise Android-Druckdialog mit dem Vorschauinhalt. Endgültige Synchronisierung und deren Prüfungen bleiben unverändert.
 

@@ -10,7 +10,7 @@ def fixture(native=False):
     export='''window.PreviewFixture={setup(){user={id:7,first_name:'Test',last_name:'Tf',username:'787000'};state={client_id:'preview-only',kind:'Sonstige Erfassung',ausbleibe:['8h'],legacy_pause:0};trips=[];trainEditor={draft:()=>[{id:'j1',train_number:'',rotation_name:'<script>evil()</script>',start_station:'AAA',end_station:'',start_at:'2026-11-27T10:00',end_at:'2026-11-27T09:00',events:[{cause:'DB-InfraGo',reason:'Historischer Wert',station:'BBB',start_at:'2026-11-27T10:00',end_at:''}]}],items:[{id:'j1'}],captureEditing:()=>[{id:'j1',eventFields:{cause:'CTL',reason:'Noch nicht eingetragen',station:'CC',start_at:'',end_at:''}}],pendingEvent:()=>true};el('dutyStart').value='2026-11-27T08:00';el('dutyEnd').value='';el('guestFrom').value='Angefangene Gastfahrt';el('guestTo').value='';el('guestTransport').value='train';reportFields(true);}};})();'''
     source=re.sub(r'\}\)\(\);\s*$',lambda _:export,source)
     setup=r'''
-localStorage.clear();localStorage.setItem('unchanged-draft','original');let writes=0,printed=0,nativeJob=null;
+Object.defineProperty(navigator,'onLine',{configurable:true,get:()=>false});localStorage.clear();localStorage.setItem('unchanged-draft','original');let writes=0,printed=0,nativeJob=null;
 window.I18n={t:s=>s,locale:'de-DE'};window.fetch=()=>{writes++;throw Error('Preview must not use the network');};window.print=()=>{printed++;};
 '''
     if native:setup+="window.AndroidPortal={printReport:async value=>{nativeJob=value;}};"
@@ -18,10 +18,10 @@ window.I18n={t:s=>s,locale:'de-DE'};window.fetch=()=>{writes++;throw Error('Prev
 (async()=>{const assert=(v,m)=>{if(!v)throw Error(m);},el=id=>document.getElementById(id);
 el('workReport').hidden=false;PreviewFixture.setup();const before=JSON.stringify(localStorage);const raw=el('dutyEnd').value;
 window.openWorkReportPreview();const dialog=el('reportPreviewDialog'),article=el('reportPreviewContent');assert(dialog.open,'Preview opens for incomplete report');
-assert(article.textContent.includes('ENTWURF')&&article.textContent.includes('fehlt'),'Draft and missing information are explicit');assert(article.textContent.includes('27.11.2026 09:00'),'Inconsistent time is displayed unchanged');assert(article.textContent.includes('Historischer Wert'),'Stale choices do not block preview');assert(article.textContent.includes('Noch nicht eingetragen')&&article.textContent.includes('Angefangene Gastfahrt'),'Unentered event and guest editor values are included');assert(!article.querySelector('script')&&article.textContent.includes('<script>'),'Personal text cannot execute HTML');
+assert(article.textContent.includes('ENTWURF')&&article.textContent.includes('—'),'Draft and missing information are explicit');assert(article.textContent.includes('09:00'),'Inconsistent time is displayed unchanged');assert(article.textContent.includes('Historischer Wert'),'Stale choices do not block preview');assert(article.textContent.includes('Noch nicht eingetragen')&&article.textContent.includes('Angefangene Gastfahrt'),'Unentered event and guest editor values are included');assert(article.querySelectorAll('table').length>=3&&article.querySelectorAll('.report-a4-page').length===2,'A4 head, guest table and train page use tables');assert(!article.querySelector('script')&&article.textContent.includes('<script>'),'Personal text cannot execute HTML');
 assert(!writes&&JSON.stringify(localStorage)===before&&el('dutyEnd').value===raw,'Preview never writes, sends or repairs input');
 const print=dialog.querySelectorAll('button')[1];print.click();await new Promise(r=>setTimeout(r,20));
-if(window.AndroidPortal){assert(nativeJob&&nativeJob.text===article.textContent,'Native printer receives this report only');assert(!document.body.classList.contains('report-preview-printing'),'Android uses its own isolated print WebView');}
+if(window.AndroidPortal){assert(nativeJob&&nativeJob.layout.train_pages.length===1&&nativeJob.text.includes('Historischer Wert'),'Native printer receives this report only');assert(!document.body.classList.contains('report-preview-printing'),'Android uses its own isolated print WebView');}
 else{assert(printed===1&&document.body.classList.contains('report-preview-printing'),'Browser printing is isolated');window.dispatchEvent(new Event('afterprint'));assert(!document.body.classList.contains('report-preview-printing'),'Print state is cleaned after printing');}
 dialog.querySelector('button').click();for(let i=0;el('reportPreviewDialog')&&i<100;i++)await new Promise(r=>setTimeout(r,20));assert(!el('reportPreviewDialog'),'Closing removes the report snapshot');assert(!writes&&JSON.stringify(localStorage)===before,'Printing and closing leave the draft unchanged');
 // Eine lange Schichtvorschau darf beim PDF-Druck nicht auf eine Dialoghöhe abgeschnitten werden.
@@ -53,6 +53,7 @@ def printer(output):
         data=client.call('Page.printToPDF',dict(printBackground=True,preferCSSPageSize=True));path=Path(output)/f'preview-{width}.pdf';path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(base64.b64decode(data['data']))
         from pypdf import PdfReader
         reader=PdfReader(path);text='\n'.join(p.extract_text() for p in reader.pages)
+        assert all(abs(float(p.mediabox.width)-595.2756)<1 for p in reader.pages),'PDF uses A4 portrait'
         assert len(reader.pages)>1 and 'LAST_EVENT_TOKEN' in text,'Every page of the long draft must be present'
         assert 'unchanged-draft' not in text
     return interact

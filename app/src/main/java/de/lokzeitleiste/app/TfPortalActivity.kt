@@ -48,6 +48,7 @@ class TfPortalActivity : ComponentActivity() {
     private var exportStream: OutputStream?=null
     private var exportId: String?=null
     private var exportBytes=0L
+    private var reportPdfPrinting=false
     private var leaving=false
     private var networkCallback:android.net.ConnectivityManager.NetworkCallback?=null
     private var identityRefresh:Job?=null
@@ -236,6 +237,7 @@ class TfPortalActivity : ComponentActivity() {
             when(request.getString("method")) {
                 "help.print" -> startHelpPrint(request,proxy)
                 "report.print" -> startHelpPrint(request,proxy,true)
+                "report.printPdf" -> printReportPdf(request,proxy)
                 "traffic.status" -> reply(proxy,request,true,JSONObject().put("upload",android.net.TrafficStats.getUidTxBytes(android.os.Process.myUid())).put("download",android.net.TrafficStats.getUidRxBytes(android.os.Process.myUid())))
                 "session" -> reply(proxy,request,true,JSONObject(session.toString()).put("app_version",BuildConfig.VERSION_NAME).put("online",connected()))
                 "network.status" -> reply(proxy,request,true,JSONObject().put("online",connected()))
@@ -333,10 +335,34 @@ class TfPortalActivity : ComponentActivity() {
             }
         } catch(error:Exception) { reply(proxy,request,false,error.message?:"App-Anfrage fehlgeschlagen.") }
     }
+    // Die Druckausgabe übernimmt unverändert die Bytes der PDF-Vorschau.
+    private fun printReportPdf(request:JSONObject,proxy:JavaScriptReplyProxy) {
+        require(helpPrintView==null && !reportPdfPrinting)
+        val title=request.getString("title");require(title.isNotBlank() && title.length<=200)
+        val encoded=request.getString("pdf");require(encoded.length<=22000000)
+        val bytes=android.util.Base64.decode(encoded,android.util.Base64.DEFAULT)
+        require(bytes.size<=16000000 && bytes.take(5).toByteArray().toString(Charsets.US_ASCII)=="%PDF-")
+        val file=java.io.File.createTempFile("report-preview-",".pdf",cacheDir)
+        val pages=try { file.writeBytes(bytes);android.graphics.pdf.PdfRenderer(ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY)).use { it.pageCount } } finally { file.delete() }
+        require(pages in 1..500)
+        val adapter=object:PrintDocumentAdapter() {
+            override fun onLayout(old:PrintAttributes?,new:PrintAttributes?,signal:CancellationSignal,callback:LayoutResultCallback,extras:Bundle?) {
+                if(signal.isCanceled)callback.onLayoutCancelled() else callback.onLayoutFinished(PrintDocumentInfo.Builder(title).setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).setPageCount(pages).build(),true)
+            }
+            override fun onWrite(ranges:Array<PageRange>,destination:ParcelFileDescriptor,signal:CancellationSignal,callback:WriteResultCallback) {
+                if(signal.isCanceled){callback.onWriteCancelled();return}
+                try { java.io.FileOutputStream(destination.fileDescriptor).use { it.write(bytes) };callback.onWriteFinished(arrayOf(PageRange.ALL_PAGES)) } catch(_:Exception) { callback.onWriteFailed(null) }
+            }
+            override fun onFinish() { reportPdfPrinting=false }
+        }
+        reportPdfPrinting=true
+        try { getSystemService(PrintManager::class.java).print(title,adapter,PrintAttributes.Builder().setMediaSize(PrintAttributes.MediaSize.ISO_A4).build());reply(proxy,request,true,JSONObject()) }
+        catch(error:Exception) { reportPdfPrinting=false;throw error }
+    }
     private fun startHelpPrint(request:JSONObject,proxy:JavaScriptReplyProxy,report:Boolean=false) {
-        require(helpPrintView==null) { "Ein Druckvorgang läuft bereits." }
+        require(helpPrintView==null && !reportPdfPrinting) { "Ein Druckvorgang läuft bereits." }
         val title=request.getString("title")
-        val html=if(report)ReportPrintDocument.render(title,request.getString("text")) else HelpPrintDocument.render(title,request.getString("text"))
+        val html=if(report && request.has("layout"))ReportPrintDocument.renderLayout(title,request.getJSONObject("layout")) else if(report)ReportPrintDocument.render(title,request.getString("text")) else HelpPrintDocument.render(title,request.getString("text"))
         val jobTitle=if(report)title else "Anleitung – $title"
         val printView=WebView(this);helpPrintView=printView
         printView.settings.apply { javaScriptEnabled=false;allowFileAccess=false;allowContentAccess=false;blockNetworkLoads=true }

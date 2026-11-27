@@ -53,6 +53,8 @@ jobs:
         run: python backend/tests/check_roster_proposal_ui.py --output-dir "$RUNNER_TEMP/roster-proposal-ui"
       - name: Chat, duty roster confirmation and assigned reasons
         run: python backend/tests/check_coordination_ui.py --output-dir "$RUNNER_TEMP/coordination-ui"
+      - name: Official report PDF preview and original-byte download
+        run: python backend/tests/check_report_preview_pdf_ui.py --output-dir "$RUNNER_TEMP/report-preview-pdf-ui"
       - name: Incomplete shift preview, offline printing and PDF isolation
         run: python backend/tests/check_report_preview_ui.py --output-dir "$RUNNER_TEMP/report-preview-ui"
       - name: International brake train number focus and country defaults
