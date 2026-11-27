@@ -13,7 +13,7 @@ def shell():
 
 def fixture():
     raw=(runner.STATIC/'work-report.js').read_text();source,blocks=raw.split('// Die Klappschalter',1)
-    source=re.sub(r'\}\)\(\);\s*$',r'''window.FieldNavFixture={setup(editor){state={client_id:'test-report'};trainEditor=editor;window.CtlValidation.registerResolver(el('workReport'),reportIssueField);}};})();''',source)
+    source=re.sub(r'\}\)\(\);\s*$',r'''window.FieldNavFixture={setup(editor){state={client_id:'test-report'};trainEditor=editor;reportFields(true);window.CtlValidation.registerResolver(el('workReport'),reportIssueField);}};})();''',source)
     source+='// Die Klappschalter'+blocks
     validation='/* Gemeinsame Feldrückmeldungen'+(runner.STATIC/'auth-session.js').read_text().split('/* Gemeinsame Feldrückmeldungen',1)[1]
     scripts='\n'.join([(runner.STATIC/'messages.js').read_text(),(runner.STATIC/'infra-go.js').read_text(),validation,(runner.STATIC/'work-report-feedback.js').read_text(),(runner.STATIC/'report-tabs.js').read_text(),(runner.STATIC/'train-journeys.js').read_text(),source])
