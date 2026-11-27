@@ -32,8 +32,9 @@ def main():
         seed_coordinates(db)
         from .planning.clear_legacy_notes import migrate as clear_old_notes
         clear_old_notes(db)
-        from .duty_rosters import remove_pause_entries
+        from .duty_rosters import remove_pause_entries,migrate_publication
         remove_pause_entries(db)
+        migrate_publication(db)
         db.commit()
         from .wgm import migrate_existing_wgm
         migrate_existing_wgm(db)

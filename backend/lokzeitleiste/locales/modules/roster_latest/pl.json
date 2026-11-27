@@ -1,0 +1,7 @@
+{
+  "text_7ff332ba53a9": "Po potwierdzeniu ten plik zastąpi cały dotychczasowy plan służb dla wszystkich maszynistów i okresów. Obowiązuje tylko ostatni potwierdzony import.",
+  "text_f3dedac9dba3": "Ta wersja importu została już zastąpiona. Stary plan nie został ponownie aktywowany.",
+  "text_4649e9162d1e": "Plan służb został zastąpiony. Zamknij go i otwórz ponownie, aby wybrać aktualną pracę.",
+  "text_4d03796178c1": "W planie służb obowiązuje tylko ostatni potwierdzony plik dla wszystkich maszynistów i okresów. Dopiero potwierdzenie zastępuje cały poprzedni plan; podgląd niczego nie zmienia. Istniejące raporty pracy pozostają. Pliki i przypisania pozostają identyfikowalne na serwerze. Aktualizacja serwera wybiera najnowszy potwierdzony upload ze starszych danych. Offline widzisz ostatnio pobrany stan; po odzyskaniu połączenia otwórz plan ponownie.",
+  "text_e556f2d51ab0": "Widzisz ostatni potwierdzony plan służb. Wcześniejsze wersje importu nie są już ważne."
+}

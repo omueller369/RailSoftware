@@ -1,0 +1,7 @@
+{
+  "text_7ff332ba53a9": "Mit Bestätigen ersetzt diese Datei den gesamten bisherigen Dienstplan für alle TF und Zeiträume. Nur die zuletzt bestätigte Importdatei ist gültig.",
+  "text_f3dedac9dba3": "Diese Importversion wurde bereits ersetzt. Ein alter Dienstplan wurde nicht erneut aktiviert.",
+  "text_4649e9162d1e": "Der Dienstplan wurde inzwischen ersetzt. Bitte schließe den Dienstplan und öffne ihn erneut, um die aktuelle Leistung auszuwählen.",
+  "text_4d03796178c1": "Im Dienstplan gilt nur die zuletzt bestätigte Importdatei für alle TF und Zeiträume. Erst Bestätigen ersetzt den bisherigen Dienstplan vollständig; das Laden einer Vorschau ändert nichts. Bereits angelegte Arbeitsberichte bleiben erhalten. Die Dateien und ihre Zuordnungen bleiben serverseitig nachvollziehbar. Bei alten Beständen übernimmt das Serverupdate den jüngsten bestätigten Upload. Offline siehst Du den zuletzt abgerufenen Stand; öffne den Dienstplan bei wiederhergestellter Verbindung erneut.",
+  "text_e556f2d51ab0": "Du siehst den zuletzt bestätigten Dienstplan. Frühere Importversionen sind nicht mehr gültig."
+}

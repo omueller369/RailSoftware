@@ -484,6 +484,11 @@
     "en": "/locales/report_rework/en.json",
     "pl": "/locales/report_rework/pl.json"
   },
+  "roster_latest": {
+    "de": "/locales/roster_latest/de.json",
+    "en": "/locales/roster_latest/en.json",
+    "pl": "/locales/roster_latest/pl.json"
+  },
   "roster_pauses": {
     "de": "/locales/roster_pauses/de.json",
     "en": "/locales/roster_pauses/en.json",

@@ -1,0 +1,7 @@
+{
+  "text_7ff332ba53a9": "Confirming replaces the entire previous duty roster for all drivers and periods. Only the last confirmed import file is valid.",
+  "text_f3dedac9dba3": "This import version has already been replaced. The old roster was not reactivated.",
+  "text_4649e9162d1e": "The roster has been replaced. Close and reopen it to select the current service.",
+  "text_4d03796178c1": "Only the last confirmed import file is valid for all drivers and periods. Confirmation fully replaces the previous roster; loading a preview changes nothing. Existing work reports remain. Files and assignments remain traceable on the server. For legacy data the server update selects the newest confirmed upload. Offline you see the last fetched state; reopen the roster after reconnecting.",
+  "text_e556f2d51ab0": "You see the last confirmed duty roster. Earlier import versions are no longer valid."
+}

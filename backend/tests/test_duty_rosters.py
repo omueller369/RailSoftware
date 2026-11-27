@@ -73,5 +73,61 @@ class DutyRostersTest(unittest.TestCase):
             self.assertEqual(remove_pause_entries(db),2);db.commit();self.assertEqual(remove_pause_entries(db),0);self.assertEqual(db.get(DutyReport,report.json()['id']).payload_json,original)
             self.assertEqual({json.loads(r.payload_json)['activity'] for r in db.scalars(select(DutyRosterEntry))},{'Vollzug','Pausenbereitschaft'})
         result=self.client.post(BASE+'/preview',files={'file':('same.xlsx',content)});new=result.json();self.assertEqual(new['skipped_pauses'],1)
-        result=self.confirm(new,columns=mapping,assignments=[{'row':3,'tf_user_id':self.tf}]);self.assertEqual(result.status_code,200,result.text);self.assertTrue(result.json()['already_imported'])
-        with Session(self.engine) as db:self.assertEqual(len(list(db.scalars(select(DutyRosterEntry)))),2)
+        result=self.confirm(new,columns=mapping,assignments=[{'row':3,'tf_user_id':self.tf}]);self.assertEqual(result.status_code,200,result.text);self.assertFalse(result.json()['already_imported'])
+        with Session(self.engine) as db:self.assertEqual(len(list(db.scalars(select(DutyRosterEntry)))),1)
+
+    def version_file(self,comment,day=24,rows=1):
+        book=openpyxl.Workbook();sheet=book.active;sheet.append(['TF','Start','Ende','Hinweis'])
+        for i in range(rows):sheet.append(['Fiktiver Tf',datetime(2026,11,day,8+i),datetime(2026,11,day,9+i),comment])
+        out=io.BytesIO();book.save(out);return out.getvalue()
+    def upload_version(self,content):
+        result=self.client.post(BASE+'/preview',files={'file':('version.xlsx',content)});self.assertEqual(result.status_code,200,result.text);return result.json()
+    def current(self):return self.driver.get('/api/v1/tf/duty-rosters').json()
+    def test_last_file_replaces_every_tf_and_period_only_after_confirmation(self):
+        from fastapi.testclient import TestClient
+        from lokzeitleiste.main import app
+        other=self.create_tf('787666','ROSTER-OTHER').json()['id'];client=TestClient(app,base_url='https://testserver');self.staff_clients.append(client);client.post('/api/v1/account/login',json={'username':'787666','password':'tf-secret-12345'})
+        first=self.upload_version(self.version_file('Alt',24,2));self.assertEqual(self.confirm(first,assignments=[{'row':2,'tf_user_id':self.tf},{'row':3,'tf_user_id':other}]).status_code,200)
+        report=self.driver.post('/api/v1/tf/work-reports',json=self.payload());self.assertEqual(report.status_code,201,report.text)
+        new=self.upload_version(self.version_file('Neu',28));self.assertEqual(self.current()[0]['values']['comment'],'Alt')
+        bad=self.confirm(new,columns={'duty_start':99});self.assertEqual(bad.status_code,422);self.assertEqual(self.current()[0]['values']['comment'],'Alt')
+        result=self.confirm(new);self.assertEqual(result.status_code,200,result.text);self.assertEqual(result.json()['replaced'],2)
+        self.assertEqual(self.current()[0]['values']['comment'],'Neu');self.assertEqual(client.get('/api/v1/tf/duty-rosters').json(),[])
+        with Session(self.engine) as db:
+            self.assertEqual(len(list(db.scalars(select(DutyRosterEntry)))),1);self.assertIsNotNone(db.get(DutyReport,report.json()['id']))
+    def test_old_retry_never_reactivates_but_fresh_import_of_same_file_can(self):
+        first_content=self.version_file('Version A');a=self.upload_version(first_content);self.confirm(a)
+        b=self.upload_version(self.version_file('Version B'));self.confirm(b)
+        retry=self.confirm(a);self.assertEqual(retry.status_code,200,retry.text);self.assertTrue(retry.json()['superseded']);self.assertEqual(self.current()[0]['values']['comment'],'Version B')
+        again=self.upload_version(first_content);result=self.confirm(again);self.assertEqual(result.status_code,200,result.text);self.assertFalse(result.json()['superseded']);self.assertEqual(self.current()[0]['import_id'],again['id'])
+        self.assertEqual(self.current()[0]['values']['comment'],'Version A');self.assertFalse(self.confirm(again).json()['superseded'])
+        repeat=self.upload_version(first_content);self.assertTrue(self.confirm(repeat).json()['already_imported']);self.assertEqual(len(self.current()),1)
+    def test_confirmation_order_is_authoritative_and_migration_does_not_reset_it(self):
+        from lokzeitleiste.duty_rosters import migrate_publication
+        first=self.upload_version(self.version_file('Früher hochgeladen'));second=self.upload_version(self.version_file('Später hochgeladen'))
+        self.confirm(second);self.confirm(first)
+        self.assertEqual(self.current()[0]['import_id'],first['id'])
+        with Session(self.engine) as db:migrate_publication(db);db.commit()
+        self.assertEqual(self.current()[0]['import_id'],first['id']);self.assertTrue(self.confirm(second).json()['superseded'])
+    def test_legacy_update_keeps_only_newest_confirmed_upload(self):
+        import json
+        from lokzeitleiste.models import DutyRosterImport
+        from lokzeitleiste.duty_rosters import migrate_publication
+        with Session(self.engine) as db:
+            uploader=db.scalar(select(User.id).where(User.role=='admin'))
+            for i in range(2):
+                batch=DutyRosterImport(uploader_id=uploader,filename='legacy.xlsx',source_sha256=str(i)*64,confirmation_sha256=str(i)*64,preview_json='{}');db.add(batch);db.flush();db.add(DutyRosterEntry(import_id=batch.id,source_row=2,tf_user_id=self.tf,date='2026-11-24',payload_json=json.dumps({'comment':str(i)})))
+            db.commit();migrate_publication(db);db.commit();migrate_publication(db);db.commit()
+            self.assertEqual(len(list(db.scalars(select(DutyRosterEntry)))),1);self.assertEqual(len(list(db.scalars(select(DutyRosterImport)))),2)
+        self.assertEqual(self.current()[0]['values']['comment'],'1')
+
+    def test_database_failure_during_replacement_rolls_back_old_roster(self):
+        from sqlalchemy.exc import IntegrityError
+        from lokzeitleiste.models import DutyRosterImport,DutyRosterPublication
+        first=self.upload_version(self.version_file('Gültig'));self.confirm(first)
+        newer=self.upload_version(self.version_file('FAIL_ROSTER'))
+        with self.engine.begin() as connection:connection.exec_driver_sql("CREATE TRIGGER reject_roster BEFORE INSERT ON duty_roster_entries WHEN NEW.payload_json LIKE '%FAIL_ROSTER%' BEGIN SELECT RAISE(ABORT,'test rollback'); END")
+        with self.assertRaises(IntegrityError):self.confirm(newer)
+        self.assertEqual(self.current()[0]['values']['comment'],'Gültig')
+        with Session(self.engine) as db:
+            self.assertEqual(db.get(DutyRosterPublication,1).import_id,first['id']);self.assertIsNone(db.get(DutyRosterImport,newer['id']).confirmation_sha256)

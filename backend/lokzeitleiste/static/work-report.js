@@ -447,7 +447,7 @@ function checkPlanning(plan,clientId){
 async function applyPlanning(row,clientId){
  const plan=planningValues(row);checkPlanning(plan,clientId);
  // Erst nach Ja werden eindeutige lokale Orte zugeordnet. Andere Namen bleiben als Vorschlag lesbar.
- const places=await Promise.all([planningPlace(plan.from),planningPlace(plan.to)]);checkPlanning(plan,clientId);
+ const places=await Promise.all([planningPlace(plan.from),planningPlace(plan.to)]);checkPlanning(plan,clientId);await window.DutyRoster?.validate?.(row);checkPlanning(plan,clientId);
  if(trainEditor.draft().some(train=>train.start_at===plan.departure&&train.end_at===plan.arrival&&train.rotation_name===plan.rotation&&places.every((place,i)=>{const prefix=i?'end':'start';return place.code?String(train[prefix+'_station']).toLocaleUpperCase()===place.code.toLocaleUpperCase():String(train[prefix+'_station_name']).trim().toLocaleLowerCase()===place.name.toLocaleLowerCase();})))throw Error(planningText('duplicate'));
  // Der Dienstbeginn und die bisherigen Zugfahrten bleiben stehen; das Dienstende wird bei Bedarf nur verlängert. Ein zulässiger gespeicherter Bericht wechselt in seine Zugfahrtbearbeitung.
  const wasViewOnly=reportViewOnly,previousEnd=el('dutyEnd').value;el('dutyEnd').value=planningEnd(plan);reportViewOnly=false;freeze();

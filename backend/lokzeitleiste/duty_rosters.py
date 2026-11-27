@@ -5,11 +5,10 @@ from pathlib import Path,PurePosixPath
 from fastapi import APIRouter,Depends,File,Form,UploadFile,HTTPException,Query
 from fastapi.responses import FileResponse
 from pydantic import BaseModel,Field
-from sqlalchemy import select,delete
+from sqlalchemy import select,delete,insert
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 from .db import database_session
-from .models import DutyRosterImport,DutyRosterEntry,User,TfProfile,now_utc
+from .models import DutyRosterImport,DutyRosterEntry,DutyRosterPublication,User,TfProfile,now_utc
 from .tf_portal import driver_dependency
 from .localization import source
 
@@ -35,6 +34,40 @@ def remove_pause_entries(db):
         if isinstance(payload,dict) and is_pause(payload.get('activity')):ids.append(entry_id)
     for offset in range(0,len(ids),500):db.execute(delete(DutyRosterEntry).where(DutyRosterEntry.id.in_(ids[offset:offset+500])))
     return len(ids)
+
+def publication(db):
+    # Die einzelne Veröffentlichungszeile serialisiert Bestätigungen auch über mehrere Sachbearbeiter.
+    statement=insert(DutyRosterPublication).values(id=1)
+    dialect=db.get_bind().dialect.name
+    if dialect=='sqlite':statement=statement.prefix_with('OR IGNORE')
+    elif dialect in ('mysql','mariadb'):statement=statement.prefix_with('IGNORE')
+    else:raise RuntimeError('Unsupported roster database')
+    db.execute(statement)
+    return db.scalar(select(DutyRosterPublication).where(DutyRosterPublication.id==1).with_for_update().execution_options(populate_existing=True))
+
+def latest_confirmed(db):
+    return db.scalar(select(DutyRosterImport.id).where(DutyRosterImport.confirmation_sha256.is_not(None)).order_by(DutyRosterImport.id.desc()).limit(1))
+
+def remember_legacy(db,rows):
+    grouped={}
+    for row in rows:grouped.setdefault(row.import_id,[]).append(row)
+    for import_id,entries in grouped.items():
+        batch=db.get(DutyRosterImport,import_id)
+        if not batch:continue
+        try:preview=json.loads(batch.preview_json)
+        except (TypeError,ValueError):continue
+        if '_publication' in preview:continue
+        preview['_publication']=dict(assignments={row.source_row:row.tf_user_id for row in entries},entries=[dict(row=row.source_row,tf_user_id=row.tf_user_id,date=row.date,values=json.loads(row.payload_json)) for row in entries])
+        batch.preview_json=json.dumps(preview,ensure_ascii=False)
+
+def migrate_publication(db):
+    active=publication(db)
+    # Ältere Installationen kennen noch keinen Bestätigungszeitpunkt. Der jüngste bestätigte Upload führt.
+    if active.import_id is None:active.import_id=latest_confirmed(db)
+    remember_legacy(db,list(db.scalars(select(DutyRosterEntry))))
+    query=delete(DutyRosterEntry)
+    if active.import_id is not None:query=query.where(DutyRosterEntry.import_id!=active.import_id)
+    db.execute(query)
 
 def cell_text(value):
     if value is None:return ''
@@ -144,6 +177,7 @@ def create_router(require_admin,require_account):
         return dict(id=row.id,suggestions=suggestions,**value)
     @router.post('/api/v1/admin/duty-rosters/{import_id}/confirm')
     def confirm(import_id:int,data:Confirm,user=Depends(require_admin),db:Session=Depends(database_session)):
+        active=publication(db)
         batch=db.scalar(select(DutyRosterImport).where(DutyRosterImport.id==import_id,DutyRosterImport.uploader_id==user.id).with_for_update())
         if not batch:raise invalid(404)
         preview=json.loads(batch.preview_json);mapping=data.columns
@@ -160,40 +194,45 @@ def create_router(require_admin,require_account):
         if not set(selection.values())<=eligible:raise invalid()
         def fingerprint_for(assignments):return hashlib.sha256(json.dumps([batch.source_sha256,preview['sheet'],preview['header'],sorted(mapping.items()),sorted(assignments.items())],sort_keys=True).encode()).hexdigest()
         fingerprint=fingerprint_for(selection);legacy_fingerprint=fingerprint_for(original_selection)
-        existing=db.scalar(select(DutyRosterImport).where(DutyRosterImport.confirmation_sha256.in_({fingerprint,legacy_fingerprint})))
-        if existing:return dict(count=len(selection),skipped_pauses=skipped,already_imported=True)
-        if batch.confirmation_sha256:raise invalid(409)
-        # Nach der Bereinigung darf dieselbe Datei die verbliebenen Leistungen nicht nochmals anlegen.
-        matching=[]
-        for previous in db.scalars(select(DutyRosterImport).where(DutyRosterImport.source_sha256==batch.source_sha256,DutyRosterImport.confirmation_sha256.is_not(None))):
-            try:meta=json.loads(previous.preview_json)
-            except (TypeError,ValueError):continue
-            if meta.get('sheet')==preview['sheet'] and meta.get('header')==preview['header']:matching.append(previous.id)
-        def entry_key(row,owner,payload):return (row,owner,json.dumps(payload,sort_keys=True,ensure_ascii=False))
-        known=set()
-        if matching:
-            for previous in db.scalars(select(DutyRosterEntry).where(DutyRosterEntry.import_id.in_(matching))):
-                try:known.add(entry_key(previous.source_row,previous.tf_user_id,json.loads(previous.payload_json)))
-                except (TypeError,ValueError):continue
+        confirmed=preview.get('_publication',{})
+        if batch.confirmation_sha256:
+            expected=confirmed.get('fingerprint') or batch.confirmation_sha256
+            if expected not in (fingerprint,legacy_fingerprint):raise invalid(409)
+            current=active.import_id if active.import_id is not None else latest_confirmed(db)
+            return dict(count=len(selection),skipped_pauses=skipped,already_imported=True,superseded=current!=batch.id)
+        if not selection:raise invalid()
         entries=[]
         for index,owner in selection.items():
             values=available[index];payload={field:values[col] for field,col in mapping.items()};dates={key:parse_date(payload.get(key)) for key in DATE_FIELDS if payload.get(key)}
             main=dates.get('duty_start') or dates.get('departure') or dates.get('date')
             if not main:raise invalid()
             if dates.get('duty_end') and dates.get('duty_start') and dates['duty_end']<dates['duty_start']:raise invalid()
-            if entry_key(index,owner,payload) not in known:entries.append(DutyRosterEntry(import_id=batch.id,source_row=index,tf_user_id=owner,date=main.date().isoformat(),payload_json=json.dumps(payload,ensure_ascii=False)))
-        db.add_all(entries);batch.confirmation_sha256=fingerprint
-        try:db.commit()
-        except IntegrityError:
-            db.rollback()
-            if db.scalar(select(DutyRosterImport.id).where(DutyRosterImport.confirmation_sha256==fingerprint)):return dict(count=len(selection),skipped_pauses=skipped,already_imported=True)
-            raise invalid(409)
-        return dict(count=len(selection),skipped_pauses=skipped,already_imported=bool(selection) and not entries)
+            entries.append(DutyRosterEntry(import_id=batch.id,source_row=index,tf_user_id=owner,date=main.date().isoformat(),payload_json=json.dumps(payload,ensure_ascii=False)))
+        def equivalent(row):return (row.source_row,row.tf_user_id,row.date,json.dumps(json.loads(row.payload_json),sort_keys=True,ensure_ascii=False))
+        old=list(db.scalars(select(DutyRosterEntry).with_for_update()));remember_legacy(db,old)
+        unchanged=sorted(equivalent(row) for row in old)==sorted(equivalent(row) for row in entries)
+        # Erst nach vollständiger Prüfung ersetzen. Arbeitsberichte und deren Ist-Zeiten sind unberührt.
+        db.execute(delete(DutyRosterEntry));db.add_all(entries)
+        preview['_publication']=dict(fingerprint=fingerprint,columns=mapping,assignments=selection,published_at=now_utc().isoformat())
+        batch.preview_json=json.dumps(preview,ensure_ascii=False)
+        # Derselbe Dateiinhalt darf später ausdrücklich erneut zur letzten Version werden.
+        # Die Bestätigung derselben Vorschau bleibt dagegen idempotent und reaktiviert nichts.
+        batch.confirmation_sha256=hashlib.sha256((str(batch.id)+':'+fingerprint).encode()).hexdigest()
+        active.import_id=batch.id;active.published_at=now_utc();db.commit()
+        return dict(count=len(selection),skipped_pauses=skipped,already_imported=unchanged,superseded=False,replaced=len(old))
+    @router.get('/api/v1/tf/duty-rosters/version')
+    def version(user=Depends(driver),db:Session=Depends(database_session)):
+        active=db.get(DutyRosterPublication,1)
+        return dict(import_id=active.import_id if active else latest_confirmed(db))
     @router.get('/api/v1/tf/duty-rosters')
     def own(start:str=Query(default='',max_length=10),end:str=Query(default='',max_length=10),user=Depends(driver),db:Session=Depends(database_session)):
-        query=select(DutyRosterEntry).where(DutyRosterEntry.tf_user_id==user.id)
+        if start:parse_date(start)
+        if end:parse_date(end)
+        active=db.get(DutyRosterPublication,1);current=active.import_id if active else latest_confirmed(db)
+        if current is None:return []
+        query=select(DutyRosterEntry).where(DutyRosterEntry.tf_user_id==user.id,DutyRosterEntry.import_id==current)
         if start:parse_date(start);query=query.where(DutyRosterEntry.date>=start)
         if end:parse_date(end);query=query.where(DutyRosterEntry.date<=end)
         rows=db.scalars(query.order_by(DutyRosterEntry.date,DutyRosterEntry.id).limit(1000))
-        return [dict(id=r.id,date=r.date,values=json.loads(r.payload_json)) for r in rows]
+        return [dict(id=r.id,import_id=r.import_id,date=r.date,values=json.loads(r.payload_json)) for r in rows]
     return router

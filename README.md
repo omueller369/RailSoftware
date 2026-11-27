@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.30
+# LokZeitleiste v0.28.31
+
+**0.28.31 / Android 0.28.31.38:** Ausschließlich die zuletzt bestätigte Dienstplan-Importdatei gilt für alle TF und Zeiträume. Eine neue Bestätigung ersetzt den aktiven Dienstplan vollständig und atomar; Vorschau und ungültige Importe ändern ihn nicht. Wiederholte Aufrufe alter Bestätigungen reaktivieren keine überholte Version. Bereits angelegte Arbeitsberichte bleiben erhalten. Beim Serverupdate wird ein älterer Mischbestand auf den jüngsten bestätigten Upload bereinigt; ursprüngliche Importvorschauen und angewandte Zuordnungen bleiben nachvollziehbar. Offline steht der zuletzt abgerufene Stand bereit, der bei Verbindung erneut geöffnet werden sollte.
 
 **0.28.30 / Android 0.28.30.37:** Die GPS-Karte folgt dem gewählten Nachtmodus mit dunklen Flächen und lesbaren Ortsnamen, auch offline und im Vollbild. Fahrspur, Lücken und Standzeitfarben werden nicht umgefärbt. Das eigene Verfolgungssymbol wächst von 24 auf 36 SVG-Einheiten (Kreisradius 5 auf 7,5); fremde geteilte Positionen bleiben gleich groß. Symbole behalten ihre Originalfarben und bleiben rahmenlos. Gemeinsame Darstellung auch in der GPS-Demo.
 

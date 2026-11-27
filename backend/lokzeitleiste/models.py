@@ -1192,6 +1192,13 @@ class DutyRosterImport(Base):
     created_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
 
 
+class DutyRosterPublication(Base):
+    __tablename__='duty_roster_publication'
+    id:Mapped[int]=mapped_column(Integer,primary_key=True)
+    import_id:Mapped[int|None]=mapped_column(ForeignKey('duty_roster_imports.id'),nullable=True)
+    published_at:Mapped[datetime]=mapped_column(DateTime,default=now_utc,nullable=False)
+
+
 class DutyRosterEntry(Base):
     __tablename__='duty_roster_entries'
     __table_args__=(UniqueConstraint('import_id','source_row'),)
