@@ -212,6 +212,8 @@ jobs:
           path: ${{ runner.temp }}/gps-preferences-ui/
       - name: Backend dependencies
         run: python -m pip install -r backend/requirements-dev.txt
+      - name: GPS night palette and enlarged own tracking icon
+        run: python backend/tests/check_gps_night_ui.py --output-dir "$RUNNER_TEMP/gps-night-ui"
       - name: Official report PDF preview and original-byte download
         run: PYTHONPATH=backend:backend/tests python backend/tests/check_report_preview_pdf_ui.py --output-dir "$RUNNER_TEMP/report-preview-pdf-ui"
       - name: Incomplete shift preview, offline printing and PDF isolation

@@ -30,7 +30,7 @@
  html[data-theme=dark] .gps-box .gps-stand-toggle[aria-pressed=true]{background:#a32438;border-color:#ff9c9c}
  html[data-theme=dark] .gps-map>svg{background:#172f40!important;border-color:var(--night-border)}
  /* Only base tiles are dimmed. Red/blue stop markers and route geometry retain their colors. */
- html[data-theme=dark] .gps-map svg image:not([data-gps-rail]){filter:brightness(.68) saturate(.7)}
+ html[data-theme=dark] .gps-map svg image:not([data-gps-rail]):not([data-gps-marker-icon]){filter:brightness(.68) saturate(.7)}
  html[data-theme=dark] .status{background:color-mix(in srgb,var(--status,#526475) 40%,#152330)!important;color:var(--night-text)!important}
  html[data-theme=dark] .status.holiday{--status:#dc8997}
  html[data-theme=dark] .status.combined{background:linear-gradient(135deg,#714459 0 50%,color-mix(in srgb,var(--status,#526475) 40%,#152330) 50% 100%)!important}
@@ -101,3 +101,20 @@ html[data-theme=dark] [data-knowledge-inventory=places] .route-csv-table tr[data
 html body td[data-ctl-invalid=true]{outline:2px solid #d71920;outline-offset:-2px}html[data-theme=dark] body td[data-ctl-invalid=true]{outline-color:#ff8585}
 
 .ctl-required-mark{display:inline!important;font-size:.8em;vertical-align:super;line-height:0;color:inherit;margin-left:.12em}.ctl-required-hint{font-size:.85em;color:inherit;opacity:.85;margin:.65em 0}.ctl-required-caption{font-size:.85em;display:block}
+
+/* SVG-Karten folgen dem gewählten Modus sofort, ohne neue Kartendaten oder eine Neuberechnung. */
+@media screen{
+html[data-theme=dark] .gps-map [data-m1-background]{fill:#101c28}
+html[data-theme=dark] .gps-map [data-m1-country]{fill:#1b2b39;stroke:#526372}
+html[data-theme=dark] .gps-map [data-m1-country="DEU"]{fill:#203444}
+html[data-theme=dark] .gps-map [data-offline-places] circle{fill:#aab9c6}
+html[data-theme=dark] .gps-map [data-offline-place]{fill:#d2dee8;stroke:#1b2b39}
+html[data-theme=dark] .gps-map [data-rail-network="0"]{stroke:#9aa8b5}
+html[data-theme=dark] .gps-map [data-m1-point] circle[fill="#fff"]{fill:#253e50;stroke:#b2c4d2}
+html[data-theme=dark] .gps-map [data-m1-point] text{fill:#d2dee8;stroke:#1b2b39}
+html[data-theme=dark] .gps-map :is([data-gps-position],[data-gps-peer]) text{stroke:#122331}
+html[data-theme=dark] .gps-map :is([data-gps-position],[data-gps-peer]) text[fill="#172338"]{fill:#e1edf5}
+html[data-theme=dark] .gps-map [data-gps-position] text[fill="#146c34"]{fill:#80d8a4}
+html[data-theme=dark] .gps-map [data-gps-position] text[fill="#b42318"]{fill:#ff9ca8}
+html[data-theme=dark] .gps-map image[data-gps-marker-icon]{filter:none!important}
+}

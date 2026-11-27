@@ -446,12 +446,12 @@ class Recorder{
   append('text',{x,y,'text-anchor':anchor,'font-size':size,'font-weight':700,fill,stroke:'#fff','stroke-width':2.5,'stroke-linejoin':'round','paint-order':'stroke'}).textContent=value;
  };
  const speed=Number.isFinite(point.speed)&&point.speed>=0?Math.round(point.speed*3.6)+' km/h':'–';
- if(!this.o.demo)label(speed,23,4,11,'#172338','start');
- label(durationLabel(totals.elapsed),-7,-25,12,'#146c34','end');
- label('/',0,-25);
- label(durationLabel(totals.stopped),7,-25,12,'#b42318','start');
- append('image',{href:'/tf/gps-marker-electric.png',x:-12,y:-12,width:24,height:24,'data-gps-marker-icon':'electric'});
- label(this.record.train_number||this.o.trainNumber().trim(),0,26,10);
+ if(!this.o.demo)label(speed,29,4,11,'#172338','start');
+ label(durationLabel(totals.elapsed),-7,-31,12,'#146c34','end');
+ label('/',0,-31);
+ label(durationLabel(totals.stopped),7,-31,12,'#b42318','start');
+ append('image',{href:'/tf/gps-marker-electric.png',x:-18,y:-18,width:36,height:36,'data-gps-marker-icon':'electric'});
+ label(this.record.train_number||this.o.trainNumber().trim(),0,32,10);
  svg.append(marker);
  }
  drawTrail(svg,make,display,position){

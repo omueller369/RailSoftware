@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.29
+# LokZeitleiste v0.28.30
+
+**0.28.30 / Android 0.28.30.37:** Die GPS-Karte folgt dem gewählten Nachtmodus mit dunklen Flächen und lesbaren Ortsnamen, auch offline und im Vollbild. Fahrspur, Lücken und Standzeitfarben werden nicht umgefärbt. Das eigene Verfolgungssymbol wächst von 24 auf 36 SVG-Einheiten (Kreisradius 5 auf 7,5); fremde geteilte Positionen bleiben gleich groß. Symbole behalten ihre Originalfarben und bleiben rahmenlos. Gemeinsame Darstellung auch in der GPS-Demo.
 
 **0.28.29 / Android 0.28.29.36:** Seite 1 von Schichtvorschau und Endbericht bleibt unverändert. Auf Folgeseiten werden mehrere vollständige Zugfahrten samt Details zusammengefasst, wenn sie dort Platz haben. Passt die nächste Zugfahrt nicht mehr auf die Seite, beginnt sie vollständig auf der nächsten. Bei mehrseitigen Details werden Zugnummer, Umlaufname, Start- und Zielbahnhof samt Zugnummer: Seite Y von X auf jeder Fortsetzungsseite wiederholt. Die lokale Vorschau gruppiert ebenfalls vollständige Blöcke. Enthält die Android-Druckkorrektur aus 0.28.28.
 

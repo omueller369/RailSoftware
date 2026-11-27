@@ -44,7 +44,7 @@ window.fetch=async(url,options={})=>{let data;if(url.endsWith('gps-settings')){i
   assert(!preview.querySelector('rect'),'Marker has no frame');
   assert(image?.getAttribute('href')==='/tf/gps-marker-'+type+'.png','Original PNG mapped to '+type);
   const decoded=new Image();decoded.src=image.getAttribute('href');await decoded.decode();assert(decoded.naturalWidth===128&&decoded.naturalHeight===128,'Original 128px PNG loaded: '+type);
-  assert(image.getBoundingClientRect().width>=20&&image.getBoundingClientRect().width<=28,'Marker uses readable proportional size');
+  assert(image.getBoundingClientRect().width>=34&&image.getBoundingClientRect().width<=38,'Marker uses readable proportional size');
  }
  assert(!form.querySelector('[data-gps-icon-preview="circle"] image'),'Circle remains a vector option');
  window.parent.postMessage({layoutStatus:'pass'},'*');
