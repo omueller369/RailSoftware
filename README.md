@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.25
+# LokZeitleiste v0.28.26
+
+**0.28.26 / Android 0.28.26.33:** Schichtvorschau im geöffneten Arbeitsbericht: aktueller lokaler Stand einschließlich unvollständiger und unstimmiger Angaben sowie noch nicht eingetragener Bearbeitungen. Als ungeprüfter Entwurf gekennzeichnet; ohne Versand, ohne Serverberechnung und auch offline. Drucken / PDF speichern öffnet den Browser- beziehungsweise Android-Druckdialog mit dem Vorschauinhalt. Endgültige Synchronisierung und deren Prüfungen bleiben unverändert.
 
 **0.28.25 / Android 0.28.25.32:** Im internationalen Bremszettel werden Zugnummern erst nach Verlassen des Feldes automatisch geprüft. Während der Eingabe bleiben Teilwerte lokal gespeichert; verspätete Berechnungsantworten öffnen keine Fehlermeldung beim Tippen. Neue Bremszettel erhalten DE/G in Spalte 1 und PL/G in Spalte 2, jeweils 100 km/h, mit G, Streckenklasse D4/D und 59 Mindestbremshundertsteln. Gespeicherte und manuell geänderte Werte bleiben erhalten.
 

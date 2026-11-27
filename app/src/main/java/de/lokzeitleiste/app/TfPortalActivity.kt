@@ -235,6 +235,7 @@ class TfPortalActivity : ComponentActivity() {
         try {
             when(request.getString("method")) {
                 "help.print" -> startHelpPrint(request,proxy)
+                "report.print" -> startHelpPrint(request,proxy,true)
                 "traffic.status" -> reply(proxy,request,true,JSONObject().put("upload",android.net.TrafficStats.getUidTxBytes(android.os.Process.myUid())).put("download",android.net.TrafficStats.getUidRxBytes(android.os.Process.myUid())))
                 "session" -> reply(proxy,request,true,JSONObject(session.toString()).put("app_version",BuildConfig.VERSION_NAME).put("online",connected()))
                 "network.status" -> reply(proxy,request,true,JSONObject().put("online",connected()))
@@ -332,10 +333,11 @@ class TfPortalActivity : ComponentActivity() {
             }
         } catch(error:Exception) { reply(proxy,request,false,error.message?:"App-Anfrage fehlgeschlagen.") }
     }
-    private fun startHelpPrint(request:JSONObject,proxy:JavaScriptReplyProxy) {
+    private fun startHelpPrint(request:JSONObject,proxy:JavaScriptReplyProxy,report:Boolean=false) {
         require(helpPrintView==null) { "Ein Druckvorgang läuft bereits." }
         val title=request.getString("title")
-        val html=HelpPrintDocument.render(title,request.getString("text"))
+        val html=if(report)ReportPrintDocument.render(title,request.getString("text")) else HelpPrintDocument.render(title,request.getString("text"))
+        val jobTitle=if(report)title else "Anleitung – $title"
         val printView=WebView(this);helpPrintView=printView
         printView.settings.apply { javaScriptEnabled=false;allowFileAccess=false;allowContentAccess=false;blockNetworkLoads=true }
         var started=false
@@ -344,14 +346,14 @@ class TfPortalActivity : ComponentActivity() {
                 if(started)return;started=true
                 view.post {
                     try {
-                        val delegate=view.createPrintDocumentAdapter("Anleitung – $title")
+                        val delegate=view.createPrintDocumentAdapter(jobTitle)
                         val adapter=object:PrintDocumentAdapter() {
                             override fun onStart() { delegate.onStart() }
                             override fun onLayout(old:PrintAttributes?,new:PrintAttributes?,signal:CancellationSignal,callback:LayoutResultCallback,extras:Bundle?) { delegate.onLayout(old,new,signal,callback,extras) }
                             override fun onWrite(pages:Array<PageRange>,destination:ParcelFileDescriptor,signal:CancellationSignal,callback:WriteResultCallback) { delegate.onWrite(pages,destination,signal,callback) }
                             override fun onFinish() { delegate.onFinish();runOnUiThread { if(helpPrintView===view)helpPrintView=null;view.destroy() } }
                         }
-                        getSystemService(PrintManager::class.java).print("Anleitung – $title",adapter,PrintAttributes.Builder().setMediaSize(PrintAttributes.MediaSize.ISO_A4).build())
+                        getSystemService(PrintManager::class.java).print(jobTitle,adapter,PrintAttributes.Builder().setMediaSize(PrintAttributes.MediaSize.ISO_A4).build())
                         reply(proxy,request,true,JSONObject())
                     } catch(error:Exception) { helpPrintView=null;view.destroy();reply(proxy,request,false,error.message?:"Druckdialog konnte nicht geöffnet werden.") }
                 }

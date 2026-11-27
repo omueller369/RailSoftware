@@ -563,7 +563,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
     "short": "{{portal_tf_help_content.text_1e1d4cb9cd4f}}",
     "path": "/tf/arbeitsbericht",
     "aliases": [],
-    "sections": [{"title": "{{portal_report_tabs.text_8f92cd7b253a}}", "paragraphs": ["{{chat_groups.text_f311dfebf58e}}"], "steps": []},{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_d7f05b4da0fe}}", "paragraphs": ["{{coordination.text_4d17451b6e10}}", "{{coordination.text_e6857d142fe0}}"], "steps": []},
+    "sections": [{"title": "{{report_preview.text_4e1969b1e2d3}}", "paragraphs": ["{{report_preview.text_34b891cf105f}}"], "steps": []},{"title": "{{portal_report_tabs.text_8f92cd7b253a}}", "paragraphs": ["{{chat_groups.text_f311dfebf58e}}"], "steps": []},{"title": "{{roster_proposal.text_5c1c93ed3826}}", "paragraphs": ["{{roster_proposal.text_5f28db9a6f5d}}"], "steps": []},{"title": "{{coordination.text_d7f05b4da0fe}}", "paragraphs": ["{{coordination.text_4d17451b6e10}}", "{{coordination.text_e6857d142fe0}}"], "steps": []},
       {"title":"{{report_network_controls.text_539ad79b30b1}}","paragraphs":["{{report_network_controls.text_30d3bf3d7fb2}}"],"steps":[]},
       {"title":"{{form_fields.text_8b04cac930aa}}","paragraphs":["{{form_fields.text_3c2d4d94680c}}"],"steps":[]},
  {"title":"{{quality.text_340a3048a0b3}}","paragraphs":["{{quality.text_cb4e1ba41fa0}}"],"steps":[]},

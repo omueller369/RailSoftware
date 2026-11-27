@@ -271,3 +271,7 @@ html[data-theme="dark"] #reportSendCancel {
 #workReport .train-number-fields input{width:100%;box-sizing:border-box}
 @media(max-width:850px){#workReport .train-number-fields{grid-area:1/1/2/3}}
 @media(max-width:560px){#workReport .train-number-fields{grid-area:auto}}
+
+/* Nur der Vorschauinhalt gelangt in den Browserdruck, keine Karte oder Formularfelder. */
+#reportPreviewDialog{width:min(94vw,1000px);max-height:92vh;box-sizing:border-box;overflow:auto}#reportPreviewDialog>header{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}#reportPreviewDialog h2{flex:1;min-width:180px}#reportPreviewContent{font:15px/1.5 sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;color:inherit}
+@media print{body.report-preview-printing>*:not(#reportPreviewDialog){display:none!important}body.report-preview-printing #reportPreviewDialog{position:static!important;display:block!important;overflow:visible!important;max-height:none!important;height:auto!important;width:100%!important;max-width:none!important;border:0!important;margin:0!important;padding:0!important;background:white!important;color:black!important}body.report-preview-printing #reportPreviewDialog::backdrop{display:none}body.report-preview-printing #reportPreviewDialog>*:not(#reportPreviewContent){display:none!important}body.report-preview-printing #reportPreviewContent{font:11pt/1.5 sans-serif!important;margin:0;white-space:pre-wrap!important;overflow:visible!important;max-height:none!important}body.report-preview-printing{display:block!important;background:white!important;color:black!important}}

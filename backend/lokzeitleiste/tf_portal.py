@@ -30,6 +30,9 @@ def create_router(require_account):
     @router.get('/tf/beta-traffic.js')
     def traffic_script():return FileResponse(STATIC/'beta-traffic.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 
+    @router.get('/tf/report-preview.js')
+    def report_preview_script():return FileResponse(STATIC/'report-preview.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
+
     @router.get('/tf/report-tabs.js')
     def report_tabs_script():return FileResponse(STATIC/'report-tabs.js',media_type='text/javascript',headers={'Cache-Control':'no-cache'})
 
