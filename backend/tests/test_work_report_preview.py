@@ -16,6 +16,7 @@ class WorkReportPreviewTest(unittest.TestCase):
     def preview(self,data,**extra):return self.driver.post('/api/v1/tf/work-reports/preview',json={'report':data,**extra})
     def test_same_tables_and_a4_pages_as_final(self):
         data=self.payload();data['train_journeys']=[dict(id=str(uuid4()),train_number='12345',rotation_name='Umlauf A',start_station='BHF',end_station='LL',start_at=data['start_at'],end_at=data['end_at'],events=[])]
+        data['train_journeys'].append({**data['train_journeys'][0],'id':str(uuid4()),'train_number':'67890'})
         saved=self.create(data)
         with Session(self.engine) as db:
             user=db.get(User,self.tf);report=db.get(DutyReport,saved['id']);raw=json.loads(report.payload_json)

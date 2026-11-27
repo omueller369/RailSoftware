@@ -11,7 +11,7 @@ from html import escape
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4,landscape
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,Table,TableStyle,PageBreak,KeepInFrame
+from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,Table,TableStyle,PageBreak,KeepInFrame,Flowable
 from sqlalchemy import select,or_
 
 from ..models import User,TfProfile,WorkMonth,WorkEntry,DutyReport,DocumentFile,ReportDispatch,DocumentRenderState
@@ -64,7 +64,7 @@ def needs_render(db,row):
     return not state or state.format_version<FORMAT_VERSION
 
 
-def pdf_document(title,lines,rows=None,sections=None,wide=False,paired_head=False,train_pages=None,draft_label=None):
+def pdf_document(title,lines,rows=None,sections=None,wide=False,paired_head=False,train_pages=None,draft_label=None,pack_trains=True,train_page_label=None):
     register_fonts('DocumentSans')
     width,height=landscape(A4) if wide else A4
     usable=width-68-12  # SimpleDocTemplate frame has 6 pt padding on each side.
@@ -104,21 +104,70 @@ def pdf_document(title,lines,rows=None,sections=None,wide=False,paired_head=Fals
         label,values=section[:2];indent=usable*section[2] if len(section)>2 else 0
         section_style=ParagraphStyle('IndentedSection',parent=subheading,leftIndent=indent)
         story += [Paragraph(escape(label),section_style),table(values,True,indent,section[3] if len(section)>3 else None)]
-    for page in train_pages or []:
-        available=height-30-32-12
-        for font_size in (8,7.5,7,6.5,6,5.5,5):
-            content=[]
-            for section in page:
-                label,values=section[:2];indent=usable*section[2] if len(section)>2 else 0
-                section_style=ParagraphStyle('TrainSection',parent=subheading,leftIndent=indent)
-                block=table(values,True,indent,spans=section[4] if len(section)>4 else None,font_size=font_size)
-                if indent:
-                    block.hAlign='LEFT'
-                    block=Table([['',block]],colWidths=[indent,usable-indent],hAlign='LEFT',style=TableStyle([('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),0),('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
-                content += [Paragraph(escape(label),section_style),block]
-            required=sum(item.wrap(usable,available)[1]+item.getSpaceBefore()+item.getSpaceAfter() for item in content)
-            if required<=available:break
-        story += [PageBreak(),KeepInFrame(usable,available,content,mode='shrink',hAlign='LEFT',vAlign='TOP')]
+    # Ein fest vermessener Block wird entweder vollständig hier oder auf der nächsten Seite gezeichnet.
+    # KeepInFrame allein würde eine Zugfahrt sonst auf die verbleibende Resthöhe verkleinern.
+    from reportlab.pdfgen.canvas import Canvas
+    measure=Canvas(io.BytesIO(),pagesize=(width,height)) if train_pages else None
+    class TrainBlock(Flowable):
+        def __init__(self,content,available):
+            super().__init__();self.content=KeepInFrame(usable,available,content,mode='shrink',hAlign='LEFT',vAlign='TOP')
+            self.width,self.height=self.content.wrapOn(measure,usable,available);self.spaceBefore=12
+        def wrap(self,available_width,available_height):return self.width,self.height
+        def split(self,available_width,available_height):return []
+        def draw(self):self.content.drawOn(self.canv,0,0)
+    available=height-30-32-12
+    def train_content(page,font_size=8):
+        content=[]
+        for section in page:
+            label,values=section[:2];indent=usable*section[2] if len(section)>2 else 0
+            section_style=ParagraphStyle('TrainSection',parent=subheading,leftIndent=indent)
+            block=table(values,True,indent,spans=section[4] if len(section)>4 else None,font_size=font_size)
+            if indent:
+                block.hAlign='LEFT'
+                block=Table([['',block]],colWidths=[indent,usable-indent],hAlign='LEFT',style=TableStyle([('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),0),('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
+            content += [Paragraph(escape(label),section_style),block]
+        return content
+    def required(content):return sum(item.wrap(usable,available)[1]+item.getSpaceBefore()+item.getSpaceAfter() for item in content)
+    def continuations(page):
+        if required(train_content(page))<=available or len(page)!=2:return [page]
+        header,detail=page;values=detail[1];spans=set(detail[4] if len(detail)>4 else []);groups=[]
+        for index,row in enumerate(values[1:],1):
+            if index in spans and groups:groups[-1].append((row,True))
+            else:groups.append([(row,index in spans)])
+        number=header[1][1][0]
+        caption=train_page_label or _text_source('report_pages.text_7c0d30899b48')
+        def section(selected,n,total):
+            rows=[values[0]];joined=[]
+            for group in selected:
+                for row,span in group:
+                    rows.append(row)
+                    if span:joined.append(len(rows)-1)
+            return [(header[0]+' · '+caption.format(number=number,page=n,pages=total),header[1],*header[2:]),(detail[0],rows,detail[2] if len(detail)>2 else 0,detail[3] if len(detail)>3 else None,joined)]
+        # Der Platz für den Zähler wird vorab mit der maximal möglichen Ziffernzahl reserviert.
+        reserve=max(1,len(groups));parts=[];current=[]
+        for group in groups:
+            candidate=current+[group]
+            if current and required(train_content(section(candidate,reserve,reserve)))>available:
+                parts.append(current);current=[group]
+            else:current=candidate
+        if current:parts.append(current)
+        return [section(part,i+1,len(parts)) for i,part in enumerate(parts)] or [page]
+    for page_index,page in enumerate(train_pages or []):
+        if pack_trains:
+            if page_index==0:story.append(PageBreak())
+            for part in continuations(page):
+                content=train_content(part)
+                # Ein einzelner außergewöhnlich langer Datensatz bleibt als letzter Ausweg verkleinerbar.
+                if required(content)>available:
+                    for size in (7.5,7,6.5,6,5.5,5):
+                        content=train_content(part,size)
+                        if required(content)<=available:break
+                story.append(TrainBlock(content,available))
+        else:
+            for size in (8,7.5,7,6.5,6,5.5,5):
+                content=train_content(page,size)
+                if required(content)<=available:break
+            story += [PageBreak(),KeepInFrame(usable,available,content,mode='shrink',hAlign='LEFT',vAlign='TOP')]
     def footer(canvas,doc):
         canvas.saveState();canvas.setFont('DocumentSans',8);canvas.setFillColor(colors.HexColor('#546b7b'));canvas.drawRightString(width-34,16,str(doc.page));
         if draft_label:canvas.drawString(34,16,draft_label)
@@ -200,7 +249,7 @@ def work_report_layout(db,user,report,*,preview=False):
     if preview:
         from ..localization import source
         draft=t(source('report_preview.text_2401b34f7275'))
-    return dict(title=title,lines=lines,sections=sections,paired_head=True,train_pages=train_pages,**(dict(draft_label=draft) if preview else {}))
+    return dict(title=title,lines=lines,sections=sections,paired_head=True,train_pages=train_pages,train_page_label=t(_text_source('report_pages.text_7c0d30899b48')),**(dict(draft_label=draft) if preview else {}))
 
 
 def work_report_pdf(db,user,report):

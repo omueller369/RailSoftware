@@ -464,6 +464,11 @@
     "en": "/locales/report_network_controls/en.json",
     "pl": "/locales/report_network_controls/pl.json"
   },
+  "report_pages": {
+    "de": "/locales/report_pages/de.json",
+    "en": "/locales/report_pages/en.json",
+    "pl": "/locales/report_pages/pl.json"
+  },
   "report_preview": {
     "de": "/locales/report_preview/de.json",
     "en": "/locales/report_preview/en.json",

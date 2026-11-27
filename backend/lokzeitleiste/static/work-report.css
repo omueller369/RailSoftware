@@ -282,3 +282,5 @@ html[data-theme="dark"] #reportSendCancel {
 @media print{body.report-preview-printing #reportPreviewContent{padding:0!important;background:#fff!important;overflow:visible!important;max-height:none!important;page:reportPreview}.report-preview-printing .report-a4-page,.report-preview-printing .report-pdf-page{page:reportPreview;break-after:page;box-shadow:none;margin:0!important}.report-preview-printing .report-train-page{break-before:page}.report-preview-printing .report-pdf-pages{max-height:none!important}}
 
 @media print{body.report-preview-printing{margin:0!important;padding:0!important}body.report-preview-printing #reportPreviewContent{white-space:normal!important}}
+
+.report-train-block+.report-train-block{margin-top:12pt}.report-train-block:first-child h2:first-child{margin-top:0}

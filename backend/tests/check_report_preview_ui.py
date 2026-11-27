@@ -25,7 +25,7 @@ if(window.AndroidPortal){assert(nativeJob&&nativeJob.layout.train_pages.length==
 else{assert(printed===1&&document.body.classList.contains('report-preview-printing'),'Browser printing is isolated');window.dispatchEvent(new Event('afterprint'));assert(!document.body.classList.contains('report-preview-printing'),'Print state is cleaned after printing');}
 dialog.querySelector('button').click();for(let i=0;el('reportPreviewDialog')&&i<100;i++)await new Promise(r=>setTimeout(r,20));assert(!el('reportPreviewDialog'),'Closing removes the report snapshot');assert(!writes&&JSON.stringify(localStorage)===before,'Printing and closing leave the draft unchanged');
 // Eine lange Schichtvorschau darf beim PDF-Druck nicht auf eine Dialoghöhe abgeschnitten werden.
-const report={start_at:'',end_at:'',trips:[],train_journeys:Array.from({length:25},(_,i)=>({id:'long-'+i,train_number:String(i),events:[{reason:i===24?'LAST_EVENT_TOKEN':'Normal',station:'BBB'}]}))};ReportPreview.open({owner:{first_name:'Test'},report,editors:[]});
+const report={start_at:'',end_at:'',trips:[],train_journeys:Array.from({length:25},(_,i)=>({id:'long-'+i,train_number:String(i),events:[{reason:i===24?'LAST_EVENT_TOKEN':'Normal',station:'BBB'}]}))};report.train_journeys.push({id:'continued',train_number:'CONTINUED_TRAIN',rotation_name:'DEMO',start_station:'AAA',end_station:'BBB',events:Array.from({length:180},(_,i)=>({reason:i===179?'LAST_CONTINUED_TOKEN':'CONT_DETAIL_'+i,station:'CCC'}))});ReportPreview.open({owner:{first_name:'Test'},report,editors:[]});const continued=[...document.querySelectorAll('.report-train-block')].filter(block=>block.textContent.includes('CONTINUED_TRAIN'));assert(continued.length>1,'Oversized train details use continuation blocks');for(let i=0;i<continued.length;i++){assert(continued[i].textContent.includes('Seite '+(i+1)+' von '+continued.length),'Every continuation shows its train page counter');for(const value of ['DEMO','AAA','BBB'])assert(continued[i].textContent.includes(value),'Train header is repeated');}
 if(!window.AndroidPortal)el('reportPreviewDialog').querySelectorAll('button')[1].click();
 window.previewReady=true;document.documentElement.dataset.layoutStatus='pass';parent.postMessage({layoutStatus:'pass'},'*');
 })().catch(error=>{document.documentElement.dataset.layoutStatus='fail';document.documentElement.dataset.layoutMessage=error.stack;parent.postMessage({layoutStatus:'fail',message:error.stack},'*');});
@@ -55,6 +55,10 @@ def printer(output):
         reader=PdfReader(path);text='\n'.join(p.extract_text() for p in reader.pages)
         assert all(abs(float(p.mediabox.width)-595.2756)<1 for p in reader.pages),'PDF uses A4 portrait'
         assert len(reader.pages)>1 and 'LAST_EVENT_TOKEN' in text,'Every page of the long draft must be present'
+        assert 'LAST_CONTINUED_TOKEN' in text
+        continued=[p.extract_text() for p in reader.pages if 'CONTINUED_TRAIN' in p.extract_text()]
+        assert len(continued)>1
+        for i,page in enumerate(continued,1):assert f'Seite {i} von {len(continued)}' in ' '.join(page.split())
         assert 'unchanged-draft' not in text
     return interact
 

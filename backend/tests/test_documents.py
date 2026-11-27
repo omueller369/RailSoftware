@@ -260,24 +260,24 @@ class DocumentsTest(unittest.TestCase):
         report=self.create(data)
         file=next(f for f in self.listing()['files'] if f['name'].endswith('-Arbeitsbericht.pdf'))
         pdf=self.driver.get('/api/v1/documents/download',params={'path':file['path']}).content
-        self.assertEqual(len(re.findall(rb'/Type\s*/Page\b',pdf)),3)
+        self.assertEqual(len(re.findall(rb'/Type\s*/Page\b',pdf)),2)
         boxes=re.findall(rb'/MediaBox\s*\[\s*0\s+0\s+([\d.]+)\s+([\d.]+)\s*\]',pdf)
-        self.assertEqual(len(boxes),3)
+        self.assertEqual(len(boxes),2)
         for width,height in boxes:self.assertAlmostEqual(float(width),595.28,places=1);self.assertAlmostEqual(float(height),841.89,places=1)
         with Session(self.engine) as db:
             row=db.get(DutyReport,report['id']);user=db.get(User,row.tf_user_id)
             with patch('lokzeitleiste.documents.archive.pdf_document',return_value=b'pdf') as render:
                 work_report_pdf(db,user,row);args,options=render.call_args
-                labels=[label for label,value in args[1]]
+                labels=[label for label,value in options['lines']]
                 self.assertNotIn('TF-Nummer',labels)
-                self.assertNotIn(user.username,[str(value) for label,value in args[1]])
+                self.assertNotIn(user.username,[str(value) for label,value in options['lines']])
                 self.assertNotIn('Mindestpause nach Dienstregel',labels)
                 self.assertNotIn('Begründung für mehr als zwölf Stunden',labels)
                 self.assertNotIn('Sz',options['sections'][0][1][0]);self.assertTrue(options['paired_head'])
                 self.assertEqual(len(options['train_pages']),2)
                 payload=json.loads(row.payload_json);payload['overrun_reason']='Fiktive Begründung';payload['trips'][0]['self_payer']=True;row.payload_json=json.dumps(payload)
                 work_report_pdf(db,user,row);args,options=render.call_args
-                self.assertIn('Begründung für mehr als zwölf Stunden',[label for label,value in args[1]])
+                self.assertIn('Begründung für mehr als zwölf Stunden',[label for label,value in options['lines']])
                 self.assertIn('Sz',options['sections'][0][1][0])
 
 

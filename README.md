@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.28
+# LokZeitleiste v0.28.29
+
+**0.28.29 / Android 0.28.29.36:** Seite 1 von Schichtvorschau und Endbericht bleibt unverändert. Auf Folgeseiten werden mehrere vollständige Zugfahrten samt Details zusammengefasst, wenn sie dort Platz haben. Passt die nächste Zugfahrt nicht mehr auf die Seite, beginnt sie vollständig auf der nächsten. Bei mehrseitigen Details werden Zugnummer, Umlaufname, Start- und Zielbahnhof samt Zugnummer: Seite Y von X auf jeder Fortsetzungsseite wiederholt. Die lokale Vorschau gruppiert ebenfalls vollständige Blöcke. Enthält die Android-Druckkorrektur aus 0.28.28.
 
 **0.28.28 / Android 0.28.28.35:** Android-Druckaufträge werden in begrenzten Paketen übertragen, damit große PDFs und lokale Tabellen nicht an der Nachrichtengrenze scheitern. Umfang und Vollständigkeit werden vor dem Drucken geprüft. Abgelehnte oder ausbleibende Antworten beenden die Übergabe mit einer Fehlermeldung; ein abgebrochener Transfer wird freigegeben. Während der Übergabe erscheint eine Statusmeldung. Die PDF-Bytes und der A4-Satz bleiben unverändert.
 
