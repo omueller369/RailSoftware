@@ -32,8 +32,9 @@
   "text_a80f0ee6918d": "Ja",
   "text_c8b0e451a44b": "Nein",
   "text_2f06036b35f8": "Druckdialog konnte nicht geöffnet werden.",
-  "text_34b891cf105f": "Öffne Deinen Bericht und wähle Schichtvorschau. Mit Verbindung wird dieselbe PDF-Erzeugung wie für den synchronisierten Bericht verwendet: A4 hochkant, tabellarischer Kopf, Gastfahrten und eine eigene Seite je Zugfahrt. Die PDF-Vorschau bleibt als ungeprüfter Entwurf gekennzeichnet und wird nicht gespeichert oder synchronisiert. Auch fehlende, unstimmige oder noch nicht eingetragene Angaben werden dargestellt. PDF speichern lädt genau diese Vorschau herunter; Drucken öffnet den Druckdialog. Ohne Verbindung steht eine lokale A4-Tabellenvorschau mit denselben Spalten zur Verfügung; deren Druckausgabe kann vom serverseitigen PDF-Satz abweichen. Die endgültigen Prüfungen bleiben unverändert.",
+  "text_34b891cf105f": "Öffne Deinen Bericht und wähle Schichtvorschau. Mit Verbindung wird dieselbe PDF-Erzeugung wie für den synchronisierten Bericht verwendet: A4 hochkant, tabellarischer Kopf, Gastfahrten und eine eigene Seite je Zugfahrt. Die PDF-Vorschau bleibt als ungeprüfter Entwurf gekennzeichnet und wird nicht gespeichert oder synchronisiert. Auch fehlende, unstimmige oder noch nicht eingetragene Angaben werden dargestellt. PDF speichern lädt genau diese Vorschau herunter; Drucken öffnet den Druckdialog. Ohne Verbindung steht eine lokale A4-Tabellenvorschau mit denselben Spalten zur Verfügung; deren Druckausgabe kann vom serverseitigen PDF-Satz abweichen. Die endgültigen Prüfungen bleiben unverändert. Die Android-Druckausgabe unterstützt auch umfangreiche PDF-Berichte. Während der Übergabe siehst Du eine Statusmeldung. Wenn der Druckdialog nicht geöffnet werden kann, erscheint eine Fehlermeldung und Du kannst es erneut versuchen.",
   "text_6a37df9cd9c9": "PDF speichern",
   "text_1d1e5dcfcf26": "PDF-Vorschau wird im Layout der Endfassung erstellt …",
-  "text_08201887a357": "Lokale A4-Tabellenvorschau. Für die PDF-Vorschau aus dem endgültigen PDF-Renderer wird eine Verbindung benötigt."
+  "text_08201887a357": "Lokale A4-Tabellenvorschau. Für die PDF-Vorschau aus dem endgültigen PDF-Renderer wird eine Verbindung benötigt.",
+  "text_43b16ce9d4b5": "Druckdialog wird geöffnet …"
 }

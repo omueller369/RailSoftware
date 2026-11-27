@@ -9,8 +9,8 @@ if(!window.NativePortal)return;
 sessionStorage.setItem('ctl.area','tf');
 sessionStorage.removeItem('ctl.session.tf');
 let serial=0;const waiting=new Map();
-NativePortal.onmessage=event=>{let reply;try{reply=JSON.parse(event.data);}catch(_){return;}const job=waiting.get(reply.id);if(!job)return;waiting.delete(reply.id);reply.ok?job.resolve(reply.value):job.reject(Error(reply.error||globalThis.CtlText.source("backend_android_portal.text_c7a2a716bb01")));};
-function request(method,values={}){return new Promise((resolve,reject)=>{const id=String(++serial);waiting.set(id,{resolve,reject});try{NativePortal.postMessage(JSON.stringify({id,method,...values}));}catch(error){waiting.delete(id);reject(error);}});}
+NativePortal.onmessage=event=>{let reply;try{reply=JSON.parse(event.data);}catch(_){return;}const job=waiting.get(reply.id);if(!job)return;waiting.delete(reply.id);if(job.timer)clearTimeout(job.timer);reply.ok?job.resolve(reply.value):job.reject(Error(reply.error||globalThis.CtlText.source("backend_android_portal.text_c7a2a716bb01")));};
+function request(method,values={},timeout=0){return new Promise((resolve,reject)=>{const id=String(++serial),timer=timeout?setTimeout(()=>{waiting.delete(id);reject(Error('Print request timed out'));},timeout):null;waiting.set(id,{resolve,reject,timer});try{NativePortal.postMessage(JSON.stringify({id,method,...values}));}catch(error){if(timer)clearTimeout(timer);waiting.delete(id);reject(error);}});}
 const session=request('session'),originalFetch=window.fetch.bind(window);let offline=null,online=true;
 function setOnline(value){const before=online;online=!!value;if(before!==online)window.dispatchEvent(new Event(online?'online':'offline'));offline?.status();}
 session.then(current=>{if(typeof current.online==='boolean'){online=current.online;try{Object.defineProperty(navigator,'onLine',{configurable:true,get:()=>online});}catch{}}if(window.AndroidOffline)offline=window.AndroidOffline.create({session:current,send:async(...args)=>{const response=await originalFetch(...args);if(response.status===401)request('expired').catch(()=>{});return response;},network:()=>online});});
@@ -28,6 +28,16 @@ window.fetch=async(input,options={})=>{
  catch(error){let cached=await offline?.cached(url.pathname+url.search);try{cached=cached||localStorage.getItem(key);}catch(_){}if(!cached&&url.pathname==='/api/v1/account/me')cached=JSON.stringify(current.account);if(!cached&&url.pathname==='/api/v1/tf/portal')cached=JSON.stringify(current.profile);if(cached)return new Response(cached,{status:200,headers:{'Content-Type':'application/json','X-LokZeitleiste-Offline':'1'}});throw error;}
 };
 async function saveBlob(name,blob){const job=await request('export.start',{name});try{for(let offset=0;offset<blob.size;offset+=49152){const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(reader.error);reader.readAsDataURL(blob.slice(offset,offset+49152));});await request('export.chunk',{export_id:job.export_id,data});}}finally{await request('export.finish',{export_id:job.export_id});}}
-window.AndroidPortal={setOnline,get offline(){return offline;},version:session.then(value=>value.app_version),request,saveBlob,printHelp:values=>request('help.print',values),printReport:values=>request('report.print',values),printReportPdf:values=>request('report.printPdf',values),gps:(method,values)=>request('gps.'+method,values)};
+// Druckdaten bleiben unter der Nachrichtengrenze, auch bei vielen Seiten und eingebetteten Schriften.
+async function printDocument(kind,values){
+ const blob=kind==='pdf'?new Blob([Uint8Array.from(atob(values.pdf),c=>c.charCodeAt(0))],{type:'application/pdf'}):new Blob([JSON.stringify(values)],{type:'application/json'});
+ const printId='print-'+(++serial);let committed=false;
+ try{
+  const start=await request('print.begin',{kind,title:values.title,size:blob.size,print_id:printId},30000);
+  for(let offset=0;offset<blob.size;offset+=49152){const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(reader.error);reader.readAsDataURL(blob.slice(offset,offset+49152));});await request('print.chunk',{print_id:start.print_id,data},30000);}
+  const value=await request('print.commit',{print_id:start.print_id},45000);committed=true;return value;
+ }finally{if(!committed)await request('print.abort',{print_id:printId},5000).catch(()=>{});}
+}
+window.AndroidPortal={setOnline,get offline(){return offline;},version:session.then(value=>value.app_version),request,saveBlob,printHelp:values=>request('help.print',values),printReport:values=>printDocument('layout',values),printReportPdf:values=>printDocument('pdf',values),gps:(method,values)=>request('gps.'+method,values)};
 window.addEventListener('languagechange',()=>{if(window.I18n?.language)request('language',{language:window.I18n.language}).catch(()=>{});});
 })();

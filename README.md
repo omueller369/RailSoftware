@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.27
+# LokZeitleiste v0.28.28
+
+**0.28.28 / Android 0.28.28.35:** Android-Druckaufträge werden in begrenzten Paketen übertragen, damit große PDFs und lokale Tabellen nicht an der Nachrichtengrenze scheitern. Umfang und Vollständigkeit werden vor dem Drucken geprüft. Abgelehnte oder ausbleibende Antworten beenden die Übergabe mit einer Fehlermeldung; ein abgebrochener Transfer wird freigegeben. Während der Übergabe erscheint eine Statusmeldung. Die PDF-Bytes und der A4-Satz bleiben unverändert.
 
 **0.28.27 / Android 0.28.27.34:** Schichtvorschau mit derselben PDF-Erzeugung wie die Endfassung: A4 hochkant, tabellarischer Berichtskopf, Gastfahrten und eine eigene Seite je Zugfahrt. Die Vorschau erzeugt keine Berichte oder Dokumenteinträge. Unvollständige und unstimmige Rohwerte bleiben zulässig; das PDF trägt einen Entwurfshinweis. PDF-Download und Android-Druck verwenden dieselben Originalbytes. Ohne Verbindung bleibt eine lokale A4-Tabellenvorschau mit denselben Spalten verfügbar; deren Satz kann vom serverseitigen PDF abweichen.
 

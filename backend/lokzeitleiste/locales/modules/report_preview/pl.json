@@ -32,8 +32,9 @@
   "text_a80f0ee6918d": "Tak",
   "text_c8b0e451a44b": "Nie",
   "text_2f06036b35f8": "Nie udało się otworzyć okna drukowania.",
-  "text_34b891cf105f": "Otwórz raport i wybierz Podgląd służby. Przy połączeniu używany jest ten sam generator PDF co dla zsynchronizowanego raportu: pionowe A4, nagłówek tabelaryczny, przejazdy pasażerskie i osobna strona dla każdego pociągu. Podgląd to niesprawdzona wersja robocza; nie jest zapisywany ani synchronizowany. Widoczne są też brakujące, niespójne i niewpisane jeszcze dane. Zapisz PDF pobiera ten podgląd, a Drukuj otwiera okno drukowania. Offline dostępny jest lokalny podgląd tabelaryczny A4 z tymi samymi kolumnami; jego wydruk może różnić się od serwerowego PDF. Kontrole końcowe pozostają bez zmian.",
+  "text_34b891cf105f": "Otwórz raport i wybierz Podgląd służby. Przy połączeniu używany jest ten sam generator PDF co dla zsynchronizowanego raportu: pionowe A4, nagłówek tabelaryczny, przejazdy pasażerskie i osobna strona dla każdego pociągu. Podgląd to niesprawdzona wersja robocza; nie jest zapisywany ani synchronizowany. Widoczne są też brakujące, niespójne i niewpisane jeszcze dane. Zapisz PDF pobiera ten podgląd, a Drukuj otwiera okno drukowania. Offline dostępny jest lokalny podgląd tabelaryczny A4 z tymi samymi kolumnami; jego wydruk może różnić się od serwerowego PDF. Kontrole końcowe pozostają bez zmian. Drukowanie w Androidzie obsługuje również obszerne raporty PDF. Podczas przekazywania widoczny jest komunikat stanu. Jeśli okno drukowania nie może się otworzyć, zobaczysz błąd i możesz spróbować ponownie.",
   "text_6a37df9cd9c9": "Zapisz PDF",
   "text_1d1e5dcfcf26": "Tworzenie podglądu PDF w układzie wersji końcowej …",
-  "text_08201887a357": "Lokalny podgląd tabelaryczny A4. Podgląd z generatora końcowego PDF wymaga połączenia."
+  "text_08201887a357": "Lokalny podgląd tabelaryczny A4. Podgląd z generatora końcowego PDF wymaga połączenia.",
+  "text_43b16ce9d4b5": "Otwieranie okna drukowania …"
 }

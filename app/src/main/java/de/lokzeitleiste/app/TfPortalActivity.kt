@@ -49,6 +49,7 @@ class TfPortalActivity : ComponentActivity() {
     private var exportId: String?=null
     private var exportBytes=0L
     private var reportPdfPrinting=false
+    private val printTransfer=PrintTransfer()
     private var leaving=false
     private var networkCallback:android.net.ConnectivityManager.NetworkCallback?=null
     private var identityRefresh:Job?=null
@@ -180,12 +181,19 @@ class TfPortalActivity : ComponentActivity() {
         if(WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
             WebViewCompat.addWebMessageListener(web,"NativePortal",setOf(policy.origin)) { _,message,origin,isMainFrame,proxy ->
                 if(isMainFrame && policy.sameOrigin(origin.toString()) && policy.sameOrigin(web.url.orEmpty())) {
-                    try { require((message.data?.length?:0)<150000);handle(JSONObject(message.data?:"{}"),proxy) }
-                    catch(error:Exception) { toast(error.message?:"App-Anfrage fehlgeschlagen.") }
+                    val raw=message.data.orEmpty()
+                    var request:JSONObject?=null
+                    try {
+                        if(raw.length>=150000) {
+                            val id=Regex("\"id\"\\s*:\\s*\"([0-9]{1,20})\"").find(raw.take(512))?.groupValues?.get(1)
+                            if(id!=null)reply(proxy,JSONObject().put("id",id),false,"App-Anfrage zu groß.") else toast("App-Anfrage zu groß.")
+                        } else { request=JSONObject(raw);handle(request,proxy) }
+                    } catch(error:Exception) { if(request!=null)reply(proxy,request,false,error.message?:"App-Anfrage fehlgeschlagen.") else toast(error.message?:"App-Anfrage fehlgeschlagen.") }
                 }
             }
         } else toast("Android System WebView aktualisieren, um GPS und GPX-Export zu verwenden.")
         web.webViewClient=object:WebViewClient() {
+            override fun onPageStarted(view:WebView,url:String,favicon:android.graphics.Bitmap?) { printTransfer.clear();super.onPageStarted(view,url,favicon) }
             override fun shouldOverrideUrlLoading(view:WebView,request:WebResourceRequest):Boolean {
                 val value=request.url.toString()
                 if(policy.sameOrigin(value)) {
@@ -235,6 +243,22 @@ class TfPortalActivity : ComponentActivity() {
     private fun handle(request:JSONObject,proxy:JavaScriptReplyProxy) {
         try {
             when(request.getString("method")) {
+                "print.begin" -> {
+                    require(helpPrintView==null && !reportPdfPrinting)
+                    reply(proxy,request,true,JSONObject().put("print_id",printTransfer.begin(request.getString("kind"),request.getString("title"),request.getInt("size"),request.getString("print_id"))))
+                }
+                "print.chunk" -> {
+                    val data=request.getString("data");require(data.length<=65536)
+                    printTransfer.append(request.getString("print_id"),android.util.Base64.decode(data,android.util.Base64.DEFAULT));reply(proxy,request,true,JSONObject())
+                }
+                "print.abort" -> { printTransfer.abort(request.getString("print_id"));reply(proxy,request,true,JSONObject()) }
+                "print.commit" -> {
+                    val document=printTransfer.finish(request.getString("print_id"))
+                    if(document.kind=="pdf")printReportPdfBytes(document.title,document.bytes,request,proxy)
+                    else {
+                        val body=JSONObject(document.bytes.toString(Charsets.UTF_8));body.put("id",request.getString("id"));startHelpPrint(body,proxy,true)
+                    }
+                }
                 "help.print" -> startHelpPrint(request,proxy)
                 "report.print" -> startHelpPrint(request,proxy,true)
                 "report.printPdf" -> printReportPdf(request,proxy)
@@ -341,6 +365,11 @@ class TfPortalActivity : ComponentActivity() {
         val title=request.getString("title");require(title.isNotBlank() && title.length<=200)
         val encoded=request.getString("pdf");require(encoded.length<=22000000)
         val bytes=android.util.Base64.decode(encoded,android.util.Base64.DEFAULT)
+        printReportPdfBytes(title,bytes,request,proxy)
+    }
+    private fun printReportPdfBytes(title:String,bytes:ByteArray,request:JSONObject,proxy:JavaScriptReplyProxy) {
+        require(helpPrintView==null && !reportPdfPrinting)
+        require(title.isNotBlank() && title.length<=200)
         require(bytes.size<=16000000 && bytes.take(5).toByteArray().toString(Charsets.US_ASCII)=="%PDF-")
         val file=java.io.File.createTempFile("report-preview-",".pdf",cacheDir)
         val pages=try { file.writeBytes(bytes);android.graphics.pdf.PdfRenderer(ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY)).use { it.pageCount } } finally { file.delete() }
@@ -410,5 +439,5 @@ class TfPortalActivity : ComponentActivity() {
         }
     }
     override fun onResume() { super.onResume();if(::updater.isInitialized)updater.resume() }
-    override fun onDestroy() { networkCallback?.let { runCatching { getSystemService(android.net.ConnectivityManager::class.java).unregisterNetworkCallback(it) } };networkCallback=null;identityRefresh?.cancel();helpPrintView?.destroy();helpPrintView=null;val callback=fileCallback;fileCallback=null;runCatching { callback?.onReceiveValue(null) };exportStream?.close();if(::web.isInitialized){web.stopLoading();web.destroy()};super.onDestroy() }
+    override fun onDestroy() { printTransfer.clear();networkCallback?.let { runCatching { getSystemService(android.net.ConnectivityManager::class.java).unregisterNetworkCallback(it) } };networkCallback=null;identityRefresh?.cancel();helpPrintView?.destroy();helpPrintView=null;val callback=fileCallback;fileCallback=null;runCatching { callback?.onReceiveValue(null) };exportStream?.close();if(::web.isInitialized){web.stopLoading();web.destroy()};super.onDestroy() }
 }

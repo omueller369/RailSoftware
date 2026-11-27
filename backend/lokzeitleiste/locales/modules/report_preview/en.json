@@ -32,8 +32,9 @@
   "text_a80f0ee6918d": "Yes",
   "text_c8b0e451a44b": "No",
   "text_2f06036b35f8": "Could not open the print dialog.",
-  "text_34b891cf105f": "Open your report and choose Shift preview. When connected, the same PDF generator as for synchronized reports is used: portrait A4, tabular header, passenger journeys and a separate page per train journey. Preview remains an unchecked draft and is neither saved nor synchronized. Missing, inconsistent and unentered details are included. Save PDF downloads this exact preview; Print opens the print dialog. Offline, a local A4 table preview with the same columns is available; its print layout may differ from the server PDF. Final validation remains unchanged.",
+  "text_34b891cf105f": "Open your report and choose Shift preview. When connected, the same PDF generator as for synchronized reports is used: portrait A4, tabular header, passenger journeys and a separate page per train journey. Preview remains an unchecked draft and is neither saved nor synchronized. Missing, inconsistent and unentered details are included. Save PDF downloads this exact preview; Print opens the print dialog. Offline, a local A4 table preview with the same columns is available; its print layout may differ from the server PDF. Final validation remains unchanged. Android printing also supports large PDF reports. A status message appears while the document is handed over. If the print dialog cannot open, an error appears and you can try again.",
   "text_6a37df9cd9c9": "Save PDF",
   "text_1d1e5dcfcf26": "Creating PDF preview using the final report layout …",
-  "text_08201887a357": "Local A4 table preview. A connection is needed for the preview produced by the final PDF renderer."
+  "text_08201887a357": "Local A4 table preview. A connection is needed for the preview produced by the final PDF renderer.",
+  "text_43b16ce9d4b5": "Opening print dialog …"
 }
