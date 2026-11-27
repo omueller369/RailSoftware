@@ -37,7 +37,17 @@ def compile_messages():
                 compat[lang][source] = messages[lang][key]
         manifest[folder.name] = {lang: f'/locales/{folder.name}/{lang}.json' for lang in LANGUAGES}
     dump = lambda value: json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + '\n'
-    runtime = (ROOT / 'tools/localization-runtime.js').read_text()
+    # Fehlende oder nicht übersetzte Versionshinweise dürfen nicht unbemerkt veröffentlicht werden.
+    history = json.loads((BASE / 'release-history.json').read_text())
+    versions = [row['version'] for row in history]
+    current = re.search(r"SOFTWARE_VERSION\s*=\s*['\"]([^'\"]+)", (BASE / 'version.py').read_text()).group(1)
+    if (not versions or current != versions[0] or len(set(versions)) != len(versions)
+            or versions != sorted(versions, key=lambda v: tuple(map(int, v.split('.'))), reverse=True)):
+        raise ValueError('Release history must start with the current version and contain unique descending versions')
+    for row in history:
+        if any(row['key'] not in keyed[lang] for lang in LANGUAGES):
+            raise ValueError(f"Missing release history translation: {row['version']}")
+    runtime = 'globalThis.CtlReleaseHistory=' + json.dumps(history, separators=(',', ':')) + ';\n' + (ROOT / 'tools/localization-runtime.js').read_text()
     bundle = '/* Die Sprachschlüssel werden gemeinsam durch tools/build-translations.py erzeugt. */\nglobalThis.CtlMessages=' + json.dumps(keyed, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';\n' + runtime
     return {
         BASE / 'locales/keys.json': dump(keyed),

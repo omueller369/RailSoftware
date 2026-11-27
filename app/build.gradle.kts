@@ -14,6 +14,12 @@ val softwareVersion = Regex("""SOFTWARE_VERSION\s*=\s*['"]([^'"]+)['"]""")
     .find(rootProject.file("backend/lokzeitleiste/version.py").readText())
     ?.groupValues?.get(1) ?: error("Shared software version is missing")
 
+// Kein Android-Release ohne passenden Eintrag in der gemeinsamen Versionshistorie.
+val releaseHistory = JsonSlurper().parse(rootProject.file("backend/lokzeitleiste/release-history.json")) as List<*>
+check(releaseHistory.any { (it as Map<*, *>)["version"] == softwareVersion }) {
+    "Current software version is missing from release history"
+}
+
 android {
     namespace = "de.lokzeitleiste.app"
     compileSdk = 35
@@ -23,8 +29,8 @@ android {
         applicationId = "de.lokzeitleiste.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("143").get().toInt()
-        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.38").get()
+        versionCode = providers.gradleProperty("lokzeitleisteVersionCode").orElse("144").get().toInt()
+        versionName = providers.gradleProperty("lokzeitleisteVersionName").orElse("$softwareVersion.39").get()
         buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl}\"")
     }
     val signingPath = providers.gradleProperty("lokzeitleisteSigningStoreFile").orElse(providers.environmentVariable("ANDROID_KEYSTORE_PATH")).orNull

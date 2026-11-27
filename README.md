@@ -1,4 +1,6 @@
-# LokZeitleiste v0.28.31
+# LokZeitleiste v0.28.32
+
+**0.28.32 / Android 0.28.32.39:** Die lokale Versionshistorie im Updates-Modul ist bis zum aktuellen Stand ergänzt, in DE/PL/EN übersetzt und auch offline verfügbar. Übersetzungscompiler und Android-Build prüfen den Eintrag der aktuellen Version. Updates bleibt auch bei später ergänzten Modulen die letzte Android-Kachel; im Web bleibt sie ausgeblendet.
 
 **0.28.31 / Android 0.28.31.38:** Ausschließlich die zuletzt bestätigte Dienstplan-Importdatei gilt für alle TF und Zeiträume. Eine neue Bestätigung ersetzt den aktiven Dienstplan vollständig und atomar; Vorschau und ungültige Importe ändern ihn nicht. Wiederholte Aufrufe alter Bestätigungen reaktivieren keine überholte Version. Bereits angelegte Arbeitsberichte bleiben erhalten. Beim Serverupdate wird ein älterer Mischbestand auf den jüngsten bestätigten Upload bereinigt; ursprüngliche Importvorschauen und angewandte Zuordnungen bleiben nachvollziehbar. Offline steht der zuletzt abgerufene Stand bereit, der bei Verbindung erneut geöffnet werden sollte.
 

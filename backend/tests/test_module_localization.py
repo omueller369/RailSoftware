@@ -4,6 +4,8 @@ import importlib.util
 import json
 import re
 import unittest
+import tempfile
+from unittest.mock import patch
 from pathlib import Path
 import test_accounts
 from lokzeitleiste.localization import messages, source, text, resolve_placeholders
@@ -34,6 +36,23 @@ class ModuleMessagesTest(unittest.TestCase):
                 self.assertNotEqual(resolve_placeholders(token), token, f'{file}: {token}')
             if file.suffix == '.html':
                 self.assertLess(file.read_text().index('/locales/messages.js'), file.read_text().index('/auth-session.js'))
+
+    def test_release_history_rejects_missing_current_duplicate_and_untranslated_notes(self):
+        spec = importlib.util.spec_from_file_location('history_builder', ROOT/'tools/build-translations.py')
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+        history = json.loads((BASE/'release-history.json').read_text())
+        with tempfile.TemporaryDirectory() as directory:
+            temporary = Path(directory)
+            (temporary/'locales').symlink_to(BASE/'locales', target_is_directory=True)
+            (temporary/'version.py').write_text((BASE/'version.py').read_text())
+            unknown = [dict(row) for row in history]
+            unknown[0]['key'] = 'release_history.text_000000000000'
+            for invalid in (history[1:], history + [history[-1]], unknown):
+                with self.subTest(invalid=invalid[0]):
+                    (temporary/'release-history.json').write_text(json.dumps(invalid))
+                    with patch.object(builder, 'BASE', temporary), self.assertRaises(ValueError):
+                        builder.compile_messages()
 
     def test_keyed_text_and_canonical_contracts(self):
         de = messages()['de']

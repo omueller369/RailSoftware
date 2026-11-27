@@ -2,9 +2,9 @@ name: Android TF Portal APK
 on:
   push:
     branches: ['setup/debian-testumgebung']
-    paths: ['app/**', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'backend/lokzeitleiste/static/**', 'backend/lokzeitleiste/version.py', '.github/workflows/android.yml']
+    paths: ['app/**', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'backend/lokzeitleiste/static/**', 'backend/lokzeitleiste/version.py', 'backend/lokzeitleiste/release-history.json', 'backend/lokzeitleiste/locales/**', 'tools/build-translations.py', '.github/workflows/android.yml']
   pull_request:
-    paths: ['app/**', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'backend/lokzeitleiste/static/**', 'backend/lokzeitleiste/version.py', '.github/workflows/android.yml']
+    paths: ['app/**', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'backend/lokzeitleiste/static/**', 'backend/lokzeitleiste/version.py', 'backend/lokzeitleiste/release-history.json', 'backend/lokzeitleiste/locales/**', 'tools/build-translations.py', '.github/workflows/android.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -29,6 +29,8 @@ jobs:
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
       - name: Shared portal adapter tests
         run: |
+          python tools/build-translations.py --check
+          node backend/tests/test_updates_module.cjs
           node backend/tests/test_android_portal.cjs
           node backend/tests/test_gps_browser.cjs
           node backend/tests/test_gps_android.cjs

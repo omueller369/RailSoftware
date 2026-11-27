@@ -1,0 +1,310 @@
+[
+  {
+    "version": "0.28.32",
+    "key": "release_history.text_8b3bd237903b"
+  },
+  {
+    "version": "0.28.31",
+    "key": "release_history.text_3448efedd6fb"
+  },
+  {
+    "version": "0.28.30",
+    "key": "release_history.text_36b2b066cea6"
+  },
+  {
+    "version": "0.28.29",
+    "key": "release_history.text_e7c4f9106ab9"
+  },
+  {
+    "version": "0.28.28",
+    "key": "release_history.text_c82696f523b1"
+  },
+  {
+    "version": "0.28.27",
+    "key": "release_history.text_87431a812e5c"
+  },
+  {
+    "version": "0.28.26",
+    "key": "release_history.text_6026dd145095"
+  },
+  {
+    "version": "0.28.25",
+    "key": "release_history.text_8326bf00d77e"
+  },
+  {
+    "version": "0.28.24",
+    "key": "release_history.text_3c88ebbdd172"
+  },
+  {
+    "version": "0.28.23",
+    "key": "release_history.text_5fe133962739"
+  },
+  {
+    "version": "0.28.22",
+    "key": "release_history.text_89c5fb222e44"
+  },
+  {
+    "version": "0.28.21",
+    "key": "release_history.text_7a6a50d2724c"
+  },
+  {
+    "version": "0.28.20",
+    "key": "release_history.text_bd5bab623a56"
+  },
+  {
+    "version": "0.28.19",
+    "key": "release_history.text_6208dc5b7a38"
+  },
+  {
+    "version": "0.28.18",
+    "key": "release_history.text_9a962c13e3d5"
+  },
+  {
+    "version": "0.28.17",
+    "key": "release_history.text_914a022ccbc7"
+  },
+  {
+    "version": "0.28.16",
+    "key": "release_history.text_b66baf3a98a3"
+  },
+  {
+    "version": "0.28.15",
+    "key": "release_history.text_6819a868a7af"
+  },
+  {
+    "version": "0.28.14",
+    "key": "release_history.text_6dc957d74c6c"
+  },
+  {
+    "version": "0.28.13",
+    "key": "release_history.text_9e0578e57d1d"
+  },
+  {
+    "version": "0.28.12",
+    "key": "release_history.text_3383abfbae9d"
+  },
+  {
+    "version": "0.28.11",
+    "key": "release_history.text_084d977202df"
+  },
+  {
+    "version": "0.28.10",
+    "key": "release_history.text_5fa62aefa854"
+  },
+  {
+    "version": "0.28.9",
+    "key": "release_history.text_d6b9525fe366"
+  },
+  {
+    "version": "0.28.8",
+    "key": "release_history.text_2bb061aeecca"
+  },
+  {
+    "version": "0.28.7",
+    "key": "release_history.text_8fd81941a2b2"
+  },
+  {
+    "version": "0.28.6",
+    "key": "release_history.text_780108dde9ed"
+  },
+  {
+    "version": "0.28.5",
+    "key": "release_history.text_b1f69a1fe438"
+  },
+  {
+    "version": "0.28.4",
+    "key": "release_history.text_21e12dfc42e3"
+  },
+  {
+    "version": "0.28.3",
+    "key": "release_history.text_e17216d2b9d5"
+  },
+  {
+    "version": "0.28.2",
+    "key": "release_history.text_953371b30a3e"
+  },
+  {
+    "version": "0.28.1",
+    "key": "release_history.text_174cf6d4cee2"
+  },
+  {
+    "version": "0.28.0",
+    "key": "release_history.text_9d7bdfbea094"
+  },
+  {
+    "version": "0.27.19",
+    "key": "release_history.text_b40d477b9687"
+  },
+  {
+    "version": "0.27.18",
+    "key": "release_history.text_b7d4d9e2dd66"
+  },
+  {
+    "version": "0.27.17",
+    "key": "release_history.text_fc9880b5372c"
+  },
+  {
+    "version": "0.27.16",
+    "key": "release_history.text_1cd321fd6466"
+  },
+  {
+    "version": "0.27.15",
+    "key": "release_history.text_517cefb138f3"
+  },
+  {
+    "version": "0.27.14",
+    "key": "release_history.text_309fb82d9920"
+  },
+  {
+    "version": "0.27.13",
+    "key": "release_history.text_9d87ae4cb906"
+  },
+  {
+    "version": "0.27.12",
+    "key": "infra_go.text_e153b8cb417a"
+  },
+  {
+    "version": "0.27.11",
+    "key": "field_navigation.text_645087f320ac"
+  },
+  {
+    "version": "0.27.10",
+    "key": "field_navigation.text_39ddf1aab866"
+  },
+  {
+    "version": "0.27.9",
+    "key": "portal_gps_demo.text_7a3e2c82488c"
+  },
+  {
+    "version": "0.27.8",
+    "key": "report_rework.text_259aa8ef98a8"
+  },
+  {
+    "version": "0.27.7",
+    "key": "la_instructions.text_259aa8ef98a8"
+  },
+  {
+    "version": "0.27.6",
+    "key": "dispatch_tracking.text_259aa8ef98a8"
+  },
+  {
+    "version": "0.27.5",
+    "key": "admin_knowledge.text_06452a53499d"
+  },
+  {
+    "version": "0.27.4",
+    "key": "location_editor.text_77b316b2e62e"
+  },
+  {
+    "version": "0.27.3",
+    "key": "knowledge_performance.text_b1021aa5b12f"
+  },
+  {
+    "version": "0.27.2",
+    "key": "knowledge_inventory.text_1b9adb828f0f"
+  },
+  {
+    "version": "0.27.1",
+    "key": "m1_operating_points.text_a3c924724279"
+  },
+  {
+    "version": "0.27.0",
+    "key": "version_scheme.text_44b61532d8b9"
+  },
+  {
+    "version": "0.26.64",
+    "key": "route_csv.text_306348eb1b4f"
+  },
+  {
+    "version": "0.26.63",
+    "key": "knowledge_tabs.text_8f6a274eb4f8"
+  },
+  {
+    "version": "0.26.62",
+    "key": "route_age.text_24bb17956723"
+  },
+  {
+    "version": "0.26.61",
+    "key": "rail_network.text_0d83493024ae"
+  },
+  {
+    "version": "0.26.60",
+    "key": "portal_beta60.text_1e9c72606ae4"
+  },
+  {
+    "version": "0.26.59",
+    "key": "station_contributions.text_114c9b1151de"
+  },
+  {
+    "version": "0.26.58",
+    "key": "gps_marker_images.text_3faa944b1d14"
+  },
+  {
+    "version": "0.26.57",
+    "key": "gpkg_station_catalog.text_fe7774cdec6c"
+  },
+  {
+    "version": "0.26.56",
+    "key": "offline_station_catalog.text_567c583f72ff"
+  },
+  {
+    "version": "0.26.55",
+    "key": "gps_stop_suggestions.text_256112e9f9f2"
+  },
+  {
+    "version": "0.26.54",
+    "key": "gps_preferences.text_b9fa9dccd9b3"
+  },
+  {
+    "version": "0.26.53",
+    "key": "train_workspace.text_c68d9d3ca82a"
+  },
+  {
+    "version": "0.26.52",
+    "key": "gps_preferences.text_f21232976f99"
+  },
+  {
+    "version": "0.26.51",
+    "key": "gps_preferences.text_9534ef329eb0"
+  },
+  {
+    "version": "0.26.50",
+    "key": "station_coordinates.text_83b1d50e5483"
+  },
+  {
+    "version": "0.26.49",
+    "key": "wgm.text_73b2e03563d8"
+  },
+  {
+    "version": "0.26.48",
+    "key": "portal_updates.text_ad4b5c28d852"
+  },
+  {
+    "version": "0.26.47",
+    "key": "portal_updates.text_e670141d95c0"
+  },
+  {
+    "version": "0.26.46",
+    "key": "portal_updates.text_685738825b7a"
+  },
+  {
+    "version": "0.26.45",
+    "key": "portal_updates.text_ca93bac05973"
+  },
+  {
+    "version": "0.26.44",
+    "key": "portal_updates.text_d114a6de1e7a"
+  },
+  {
+    "version": "0.26.43",
+    "key": "portal_updates.text_32aaaa74f552"
+  },
+  {
+    "version": "0.26.42",
+    "key": "portal_updates.text_70f23239eb98"
+  },
+  {
+    "version": "0.26.41",
+    "key": "portal_updates.text_d42fae7a247c"
+  }
+]

@@ -464,6 +464,11 @@
     "en": "/locales/rail_network/en.json",
     "pl": "/locales/rail_network/pl.json"
   },
+  "release_history": {
+    "de": "/locales/release_history/de.json",
+    "en": "/locales/release_history/en.json",
+    "pl": "/locales/release_history/pl.json"
+  },
   "report_network_controls": {
     "de": "/locales/report_network_controls/de.json",
     "en": "/locales/report_network_controls/en.json",

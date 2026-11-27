@@ -211,6 +211,7 @@ window.TfHelpPages=globalThis.CtlText.restore([{"id": "dienstplan", "title": "{{
         "paragraphs": [
           "{{field_navigation.text_6c83f129717f}}",
           "{{portal_updates.text_47c500af7794}}",
+          "{{release_history.text_65d04e528ff1}}",
           "{{version_scheme.text_44b61532d8b9}}"
         ],
         "steps": [

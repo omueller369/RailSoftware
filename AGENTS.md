@@ -23,6 +23,8 @@
 - Pro zusammengehöriger Änderung genau einen Versionssprung vornehmen; mehrere bearbeitete Dateien und Korrekturen während derselben noch nicht übernommenen Aufgabe gehören zum selben Stand. Eine reine Versionsanpassung nicht rekursiv erneut erhöhen.
 - Den aktuellen Versionstitel in `README.md` mit aktualisieren. Historische Versionsdokumente und Testbeispiele nicht pauschal umnummerieren. Android-Test-APKs verwenden die vierte Versionsstelle als fortlaufende Testnummer; keinen `-test.`-Zusatz verwenden. Die GitHub-Release-Tags `android-test-<Workflowlauf>` bleiben für den bestehenden Updatekanal erhalten. `ANDROID_TEST_RUN_BASE` in der gemeinsamen Versionsdatei legt den Startlauf der Testnummer fest; für die ausdrücklich angeforderte neue Reihe 0.28 ist der Wert 62 (Workflowlauf 63 ergibt Testnummer 1). Nicht bei gewöhnlichen Änderungen zurücksetzen. Der interne versionCode muss stets steigen.
 
+- Bei jeder Version `backend/lokzeitleiste/release-history.json` und die zugehörigen DE/PL/EN-Historientexte ergänzen. Die aktuelle Version muss enthalten sein; die Historie wird mit den Sprachdaten für Web und Android erzeugt.
+
 ## GitHub und Update-Anleitung
 
 - GitHub für autorisierte Projektänderungen ausdrücklich verwenden; die bereits erteilte Zustimmung nicht wiederholt erfragen. Änderungen nach erfolgreicher Prüfung in den Testbranch übernehmen.
